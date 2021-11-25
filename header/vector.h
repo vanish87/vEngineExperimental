@@ -26,13 +26,24 @@ namespace vEngine
                 typedef value_type* pointer;
                 typedef const value_type* const_pointer;
 
+                typedef typename DataType::reference reference;
+                typedef typename DataType::const_reference const_reference;
+
+                typedef typename DataType::iterator iterator;
+                typedef typename DataType::const_iterator const_iterator;
+
+                typedef typename DataType::size_type size_type;
+                typedef typename DataType::difference_type difference_type;
+
+                static constexpr size_t size = N;
+
             public:
                 // use init list {} to initialize data
                 constexpr Vector() noexcept : data_{0} {}
 
                 // explicit one parameter constructor to avoid implicit
                 // conversion
-                explicit constexpr Vector(const T& other) {}
+                explicit constexpr Vector(const T& other) noexcept {}
 
                 // big five - 3: copy constructor
                 // called by
@@ -88,6 +99,15 @@ namespace vEngine
                 // ambiguous/undefined actions
                 // constructor obj with pointer
                 explicit constexpr Vector(const T* other) noexcept {}
+
+                // copy from other vector type
+                template <typename U, int M>
+                constexpr Vector(Vector<U, M> const& rhs) noexcept
+                {}
+
+                constexpr Vector(T x, T y) noexcept
+                    : data_{std::move(x), std::move(y)}
+                {}
         };
 
     }  // namespace Core

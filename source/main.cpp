@@ -15,6 +15,8 @@ int main(int argc, char* argv[])
 
     // vec2 = vec21;
 
+    // Vector<int,2> vec = 1;
+
     std::vector<Vector<int, 2>> moveList{};
 
     moveList.push_back(Vector<int, 2>());
