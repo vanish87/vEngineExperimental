@@ -1,5 +1,8 @@
 BasedOnStyle: Google
+AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+BreakBeforeBraces: Custom
+IndentAccessModifiers: true
 IndentExternBlock: Indent
 IndentPPDirectives: BeforeHash
 IndentWidth: 4
