@@ -25,5 +25,8 @@ int main(int argc, char* argv[])
     int a = 1;
     int* b = &a;
 
+    auto z = Vector<int,2>::Zero();
+    auto o = Vector<int,2>::One();
+
     return 0;
 }

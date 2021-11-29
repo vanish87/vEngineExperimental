@@ -43,7 +43,7 @@ namespace vEngine
 
                 // explicit one parameter constructor to avoid implicit
                 // conversion
-                explicit constexpr Vector(const T& other) noexcept {}
+                explicit constexpr Vector(const T& other) noexcept { }
 
                 // big five - 3: copy constructor
                 // called by
@@ -105,10 +105,99 @@ namespace vEngine
                 constexpr Vector(Vector<U, M> const& rhs) noexcept
                 {}
 
-                constexpr Vector(T x, T y) noexcept
-                    : data_{std::move(x), std::move(y)}
+                constexpr Vector(const T& x,const T& y) noexcept
+                    : data_{x, y}
                 {}
+
+            public:
+                static const Vector<T,N> & Zero()
+                {
+                    static const Vector<T,N> zero(static_cast<T>(0));
+                    return zero;
+                }
+                static const Vector<T,N> & One()
+                {
+                    static const Vector<T,N> one{1};
+                    return one;
+                }
+            public:
+                iterator begin() noexcept
+                {
+                    return this->data_.begin();
+                }
+                const iterator begin() const noexcept
+                {
+                    return this->data_.begin();
+                }
+
+
+                iterator end() noexcept
+                {
+                    return this->data_.end();
+                }
+                const iterator end() const noexcept
+                {
+                    return this->data_.end();
+                }
+
+
+            public:
+                pointer data() noexcept
+                {
+                    return &(this->data_[0]);
+                }
+                constexpr const_pointer data() const noexcept
+                {
+                    return &(this->data_[0]);
+                }
+
+                reference operator[](size_t index) noexcept
+                {
+                    return this->data_[index];
+                }
+                constexpr const_reference operator[](size_t index) const noexcept
+                {
+                    return this->data_[index];
+                }
+
+                //TODO: use vector swizzle
+                reference x() noexcept
+                {
+                    return this->data_[0];
+                }
+
+            public:
+                template<typename U>
+                const Vector& operator+=(const Vector<U, N>& other) noexcept
+                {
+                    return *this;
+                }
+                template<typename U>
+                const Vector& operator-=(const Vector<U, N>& other) noexcept
+                {
+                    return *this;
+                }
+                template<typename U>
+                const Vector& operator*=(const Vector<U, N>& other) noexcept
+                {
+                    return *this;
+                }
+                template<typename U>
+                const Vector& operator/=(const Vector<U, N>& other) noexcept
+                {
+                    return *this;
+                }
+
+                bool operator==(const Vector& other) const noexcept
+                {
+                    return true;
+                }
+
         };
+        template <typename T, int N>
+        inline void swap(Vector<T, N>& lhs, Vector<T, N>& other) noexcept
+        {
+        }
 
     }  // namespace Core
 }  // namespace vEngine
