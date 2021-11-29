@@ -50,7 +50,7 @@ namespace vEngine
                 //  1. ClassA a = b;
                 //  2. Func(ClassA a) -> pass by value
                 //  3. return temp; -> return by value
-                constexpr Vector(const Vector& other) {}
+                constexpr Vector(const Vector& other) noexcept{}
 
                 // big five - 2: assignment operator
                 // with const formal paramter
@@ -68,7 +68,7 @@ namespace vEngine
                 }
                 // big five - 1: virtual destructor -> assure destructor of
                 // subclass called
-                virtual ~Vector() {}
+                virtual ~Vector() noexcept{}
 
                 // big five - 4: move constructor
                 // const is not need: constexpr Vector(const Vector &&other)
@@ -79,13 +79,13 @@ namespace vEngine
                 // receiver
                 // - Puts the r-value object into an 'empty' state.
                 // - subclass must explicitly std::move the base class
-                constexpr Vector(Vector&& other) : data_{std::move(other.data_)}
+                constexpr Vector(Vector&& other) noexcept : data_{std::move(other.data_)}
                 {
                     std::cout << "move ctor called" << std::endl;
                 }
                 // big five - 5 : move operator
                 // is used like unique_ptr
-                constexpr Vector& operator=(const Vector&& other)
+                constexpr Vector& operator=(const Vector&& other) noexcept
                 {
                     // 1.check self assignment
                     if (this != &other)
