@@ -2,6 +2,8 @@
 #include <vector>
 
 // #include <lua.hpp>
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 #include "vector.h"
 
@@ -38,6 +40,12 @@ int main(int argc, char* argv[])
 
     // auto L = luaL_newstate();
     // lua_close(L);
+
+    FT_Library library;
+    FT_Face face;
+
+    FT_Error error = FT_Init_FreeType(&library);
+    error = FT_Done_FreeType(library);
 
     return 0;
 }

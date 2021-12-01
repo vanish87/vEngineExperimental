@@ -3,7 +3,7 @@ IF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 ENDIF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
 #add_subdirectory(assimp)
-#add_subdirectory(freetype2)
+add_subdirectory(freetype2)
 add_subdirectory(lua)
 #add_subdirectory(tinyxml2)
 
