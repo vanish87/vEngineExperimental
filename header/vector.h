@@ -43,14 +43,14 @@ namespace vEngine
 
                 // explicit one parameter constructor to avoid implicit
                 // conversion
-                explicit constexpr Vector(const T& other) noexcept { }
+                explicit constexpr Vector(const T& other) noexcept {}
 
                 // big five - 3: copy constructor
                 // called by
                 //  1. ClassA a = b;
                 //  2. Func(ClassA a) -> pass by value
                 //  3. return temp; -> return by value
-                constexpr Vector(const Vector& other) noexcept{}
+                constexpr Vector(const Vector& other) noexcept {}
 
                 // big five - 2: assignment operator
                 // with const formal paramter
@@ -68,7 +68,7 @@ namespace vEngine
                 }
                 // big five - 1: virtual destructor -> assure destructor of
                 // subclass called
-                virtual ~Vector() noexcept{}
+                virtual ~Vector() noexcept {}
 
                 // big five - 4: move constructor
                 // const is not need: constexpr Vector(const Vector &&other)
@@ -79,7 +79,8 @@ namespace vEngine
                 // receiver
                 // - Puts the r-value object into an 'empty' state.
                 // - subclass must explicitly std::move the base class
-                constexpr Vector(Vector&& other) noexcept : data_{std::move(other.data_)}
+                constexpr Vector(Vector&& other) noexcept
+                    : data_{std::move(other.data_)}
                 {
                     std::cout << "move ctor called" << std::endl;
                 }
@@ -105,21 +106,21 @@ namespace vEngine
                 constexpr Vector(Vector<U, M> const& rhs) noexcept
                 {}
 
-                constexpr Vector(const T& x,const T& y) noexcept
-                    : data_{x, y}
+                constexpr Vector(const T& x, const T& y) noexcept : data_{x, y}
                 {}
 
             public:
-                static const Vector<T,N> & Zero()
+                static const Vector<T, N>& Zero()
                 {
-                    static const Vector<T,N> zero(static_cast<T>(0));
+                    static const Vector<T, N> zero(static_cast<T>(0));
                     return zero;
                 }
-                static const Vector<T,N> & One()
+                static const Vector<T, N>& One()
                 {
-                    static const Vector<T,N> one{1};
+                    static const Vector<T, N> one{1};
                     return one;
                 }
+
             public:
                 iterator begin() noexcept
                 {
@@ -130,7 +131,6 @@ namespace vEngine
                     return this->data_.begin();
                 }
 
-
                 iterator end() noexcept
                 {
                     return this->data_.end();
@@ -139,7 +139,6 @@ namespace vEngine
                 {
                     return this->data_.end();
                 }
-
 
             public:
                 pointer data() noexcept
@@ -160,29 +159,29 @@ namespace vEngine
                     return this->data_[index];
                 }
 
-                //TODO: use vector swizzle
+                // TODO: use vector swizzle
                 reference x() noexcept
                 {
                     return this->data_[0];
                 }
 
             public:
-                template<typename U>
+                template <typename U>
                 const Vector& operator+=(const Vector<U, N>& other) noexcept
                 {
                     return *this;
                 }
-                template<typename U>
+                template <typename U>
                 const Vector& operator-=(const Vector<U, N>& other) noexcept
                 {
                     return *this;
                 }
-                template<typename U>
+                template <typename U>
                 const Vector& operator*=(const Vector<U, N>& other) noexcept
                 {
                     return *this;
                 }
-                template<typename U>
+                template <typename U>
                 const Vector& operator/=(const Vector<U, N>& other) noexcept
                 {
                     return *this;
@@ -192,12 +191,10 @@ namespace vEngine
                 {
                     return true;
                 }
-
         };
         template <typename T, int N>
         inline void swap(Vector<T, N>& lhs, Vector<T, N>& other) noexcept
-        {
-        }
+        {}
 
     }  // namespace Core
 }  // namespace vEngine
