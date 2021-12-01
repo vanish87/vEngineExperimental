@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-// #include <lua.hpp>
+#include <lua.hpp>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -38,8 +38,10 @@ int main(int argc, char* argv[])
 
     a++;
 
-    // auto L = luaL_newstate();
-    // lua_close(L);
+    printf("Test");
+
+    auto L = luaL_newstate();
+    lua_close(L);
 
     FT_Library library;
     FT_Face face;

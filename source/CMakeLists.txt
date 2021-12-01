@@ -7,10 +7,12 @@ include_directories(${FREETYPE_INCLUDE_DIR})
 # add all files in source folder to SRC
 # aux_source_directory(source SRC)
 
-# complie all files in SRC as vEngine exe
-add_executable(vEngine main.cpp)
 
 message(STATUS "LUA_LIBRARIES = ${LUA_LIBRARIES}")
+message(STATUS "FREETYPE_LIBRARIES = ${FREETYPE_LIBRARIES}")
+
+# complie all files in SRC as vEngine exe
+add_executable(vEngine main.cpp)
 
 target_link_libraries(vEngine 
 ${LUA_LIBRARIES}
