@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 
+// #include <lua.hpp>
+
 #include "vector.h"
 
 using namespace vEngine::Core;
@@ -31,6 +33,11 @@ int main(int argc, char* argv[])
     auto c = z + o;
     auto c1 = c - o;
     c1 += c;
+
+    a++;
+
+    // auto L = luaL_newstate();
+    // lua_close(L);
 
     return 0;
 }
