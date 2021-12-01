@@ -81,9 +81,7 @@ namespace vEngine
                 // - subclass must explicitly std::move the base class
                 constexpr Vector(Vector&& other) noexcept
                     : data_{std::move(other.data_)}
-                {
-                    std::cout << "move ctor called" << std::endl;
-                }
+                {}
                 // big five - 5 : move operator
                 // is used like unique_ptr
                 constexpr Vector& operator=(const Vector&& other) noexcept
@@ -154,7 +152,8 @@ namespace vEngine
                 {
                     return this->data_[index];
                 }
-                constexpr const_reference operator[](size_t index) const noexcept
+                constexpr const_reference operator[](
+                    size_t index) const noexcept
                 {
                     return this->data_[index];
                 }
@@ -186,10 +185,41 @@ namespace vEngine
                 {
                     return *this;
                 }
+                constexpr Vector const& operator+() const noexcept
+                {
+                    return *this;
+                }
+                Vector const operator-() const noexcept
+                {
+                    return *this;
+                }
 
                 bool operator==(const Vector& other) const noexcept
                 {
                     return true;
+                }
+
+            // Boost defined operator
+            public:
+                template <typename U>
+                constexpr Vector operator+(Vector<U, N>& other) noexcept
+                {
+                    return *this;
+                }
+                template <typename U>
+                constexpr Vector operator-(Vector<U, N>& other) noexcept
+                {
+                    return *this;
+                }
+                template <typename U>
+                constexpr Vector operator*(Vector<U, N>& other) noexcept
+                {
+                    return *this;
+                }
+                template <typename U>
+                constexpr Vector operator/(Vector<U, N>& other) noexcept
+                {
+                    return *this;
                 }
         };
         template <typename T, int N>

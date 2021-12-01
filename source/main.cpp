@@ -9,7 +9,7 @@ Vector<int, 2> NewVec() { return Vector<int, 2>(); }
 
 int main(int argc, char* argv[])
 {
-    // std::cout << "Hello World" ;
+    std::cout << "Hello World" << std::endl;
     // Vector<int,2> vec2;
     // Vector<int,2> vec21;
 
@@ -27,6 +27,10 @@ int main(int argc, char* argv[])
 
     auto z = Vector<int,2>::Zero();
     auto o = Vector<int,2>::One();
+
+    auto c = z + o;
+    auto c1 = c - o;
+    c1 += c;
 
     return 0;
 }
