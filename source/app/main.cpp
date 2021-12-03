@@ -43,7 +43,6 @@ int main(int argc, char* argv[])
 
     a++;
 
-    printf("Test");
 
     auto L = luaL_newstate();
     lua_close(L);
@@ -54,5 +53,6 @@ int main(int argc, char* argv[])
     FT_Error error = FT_Init_FreeType(&library);
     error = FT_Done_FreeType(library);
 
+    printf("Test\n");
     return 0;
 }
