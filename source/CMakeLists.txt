@@ -1,6 +1,8 @@
 
-set(EXTERNAL_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/external/build")
+set(EXTERNAL_BUILD_DIR "${CMAKE_BINARY_DIR}/external/build")
 #set(EXTERNAL_PRE_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Source/ExternalLibs/ManualBuild")
+
+message(STATUS "EXTERNAL_BUILD_DIR= ${EXTERNAL_BUILD_DIR}")
 
 find_package(lua)
 find_package(freetype)

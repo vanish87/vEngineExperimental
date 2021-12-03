@@ -13,7 +13,12 @@ Vector<int, 2> NewVec() { return Vector<int, 2>(); }
 
 int main(int argc, char* argv[])
 {
-    std::cout << "Hello World" << std::endl;
+    //TODO not working
+    #ifdef UNIX
+    std::cout << "Hello World from Linux" << std::endl;
+    #else
+    std::cout << "Hello World from Windows" << std::endl;
+    #endif
     // Vector<int,2> vec2;
     // Vector<int,2> vec21;
 
