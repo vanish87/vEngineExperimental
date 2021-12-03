@@ -5,7 +5,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include "vector.h"
+#include <vengine/core/vector.hpp>
 
 using namespace vEngine::Core;
 

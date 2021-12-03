@@ -1,3 +1,7 @@
+
+set(EXTERNAL_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/external/build")
+#set(EXTERNAL_PRE_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Source/ExternalLibs/ManualBuild")
+
 find_package(lua)
 find_package(freetype)
 
@@ -7,13 +11,5 @@ include_directories(${FREETYPE_INCLUDE_DIR})
 # add all files in source folder to SRC
 # aux_source_directory(source SRC)
 
-
-message(STATUS "LUA_LIBRARIES = ${LUA_LIBRARIES}")
-message(STATUS "FREETYPE_LIBRARIES = ${FREETYPE_LIBRARIES}")
-
-# complie all files in SRC as vEngine exe
-add_executable(vEngine main.cpp)
-
-target_link_libraries(vEngine 
-${LUA_LIBRARIES}
-${FREETYPE_LIBRARIES})
+add_subdirectory(engine)
+add_subdirectory(app)
