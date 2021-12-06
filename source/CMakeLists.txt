@@ -15,3 +15,4 @@ include_directories(${FREETYPE_INCLUDE_DIR})
 
 add_subdirectory(engine)
 add_subdirectory(app)
+add_subdirectory(test)
