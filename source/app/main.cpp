@@ -6,6 +6,7 @@
 #include FT_FREETYPE_H
 
 #include <vengine/core/vector.hpp>
+#include <version.hpp>
 
 using namespace vEngine::Core;
 
@@ -19,6 +20,8 @@ int main(int argc, char* argv[])
     #else
     std::cout << "Hello World from Windows" << std::endl;
     #endif
+
+    std::cout << "Version" + std::string(Version)<<std::endl;
     // Vector<int,2> vec2;
     // Vector<int,2> vec21;
 

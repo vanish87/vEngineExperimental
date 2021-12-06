@@ -13,6 +13,7 @@ include_directories(${FREETYPE_INCLUDE_DIR})
 # add all files in source folder to SRC
 # aux_source_directory(source SRC)
 
+add_subdirectory(configure)
 add_subdirectory(engine)
 add_subdirectory(app)
 add_subdirectory(test)
