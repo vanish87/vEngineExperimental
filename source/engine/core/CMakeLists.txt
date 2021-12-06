@@ -7,7 +7,10 @@ project (core)
 # add_library(${PROJECT_NAME} src/vector.cpp)
 # add_library(engine::core ALIAS ${PROJECT_NAME})
 
-add_library(${PROJECT_NAME} SHARED src/dll.cpp)
+add_library(${PROJECT_NAME} SHARED 
+    src/dll.cpp
+    src/vector.cpp
+    )
 add_library(engine::core ALIAS ${PROJECT_NAME})
 
 GENERATE_EXPORT_HEADER( ${PROJECT_NAME}
