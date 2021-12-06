@@ -5,6 +5,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include <version.hpp>
 #include <engine.hpp>
 
 using namespace vEngine::Core;
@@ -19,6 +20,8 @@ int main(int argc, char* argv[])
     #else
     std::cout << "Hello World from Windows" << std::endl;
     #endif
+
+    std::cout << "Version" + std::string(Version)<<std::endl;
     // Vector<int,2> vec2;
     // Vector<int,2> vec21;
 

@@ -1,0 +1,3 @@
+#define ${META_PROJECT_ID}_PROJECT_NAME        "@META_PROJECT_NAME@"
+
+const char* Version = "@META_VERSION@";
