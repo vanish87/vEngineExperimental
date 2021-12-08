@@ -18,6 +18,6 @@ target_include_directories( ${PROJECT_NAME}
 
 # add_dependencies(${PROJECT_NAME} engine::rendering)
 
-# target_link_libraries( ${PROJECT_NAME}
-# ${LUA_LIBRARIES}
-# ${FREETYPE_LIBRARIES})
+target_link_libraries( ${PROJECT_NAME}
+    engine::rendering
+)
