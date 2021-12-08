@@ -7,17 +7,22 @@ project (core)
 # add_library(${PROJECT_NAME} src/vector.cpp)
 # add_library(engine::core ALIAS ${PROJECT_NAME})
 
-add_library(${PROJECT_NAME} SHARED 
+add_library(${PROJECT_NAME} 
     src/dll.cpp
     src/vector.cpp
     )
 add_library(engine::core ALIAS ${PROJECT_NAME})
 
+set(HEADER_NAME ${PROJECT_NAME})
+string(TOUPPER ${HEADER_NAME} HEADER_NAME)
+
+message(STATUS "CMAKE_BINARY_DIR= ${CMAKE_BINARY_DIR}")
+
 GENERATE_EXPORT_HEADER( ${PROJECT_NAME}
-             BASE_NAME ${PROJECT_NAME}
-             EXPORT_MACRO_NAME ${PROJECT_NAME}_EXPORT
-             EXPORT_FILE_NAME ${PROJECT_NAME}_Export.h
-             STATIC_DEFINE ${PROJECT_NAME}_BUILT_AS_STATIC
+             BASE_NAME ${HEADER_NAME}
+             EXPORT_MACRO_NAME ${HEADER_NAME}_API
+             EXPORT_FILE_NAME ${HEADER_NAME}_API.h
+             STATIC_DEFINE ${HEADER_NAME}_BUILT_AS_STATIC
 )
 
 target_include_directories( ${PROJECT_NAME}
