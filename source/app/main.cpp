@@ -1,27 +1,33 @@
-#include <iostream>
-#include <vector>
-
-#include <lua.hpp>
 #include <ft2build.h>
+#include <windows.h>
+
+#include <iostream>
+#include <lua.hpp>
+#include <vector>
 #include FT_FREETYPE_H
 
-#include <version.hpp>
 #include <engine.hpp>
+#include <version.hpp>
 
 using namespace vEngine::Core;
 
-Vector<int, 2> NewVec() { return Vector<int, 2>(); }
+Vector<int, 2> NewVec()
+{
+    return Vector<int, 2>();
+}
+
+typedef int(__stdcall* f_funci)();
 
 int main(int argc, char* argv[])
 {
-    //TODO not working
-    #ifdef UNIX
+// TODO not working
+#ifdef UNIX
     std::cout << "Hello World from Linux" << std::endl;
-    #else
+#else
     std::cout << "Hello World from Windows" << std::endl;
-    #endif
+#endif
 
-    std::cout << "Version" + std::string(Version)<<std::endl;
+    std::cout << "Version" + std::string(Version) << std::endl;
     // Vector<int,2> vec2;
     // Vector<int,2> vec21;
 
@@ -41,18 +47,35 @@ int main(int argc, char* argv[])
     moveList.push_back(Vector<int, 2>());
     moveList.push_back(Vector<int, 2>());
 
+    HINSTANCE hGetProcIDDLL = LoadLibrary("d3d11_render_engine.dll");
+
+    if (!hGetProcIDDLL)
+    {
+        std::cout << "could not load the dynamic library" << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    // resolve function address here
+    f_funci funci = (f_funci)GetProcAddress(hGetProcIDDLL, "Create");
+    if (!funci)
+    {
+        std::cout << "could not locate the function" << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    std::cout << "funci() returned " << funci() << std::endl;
+
     int a = 1;
     int* b = &a;
 
-    auto z = Vector<int,2>::Zero();
-    auto o = Vector<int,2>::One();
+    auto z = Vector<int, 2>::Zero();
+    auto o = Vector<int, 2>::One();
 
     auto c = z + o;
     auto c1 = c - o;
     c1 += c;
 
     a++;
-
 
     auto L = luaL_newstate();
     lua_close(L);
