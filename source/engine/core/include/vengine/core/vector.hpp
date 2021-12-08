@@ -6,11 +6,15 @@
 
 #include <array>
 #include <iostream>
+#include <CORE_API.h>
 
 namespace vEngine
 {
     namespace Core
     {
+        //basic data type will be static linked to main app
+        //so no CORE_API here
+        //plugin etc. will generate dll using CORE_API.h
         template <typename T = float, int N = 4>
         class Vector
         {

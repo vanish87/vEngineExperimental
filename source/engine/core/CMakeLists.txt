@@ -9,7 +9,6 @@ project (core)
 
 add_library(${PROJECT_NAME} 
     src/dll.cpp
-    src/vector.cpp
     )
 add_library(engine::core ALIAS ${PROJECT_NAME})
 
