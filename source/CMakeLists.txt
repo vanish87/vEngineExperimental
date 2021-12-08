@@ -15,6 +15,7 @@ include_directories(${FREETYPE_INCLUDE_DIR})
 
 add_subdirectory(configure)
 add_subdirectory(engine)
+add_subdirectory(plugins)
 add_subdirectory(app)
 add_subdirectory(test)
 add_subdirectory(document)
