@@ -29,6 +29,13 @@ int main(int argc, char* argv[])
 
     // Vector<int,2> vec = 1;
 
+    DLLClass dllClass;
+    DLLClassFunc dllClassFunc;
+
+    dllClass.DLLFunc(2);
+    dllClassFunc.DLLFunc(3);
+    dllClassFunc.DLLFunc1(3);
+
     std::vector<Vector<int, 2>> moveList{};
 
     moveList.push_back(Vector<int, 2>());
