@@ -26,8 +26,8 @@ jobs:
       - uses: actions/checkout@v2
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run:  sudo apt-get install cmake
+      #- name: Run a one-line script
+      #  run:  sudo apt-get install cmake
         
       # Runs a single command using the runners shell
       - name: Run a one-line script
