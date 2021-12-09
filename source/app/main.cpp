@@ -16,7 +16,7 @@ Vector<int, 2> NewVec()
     return Vector<int, 2>();
 }
 
-typedef int(__stdcall* f_funci)();
+// typedef int(__stdcall* f_funci)();
 
 int main(int argc, char* argv[])
 {
