@@ -40,15 +40,17 @@ jobs:
       #  run: mkdir build
       
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: cd build
+      #- name: Run a one-line script
+      #  run: cd build
         
       # Runs a single command using the runners shell
       - name: Run a one-line script
+        working-directory: ./build
         run: cmake ..
               
       # Runs a single command using the runners shell
-      - name: Run a one-line script
+      - name: Run a one-line script      
+        working-directory: ./build
         run: cmake --build . --target ALL_BUILD --config Release
         
       # Runs a single command using the runners shell
