@@ -38,7 +38,7 @@ jobs:
         
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: python BuildExternalLibs.py
+        run: python BuildExternalLibsLinux.py
 
       # Runs a single command using the runners shell
       #- name: Run a one-line script
@@ -50,12 +50,12 @@ jobs:
         
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        working-directory: ./build
+        working-directory: ./build_linux
         run: cmake ..
               
       # Runs a single command using the runners shell
       - name: Run a one-line script      
-        working-directory: ./build
+        working-directory: ./build_linux
         run: cmake --build . --target ALL_BUILD --config Release
         
       # Runs a single command using the runners shell
