@@ -27,7 +27,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: apt-get install cmake
+        run:  sudo apt-get install cmake
         
       # Runs a single command using the runners shell
       - name: Run a one-line script
