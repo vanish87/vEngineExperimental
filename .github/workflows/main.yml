@@ -56,7 +56,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script      
         working-directory: ./build_linux
-        run: cmake --build . --target ALL_BUILD --config Release
+        run: make
         
       # Runs a single command using the runners shell
       #- name: Run a one-line script
