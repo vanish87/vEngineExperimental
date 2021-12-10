@@ -44,7 +44,7 @@ jobs:
     - name: Confiugre - Windows
       # Build your program with the given configuration
       if: matrix.platform == 'windows-latest'
-      run: cmake . -B${{github.workspace}}/build_windows
+      run: cmake . -B ${{github.workspace}}/build_windows
       
     - name: Build - Windows
       if: matrix.platform == 'windows-latest'
@@ -58,7 +58,7 @@ jobs:
     - name: Confiugre - Ubuntu/MacOS
       # Build your program with the given configuration
       if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
-      run: cmake . -B${{github.workspace}}/build_linux
+      run: cmake . -B ${{github.workspace}}/build_linux
 
     - name: Build - Ubuntu/MacOS
       # Build your program with the given configuration
@@ -70,7 +70,7 @@ jobs:
       # test execution on windows-latest
       id: windows
       if: matrix.platform == 'windows-latest'
-      run: ./build_windows/bin/Release/test_example.exe
+      run: ./build_windows/bin/${{github.workspace}}/test_example.exe
 
     - name: Test on Ubuntu
      # test execution on ubuntu-latest
