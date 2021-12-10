@@ -6,10 +6,14 @@
 #include <vector>
 #include FT_FREETYPE_H
 
+#include <d3d11.h>
+#include <windows.h>
+
 #include <engine.hpp>
+#include <string>
 #include <version.hpp>
 
-#include <d3d11.h>
+#include "interface.h"
 
 using namespace vEngine::Core;
 
@@ -18,79 +22,80 @@ Vector<int, 2> NewVec()
     return Vector<int, 2>();
 }
 
+struct WinndowRect
+{
+        uint16_t top;
+        uint16_t left;
+        uint16_t width;
+        uint16_t height;
+};
 // typedef int(__stdcall* f_funci)();
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 int main(int argc, char* argv[])
 {
-// TODO not working
-#ifdef UNIX
-    std::cout << "Hello World from Linux" << std::endl;
-#else
-    std::cout << "Hello World from Windows" << std::endl;
-#endif
+    HINSTANCE hInstance = ::GetModuleHandle(nullptr);
 
-    std::cout << "Version" + std::string(Version) << std::endl;
-    // Vector<int,2> vec2;
-    // Vector<int,2> vec21;
+    WinndowRect wind;
 
-    // vec2 = vec21;
+    std::string win_name_w = "test";
 
-    // Vector<int,2> vec = 1;
+    WNDCLASS wcex;
+    wcex.style = CS_HREDRAW | CS_VREDRAW |
+                 CS_OWNDC;  // CS_OWNDC to create own device context
+    wcex.lpfnWndProc = WindowProc;
+    wcex.cbClsExtra = 0;
+    wcex.cbWndExtra = 0;
+    wcex.hInstance = hInstance;
+    wcex.hIcon = nullptr;
+    wcex.hCursor = ::LoadCursor(nullptr, IDC_ARROW);
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    wcex.lpszMenuName = nullptr;
+    wcex.lpszClassName = win_name_w.c_str();
 
-    DLLClass dllClass;
-    DLLClassFunc dllClassFunc;
+    RegisterClass(&wcex);
 
-    dllClass.DLLFunc(2);
-    dllClassFunc.DLLFunc(3);
-    dllClassFunc.DLLFunc1(3);
+    RECT rc = {0, 0, 640, 480};
+    // get real window size; should slightly bigger than rendering resolution
+    // we should render a frame with render_setting, so window is enlarged.
+    ::AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
-    std::vector<Vector<int, 2>> moveList{};
+    wind.top = static_cast<uint16_t>(0);
+    wind.left = static_cast<uint16_t>(0);
+    wind.width = static_cast<uint16_t>(rc.right - rc.left);
+    wind.height = static_cast<uint16_t>(rc.bottom - rc.top);
+    auto wnd_ =
+        CreateWindow(win_name_w.c_str(), win_name_w.c_str(),
+                     WS_OVERLAPPEDWINDOW, wind.left, wind.top, wind.width,
+                     wind.height, nullptr, nullptr, hInstance, nullptr);
 
-    moveList.push_back(Vector<int, 2>());
-    moveList.push_back(Vector<int, 2>());
+    InitD3D(wnd_, 640, 480);
+    while (true)
+    {
+        // RenderFrame();
+    }
 
-    // HINSTANCE hGetProcIDDLL = LoadLibrary("d3d11_rendering_plugind.dll");
-
-    // if (!hGetProcIDDLL)
-    // {
-    //     std::cout << "could not load the dynamic library" << std::endl;
-    //     return EXIT_FAILURE;
-    // }
-
-    // // resolve function address here
-    // f_funci funci = (f_funci)GetProcAddress(hGetProcIDDLL, "Create");
-    // if (!funci)
-    // {
-    //     std::cout << "could not locate the function" << std::endl;
-    //     return EXIT_FAILURE;
-    // }
-
-    // std::cout << "funci() returned " << funci() << std::endl;
-
-    std::cout << "merge test" << std::endl;
-    // std::cout dwa<< "merge test" << std::endl;
-
-    int a = 1;
-    int* b = &a;
-
-    auto z = Vector<int, 2>::Zero();
-    auto o = Vector<int, 2>::One();
-
-    auto c = z + o;
-    auto c1 = c - o;
-    c1 += c;
-
-    a++;
-
-    auto L = luaL_newstate();
-    lua_close(L);
-
-    FT_Library library;
-    FT_Face face;
-
-    FT_Error error = FT_Init_FreeType(&library);
-    error = FT_Done_FreeType(library);
-
-    printf("Test\n");
     return 0;
+}
+LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    switch (uMsg)
+    {
+        case WM_DESTROY:
+            PostQuitMessage(0);
+            return 0;
+
+        case WM_PAINT: {
+            // PAINTSTRUCT ps;
+            // HDC hdc = BeginPaint(hwnd, &ps);
+
+            RenderFrame();
+
+            // FillRect(hdc, &ps.rcPaint, (HBRUSH) (COLOR_WINDOW+1));
+
+            // EndPaint(hwnd, &ps);
+        }
+            return 0;
+    }
+    return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }

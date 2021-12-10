@@ -1,7 +1,7 @@
-project(example_windows)
+project(example_d3d)
 
 # Create the executable
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} main.cpp interface.cpp)
 
 # Link the static library from subproject1 using its alias sub::lib1
 # Link the header only library from subproject2 using its alias sub::lib2
@@ -9,6 +9,8 @@ add_executable(${PROJECT_NAME} main.cpp)
 target_link_libraries(${PROJECT_NAME}
     engine::core
     engine::rendering
+    d3d11.lib
+    dxgi.lib
 )
 
 
