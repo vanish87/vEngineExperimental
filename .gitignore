@@ -1,3 +1,4 @@
 .vscode/
 [Bb]uild*/
 !Source/ExternalLibs/ManualBuild/Lib/*
+.DS_Store
