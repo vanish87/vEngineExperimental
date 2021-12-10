@@ -23,10 +23,15 @@ jobs:
       with:
         fetch-depth: 0
         submodules: true
+        
+        
+    - name: Update - Ubuntu
+      if: matrix.platform == 'ubuntu-latest'
+      run: sudo apt update -y && sudo apt full-upgrade -y
     
     - name: Install Doxygen - Ubuntu
       if: matrix.platform == 'ubuntu-latest'
-      run: sudo apt-get install -y doxygen libglfw3-dev
+      run: sudo apt install -y doxygen libglfw3-dev
       
     - name: Install Doxygen - MacOS
       if: matrix.platform == 'macos-latest'
