@@ -70,7 +70,7 @@ jobs:
       # test execution on windows-latest
       id: windows
       if: matrix.platform == 'windows-latest'
-      run: ./build_windows/bin/test_example.exe
+      run: ./build_windows/bin/Release/test_example.exe
 
     - name: Test on Ubuntu
      # test execution on ubuntu-latest
