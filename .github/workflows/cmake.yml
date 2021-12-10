@@ -13,8 +13,8 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [ubuntu-latest, windows-latest]
-        #platform: [ubuntu-latest, macos-latest, windows-latest]
+        # platform: [ubuntu-latest, windows-latest]
+        platform: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{matrix.platform}}
 
     steps:        
@@ -78,9 +78,8 @@ jobs:
       if: matrix.platform == 'ubuntu-latest'
       run: ./build_linux/bin/test_example
       
-    # disabled until dylib copied correctly
-    #- name: Test on MacOS
-     # test execution on macos-latest
-     # id: macos
-     # if: matrix.platform == 'macos-latest'
-     # run: ./build_linux/bin/test_example
+    - name: Test on MacOS
+    #  test execution on macos-latest
+     id: macos
+     if: matrix.platform == 'macos-latest'
+     run: ./build_linux/bin/test_example
