@@ -10,9 +10,9 @@ set(CMAKE_DEBUG_POSTFIX d)
 add_subdirectory(freetype2)
 add_subdirectory(lua)
 
-if(WIN32)
+# if(WIN32)
   add_subdirectory(glfw)
-endif(WIN32)
+# endif(WIN32)
 
 #add_subdirectory(tinyxml2)
 

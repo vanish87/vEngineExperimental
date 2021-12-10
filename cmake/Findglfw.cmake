@@ -50,7 +50,7 @@ find_library(GLFW_LIBRARY_RELEASE NAMES glfw${GLFW_DLLPF}
     $ENV{GLFW_DIR}
     /usr
     /usr/local
-    /usr/lib/x86_64-linux-gnu
+    # /usr/lib/x86_64-linux-gnu
     /sw
     /opt/local
 
