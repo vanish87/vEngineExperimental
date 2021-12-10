@@ -13,8 +13,8 @@ unset(GLFW_INCLUDE_DIR)
 find_path(GLFW_INCLUDE_DIR GLFW/glfw3.h
 
     PATHS
-    # $ENV{GLFW_DIR}
-    # $ENV{PROGRAMFILES}/GLFW3
+    $ENV{GLFW_DIR}
+    $ENV{PROGRAMFILES}/GLFW3
     /usr
     /usr/local
     /sw
@@ -38,10 +38,10 @@ else()
 endif()
 
 if(WIN32)	
-	set(GLFW_DLLPF "dll")
+	set(GLFW_DLLPF "3dll")
 endif()
 
-find_library(GLFW_LIBRARY_RELEASE NAMES glfw3${GLFW_DLLPF}
+find_library(GLFW_LIBRARY_RELEASE NAMES glfw${GLFW_DLLPF}
     
     HINTS
     ${GLFW_INCLUDE_DIR}/..
@@ -50,6 +50,7 @@ find_library(GLFW_LIBRARY_RELEASE NAMES glfw3${GLFW_DLLPF}
     $ENV{GLFW_DIR}
     /usr
     /usr/local
+    /usr/lib/x86_64-linux-gnu
     /sw
     /opt/local
 
@@ -61,10 +62,13 @@ find_library(GLFW_LIBRARY_RELEASE NAMES glfw3${GLFW_DLLPF}
 
     DOC "The GLFW library (release)")
 
-find_library(GLFW_LIBRARY_DEBUG NAMES glfw3d${GLFW_DLLPF}
+
+# message("GLFW_LIBRARY_RELEASE ${GLFW_LIBRARY_RELEASE}")
+
+find_library(GLFW_LIBRARY_DEBUG NAMES glfw3ddll
     
     HINTS
-    ${GLFW_INCLUDE_DIR}/../..
+    ${GLFW_INCLUDE_DIR}/..
 
     PATHS
     $ENV{GLFW_DIR}
