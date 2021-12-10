@@ -48,7 +48,7 @@ jobs:
     - name: Build External - Ubuntu/MacOS
       # Build your program with the given configuration
       if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
-      run: python BuildExternalLibsLinux.py
+      run: python3 BuildExternalLibsLinux.py
       
     - name: Confiugre - Ubuntu/MacOS
       # Build your program with the given configuration
