@@ -31,11 +31,11 @@ jobs:
     
     - name: Install Doxygen - Ubuntu
       if: matrix.platform == 'ubuntu-latest'
-      run: sudo apt install -y doxygen libglfw3-dev
+      run: sudo apt install -y doxygen xorg-dev
       
     - name: Install Doxygen - MacOS
       if: matrix.platform == 'macos-latest'
-      run: brew install doxygen glfw
+      run: brew install doxygen
       
     - name: Build External - Windows
       if: matrix.platform == 'windows-latest'
