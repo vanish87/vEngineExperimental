@@ -11,6 +11,7 @@ add_executable(${PROJECT_NAME} main.cpp ${SOURCES})
 
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include
+    PUBLIC ${GLFW_INCLUDE_DIR}
 )
 
 # Link the static library from subproject1 using its alias sub::lib1
@@ -28,3 +29,11 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     "${EXTERNAL_BUILD_DIR}/bin"
     $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
+
+if(APPLE)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${EXTERNAL_BUILD_DIR}/lib"
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/../lib
+    )
+endif(APPLE)
