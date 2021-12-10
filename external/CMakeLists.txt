@@ -9,6 +9,11 @@ set(CMAKE_DEBUG_POSTFIX d)
 #add_subdirectory(assimp)
 add_subdirectory(freetype2)
 add_subdirectory(lua)
+
+if(WIN32)
+  add_subdirectory(glfw)
+endif(WIN32)
+
 #add_subdirectory(tinyxml2)
 
 #build directxtex and FX11 mannully
