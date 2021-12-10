@@ -2,7 +2,7 @@ name: CMake build and unit test
 
 on: 
   push:
-    branches: [ main ]
+    #branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -13,7 +13,7 @@ jobs:
   build:
     strategy:
       matrix:
-        platform: [ubuntu-latest]
+        platform: [ubuntu-latest, windows-latest]
         #platform: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{matrix.platform}}
 
@@ -24,28 +24,38 @@ jobs:
         fetch-depth: 0
         submodules: true
     
-    - name: Checkout submodules
+    - name: Install Doxygen - Ubuntu
+      if: matrix.platform == 'ubuntu-latest'
       run: sudo apt-get install -y doxygen
       
-    - name: Run a one-line script
+    - name: Install Doxygen - MacOS
+      if: matrix.platform == 'macos-latest'
+      run: brew install doxygen
+      
+    - name: Build External - Windows
       if: matrix.platform == 'windows-latest'
       run: python BuildExternalLibs.py
+      
+    - name: Confiugre - Windows
+      # Build your program with the given configuration
+      if: matrix.platform == 'windows-latest'
+      run: cmake . -B${{github.workspace}}/build_windows
+      
+    - name: Build - Windows
+      if: matrix.platform == 'windows-latest'
+      run: cmake --build ${{github.workspace}}/build_windows --config ${{env.BUILD_TYPE}}
 
-    - name: Build
+    - name: Build External - Ubuntu/MacOS
       # Build your program with the given configuration
       if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
       run: python BuildExternalLibsLinux.py
       
-    - name: Build
+    - name: Confiugre - Ubuntu/MacOS
       # Build your program with the given configuration
       if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
       run: cmake . -B${{github.workspace}}/build_linux
-      
-    - name: Run a one-line script
-      if: matrix.platform == 'windows-latest'
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
-    - name: Build
+    - name: Build - Ubuntu/MacOS
       # Build your program with the given configuration
       if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
       run: cmake --build ${{github.workspace}}/build_linux --config ${{env.BUILD_TYPE}}
