@@ -1,5 +1,5 @@
 #include <ft2build.h>
-#include <windows.h>
+// #include <windows.h>
 
 #include <iostream>
 #include <lua.hpp>
@@ -16,7 +16,7 @@ Vector<int, 2> NewVec()
     return Vector<int, 2>();
 }
 
-typedef int(__stdcall* f_funci)();
+// typedef int(__stdcall* f_funci)();
 
 int main(int argc, char* argv[])
 {
@@ -47,23 +47,23 @@ int main(int argc, char* argv[])
     moveList.push_back(Vector<int, 2>());
     moveList.push_back(Vector<int, 2>());
 
-    HINSTANCE hGetProcIDDLL = LoadLibrary("d3d11_rendering_plugind.dll");
+    // HINSTANCE hGetProcIDDLL = LoadLibrary("d3d11_render_engine.dll");
 
-    if (!hGetProcIDDLL)
-    {
-        std::cout << "could not load the dynamic library" << std::endl;
-        return EXIT_FAILURE;
-    }
+    // if (!hGetProcIDDLL)
+    // {
+    //     std::cout << "could not load the dynamic library" << std::endl;
+    //     return EXIT_FAILURE;
+    // }
 
-    // resolve function address here
-    f_funci funci = (f_funci)GetProcAddress(hGetProcIDDLL, "Create");
-    if (!funci)
-    {
-        std::cout << "could not locate the function" << std::endl;
-        return EXIT_FAILURE;
-    }
+    // // resolve function address here
+    // f_funci funci = (f_funci)GetProcAddress(hGetProcIDDLL, "Create");
+    // if (!funci)
+    // {
+    //     std::cout << "could not locate the function" << std::endl;
+    //     return EXIT_FAILURE;
+    // }
 
-    std::cout << "funci() returned " << funci() << std::endl;
+    // std::cout << "funci() returned " << funci() << std::endl;
 
     int a = 1;
     int* b = &a;

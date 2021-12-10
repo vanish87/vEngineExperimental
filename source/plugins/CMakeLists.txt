@@ -1,1 +1,3 @@
-add_subdirectory(d3d11)
+if(WIN32)
+	add_subdirectory(d3d11)
+endif(WIN32)
