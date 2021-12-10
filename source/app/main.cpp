@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
     // std::cout << "funci() returned " << funci() << std::endl;
 
     std::cout << "merge test" << std::endl;
-    std::cout dwa<< "merge test" << std::endl;
+    // std::cout dwa<< "merge test" << std::endl;
 
     int a = 1;
     int* b = &a;
