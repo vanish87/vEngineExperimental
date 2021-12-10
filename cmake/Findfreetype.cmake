@@ -27,6 +27,9 @@ find_path(FREETYPE_INCLUDE_DIR freetype/freetype.h
     
     DOC "The directory where FREETYPE/Importer.hpp etc. resides")
 
+
+# github actions can not find path correctly
+# so set dir explictly here
 if(EXTERNAL_BUILD_DIR)
     set(FREETYPE_INCLUDE_DIR ${EXTERNAL_BUILD_DIR}/include/freetype2)
 endif()
