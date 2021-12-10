@@ -9,5 +9,5 @@ class D3D11RenderEngine : public RenderEngine
 };
 extern "C" 
 {
-    __declspec(dllexport) int Create(void);
+    __declspec(dllexport) RenderEngine* Create(void);
 }
