@@ -36,6 +36,12 @@ jobs:
       if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
       run: python BuildExternalLibsLinux.py
       
+    - name: Build
+      # Build your program with the given configuration
+      working-directory: ./build_linux
+      if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
+      run: cmake ..
+      
     - name: Run a one-line script
       if: matrix.platform == 'windows-latest'
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
