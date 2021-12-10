@@ -80,6 +80,6 @@ jobs:
       
     - name: Test on MacOS
     #  test execution on macos-latest
-     id: macos
-     if: matrix.platform == 'macos-latest'
-     run: ./build_linux/bin/test_example
+      id: macos
+      if: matrix.platform == 'macos-latest'
+      run: ./build_linux/bin/test_example
