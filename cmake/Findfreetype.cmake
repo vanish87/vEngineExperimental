@@ -11,12 +11,12 @@ include(FindPackageHandleStandardArgs)
 find_path(FREETYPE_INCLUDE_DIR freetype/freetype.h
 
     PATHS
-    $ENV{FREETYPE_DIR}
-    $ENV{PROGRAMFILES}/freetype2
-    /usr
-    /usr/local
-    /sw
-    /opt/local	
+    # $ENV{FREETYPE_DIR}
+    # $ENV{PROGRAMFILES}/freetype2
+    # /usr
+    # /usr/local
+    # /sw
+    # /opt/local	
     ${EXTERNAL_BUILD_DIR}
     
     PATH_SUFFIXES
@@ -39,11 +39,11 @@ find_library(FREETYPE_LIBRARY_RELEASE NAMES freetype
     ${FREETYPE_INCLUDE_DIR}/../..
     
     PATHS
-    $ENV{FREETYPE_DIR}
-    /usr
-    /usr/local
-    /sw
-    /opt/local
+    # $ENV{FREETYPE_DIR}
+    # /usr
+    # /usr/local
+    # /sw
+    # /opt/local
 
     PATH_SUFFIXES
     /lib
@@ -59,11 +59,11 @@ find_library(FREETYPE_LIBRARY_DEBUG NAMES freetyped
     ${FREETYPE_INCLUDE_DIR}/../..
 
     PATHS
-    $ENV{FREETYPE_DIR}
-    /usr
-    /usr/local
-    /sw
-    /opt/local
+    # $ENV{FREETYPE_DIR}
+    # /usr
+    # /usr/local
+    # /sw
+    # /opt/local
 
     PATH_SUFFIXES
     /lib
@@ -92,7 +92,7 @@ if(WIN32)
         ${FREETYPE_INCLUDE_DIR}/..
         
         PATHS
-        $ENV{FREETYPE_DIR}
+        # $ENV{FREETYPE_DIR}
 
         PATH_SUFFIXES
         /bin
