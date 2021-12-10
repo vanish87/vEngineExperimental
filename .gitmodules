@@ -7,6 +7,6 @@
 [submodule "source/test/external/googletest"]
 	path = source/test/external/googletest
 	url = https://github.com/google/googletest.git
-[submodule "source/document/doxygen"]
-	path = source/document/doxygen
-	url = https://github.com/doxygen/doxygen.git
+[submodule "external/glfw"]
+	path = external/glfw
+	url = https://github.com/glfw/glfw.git

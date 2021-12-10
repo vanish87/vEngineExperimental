@@ -4,8 +4,8 @@ set(EXTERNAL_BUILD_DIR "${CMAKE_BINARY_DIR}/external/build")
 
 message(STATUS "EXTERNAL_BUILD_DIR= ${EXTERNAL_BUILD_DIR}")
 
-find_package(lua)
-find_package(freetype)
+find_package(lua REQUIRED)
+find_package(freetype REQUIRED)
 
 include_directories(${LUA_INCLUDE_DIR})
 include_directories(${FREETYPE_INCLUDE_DIR})

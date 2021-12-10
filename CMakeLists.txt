@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.13)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 include(GenerateExportHeader)
 # Include cmake modules
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # project setting
 project(vEngine)
@@ -13,7 +13,9 @@ project(vEngine)
 # c++ setting
 set(CMAKE_CXX_STANDARD 11)
 # lib setting
-option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+if(WIN32)
+	option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+endif(WIN32)
 
 # include setting
 # set configure include path
