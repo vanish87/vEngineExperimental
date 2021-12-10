@@ -20,7 +20,9 @@ find_path(FREETYPE_INCLUDE_DIR freetype/freetype.h
     ${EXTERNAL_BUILD_DIR}
     
     PATH_SUFFIXES
-    ${EXTERNAL_BUILD_DIR}/include/freetype2
+    ${EXTERNAL_BUILD_DIR}
+    /include
+    /include/freetype2
     
     DOC "The directory where FREETYPE/Importer.hpp etc. resides")
 
