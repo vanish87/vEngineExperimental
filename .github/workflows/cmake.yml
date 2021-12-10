@@ -17,9 +17,6 @@ jobs:
       uses: actions/checkout@v2
       with:
         submodules: true
-
-    - uses: actions/checkout@v2
-    - name: Configure CMake
     
     - name: Checkout submodules
       run: sudo apt-get install -y doxygen
