@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
     moveList.push_back(Vector<int, 2>());
     moveList.push_back(Vector<int, 2>());
 
-    // HINSTANCE hGetProcIDDLL = LoadLibrary("d3d11_render_engine.dll");
+    // HINSTANCE hGetProcIDDLL = LoadLibrary("d3d11_rendering_plugind.dll");
 
     // if (!hGetProcIDDLL)
     // {
