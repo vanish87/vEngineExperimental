@@ -70,9 +70,14 @@ int main(int argc, char* argv[])
                      wind.height, nullptr, nullptr, hInstance, nullptr);
 
     InitD3D(wnd_, 640, 480);
-    while (true)
+    MSG msg = {0};
+    while (WM_QUIT != msg.message)
     {
-        // RenderFrame();
+        if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+        {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
     }
 
     return 0;

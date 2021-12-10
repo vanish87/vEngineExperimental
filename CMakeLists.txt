@@ -13,9 +13,7 @@ project(vEngine)
 # c++ setting
 set(CMAKE_CXX_STANDARD 11)
 # lib setting
-if(WIN32)
-	option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
-endif(WIN32)
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
 # include setting
 # set configure include path
