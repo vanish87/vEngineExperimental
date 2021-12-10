@@ -26,7 +26,7 @@ find_path(FREETYPE_INCLUDE_DIR freetype/freetype.h
     DOC "The directory where FREETYPE/Importer.hpp etc. resides")
 
 
-message(${FREETYPE_INCLUDE_DIR})
+message(STATUS "FREETYPE_INCLUDE_DIR= ${FREETYPE_INCLUDE_DIR}")
 if(MSVC AND X64)
     set(FREETYPE_PF "64")
 else()
