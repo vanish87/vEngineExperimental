@@ -13,8 +13,7 @@ jobs:
     runs-on: ${{matrix.platform}}
 
     steps:    
-    - name: Checkout submodule
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
       with:
         submodules: true
     
