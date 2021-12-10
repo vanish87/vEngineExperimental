@@ -20,6 +20,7 @@ jobs:
     - name: Checkout submodules
       uses: actions/checkout@v2
       with:
+        fetch-depth: 0
         submodules: true
     
     - name: Checkout submodules
