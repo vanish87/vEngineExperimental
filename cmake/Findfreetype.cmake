@@ -8,11 +8,13 @@
 
 include(FindPackageHandleStandardArgs)
 
+unset(FREETYPE_INCLUDE_DIR)
+
 find_path(FREETYPE_INCLUDE_DIR freetype/freetype.h
 
     PATHS
-    $ENV{FREETYPE_DIR}
-    $ENV{PROGRAMFILES}/freetype2
+    # $ENV{FREETYPE_DIR}
+    # $ENV{PROGRAMFILES}/freetype2
     /usr
     /usr/local
     /sw
@@ -24,7 +26,6 @@ find_path(FREETYPE_INCLUDE_DIR freetype/freetype.h
     /include/freetype2
     
     DOC "The directory where FREETYPE/Importer.hpp etc. resides")
-
 
 message(${FREETYPE_INCLUDE_DIR})
 if(MSVC AND X64)
