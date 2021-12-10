@@ -61,20 +61,14 @@ jobs:
       run: cmake --build ${{github.workspace}}/build_linux --config ${{env.BUILD_TYPE}}
 
 
-    #- name: Test on Windows
+    - name: Test on Windows
       # test execution on windows-latest
-    #  id: windows
-    #  if: matrix.platform == 'windows-latest'
-    #  run: ./build/${{env.BUILD_TYPE}}/test.exe
+      id: windows
+      if: matrix.platform == 'windows-latest'
+      run: ./build_windows/bin/test_example.exe
 
-    - name: Test on ubuntu
+    - name: Test on Ubuntu/MacOS
      # test execution on ubuntu-latest
       id: ubuntu
-      if: matrix.platform == 'ubuntu-latest'
+      if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
       run: ./build_linux/bin/test_example
-
-    #- name: Test on macos
-    # test execution on macos-latest
-    #  id: macos
-    #  if: matrix.platform == 'macos-latest'
-    #  run: ./build/test
