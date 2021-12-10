@@ -27,6 +27,10 @@ find_path(FREETYPE_INCLUDE_DIR freetype/freetype.h
     
     DOC "The directory where FREETYPE/Importer.hpp etc. resides")
 
+if(EXTERNAL_BUILD_DIR)
+    set(FREETYPE_INCLUDE_DIR ${EXTERNAL_BUILD_DIR}/include/freetype2)
+endif()
+
 message(${FREETYPE_INCLUDE_DIR})
 if(MSVC AND X64)
     set(FREETYPE_PF "64")
