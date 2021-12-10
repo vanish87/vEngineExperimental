@@ -1,0 +1,62 @@
+name: CMake build and unit test
+
+on: pull_request
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{matrix.platform}}
+
+    steps:    
+    - name: Checkout submodule
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - uses: actions/checkout@v2
+    - name: Configure CMake
+    
+    - name: Checkout submodules
+      run: sudo apt-get install -y doxygen
+      
+    - name: Run a one-line script
+      if: matrix.platform == 'windows-latest'
+      run: python BuildExternalLibs.py
+
+    - name: Build
+      # Build your program with the given configuration
+      if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
+      run: python BuildExternalLibsLinux.py
+      
+    - name: Run a one-line script
+      if: matrix.platform == 'windows-latest'
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+    - name: Build
+      # Build your program with the given configuration
+      if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
+      run: cmake --build ${{github.workspace}}/build_linux --config ${{env.BUILD_TYPE}}
+
+
+    #- name: Test on Windows
+      # test execution on windows-latest
+    #  id: windows
+    #  if: matrix.platform == 'windows-latest'
+    #  run: ./build/${{env.BUILD_TYPE}}/test.exe
+
+    #- name: Test on ubuntu
+    # test execution on ubuntu-latest
+    #  id: ubuntu
+    #  if: matrix.platform == 'ubuntu-latest'
+     # run: ./build/test
+
+    #- name: Test on macos
+    # test execution on macos-latest
+    #  id: macos
+    #  if: matrix.platform == 'macos-latest'
+    #  run: ./build/test
