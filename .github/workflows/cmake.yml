@@ -72,14 +72,8 @@ jobs:
       if: matrix.platform == 'windows-latest'
       run: ./build_windows/bin/${{env.BUILD_TYPE}}/test_example.exe
 
-    - name: Test on Ubuntu
+    - name: Test on Ubuntu/MacOS
      # test execution on ubuntu-latest
-      id: ubuntu
-      if: matrix.platform == 'ubuntu-latest'
-      run: ./build_linux/bin/test_example
-      
-    - name: Test on MacOS
-    #  test execution on macos-latest
-      id: macos
-      if: matrix.platform == 'macos-latest'
+      id: ubuntu-mac
+      if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
       run: ./build_linux/bin/test_example
