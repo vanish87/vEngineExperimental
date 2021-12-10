@@ -38,9 +38,8 @@ jobs:
       
     - name: Build
       # Build your program with the given configuration
-      working-directory: ./build_linux
       if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
-      run: cmake ..
+      run: cmake . -B${{github.workspace}}/build_linux
       
     - name: Run a one-line script
       if: matrix.platform == 'windows-latest'
@@ -58,11 +57,11 @@ jobs:
     #  if: matrix.platform == 'windows-latest'
     #  run: ./build/${{env.BUILD_TYPE}}/test.exe
 
-    #- name: Test on ubuntu
-    # test execution on ubuntu-latest
-    #  id: ubuntu
-    #  if: matrix.platform == 'ubuntu-latest'
-     # run: ./build/test
+    - name: Test on ubuntu
+     # test execution on ubuntu-latest
+      id: ubuntu
+      if: matrix.platform == 'ubuntu-latest'
+      run: ./build_linux/bin/test_example
 
     #- name: Test on macos
     # test execution on macos-latest
