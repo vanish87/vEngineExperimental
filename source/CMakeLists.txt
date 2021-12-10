@@ -4,11 +4,14 @@ set(EXTERNAL_BUILD_DIR "${CMAKE_BINARY_DIR}/external/build")
 
 message(STATUS "EXTERNAL_BUILD_DIR= ${EXTERNAL_BUILD_DIR}")
 
+set(ENV{FREETYPE_DIR} ${EXTERNAL_BUILD_DIR})
+
 find_package(lua)
 find_package(freetype)
 
 include_directories(${LUA_INCLUDE_DIR})
-include_directories(${FREETYPE_INCLUDE_DIR})
+include_directories(${FREETYPE_INCLUDE_DIR_ft2build})
+include_directories(${FREETYPE_INCLUDE_DIR_freetype2})
 
 # add all files in source folder to SRC
 # aux_source_directory(source SRC)
