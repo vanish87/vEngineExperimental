@@ -30,7 +30,7 @@ jobs:
       
     - name: Install Doxygen - MacOS
       if: matrix.platform == 'macos-latest'
-      run: sudo brew install doxygen
+      run: brew install doxygen
       
     - name: Build External - Windows
       if: matrix.platform == 'windows-latest'
