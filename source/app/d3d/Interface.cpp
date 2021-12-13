@@ -148,7 +148,7 @@ HRESULT InitTriangles()
 	HRESULT hr = S_OK;
 	// Compile the vertex shader
 	ID3DBlob* pVSBlob = nullptr;
-	hr = CompileShaderFromFile(L"..\\Fx\\Example.fx", "VS", "vs_4_0", &pVSBlob);
+	hr = CompileShaderFromFile(L".\\Fx\\Example.fx", "VS", "vs_4_0", &pVSBlob);
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr,
