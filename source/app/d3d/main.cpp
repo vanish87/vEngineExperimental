@@ -64,8 +64,7 @@ int main(int argc, char* argv[])
     wind.left = static_cast<uint16_t>(0);
     wind.width = static_cast<uint16_t>(rc.right - rc.left);
     wind.height = static_cast<uint16_t>(rc.bottom - rc.top);
-    auto wnd_ =
-        CreateWindow(win_name_w.c_str(), win_name_w.c_str(),
+    auto wnd_ = CreateWindow(win_name_w.c_str(), win_name_w.c_str(),
                      WS_OVERLAPPEDWINDOW, wind.left, wind.top, wind.width,
                      wind.height, nullptr, nullptr, hInstance, nullptr);
 
@@ -93,6 +92,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         case WM_PAINT: {
             // PAINTSTRUCT ps;
             // HDC hdc = BeginPaint(hwnd, &ps);
+
+            //just test issue flowworks
+            
 
             RenderFrame();
 
