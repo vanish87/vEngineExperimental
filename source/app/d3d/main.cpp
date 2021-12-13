@@ -93,6 +93,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             // PAINTSTRUCT ps;
             // HDC hdc = BeginPaint(hwnd, &ps);
 
+            //just test issue flowworks
+            
+
             RenderFrame();
 
             // FillRect(hdc, &ps.rcPaint, (HBRUSH) (COLOR_WINDOW+1));
