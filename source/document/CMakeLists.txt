@@ -1,9 +1,9 @@
 
-if(WIN32)
+find_package(Doxygen)
+
+if(WIN32 AND (NOT ${DOXYGEN_FOUND}))
     set(DOXYGEN_FOUND true)
     set(DOXYGEN_EXECUTABLE ${CMAKE_CURRENT_SOURCE_DIR}/doxygen/bin/doxygen)
-else()
-    find_package(Doxygen)
 endif()
 # add_subdirectory(doxygen)
 
