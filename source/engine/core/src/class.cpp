@@ -7,7 +7,7 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#include "class_header.h"
+#include <vengine/core/class_header.h>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
