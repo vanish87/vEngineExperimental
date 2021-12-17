@@ -31,4 +31,10 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # debug setting
 set(CMAKE_DEBUG_POSTFIX d)
 
+if(WIN32)
+add_compile_definitions(WINDOWS)
+elseif(UNIX)
+add_compile_definitions(LINUX)
+endif()
+
 add_subdirectory(source)
