@@ -7,9 +7,9 @@ project (core)
 # add_library(${PROJECT_NAME} src/vector.cpp)
 # add_library(engine::core ALIAS ${PROJECT_NAME})
 
-add_library(${PROJECT_NAME} 
-    src/dll.cpp
-    )
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src sources)
+
+add_library(${PROJECT_NAME} ${sources})
 add_library(engine::core ALIAS ${PROJECT_NAME})
 
 set(HEADER_NAME ${PROJECT_NAME})
