@@ -50,9 +50,9 @@ namespace vEngine
                 explicit constexpr Vector(const T& other) noexcept
                 // : data_{other} // this only assign first element
                 {
-                    // Vector<T, N> nv(other);
-                    // vector_t<T, N>::do_assgin(this->data(), other);
+                    vector_t<T, N>::do_assign(this->data(), other);
                 }
+
 
                 // big five - 3: copy constructor
                 // called by
