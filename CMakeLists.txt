@@ -11,7 +11,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 project(vEngine)
 
 # c++ setting
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 # lib setting
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
