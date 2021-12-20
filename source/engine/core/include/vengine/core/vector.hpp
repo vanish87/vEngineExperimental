@@ -6,15 +6,15 @@
 
 #include <array>
 #include <iostream>
-#include <CORE_API.h>
+#include <vengine/core/template_helper.hpp>
 
 namespace vEngine
 {
     namespace Core
     {
-        //basic data type will be static linked to main app
-        //so no CORE_API here
-        //plugin etc. will generate dll using CORE_API.h
+        // basic data type will be static linked to main app
+        // so no CORE_API here
+        // plugin etc. will generate dll using CORE_API.h
         template <typename T = float, int N = 4>
         class Vector
         {
@@ -47,26 +47,36 @@ namespace vEngine
 
                 // explicit one parameter constructor to avoid implicit
                 // conversion
-                explicit constexpr Vector(const T& other) noexcept {}
+                explicit constexpr Vector(const T& other) noexcept
+                // : data_{other} // this only assign first element
+                {
+                    // Vector<T, N> nv(other);
+                    // vector_t<T, N>::do_assgin(this->data(), other);
+                }
 
                 // big five - 3: copy constructor
                 // called by
                 //  1. ClassA a = b;
                 //  2. Func(ClassA a) -> pass by value
                 //  3. return temp; -> return by value
-                constexpr Vector(const Vector& other) noexcept {}
+                constexpr Vector(const Vector& other) noexcept
+                {
+                    vector_t<T, N>::do_copy(this->data(), other.data());
+                }
 
                 // big five - 2: assignment operator
                 // with const formal paramter
                 // with constexpr TODO: to clarify usage of constexpr
                 // constexpr can not pass clang compiling => don't need it
-                constexpr Vector& operator=(const Vector& other) noexcept
+                // constexpr Vector& operator=(const Vector& other) noexcept
+                Vector& operator=(const Vector& other) noexcept
                 {
                     // 1.check self assignment
                     if (this != &other)
                     {
                         // 2.allocate new object before-> to assure memory
                         // before delete existing one
+                        vector_t<T, N>::do_assign(this->data(), other.data());
                     }
                     return *this;
                 }
@@ -84,7 +94,7 @@ namespace vEngine
                 // - Puts the r-value object into an 'empty' state.
                 // - subclass must explicitly std::move the base class
                 constexpr Vector(Vector&& other) noexcept
-                    : data_{std::move(other.data_)}
+                    : data_(std::move(other.data_))
                 {}
                 // big five - 5 : move operator
                 // is used like unique_ptr
@@ -95,18 +105,25 @@ namespace vEngine
                     {
                         // 2.allocate new object before-> to assure memory
                         // before delete existing one
+                        this->data_ = std::move(other.data());
                     }
                     return *this;
                 }
 
                 // ambiguous/undefined actions
                 // constructor obj with pointer
-                explicit constexpr Vector(const T* other) noexcept {}
+                explicit constexpr Vector(const T* other) noexcept 
+                {
+                    vector_t<T, N>::do_copy(this->data(), other);
+                }
 
                 // copy from other vector type
                 template <typename U, int M>
                 constexpr Vector(Vector<U, M> const& rhs) noexcept
-                {}
+                {
+                    vector_t<T, N>::do_copy(this->data(), rhs.data());
+
+                }
 
                 constexpr Vector(const T& x, const T& y) noexcept : data_{x, y}
                 {}
@@ -114,7 +131,7 @@ namespace vEngine
             public:
                 static const Vector<T, N>& Zero()
                 {
-                    static const Vector<T, N> zero(static_cast<T>(0));
+                    static const Vector<T, N> zero{0};
                     return zero;
                 }
                 static const Vector<T, N>& One()
@@ -167,11 +184,20 @@ namespace vEngine
                 {
                     return this->data_[0];
                 }
+                reference y() noexcept
+                {
+                    return this->data_[1];
+                }
+                reference z() noexcept
+                {
+                    return this->data_[2];
+                }
 
             public:
                 template <typename U>
                 const Vector& operator+=(const Vector<U, N>& other) noexcept
                 {
+                    vector_t<T, N>::do_add(this->data(), this->data(), other.data());
                     return *this;
                 }
                 template <typename U>
@@ -203,12 +229,12 @@ namespace vEngine
                     return true;
                 }
 
-            // Boost defined operator
+                // Boost defined operator
             public:
                 template <typename U>
                 constexpr Vector operator+(Vector<U, N>& other) noexcept
                 {
-                    return *this;
+                    return Vector(this->data()) += other;
                 }
                 template <typename U>
                 constexpr Vector operator-(Vector<U, N>& other) noexcept
