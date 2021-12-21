@@ -1,10 +1,12 @@
 
 #include <gtest/gtest.h>
+#include <vector>
 
 #include <vengine/core/predeclear.hpp>
 #include <vengine/core/vector.hpp>
 
 using namespace vEngine::Core;
+using namespace std;
 
 TEST(Vector, IntAdd)
 {
@@ -25,7 +27,6 @@ TEST(Vector, IntAdd)
     ASSERT_EQ(v4.y(), 7);
     ASSERT_EQ(v4.z(), 7);
     ASSERT_EQ(v4.w(), 7);
-
 
     // v4 += float4(2);
     // ASSERT_EQ(v4.x(), 9);
@@ -55,4 +56,86 @@ TEST(Vector, IntAdd)
     // // ASSERT_TRUE(v1.x());
     // ASSERT_EQ(v0.x(), v1.x());
     // ASSERT_EQ(v0.x(), 10);
+}
+
+TEST(Vector, IntCompare)
+{
+    ASSERT_TRUE(int4(2) == int4(2));
+    ASSERT_FALSE(int4(3) == int4(2));
+
+    ASSERT_TRUE(int4(1) == int4::One());
+    ASSERT_TRUE(int4(0) == int4::Zero());
+}
+
+TEST(Vector, IntSub)
+{
+    int4 v0(1);
+    int4 v1(2);
+
+    auto v3 = v0 - v1;
+
+    ASSERT_EQ(v3.x(), -1);
+    ASSERT_EQ(v3.y(), -1);
+    ASSERT_EQ(v3.z(), -1);
+    ASSERT_EQ(v3.w(), -1);
+
+    int4 v4(4);
+
+    v4 -= v3;
+    ASSERT_EQ(v4.x(), 5);
+    ASSERT_EQ(v4.y(), 5);
+    ASSERT_EQ(v4.z(), 5);
+    ASSERT_EQ(v4.w(), 5);
+
+
+}
+TEST(Vector, IntMul)
+{
+    int4 v0(2);
+    int4 v1(20);
+
+    auto v3 = v0 * v1;
+
+    ASSERT_EQ(v3.x(), 40);
+    ASSERT_EQ(v3.y(), 40);
+    ASSERT_EQ(v3.z(), 40);
+    ASSERT_EQ(v3.w(), 40);
+
+    int4 v4(4);
+
+    v4 *= v3;
+    ASSERT_EQ(v4.x(), 160);
+    ASSERT_EQ(v4.y(), 160);
+    ASSERT_EQ(v4.z(), 160);
+    ASSERT_EQ(v4.w(), 160);
+
+}
+TEST(Vector, IntDiv)
+{
+    int4 v0(20);
+    int4 v1(2);
+
+    auto v3 = v0 / v1;
+
+    ASSERT_EQ(v3.x(), 10);
+    ASSERT_EQ(v3.y(), 10);
+    ASSERT_EQ(v3.z(), 10);
+    ASSERT_EQ(v3.w(), 10);
+
+    int4 v4(40);
+
+    v4 /= v3;
+    ASSERT_EQ(v4.x(), 4);
+    ASSERT_EQ(v4.y(), 4);
+    ASSERT_EQ(v4.z(), 4);
+    ASSERT_EQ(v4.w(), 4);
+
+}
+TEST(Vector, IntContainer)
+{
+    vector<int4> vec(10, int4(5));
+    for(auto v : vec)
+    {
+        ASSERT_TRUE(v == int4(5));
+    }
 }
