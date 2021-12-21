@@ -260,11 +260,10 @@ namespace vEngine
                 }
         };
         template <typename T, int N>
-        inline void swap(Vector<T, N>& lhs, Vector<T, N>& other) noexcept
+        inline void swap(Vector<T, N>& lhs, Vector<T, N>& rhs) noexcept
         {
-            std::swap(this->data_, other.data_);
+            return vector_t<T, N>::do_swap(lhs.data(), rhs.data());
         }
-
     }  // namespace Core
 }  // namespace vEngine
 

@@ -139,3 +139,15 @@ TEST(Vector, IntContainer)
         ASSERT_TRUE(v == int4(5));
     }
 }
+
+TEST(Vector, IntSwap)
+{
+    int4 v1 = int4(2);
+    int4 v2 = int4(4);
+
+    swap(v1, v2);
+
+    ASSERT_TRUE(v1 == int4(4));
+    ASSERT_TRUE(v2 == int4(2));
+
+}

@@ -66,6 +66,11 @@ namespace vEngine
                     return vector_t<T, 1>::do_equal(lhs, rhs) &&
                            vector_t<T, N - 1>::do_equal(lhs + 1, rhs + 1);
                 }
+                static void do_swap(T lhs[N], T rhs[N]) noexcept
+                {
+                    std::swap(lhs[0] , rhs[0]);
+                    vector_t<T, N - 1>::do_swap(lhs + 1, rhs + 1);
+                }
         };
 
         template <typename T>
@@ -112,6 +117,10 @@ namespace vEngine
                 static bool do_equal(const T lhs[1], const T rhs[1]) noexcept
                 {
                     return lhs[0] == rhs[0];
+                }
+                static void do_swap(T lhs[1], T rhs[1]) noexcept
+                {
+                    std::swap(lhs[0], rhs[0]);
                 }
         };
 
