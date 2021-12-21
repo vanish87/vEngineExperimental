@@ -233,8 +233,7 @@ namespace vEngine
 
                 bool operator==(const Vector& other) const noexcept
                 {
-                    vector_t<T, N>::do_equal(this->data(), other.data());
-                    return true;
+                    return vector_t<T, N>::do_equal(this->data(), other.data());
                 }
 
                 // Boost defined operator

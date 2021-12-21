@@ -63,8 +63,8 @@ namespace vEngine
                 }
                 static bool do_equal(const T lhs[N], const T rhs[N]) noexcept
                 {
-                    return vector_t<T, 1>::do_equal(lhs[0], rhd[0]) &&
-                           vector_t<T, N - 1>::do_equal(v + 1, rhs + 1);
+                    return vector_t<T, 1>::do_equal(lhs, rhs) &&
+                           vector_t<T, N - 1>::do_equal(lhs + 1, rhs + 1);
                 }
         };
 
