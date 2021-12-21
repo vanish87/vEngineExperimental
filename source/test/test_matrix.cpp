@@ -24,8 +24,13 @@ TEST(Matrix, Init)
 TEST(Matrix, Compare)
 {
 	float4x4 m1(10);
-	float4x4 m2(10);
+	float4x4 m2(20);
 
-	ASSERT_TRUE(m1 == m2);
+	ASSERT_FALSE(m1 == m2);
+	ASSERT_TRUE(m1 == float4x4(10));
+
+	auto m3 = float4x4(29);
+	m3 += float4x4(2);
+	ASSERT_TRUE(m3 == float4x4(31));
 }
 
