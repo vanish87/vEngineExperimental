@@ -25,6 +25,11 @@ namespace vEngine
         typedef Vector<double, 3> double3;
         typedef Vector<double, 4> double4;
 
+        template <typename T, int M, int N>
+        class Matrix;
+
+        typedef Matrix<float, 4, 4> float4x4;
+
     }  // namespace Core
 }  // namespace vEngine
 
