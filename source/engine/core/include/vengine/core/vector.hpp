@@ -43,7 +43,7 @@ namespace vEngine
 
             public:
                 // use init list {} to initialize data
-                constexpr Vector() noexcept : data_{0} {}
+                constexpr Vector() noexcept {}
 
                 // explicit one parameter constructor to avoid implicit
                 // conversion
@@ -105,7 +105,7 @@ namespace vEngine
                     {
                         // 2.allocate new object before-> to assure memory
                         // before delete existing one
-                        this->data_ = std::move(other.data());
+                        this->data_ = std::move(other.data_);
                     }
                     return *this;
                 }
