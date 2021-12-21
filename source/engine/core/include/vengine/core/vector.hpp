@@ -247,6 +247,10 @@ namespace vEngine
                 {
                     return vector_t<T, N>::do_equal(this->data(), other.data());
                 }
+                bool operator!=(const Vector& other) const noexcept
+                {
+                    return !(*this == other);
+                }
 
                 // Boost defined operator
             public:

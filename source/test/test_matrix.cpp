@@ -18,4 +18,14 @@ TEST(Matrix, Init)
 
 
 
+
+
 }
+TEST(Matrix, Compare)
+{
+	float4x4 m1(10);
+	float4x4 m2(10);
+
+	ASSERT_TRUE(m1 == m2);
+}
+

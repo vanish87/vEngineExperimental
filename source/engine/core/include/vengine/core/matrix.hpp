@@ -7,8 +7,8 @@
 
 namespace vEngine
 {
-	namespace Core
-	{
+    namespace Core
+    {
         template <typename T = float, int M = 4, int N = 4>
         class Matrix
         {
@@ -45,12 +45,11 @@ namespace vEngine
                 // conversion
                 explicit constexpr Matrix(const T& other) noexcept
                 {
-                    for(auto r : this->data_)
+                    for (auto& r : this->data_)
                     {
                         vector_t<T, N>::do_assign(r.data(), other);
                     }
                 }
-
 
                 // big five - 3: copy constructor
                 // called by
@@ -111,9 +110,9 @@ namespace vEngine
 
                 // ambiguous/undefined actions
                 // constructor obj with pointer
-                explicit constexpr Matrix(const T* other) noexcept 
+                explicit constexpr Matrix(const T* other) noexcept
                 {
-                    for(auto r : this->data_)
+                    for (auto& r : this->data_)
                     {
                         vector_t<T, N>::do_copy(r.data(), other);
                     }
@@ -126,7 +125,8 @@ namespace vEngine
                 //     // vector_t<T, N>::do_copy(this->data(), rhs.data());
                 // }
 
-                // constexpr Matrix(const T& x, const T& y) noexcept : data_{x, y}
+                // constexpr Matrix(const T& x, const T& y) noexcept : data_{x,
+                // y}
                 // {}
 
             public:
@@ -179,7 +179,7 @@ namespace vEngine
                 template <typename U>
                 const Matrix& operator+=(const Matrix<U, N>& other) noexcept
                 {
-                    for(auto r = 0; r < row; ++r)
+                    for (auto r = 0; r < row; ++r)
                     {
                         this->data_[r] += other.data_[r];
                     }
@@ -188,19 +188,22 @@ namespace vEngine
                 template <typename U>
                 const Matrix& operator-=(const Matrix<U, N>& other) noexcept
                 {
-                    // vector_t<T, N>::do_sub(this->data(), this->data(), other.data());
+                    for (auto r = 0; r < row; ++r)
+                    {
+                        this->data_[r] -= other.data_[r];
+                    }
                     return *this;
                 }
                 template <typename U>
                 const Matrix& operator*=(const Matrix<U, N>& other) noexcept
                 {
-                    // vector_t<T, N>::do_mul(this->data(), this->data(), other.data());
+                    assert(false);
                     return *this;
                 }
                 template <typename U>
                 const Matrix& operator/=(const Matrix<U, N>& other) noexcept
                 {
-                    // vector_t<T, N>::do_div(this->data(), this->data(), other.data());
+                    assert(false);
                     return *this;
                 }
                 constexpr Matrix const& operator+() const noexcept
@@ -210,14 +213,20 @@ namespace vEngine
                 Matrix const operator-() const noexcept
                 {
                     Matrix ret;
-                    // vector_t<T, N>::do_negative(ret.data(), this->data());
+                    for (auto r = 0; r < row; ++r)
+                    {
+                        ret.data_[r] = -this->data_[r];
+                    }
                     return ret;
                 }
 
                 bool operator==(const Matrix& other) const noexcept
                 {
-					return true;
-                    // return vector_t<T, N>::do_equal(this->data(), other.data());
+                    for (auto r = 0; r < row; ++r)
+                    {
+                        if(this->data_[r] != other.data_[r]) return false;
+                    }
+                    return true;
                 }
 
                 // Boost defined operator
@@ -230,20 +239,20 @@ namespace vEngine
                 template <typename U>
                 constexpr Matrix operator-(Matrix<U, N>& other) noexcept
                 {
-                    return Matrix(this->data()) -= other;
+                    return Matrix(*this) -= other;
                 }
                 template <typename U>
                 constexpr Matrix operator*(Matrix<U, N>& other) noexcept
                 {
-                    return Matrix(this->data()) *= other;
+                    return Matrix(*this) *= other;
                 }
                 template <typename U>
                 constexpr Matrix operator/(Matrix<U, N>& other) noexcept
                 {
-                    return Matrix(this->data()) /= other;
+                    return Matrix(*this) /= other;
                 }
         };
-	}
-}
+    }  // namespace Core
+}  // namespace vEngine
 
 #endif /* _MATRIX4X4_HPP */
