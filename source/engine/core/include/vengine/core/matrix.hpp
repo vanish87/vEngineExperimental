@@ -44,9 +44,11 @@ namespace vEngine
                 // explicit one parameter constructor to avoid implicit
                 // conversion
                 explicit constexpr Matrix(const T& other) noexcept
-                // : data_{other} // this only assign first element
                 {
-                    // vector_t<T, N>::do_assign(this->data(), other);
+                    for(auto r : this->data_)
+                    {
+                        vector_t<T, N>::do_assign(r.data(), other);
+                    }
                 }
 
 
@@ -56,6 +58,7 @@ namespace vEngine
                 //  2. Func(ClassA a) -> pass by value
                 //  3. return temp; -> return by value
                 constexpr Matrix(const Matrix& other) noexcept
+                    : data_(other.data_)
                 {
                     // vector_t<T, N>::do_copy(this->data(), other.data());
                 }
@@ -72,7 +75,7 @@ namespace vEngine
                     {
                         // 2.allocate new object before-> to assure memory
                         // before delete existing one
-                        // vector_t<T, N>::do_assign(this->data(), other.data());
+                        this->data_ = other.data_;
                     }
                     return *this;
                 }
@@ -101,7 +104,7 @@ namespace vEngine
                     {
                         // 2.allocate new object before-> to assure memory
                         // before delete existing one
-                        this->data_ = std::move(other.data());
+                        this->data_ = std::move(other.data_);
                     }
                     return *this;
                 }
@@ -110,29 +113,27 @@ namespace vEngine
                 // constructor obj with pointer
                 explicit constexpr Matrix(const T* other) noexcept 
                 {
-                    // vector_t<T, N>::do_copy(this->data(), other);
+                    for(auto r : this->data_)
+                    {
+                        vector_t<T, N>::do_copy(r.data(), other);
+                    }
                 }
 
-                // copy from other vector type
-                template <typename U, int M>
-                constexpr Matrix(Matrix<U, M> const& rhs) noexcept
-                {
-                    // vector_t<T, N>::do_copy(this->data(), rhs.data());
-                }
+                // // copy from other matrix type
+                // template <typename U, int M>
+                // constexpr Matrix(Matrix<U, M> const& rhs) noexcept
+                // {
+                //     // vector_t<T, N>::do_copy(this->data(), rhs.data());
+                // }
 
                 // constexpr Matrix(const T& x, const T& y) noexcept : data_{x, y}
                 // {}
 
             public:
-                static const Vector<T, N>& Zero()
+                static const Matrix<T, M, N>& Zero()
                 {
-                    static const Vector<T, N> zero{0};
+                    static const Matrix<T, M, N> zero(0);
                     return zero;
-                }
-                static const Vector<T, N>& One()
-                {
-                    static const Vector<T, N> one{1};
-                    return one;
                 }
 
             public:
@@ -174,30 +175,14 @@ namespace vEngine
                     return this->data_[index];
                 }
 
-                // TODO: use vector swizzle
-                // https://zhuanlan.zhihu.com/p/29618817
-                reference x() noexcept
-                {
-                    return this->data_[0];
-                }
-                reference y() noexcept
-                {
-                    return this->data_[1];
-                }
-                reference z() noexcept
-                {
-                    return this->data_[2];
-                }
-                reference w() noexcept
-                {
-                    return this->data_[3];
-                }
-
             public:
                 template <typename U>
                 const Matrix& operator+=(const Matrix<U, N>& other) noexcept
                 {
-                    // vector_t<T, N>::do_add(this->data(), this->data(), other.data());
+                    for(auto r = 0; r < row; ++r)
+                    {
+                        this->data_[r] += other.data_[r];
+                    }
                     return *this;
                 }
                 template <typename U>

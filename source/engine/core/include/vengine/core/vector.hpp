@@ -241,9 +241,9 @@ namespace vEngine
                 // Boost defined operator
             public:
                 template <typename U>
-                constexpr Vector operator+(Vector<U, N>& other) noexcept
+                constexpr Vector operator+(const Vector<U, N>& other) noexcept
                 {
-                    return Vector(this->data()) += other;
+                    return Vector(*this) += other;
                 }
                 template <typename U>
                 constexpr Vector operator-(Vector<U, N>& other) noexcept
