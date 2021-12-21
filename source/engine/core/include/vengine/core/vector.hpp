@@ -179,6 +179,7 @@ namespace vEngine
                 }
 
                 // TODO: use vector swizzle
+                // https://zhuanlan.zhihu.com/p/29618817
                 reference x() noexcept
                 {
                     return this->data_[0];
