@@ -122,7 +122,6 @@ namespace vEngine
                 constexpr Vector(Vector<U, M> const& rhs) noexcept
                 {
                     vector_t<T, N>::do_copy(this->data(), rhs.data());
-
                 }
 
                 constexpr Vector(const T& x, const T& y) noexcept : data_{x, y}
@@ -192,6 +191,10 @@ namespace vEngine
                 {
                     return this->data_[2];
                 }
+                reference w() noexcept
+                {
+                    return this->data_[3];
+                }
 
             public:
                 template <typename U>
@@ -203,16 +206,19 @@ namespace vEngine
                 template <typename U>
                 const Vector& operator-=(const Vector<U, N>& other) noexcept
                 {
+                    vector_t<T, N>::do_sub(this->data(), this->data(), other.data());
                     return *this;
                 }
                 template <typename U>
                 const Vector& operator*=(const Vector<U, N>& other) noexcept
                 {
+                    vector_t<T, N>::do_mul(this->data(), this->data(), other.data());
                     return *this;
                 }
                 template <typename U>
                 const Vector& operator/=(const Vector<U, N>& other) noexcept
                 {
+                    vector_t<T, N>::do_div(this->data(), this->data(), other.data());
                     return *this;
                 }
                 constexpr Vector const& operator+() const noexcept
@@ -221,11 +227,13 @@ namespace vEngine
                 }
                 Vector const operator-() const noexcept
                 {
+                    vector_t<T, N>::do_negative(this->data(), this->data(), other.data());
                     return *this;
                 }
 
                 bool operator==(const Vector& other) const noexcept
                 {
+                    vector_t<T, N>::do_equal(this->data(), other.data());
                     return true;
                 }
 
@@ -239,22 +247,24 @@ namespace vEngine
                 template <typename U>
                 constexpr Vector operator-(Vector<U, N>& other) noexcept
                 {
-                    return *this;
+                    return Vector(this->data()) -= other;
                 }
                 template <typename U>
                 constexpr Vector operator*(Vector<U, N>& other) noexcept
                 {
-                    return *this;
+                    return Vector(this->data()) *= other;
                 }
                 template <typename U>
                 constexpr Vector operator/(Vector<U, N>& other) noexcept
                 {
-                    return *this;
+                    return Vector(this->data()) /= other;
                 }
         };
         template <typename T, int N>
         inline void swap(Vector<T, N>& lhs, Vector<T, N>& other) noexcept
-        {}
+        {
+            std::swap(this->data_, other.data_);
+        }
 
     }  // namespace Core
 }  // namespace vEngine

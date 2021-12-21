@@ -41,6 +41,31 @@ namespace vEngine
                     v[0] = lhs[0] + rhs[0];
                     vector_t<T, N - 1>::do_add(v + 1, lhs + 1, rhs + 1);
                 }
+                static void do_sub(T v[N], const T lhs[N], const T rhs[N]) noexcept
+                {
+                    v[0] = lhs[0] - rhs[0];
+                    vector_t<T, N - 1>::do_sub(v + 1, lhs + 1, rhs + 1);
+                }
+                static void do_mul(T v[N], const T lhs[N], const T rhs[N]) noexcept
+                {
+                    v[0] = lhs[0] * rhs[0];
+                    vector_t<T, N - 1>::do_mul(v + 1, lhs + 1, rhs + 1);
+                }
+                static void do_div(T v[N], const T lhs[N], const T rhs[N]) noexcept
+                {
+                    v[0] = lhs[0] / rhs[0];
+                    vector_t<T, N - 1>::do_div(v + 1, lhs + 1, rhs + 1);
+                }
+                static void do_negative(T v[N], const T rhs[N]) noexcept
+                {
+                    v[0] = -rhs[0];
+                    vector_t<T, N - 1>::do_negative(v + 1, rhs + 1);
+                }
+                static bool do_equal(const T lhs[N], const T rhs[N]) noexcept
+                {
+                    return vector_t<T, 1>::do_equal(lhs[0], rhd[0]) &&
+                           vector_t<T, N - 1>::do_equal(v + 1, rhs + 1);
+                }
         };
 
         template <typename T>
@@ -67,6 +92,26 @@ namespace vEngine
                 static void do_add(T v[1], const T lhs[1], const T rhs[1]) noexcept
                 {
                     v[0] = lhs[0] + rhs[0];
+                }
+                static void do_sub(T v[1], const T lhs[1], const T rhs[1]) noexcept
+                {
+                    v[0] = lhs[0] - rhs[0];
+                }
+                static void do_mul(T v[1], const T lhs[1], const T rhs[1]) noexcept
+                {
+                    v[0] = lhs[0] * rhs[0];
+                }
+                static void do_div(T v[1], const T lhs[1], const T rhs[1]) noexcept
+                {
+                    v[0] = lhs[0] / rhs[0];
+                }
+                static void do_negative(T v[1], const T rhs[1]) noexcept
+                {
+                    v[0] = -rhs[0];
+                }
+                static bool do_equal(const T lhs[1], const T rhs[1]) noexcept
+                {
+                    return lhs[0] == rhs[0];
                 }
         };
 
