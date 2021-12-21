@@ -227,8 +227,9 @@ namespace vEngine
                 }
                 Vector const operator-() const noexcept
                 {
-                    vector_t<T, N>::do_negative(this->data(), this->data(), other.data());
-                    return *this;
+                    Vector ret;
+                    vector_t<T, N>::do_negative(ret.data(), this->data());
+                    return ret;
                 }
 
                 bool operator==(const Vector& other) const noexcept

@@ -151,3 +151,13 @@ TEST(Vector, IntSwap)
     ASSERT_TRUE(v2 == int4(2));
 
 }
+
+TEST(Vector, IntNegative)
+{
+    int4 v1 = int4(2);
+    int4 v2 = -v1;
+
+
+    ASSERT_TRUE(v1 == int4(2));
+    ASSERT_TRUE(v2 == int4(-2));
+}
