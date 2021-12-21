@@ -65,6 +65,8 @@ TEST(Vector, IntCompare)
 
     ASSERT_TRUE(int4(1) == int4::One());
     ASSERT_TRUE(int4(0) == int4::Zero());
+
+    int4 v3;
 }
 
 TEST(Vector, IntSub)
