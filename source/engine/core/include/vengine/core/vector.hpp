@@ -53,7 +53,6 @@ namespace vEngine
                     vector_t<T, N>::do_assign(this->data(), other);
                 }
 
-
                 // big five - 3: copy constructor
                 // called by
                 //  1. ClassA a = b;
@@ -112,7 +111,7 @@ namespace vEngine
 
                 // ambiguous/undefined actions
                 // constructor obj with pointer
-                explicit constexpr Vector(const T* other) noexcept 
+                explicit constexpr Vector(const T* other) noexcept
                 {
                     vector_t<T, N>::do_copy(this->data(), other);
                 }
@@ -125,6 +124,13 @@ namespace vEngine
                 }
 
                 constexpr Vector(const T& x, const T& y) noexcept : data_{x, y}
+                {}
+                constexpr Vector(const T& x, const T& y, const T& z) noexcept
+                    : data_{x, y, z}
+                {}
+                constexpr Vector(const T& x, const T& y, const T& z,
+                                 const T& w) noexcept
+                    : data_{x, y, z, w}
                 {}
 
             public:
@@ -201,25 +207,29 @@ namespace vEngine
                 template <typename U>
                 const Vector& operator+=(const Vector<U, N>& other) noexcept
                 {
-                    vector_t<T, N>::do_add(this->data(), this->data(), other.data());
+                    vector_t<T, N>::do_add(this->data(), this->data(),
+                                           other.data());
                     return *this;
                 }
                 template <typename U>
                 const Vector& operator-=(const Vector<U, N>& other) noexcept
                 {
-                    vector_t<T, N>::do_sub(this->data(), this->data(), other.data());
+                    vector_t<T, N>::do_sub(this->data(), this->data(),
+                                           other.data());
                     return *this;
                 }
                 template <typename U>
                 const Vector& operator*=(const Vector<U, N>& other) noexcept
                 {
-                    vector_t<T, N>::do_mul(this->data(), this->data(), other.data());
+                    vector_t<T, N>::do_mul(this->data(), this->data(),
+                                           other.data());
                     return *this;
                 }
                 template <typename U>
                 const Vector& operator/=(const Vector<U, N>& other) noexcept
                 {
-                    vector_t<T, N>::do_div(this->data(), this->data(), other.data());
+                    vector_t<T, N>::do_div(this->data(), this->data(),
+                                           other.data());
                     return *this;
                 }
                 constexpr Vector const& operator+() const noexcept
@@ -248,17 +258,17 @@ namespace vEngine
                 template <typename U>
                 constexpr Vector operator-(Vector<U, N>& other) noexcept
                 {
-                    return Vector(this->data()) -= other;
+                    return Vector(*this) -= other;
                 }
                 template <typename U>
                 constexpr Vector operator*(Vector<U, N>& other) noexcept
                 {
-                    return Vector(this->data()) *= other;
+                    return Vector(*this) *= other;
                 }
                 template <typename U>
                 constexpr Vector operator/(Vector<U, N>& other) noexcept
                 {
-                    return Vector(this->data()) /= other;
+                    return Vector(*this) /= other;
                 }
         };
         template <typename T, int N>
