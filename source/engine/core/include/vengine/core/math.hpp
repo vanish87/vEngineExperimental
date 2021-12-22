@@ -3,11 +3,10 @@
 
 #pragma once
 
+#include <vengine/core/debug.hpp>
 
 namespace vEngine
 {
-    /// \brief Math Functions
-    ///
     namespace Math
     {
         /// Detailed function doc
@@ -27,7 +26,7 @@ namespace vEngine
         Matrix<T, M, N> Multiply(const Matrix<T, M, N>& lhs,
                                  const Matrix<T, M, N>& rhs)
         {
-            // CHECK_ASSERT(lhs.row() == rhs.col());
+            CHECK_ASSERT(lhs.row == rhs.col);
             Matrix<T, M, N> ret;
             std::size_t dim = M;
 

@@ -8,6 +8,7 @@
 
 namespace vEngine
 {
+    /// \brief Math Functions
     namespace Math
     {
         /// \brief PI constant
