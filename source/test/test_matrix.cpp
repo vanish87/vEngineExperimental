@@ -16,10 +16,6 @@ TEST(Matrix, Init)
 
 	auto m3 = m0 + m1;
 
-
-
-
-
 }
 TEST(Matrix, Compare)
 {
