@@ -12,7 +12,10 @@ TEST(Math, Matrix)
     ASSERT_FALSE(IsNAN(a));
 
     ASSERT_FALSE(IsFloatEqual(2, 3));
-    ASSERT_TRUE(IsFloatEqual(2, 2));
+
+    a = 2;
+    float b = 2;
+    ASSERT_TRUE(IsFloatEqual(a, b, 0.00001f));
 
     float4x4 m1;
     float4x4 m2;
