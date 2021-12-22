@@ -5,7 +5,7 @@
 
 namespace vEngine
 {
-    namespace Core
+    namespace Math
     {
         template <typename T, int N>
         struct vector_t

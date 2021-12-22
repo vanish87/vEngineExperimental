@@ -6,6 +6,7 @@
 #include <vengine/core/vector.hpp>
 
 using namespace vEngine::Core;
+using namespace vEngine::Math;
 using namespace std;
 
 TEST(Vector, IntAdd)

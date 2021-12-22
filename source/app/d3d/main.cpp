@@ -16,6 +16,7 @@
 #include "interface.h"
 
 using namespace vEngine::Core;
+using namespace vEngine::Math;
 
 Vector<int, 2> NewVec()
 {

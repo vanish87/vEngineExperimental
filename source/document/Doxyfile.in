@@ -875,6 +875,7 @@ INPUT                  =  @DOXYGEN_SRC_ROOT@/app/
 #INPUT                  += @DOXYGEN_SRC_ROOT@/editor/
 INPUT                  += @DOXYGEN_SRC_ROOT@/engine/
 INPUT                  += @DOXYGEN_SRC_ROOT@/plugins/
+INPUT                  += @DOXYGEN_MAINPAGE_ROOT@/README.md
 
 #INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/../app/
 #INPUT                  += @CMAKE_CURRENT_SOURCE_DIR@/../editor/
@@ -1077,7 +1078,7 @@ FILTER_SOURCE_PATTERNS =
 # (index.html). This can be useful if you have a project on for instance GitHub
 # and want to reuse the introduction page also for the doxygen output.
 
-USE_MDFILE_AS_MAINPAGE =
+USE_MDFILE_AS_MAINPAGE = README.md
 
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing
