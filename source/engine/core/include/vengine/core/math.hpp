@@ -22,13 +22,13 @@ namespace vEngine
             return std::isinf(x);
         }
 
-        template <typename T, int M, int N>
-        Matrix<T, M, N> Multiply(const Matrix<T, M, N>& lhs,
-                                 const Matrix<T, M, N>& rhs)
+        template <typename T, int I, int J, int K>
+        Matrix<T, I, K> Multiply(const Matrix<T, I, J>& lhs,
+                                 const Matrix<T, J, K>& rhs)
         {
-            CHECK_ASSERT(lhs.row == rhs.col);
-            Matrix<T, M, N> ret;
-            std::size_t dim = M;
+            CHECK_ASSERT(lhs.col == rhs.row);
+            Matrix<T, I, K> ret;
+            std::size_t dim = J;
 
             for (int row = 0; row < dim; row++)
                 for (int col = 0; col < dim; col++)

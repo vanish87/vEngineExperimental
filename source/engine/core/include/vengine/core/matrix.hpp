@@ -4,6 +4,7 @@
 #pragma once
 
 #include <vengine/core/vector.hpp>
+#include <vengine/core/math.h>
 
 namespace vEngine
 {
@@ -197,6 +198,7 @@ namespace vEngine
                 template <typename U>
                 const Matrix& operator*=(const Matrix<U, N>& other) noexcept
                 {
+                    //ambiguous operator
                     assert(false);
                     return *this;
                 }
@@ -232,22 +234,22 @@ namespace vEngine
                 // Boost defined operator
             public:
                 template <typename U>
-                constexpr Matrix operator+(Matrix<U, N>& other) noexcept
+                constexpr Matrix operator+(Matrix<U, M, N>& other) noexcept
                 {
                     return Matrix(*this) += other;
                 }
                 template <typename U>
-                constexpr Matrix operator-(Matrix<U, N>& other) noexcept
+                constexpr Matrix operator-(Matrix<U, M, N>& other) noexcept
                 {
                     return Matrix(*this) -= other;
                 }
                 template <typename U>
-                constexpr Matrix operator*(Matrix<U, N>& other) noexcept
+                constexpr Matrix operator*(Matrix<U, M, N>& other) noexcept
                 {
-                    return Matrix(*this) *= other;
+                    return Multiply(*this, other);
                 }
                 template <typename U>
-                constexpr Matrix operator/(Matrix<U, N>& other) noexcept
+                constexpr Matrix operator/(Matrix<U, M, N>& other) noexcept
                 {
                     return Matrix(*this) /= other;
                 }

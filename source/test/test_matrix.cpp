@@ -35,5 +35,13 @@ TEST(Matrix, Compare)
 	matrixBig[150][80] = 10;
 
 	ASSERT_FLOAT_EQ(matrixBig[150][80], 10);
+
+
+	m3 = m1 * m2;
+
+	Matrix<float, 200, 80> mb1(50);
+	Matrix<float, 80, 50> mb2(80);
+
+	// auto mb3 = Multiply(mb1, mb2);
 }
 

@@ -108,9 +108,9 @@ namespace vEngine
         Matrix<T, N, N> OuterProduct(Vector<T, N> const& lhs,
                                        Vector<T, N> const& rhs);
 
-        template <typename T, int M = 4, int N = 4>
-        Matrix<T, M, N> Multiply(const Matrix<T, M, N>& lhs,
-                                 const Matrix<T, M, N>& rhs);
+        template <typename T, int I = 4, int J = 4, int K = 4>
+        Matrix<T, I, K> Multiply(const Matrix<T, I, J>& lhs,
+                                 const Matrix<T, J, K>& rhs);
 
     }  // namespace Math
 }  // namespace vEngine
