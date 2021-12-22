@@ -58,7 +58,7 @@ namespace vEngine
         /// \param epsilon
         /// \return true
         /// \return false
-        bool IsFloatEqual(float& lhs, float& rhs, float epsilon);
+        bool CORE_API IsFloatEqual(float& lhs, float& rhs, float epsilon);
 
         /// \brief return absolute of a number
         ///

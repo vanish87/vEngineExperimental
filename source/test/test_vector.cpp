@@ -67,7 +67,15 @@ TEST(Vector, IntCompare)
     ASSERT_TRUE(int4(1) == int4::One());
     ASSERT_TRUE(int4(0) == int4::Zero());
 
-    int4 v3;
+    auto zero = int4::Zero();
+    ASSERT_EQ(zero.x(), 0);
+    ASSERT_EQ(zero.y(), 0);
+    ASSERT_EQ(zero.z(), 0);
+
+    auto one = int4::One();
+    ASSERT_EQ(one.x(), 1);
+    ASSERT_EQ(one.y(), 1);
+    ASSERT_EQ(one.z(), 1);
 }
 
 TEST(Vector, IntSub)
