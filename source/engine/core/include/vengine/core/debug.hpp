@@ -1,6 +1,13 @@
 #ifndef _DEBUG_HPP
 #define _DEBUG_HPP
 
+#ifdef WINDOWS
+#define DEBUG_BREAK __debugbreak();
+#else
+#include <signal.h>
+#define DEBUG_BREAK raise(SIGTRAP);
+#endif
+
 //debug and assert
 #include <iostream>
 //TODO Print colored warning with this
@@ -16,20 +23,20 @@ void ErrorText(std::string text);
 {\
 	PRINT(x); \
 	PRINT_FILE_AND_FUCTION;\
-	__debugbreak();\
+	DEBUG_BREAK\
 }
 #define CHECK_AND_ASSERT(condition,x) \
 {\
 	if(!(condition)){\
 		PRINT(x); \
 		PRINT_FILE_AND_FUCTION;\
-		__debugbreak();}\
+		DEBUG_BREAK}\
 }
 #define CHECK_ASSERT(condition) \
 {\
 	if(!(condition)){\
 		PRINT_FILE_AND_FUCTION;\
-		__debugbreak();}\
+		DEBUG_BREAK}\
 }
 #define COMPILE_PRINT_AND_ASSERT(exp, x) {static_assert(exp, x);}
 

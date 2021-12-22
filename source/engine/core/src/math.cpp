@@ -1,5 +1,4 @@
 #include <vengine/core/math.h>
-#include <cmath>
 
 namespace vEngine
 {
