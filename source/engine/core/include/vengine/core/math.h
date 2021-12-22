@@ -35,12 +35,6 @@ namespace vEngine
         template <typename T>
         bool IsINF(T& x);
 
-        /// \brief return absolute of a number
-        ///
-        /// \param num
-        /// \return float
-        float Abs(float num);
-
         /// \brief Check if two floats are equal
         ///
         /// \param lhs
@@ -66,10 +60,11 @@ namespace vEngine
         /// \return false
         bool IsFloatEqual(float& lhs, float& rhs, float epsilon);
 
-        template <typename T>
-        T Min(T& lhs, T& rhs);
-        template <typename T>
-        T Max(T& lhs, T& rhs);
+        /// \brief return absolute of a number
+        ///
+        /// \param num
+        /// \return float
+        float Abs(float num);
 
         float Sqrt(float x);
         float Sin(float x);
@@ -87,6 +82,31 @@ namespace vEngine
         T Min(T& lhs, T& rhs);
         template <typename T>
         T Max(T& lhs, T& rhs);
+
+        template <typename T, int N = 4>
+        T Dot(Vector<T, N> const& lhs, Vector<T, N> const& rhs);
+
+        template <typename T, int N = 4>
+        Vector<T, N> Cross(Vector<T, N> const& lhs, Vector<T, N> const& rhs);
+
+        template <typename T>
+        T Normalize(T const& rhs);
+
+        template <typename T, int N = 4>
+        Vector<T, N> TransformPoint(const Vector<T, N>& lhs,
+                                    const Matrix<T, N, N>& rhs);
+
+        template <typename T, int N = 4>
+        Vector<T, N> TransformVector(const Vector<T, N>& lhs,
+                                     const Matrix<T, N, N>& rhs);
+
+        template <typename T, int N = 4>
+        Vector<T, N> Transform(const Vector<T, N>& lhs,
+                               const Matrix<T, N, N>& rhs);
+
+        template <typename T, int N = 4>
+        Matrix<T, N, N> OuterProduct(Vector<T, N> const& lhs,
+                                       Vector<T, N> const& rhs);
 
         template <typename T, int M = 4, int N = 4>
         Matrix<T, M, N> Multiply(const Matrix<T, M, N>& lhs,
