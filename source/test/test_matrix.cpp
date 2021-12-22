@@ -5,6 +5,7 @@
 #include <vengine/core/matrix.hpp>
 
 using namespace vEngine::Core;
+using namespace vEngine::Math;
 
 TEST(Matrix, Init)
 {
@@ -28,5 +29,11 @@ TEST(Matrix, Compare)
 	auto m3 = float4x4(29);
 	m3 += float4x4(2);
 	ASSERT_TRUE(m3 == float4x4(31));
+
+	Matrix<float, 200, 300> matrixBig;
+
+	matrixBig[150][80] = 10;
+
+	ASSERT_FLOAT_EQ(matrixBig[150][80], 10);
 }
 

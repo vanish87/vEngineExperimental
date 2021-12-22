@@ -7,7 +7,7 @@
 
 namespace vEngine
 {
-    namespace Core
+    namespace Math
     {
         template <typename T = float, int M = 4, int N = 4>
         class Matrix

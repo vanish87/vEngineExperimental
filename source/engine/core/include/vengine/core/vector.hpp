@@ -10,7 +10,7 @@
 
 namespace vEngine
 {
-    namespace Core
+    namespace Math
     {
         // basic data type will be static linked to main app
         // so no CORE_API here
