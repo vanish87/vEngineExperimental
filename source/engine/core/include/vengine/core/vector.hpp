@@ -203,6 +203,23 @@ namespace vEngine
                     return this->data_[3];
                 }
 
+                const_reference x() const noexcept
+                {
+                    return this->data_[0];
+                }
+                const_reference y() const noexcept
+                {
+                    return this->data_[1];
+                }
+                const_reference z() const noexcept
+                {
+                    return this->data_[2];
+                }
+                const_reference w() const noexcept
+                {
+                    return this->data_[3];
+                }
+
             public:
                 template <typename U>
                 const Vector& operator+=(const Vector<U, N>& other) noexcept
@@ -223,6 +240,13 @@ namespace vEngine
                 {
                     vector_t<T, N>::do_mul(this->data(), this->data(),
                                            other.data());
+                    return *this;
+                }
+                template <typename U>
+                const Vector& operator*=(const U& other) noexcept
+                {
+                    vector_t<T, N>::do_mul(this->data(), this->data(),
+                                           other);
                     return *this;
                 }
                 template <typename U>
@@ -260,17 +284,27 @@ namespace vEngine
                     return Vector(*this) += other;
                 }
                 template <typename U>
-                constexpr Vector operator-(Vector<U, N>& other) noexcept
+                constexpr Vector operator-(const Vector<U, N>& other) noexcept
                 {
                     return Vector(*this) -= other;
                 }
                 template <typename U>
-                constexpr Vector operator*(Vector<U, N>& other) noexcept
+                constexpr Vector operator*(const Vector<U, N>& other) noexcept
                 {
                     return Vector(*this) *= other;
                 }
                 template <typename U>
-                constexpr Vector operator/(Vector<U, N>& other) noexcept
+                constexpr Vector operator*(const U& other) noexcept
+                {
+                    return Vector(*this) *= other;
+                }
+                template <typename U>
+                constexpr Vector operator*(const U& other) const noexcept
+                {
+                    return Vector(*this) *= other;
+                }
+                template <typename U>
+                constexpr Vector operator/(const Vector<U, N>& other) noexcept
                 {
                     return Vector(*this) /= other;
                 }
