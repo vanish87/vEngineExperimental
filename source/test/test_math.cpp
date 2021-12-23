@@ -30,4 +30,9 @@ TEST(Math, Matrix)
     auto v4 = Cross(v1, v2);
 
     auto v5 = Normalize(v1);
+
+    float4x4 mpv;
+    float4 point;
+
+    auto ndc = TransformPoint(point, mpv);
 }

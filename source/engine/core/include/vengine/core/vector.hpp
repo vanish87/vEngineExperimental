@@ -7,6 +7,7 @@
 #include <array>
 #include <iostream>
 #include <vengine/core/template_helper.hpp>
+#include <vengine/core/debug.hpp>
 
 namespace vEngine
 {
@@ -176,11 +177,13 @@ namespace vEngine
 
                 reference operator[](size_t index) noexcept
                 {
+                    CHECK_ASSERT(index < N);
                     return this->data_[index];
                 }
                 constexpr const_reference operator[](
                     size_t index) const noexcept
                 {
+                    CHECK_ASSERT(index < N);
                     return this->data_[index];
                 }
 

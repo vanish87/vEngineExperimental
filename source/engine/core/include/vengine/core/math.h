@@ -163,9 +163,13 @@ namespace vEngine
         Matrix<T, N, N> OuterProduct(Vector<T, N> const& lhs,
                                      Vector<T, N> const& rhs);
 
-        template <typename T, int I = 4, int J = 4, int K = 4>
-        Matrix<T, I, K> Multiply(const Matrix<T, I, J>& lhs,
-                                 const Matrix<T, J, K>& rhs);
+        // template <typename T, int M = 4, int N = 4>
+        // Vector<T, M> Multiply(const Vector<T, M>& lhs,
+        //                       const Matrix<T, M, N>& rhs);
+
+        template <typename T, int M = 4, int S = 4, int N = 4>
+        Matrix<T, M, N> Multiply(const Matrix<T, S, N>& lhs,
+                                 const Matrix<T, M, S>& rhs);
 
     }  // namespace Math
 }  // namespace vEngine

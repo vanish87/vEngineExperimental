@@ -3,6 +3,7 @@
 
 #include <vengine/core/matrix.hpp>
 #include <vengine/core/predeclear.hpp>
+#include <vengine/core/debug.hpp>
 
 using namespace vEngine::Core;
 using namespace vEngine::Math;
@@ -38,16 +39,16 @@ TEST(Matrix, Compare)
     Matrix<int, 200, 30> mb4(54);
     for (auto r = 0; r < mb4.row; ++r)
     {
-        for (auto c = 0; c < mb4.col; c++)
+        for (auto c = 0; c < mb4.col; ++c)
         {
-            ASSERT_EQ(mb4[r][c], 54);
+            ASSERT_EQ(mb4[r][c], 54) << r <<" " << c;
         }
     }
 
     m3 = m1 * m2;
 
     Matrix<float, 200, 80> mb1(50);
-    Matrix<float, 80, 50> mb2(80);
+    Matrix<float, 50, 200> mb2(80);
 
     auto mb3 = Multiply(mb1, mb2);
 }

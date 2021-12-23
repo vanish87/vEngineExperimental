@@ -22,7 +22,7 @@ namespace vEngine
         class Matrix
         {
             private:
-                typedef Vector<Vector<T, N>, M> DataType;
+                typedef Vector<Vector<T, M>, N> DataType;
 
                 DataType data_;
 
@@ -43,8 +43,8 @@ namespace vEngine
                 typedef typename DataType::difference_type difference_type;
 
                 static constexpr size_t size = M * N;
-                static constexpr size_t row = M;
-                static constexpr size_t col = N;
+                static constexpr size_t row = N;
+                static constexpr size_t col = M;
 
             public:
                 // use init list {} to initialize data
@@ -56,9 +56,18 @@ namespace vEngine
                 {
                     for (auto& r : this->data_)
                     {
-                        vector_t<T, N>::do_assign(r.data(), other);
+                        vector_t<T, col>::do_assign(r.data(), other);
                     }
                 }
+                // explicit constexpr Matrix(const Vector<T, M>& other) noexcept
+                // {
+                //     static_assert(N == 1);
+
+                //     for (auto& r : this->data_)
+                //     {
+                //         vector_t<T, N>::do_assign(r.data(), other);
+                //     }
+                // }
 
                 // big five - 3: copy constructor
                 // called by
@@ -123,7 +132,7 @@ namespace vEngine
                 {
                     for (auto& r : this->data_)
                     {
-                        vector_t<T, N>::do_copy(r.data(), other);
+                        vector_t<T, col>::do_copy(r.data(), other);
                     }
                 }
 
