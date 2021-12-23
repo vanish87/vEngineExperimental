@@ -41,5 +41,5 @@ TEST(Math, Matrix)
     Identity(identity);
 
     auto transpose = Transpose(mpv);
-
+    auto tb = Transpose(Matrix<float, 200, 300>());
 }
