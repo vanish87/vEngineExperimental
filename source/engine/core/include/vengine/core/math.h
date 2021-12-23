@@ -143,6 +143,9 @@ namespace vEngine
         template <typename T, int N = 4>
         void Identity(Matrix<T, N, N>& lhs);
 
+        template <typename T, int M, int N>
+        Matrix<T, N, M> Transpose(const Matrix<T, M, N>& lhs);
+
         template <typename T, int N = 4>
         T Dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs);
 

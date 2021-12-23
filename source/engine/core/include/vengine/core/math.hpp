@@ -49,6 +49,19 @@ namespace vEngine
                 }
             }
         }
+        template <typename T, int M, int N>
+        Matrix<T, N, M> Transpose(const Matrix<T, M, N>& lhs)
+		{
+            Matrix<T, N, M> ret;
+            for (auto r = 0; r < lhs.row; ++r)
+            {
+                for (auto c = 0; c < lhs.col; ++c)
+                {
+                    ret[c][r] = lhs[r][c];
+                }
+            }
+            return ret;
+		}
 
         template <typename T, int N>
         T Dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
@@ -113,7 +126,7 @@ namespace vEngine
         Matrix<T, N, N> OuterProduct(Vector<T, N> const& lhs,
                                      Vector<T, N> const& rhs)
         {
-            static_assert(false);
+            NOTIMPL_ASSERT();
         }
 
         template <typename T, int M, int S, int N>

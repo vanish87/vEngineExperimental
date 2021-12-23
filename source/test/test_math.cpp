@@ -40,4 +40,6 @@ TEST(Math, Matrix)
     float4x4 identity;
     Identity(identity);
 
+    auto transpose = Transpose(mpv);
+
 }
