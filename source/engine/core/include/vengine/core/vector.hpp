@@ -293,6 +293,7 @@ namespace vEngine
                 {
                     return Vector(*this) *= other;
                 }
+                // TODO: ambiguous multiply function, use scale
                 template <typename U>
                 constexpr Vector operator*(const U& other) noexcept
                 {
