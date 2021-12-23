@@ -172,6 +172,10 @@ namespace vEngine
         Matrix<T, M, N> Multiply(const Matrix<T, S, N>& lhs,
                                  const Matrix<T, M, S>& rhs);
 
+        template <typename T>
+        Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect,
+                                         const T zn, const T zf);
+
     }  // namespace Math
 }  // namespace vEngine
 

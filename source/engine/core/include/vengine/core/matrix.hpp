@@ -3,19 +3,20 @@
 
 #pragma once
 
-#include <vengine/core/vector.hpp>
 #include <vengine/core/math.h>
+
+#include <vengine/core/vector.hpp>
 
 namespace vEngine
 {
     namespace Math
     {
         /// \brief Define a MxN matrix with data type T
-        /// 
+        ///
         /// Note M is number of row elements, N is number of col elements. \n
         /// use matrix[row][col] to assess data. \n
         /// the data layout is colum major, see Math for details.
-        /// \tparam T 
+        /// \tparam T
         /// \tparam M number of row elements
         /// \tparam N number of col elements
         template <typename T = float, int M = 4, int N = 4>
@@ -49,6 +50,33 @@ namespace vEngine
             public:
                 // use init list {} to initialize data
                 constexpr Matrix() noexcept {}
+                constexpr Matrix(T m00, T m01, T m02, T m03, T m10, T m11,
+                                 T m12, T m13, T m20, T m21, T m22, T m23,
+                                 T m30, T m31, T m32, T m33) noexcept
+                {
+                    static_assert(M == 4);
+                    static_assert(N == 4);
+
+                    this->data_[0][0] = m00;
+                    this->data_[0][1] = m01;
+                    this->data_[0][2] = m02;
+                    this->data_[0][3] = m03;
+
+                    this->data_[1][0] = m10;
+                    this->data_[1][1] = m11;
+                    this->data_[1][2] = m12;
+                    this->data_[1][3] = m13;
+
+                    this->data_[2][0] = m20;
+                    this->data_[2][1] = m21;
+                    this->data_[2][2] = m22;
+                    this->data_[2][3] = m23;
+
+                    this->data_[3][0] = m30;
+                    this->data_[3][1] = m31;
+                    this->data_[3][2] = m32;
+                    this->data_[3][3] = m33;
+                }
 
                 // explicit one parameter constructor to avoid implicit
                 // conversion
@@ -215,7 +243,7 @@ namespace vEngine
                 template <typename U>
                 const Matrix& operator*=(const Matrix<U, N>& other) noexcept
                 {
-                    //ambiguous operator
+                    // ambiguous operator
                     assert(false);
                     return *this;
                 }
@@ -243,7 +271,7 @@ namespace vEngine
                 {
                     for (auto r = 0; r < row; ++r)
                     {
-                        if(this->data_[r] != other.data_[r]) return false;
+                        if (this->data_[r] != other.data_[r]) return false;
                     }
                     return true;
                 }
@@ -271,7 +299,8 @@ namespace vEngine
                     return Matrix(*this) /= other;
                 }
         };
-    }  // namespace Core
+
+    }  // namespace Math
 }  // namespace vEngine
 
 #endif /* _MATRIX4X4_HPP */
