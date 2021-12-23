@@ -21,4 +21,13 @@ TEST(Math, Matrix)
     float4x4 m2;
 
     auto m3 = Multiply(m1, m2);
+
+
+    float3 v1(1,2,3);
+    float3 v2(4,5,6);
+
+    auto v3 = Dot(v1, v2);
+    auto v4 = Cross(v1, v2);
+
+    auto v5 = Normalize(v1);
 }

@@ -134,11 +134,15 @@ namespace vEngine
         template <typename T>
         T Max(T& lhs, T& rhs);
 
+		template <typename T>
+		T Clamp(const T& value, const T& min,const T& max );
+		
+
         template <typename T, int N = 4>
         T Dot(Vector<T, N> const& lhs, Vector<T, N> const& rhs);
 
-        template <typename T, int N = 4>
-        Vector<T, N> Cross(Vector<T, N> const& lhs, Vector<T, N> const& rhs);
+        template <typename T>
+        Vector<T, 3> Cross(Vector<T, 3> const& lhs, Vector<T, 3> const& rhs);
 
         template <typename T>
         T Normalize(T const& rhs);

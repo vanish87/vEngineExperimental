@@ -62,6 +62,64 @@ namespace vEngine
         {
             return std::fabs(num);
         }
+        float Sqrt(float x)
+        {
+            CHECK_ASSERT(IsFloatEqual(x, 0) == false);
+            return std::sqrt(x);
+        }
+
+        float Sin(float x)
+        {
+            return std::sin(x);
+        }
+
+        float Cos(float x)
+        {
+            return std::cos(x);
+        }
+
+        float ArcCos(float x)
+        {
+            return std::acos(x);
+        }
+
+        float Tan(float x)
+        {
+            return std::tan(x);
+        }
+        float ArcTan(float x)
+        {
+            return std::atan(x);
+        }
+        float Cot(float x)
+        {
+            return 1.0f / Tan(x);
+        }
+
+        float InvSqrt(float number)
+        {
+            if (IsFloatEqual(number, 0)) return 0;
+
+            float xhalf = 0.5f * number;
+
+            int i = *(int*)&number;     // get bits for floating value
+            i = 0x5f3759df - (i >> 1);  // gives initial guess y0
+            number = *(float*)&i;       // convert bits back to float
+            // Newton step, repeating increases accuracy
+            number = number * (1.5f - xhalf * number * number);
+            // 2nd Newton step, repeating increases accuracy
+            number = number * (1.5f - xhalf * number * number);
+            return number;
+        }
+
+        float Ln(float x)
+        {
+            return std::log(x);
+        }
+        float Pow(float base, float exp)
+        {
+            return pow(base, exp);
+        }
 
     }  // namespace Math
 }  // namespace vEngine
