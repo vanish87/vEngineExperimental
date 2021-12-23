@@ -24,10 +24,9 @@ namespace vEngine
     /// [e8,  e9,  e10, e11]
     /// [e12, e13, e14, e15]
     /// \endcode
-    /// - Matrix<T, M, N> will define \n
-    /// a MxN matrix with M elements in each row,
-    /// and N rows. So the row variable will be N, 
-    /// the col variable will be M
+    /// - Matrix<T, M, N> will define a M x N matrix with M elements in each row,
+    /// and N rows. \n 
+    /// So the row variable will be N, the col variable will be M
     ///
     /// Left-hand system
     /// ========================
