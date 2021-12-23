@@ -73,6 +73,7 @@ namespace vEngine
             CHECK_ASSERT(IsFloatEqual(dot, 0) == false);
             return rhs * InvSqrt(dot);
         }
+
         template <typename T, int N>
         Vector<T, N> TransformPoint(const Vector<T, N>& lhs,
                                     const Matrix<T, N, N>& rhs)
@@ -108,6 +109,12 @@ namespace vEngine
             }
             return ret;
         }
+        template <typename T, int N>
+        Matrix<T, N, N> OuterProduct(Vector<T, N> const& lhs,
+                                     Vector<T, N> const& rhs)
+        {
+            static_assert(false);
+        }
 
         template <typename T, int M, int S, int N>
         Matrix<T, M, N> Multiply(const Matrix<T, S, N>& lhs,
@@ -129,6 +136,22 @@ namespace vEngine
             }
             return ret;
         }
+
+        template <typename T>
+        Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect,
+                                         const T zn, const T zf)
+        {
+            float y_scale = Cot(fovy / 2);
+            float x_scale = y_scale / aspect;
+            float m33 = zf / (zf - zn);
+
+            return Matrix<T, 4, 4>(
+                x_scale,    0, 0,         0,
+                0,    y_scale, 0,         0,
+                0,          0, m33,       1, 
+                0,          0, -zn * m33, 0);
+        }
+
     }  // namespace Math
 }  // namespace vEngine
 
