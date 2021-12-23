@@ -81,25 +81,35 @@ namespace vEngine
         /// \param epsilon
         /// \return true
         /// \return false
-        bool CORE_API IsFloatEqual(float& lhs, float& rhs, float epsilon);
+        bool CORE_API IsFloatEqual(float& lhs, float& rhs, const float epsilon);
+
+        /// \brief Check if two floats are less different than epsilon
+        ///
+        /// \param lhs
+        /// \param rhs
+        /// \param epsilon
+        /// \return true
+        /// \return false
+        bool CORE_API IsFloatEqual(const float& lhs, const float& rhs,
+                                   const float epsilon);
 
         /// \brief return absolute of a number
         ///
         /// \param num
         /// \return float
-        float Abs(float num);
+        float CORE_API Abs(float num);
 
-        float Sqrt(float x);
-        float Sin(float x);
-        float Cos(float x);
-        float ArcCos(float x);
-        float Tan(float x);
-        float ArcTan(float x);
-        float Cot(float x);
-        float InvSqrt(float number);
+        float CORE_API Sqrt(float x);
+        float CORE_API Sin(float x);
+        float CORE_API Cos(float x);
+        float CORE_API ArcCos(float x);
+        float CORE_API Tan(float x);
+        float CORE_API ArcTan(float x);
+        float CORE_API Cot(float x);
+        float CORE_API InvSqrt(float number);
 
-        float Ln(float x);
-        float Pow(float base, float exp);
+        float CORE_API Ln(float x);
+        float CORE_API Pow(float base, float exp);
 
         /// \brief if a number(only float/double) is NAN(not a number)
         ///
