@@ -8,7 +8,48 @@
 
 namespace vEngine
 {
-    /// \brief Math Functions
+    /// \brief Math Functions \n
+	/// Brief contine
+	///
+	/// This implementation of Math/Engine libraries basically follows
+	/// conventions of DirectX/HLSL/Windows.
+	/// 
+	/// Row major system
+	/// ========================
+	/// - Vector is row major [x,y,z,w]
+	/// - Matrix is row major \n
+	/// \code 
+	/// [e0, e1, e2, e3 ]
+	/// [e4, e5, e6, e7 ]
+	/// [e8, e9, e10,e11]
+	/// [e12,e13,e14,e15]
+	/// \endcode 
+	/// 
+	/// Left-hand system
+	/// ========================
+	/// - Z-Axis positive direction points into screen
+	/// - Direction of cross product of two vectors follows \n 
+	/// left hand rule(clock-wise)
+	///
+	/// Left-multiply system
+	/// ========================
+	/// - Vector left multiply Matrix \n 
+	/// \code 
+	/// v[x,y,z,w]*[m00,m01,m02,m03]
+	///            [m10,m11,m12,m13]
+	///            [m20,m21,m22,m23]
+	///            [m30,m31,m32,m33]
+	/// \endcode
+	///
+	/// Matrix/Projection conversion
+	/// ========================
+	/// - Z value range [0,1]
+	/// - Z value direction [near, far]
+	///
+	/// Detailed Doc of Math Heading 1
+	/// ========================
+	/// Something after heading
+	/// with function reference \ref Abs and \ref IsNAN
     namespace Math
     {
         /// \brief PI constant
@@ -16,24 +57,6 @@ namespace vEngine
 
         /// \brief E constant
         float const E = 2.718281828f;
-
-        /// \brief if a number(only float/double) is NAN(not a number)
-        ///
-        /// \tparam T should be float/double, int will be a compile error
-        /// \param x
-        /// \return true
-        /// \return false
-        template <typename T>
-        bool IsNAN(T& x);
-
-        /// \brief if a number is INF(infinity)
-        ///
-        /// \tparam T
-        /// \param x
-        /// \return true
-        /// \return false
-        template <typename T>
-        bool IsINF(T& x);
 
         /// \brief Check if two floats are equal
         ///
@@ -78,6 +101,24 @@ namespace vEngine
         float Ln(float x);
         float Pow(float base, float exp);
 
+        /// \brief if a number(only float/double) is NAN(not a number)
+        ///
+        /// \tparam T should be float/double, int will be a compile error
+        /// \param x
+        /// \return true
+        /// \return false
+        template <typename T>
+        bool IsNAN(T& x);
+
+        /// \brief if a number is INF(infinity)
+        ///
+        /// \tparam T
+        /// \param x
+        /// \return true
+        /// \return false
+        template <typename T>
+        bool IsINF(T& x);
+
         template <typename T>
         T Min(T& lhs, T& rhs);
         template <typename T>
@@ -115,5 +156,7 @@ namespace vEngine
     }  // namespace Math
 }  // namespace vEngine
 
+//include template definitions after declearations above
+//for separate declearation/definition of template functions
 #include <vengine/core/math.hpp>
 #endif /* _MATH_H */
