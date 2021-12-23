@@ -11,13 +11,13 @@ namespace vEngine
     {
         /// Detailed function doc
         template <typename T>
-        bool IsNAN(T& x)
+        bool IsNAN(const T& x)
         {
             return std::isnan(x);
         }
 
         template <typename T>
-        bool IsINF(T& x)
+        bool IsINF(const T& x)
         {
             return std::isinf(x);
         }
@@ -38,9 +38,20 @@ namespace vEngine
         {
             return value < min ? min : value > max ? max : value;
         }
+        template <typename T, int N>
+        void Identity(Matrix<T, N, N>& lhs)
+        {
+            for (auto r = 0; r < lhs.row; ++r)
+            {
+                for (auto c = 0; c < lhs.col; ++c)
+                {
+                    lhs[r][c] = static_cast<T>(r == c ? 1 : 0);
+                }
+            }
+        }
 
         template <typename T, int N>
-        T Dot(Vector<T, N> const& lhs, Vector<T, N> const& rhs)
+        T Dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
         {
             T ret{0};
             for (auto i = 0; i < N; ++i) ret += lhs[i] * rhs[i];
@@ -48,7 +59,7 @@ namespace vEngine
         }
 
         template <typename T>
-        Vector<T, 3> Cross(Vector<T, 3> const& lhs, Vector<T, 3> const& rhs)
+        Vector<T, 3> Cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)
         {
             return Vector<T, 3>(lhs.y() * rhs.z() - lhs.z() * rhs.y(),
                                 lhs.z() * rhs.x() - lhs.x() * rhs.z(),
@@ -66,15 +77,37 @@ namespace vEngine
         Vector<T, N> TransformPoint(const Vector<T, N>& lhs,
                                     const Matrix<T, N, N>& rhs)
         {
-            // Matrix<T, N, N> v(lhs);
-            // // return Multiply(v, rhs)[0];
-            // retunr v;
-            return Vector<T, N>();
+            // the last element of position will be 1
+            CHECK_ASSERT(IsFloatEqual(lhs[N - 1], 1));
+
+            Vector<T, N> ret;
+            for (auto i = 0; i < lhs.size; ++i)
+            {
+                for (auto j = 0; j < rhs.row; ++j)
+                {
+                    ret[i] += lhs[i] * rhs[i][j];
+                }
+            }
+            ret *= 1.0f / ret[N - 1];
+            return ret;
         }
-        // template <typename T, int M, int N>
-        // Matrix<T, M, N> Multiply(const Vector<T, M>& lhs,
-        //                          const Matrix<T, M, N>& rhs)
-        // {}
+        template <typename T, int N>
+        Vector<T, N> TransformVector(const Vector<T, N>& lhs,
+                                     const Matrix<T, N, N>& rhs)
+        {
+            // the last element of vector will be 0
+            CHECK_ASSERT(IsFloatEqual(lhs[N - 1], 0));
+
+            Vector<T, N> ret;
+            for (auto i = 0; i < lhs.size; ++i)
+            {
+                for (auto j = 0; j < rhs.row; ++j)
+                {
+                    ret[i] += lhs[i] * rhs[i][j];
+                }
+            }
+            return ret;
+        }
 
         template <typename T, int M, int S, int N>
         Matrix<T, M, N> Multiply(const Matrix<T, S, N>& lhs,
@@ -83,12 +116,12 @@ namespace vEngine
             // CHECK_ASSERT(lhs.row == rhs.col);
             Matrix<T, M, N> ret;
 
-            for (auto row = 0; row < lhs.row; row++)
+            for (auto row = 0; row < lhs.row; ++row)
             {
-                for (auto col = 0; col < rhs.col; col++)
+                for (auto col = 0; col < rhs.col; ++col)
                 {
                     ret[row][col] = 0;
-                    for (auto i = 0; i < S; i++)
+                    for (auto i = 0; i < S; ++i)
                     {
                         ret[row][col] += lhs[row][i] * rhs[i][col];
                     }

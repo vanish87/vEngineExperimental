@@ -24,9 +24,9 @@ namespace vEngine
     /// [e8,  e9,  e10, e11]
     /// [e12, e13, e14, e15]
     /// \endcode
-    /// - Matrix<T, M, N> will define a M x N matrix with M elements in each row,
-    /// and N rows. \n 
-    /// So the row variable will be N, the col variable will be M
+    /// - Matrix<T, M, N> will define a M x N matrix with M elements in each
+    /// row, and N rows. \n So the row variable will be N, the col variable will
+    /// be M
     ///
     /// Left-hand system
     /// ========================
@@ -121,7 +121,7 @@ namespace vEngine
         /// \return true
         /// \return false
         template <typename T>
-        bool IsNAN(T& x);
+        bool IsNAN(const T& x);
 
         /// \brief if a number is INF(infinity)
         ///
@@ -130,25 +130,27 @@ namespace vEngine
         /// \return true
         /// \return false
         template <typename T>
-        bool IsINF(T& x);
+        bool IsINF(const T& x);
 
         template <typename T>
-        T Min(T& lhs, T& rhs);
+        T Min(const T& lhs, const T& rhs);
         template <typename T>
-        T Max(T& lhs, T& rhs);
+        T Max(const T& lhs, const T& rhs);
 
-		template <typename T>
-		T Clamp(const T& value, const T& min,const T& max );
-		
+        template <typename T>
+        T Clamp(const T& value, const T& min, const T& max);
 
         template <typename T, int N = 4>
-        T Dot(Vector<T, N> const& lhs, Vector<T, N> const& rhs);
+        void Identity(Matrix<T, N, N>& lhs);
+
+        template <typename T, int N = 4>
+        T Dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs);
 
         template <typename T>
-        Vector<T, 3> Cross(Vector<T, 3> const& lhs, Vector<T, 3> const& rhs);
+        Vector<T, 3> Cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs);
 
         template <typename T>
-        T Normalize(T const& rhs);
+        T Normalize(const T& rhs);
 
         template <typename T, int N = 4>
         Vector<T, N> TransformPoint(const Vector<T, N>& lhs,
@@ -157,10 +159,6 @@ namespace vEngine
         template <typename T, int N = 4>
         Vector<T, N> TransformVector(const Vector<T, N>& lhs,
                                      const Matrix<T, N, N>& rhs);
-
-        template <typename T, int N = 4>
-        Vector<T, N> Transform(const Vector<T, N>& lhs,
-                               const Matrix<T, N, N>& rhs);
 
         template <typename T, int N = 4>
         Matrix<T, N, N> OuterProduct(Vector<T, N> const& lhs,

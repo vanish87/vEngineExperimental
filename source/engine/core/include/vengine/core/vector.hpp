@@ -137,7 +137,7 @@ namespace vEngine
             public:
                 static const Vector<T, N>& Zero()
                 {
-                    static const Vector<T, N> zero{0};
+                    static const Vector<T, N> zero(T(0));
                     return zero;
                 }
                 static const Vector<T, N>& One()

@@ -32,7 +32,11 @@ TEST(Math, Matrix)
     auto v5 = Normalize(v1);
 
     float4x4 mpv;
-    float4 point;
+    float4 point(3,1,2,1);
 
     auto ndc = TransformPoint(point, mpv);
+    auto newndc = TransformVector(float4::Zero(), mpv);
+
+    float4x4 identity;
+    Identity(identity);
 }
