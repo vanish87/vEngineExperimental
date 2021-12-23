@@ -31,7 +31,7 @@ TEST(Math, Matrix)
 
     auto v5 = Normalize(v1);
 
-    float4x4 mpv;
+    float4x4 mpv = PerspectiveFovLH(0.5f, 1.2f, 2.0f, 200.0f);
     float4 point(3,1,2,1);
 
     auto ndc = TransformPoint(point, mpv);
@@ -39,4 +39,5 @@ TEST(Math, Matrix)
 
     float4x4 identity;
     Identity(identity);
+
 }
