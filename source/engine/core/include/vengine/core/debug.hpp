@@ -38,6 +38,11 @@ void ErrorText(std::string text);
 		PRINT_FILE_AND_FUCTION;\
 		DEBUG_BREAK}\
 }
+#define NOTIMPL_ASSERT() \
+{\
+		PRINT_FILE_AND_FUCTION;\
+		DEBUG_BREAK\
+}
 #define COMPILE_PRINT_AND_ASSERT(exp, x) {static_assert(exp, x);}
 
 #define DEBUG_CLASS_FILE_NAME virtual std::string GetName() override { return __FILE__; };
