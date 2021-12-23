@@ -14,7 +14,7 @@ namespace vEngine
         class Matrix
         {
             private:
-                typedef Vector<Vector<T, M>, N> DataType;
+                typedef Vector<Vector<T, N>, M> DataType;
 
                 DataType data_;
 

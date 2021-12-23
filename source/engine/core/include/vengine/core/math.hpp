@@ -28,17 +28,20 @@ namespace vEngine
         {
             CHECK_ASSERT(lhs.col == rhs.row);
             Matrix<T, I, K> ret;
-            std::size_t dim = J;
 
-            for (int row = 0; row < dim; row++)
-                for (int col = 0; col < dim; col++)
+            for (auto row = 0; row < I; row++)
+            {
+                for (auto col = 0; col < K; col++)
                 {
                     ret[row][col] = 0;
-                    for (int i = 0; i < dim; i++)
+                    for (auto i = 0; i < J; i++)
+                    {
                         ret[row][col] += lhs[row][i] * rhs[i][col];
+                    }
                 }
+            }
             return ret;
-		}
+        }
     }  // namespace Math
 }  // namespace vEngine
 
