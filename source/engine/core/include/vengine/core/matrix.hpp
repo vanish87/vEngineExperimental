@@ -10,6 +10,14 @@ namespace vEngine
 {
     namespace Math
     {
+        /// \brief Define a MxN matrix with data type T
+        /// 
+        /// Note M is number of row elements, N is number of col elements. \n
+        /// use matrix[row][col] to assess data. \n
+        /// the data layout is colum major, see Math for details.
+        /// \tparam T 
+        /// \tparam M number of row elements
+        /// \tparam N number of col elements
         template <typename T = float, int M = 4, int N = 4>
         class Matrix
         {
