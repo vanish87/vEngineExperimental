@@ -17,13 +17,17 @@ namespace vEngine
     /// Row major system
     /// ========================
     /// - Vector is row major [x,y,z,w]
-    /// - Matrix is colum major \n
+    /// - Matrix is row major \n
     /// \code
-    /// [e0, e4, e8, e12]
-    /// [e1, e5, e9, e13]
-    /// [e2, e6, e10,e14]
-    /// [e3, e7, e11,e15]
+    /// [e0,  e1,  e2,  e3 ]
+    /// [e4,  e5,  e6,  e7 ]
+    /// [e8,  e9,  e10, e11]
+    /// [e12, e13, e14, e15]
     /// \endcode
+    /// - Matrix<T, M, N> will define \n
+    /// a MxN matrix with M elements in each row,
+    /// and N rows. So the row variable will be N, 
+    /// the col variable will be M
     ///
     /// Left-hand system
     /// ========================
