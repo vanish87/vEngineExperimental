@@ -56,7 +56,7 @@ TEST(Math, Matrix)
 
     auto view = LookAtLH(float3(0, 0, -10), float3(2, 3, 6), float3(0,1,0));
     UNUSED_PARAMETER(view);
-    
+
     float4x4 rot;
 
     XRotation(rot, 2);
@@ -68,4 +68,6 @@ TEST(Math, Matrix)
     float4x4 trans;
     Translate(trans, 2, 4, 5);
     Scale(trans, 20);
+
+    auto inv = Inverse(mpv);
 }

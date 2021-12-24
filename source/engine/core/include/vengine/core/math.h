@@ -167,6 +167,9 @@ namespace vEngine
         template <typename T>
         T Determinant(const Matrix<T, 4, 4>& matrix);
 
+        template <typename T>
+        Matrix<T, 4, 4> Inverse(const Matrix<T, 4, 4>& matrix);
+
         //=================================================
         // View/Projection related functions
 
