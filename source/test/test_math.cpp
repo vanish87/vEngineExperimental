@@ -44,4 +44,7 @@ TEST(Math, Matrix)
 
     auto transpose = Transpose(mpv);
     auto tb = Transpose(Matrix<float, 200, 300>());
+
+    auto det = Determinant(mpv);
+    det ++;
 }

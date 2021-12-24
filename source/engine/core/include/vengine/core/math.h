@@ -162,6 +162,10 @@ namespace vEngine
         Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect,
                                          const T zn, const T zf);
 
+
+        template <typename T>
+        T Determinant(const Matrix<T, 4, 4>& matrix);
+
     }  // namespace Math
 }  // namespace vEngine
 

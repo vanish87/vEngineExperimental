@@ -165,6 +165,37 @@ namespace vEngine
                 0,          0, -zn * m33, 0);
         }
 
+        template<typename T>
+        T Determinant(const Matrix<T, 4,4>& matrix)
+        {
+            // from KlayGE
+            T const _3142_3241(matrix[2][0] * matrix[3][1] -
+                               matrix[2][1] * matrix[3][0]);
+            T const _3143_3341(matrix[2][0] * matrix[3][2] -
+                               matrix[2][2] * matrix[3][0]);
+            T const _3144_3441(matrix[2][0] * matrix[3][3] -
+                               matrix[2][3] * matrix[3][0]);
+            T const _3243_3342(matrix[2][1] * matrix[3][2] -
+                               matrix[2][2] * matrix[3][1]);
+            T const _3244_3442(matrix[2][1] * matrix[3][3] -
+                               matrix[2][3] * matrix[3][1]);
+            T const _3344_3443(matrix[2][2] * matrix[3][3] -
+                               matrix[2][3] * matrix[3][2]);
+
+            return matrix[0][0] *
+                       (matrix[1][1] * _3344_3443 - matrix[1][2] * _3244_3442 +
+                        matrix[1][3] * _3243_3342) -
+                   matrix[0][1] *
+                       (matrix[1][0] * _3344_3443 - matrix[1][2] * _3144_3441 +
+                        matrix[1][3] * _3143_3341) +
+                   matrix[0][2] *
+                       (matrix[1][0] * _3244_3442 - matrix[1][1] * _3144_3441 +
+                        matrix[1][3] * _3142_3241) -
+                   matrix[0][3] *
+                       (matrix[1][0] * _3243_3342 - matrix[1][1] * _3143_3341 +
+                        matrix[1][2] * _3142_3241);
+        }
+
     }  // namespace Math
 }  // namespace vEngine
 
