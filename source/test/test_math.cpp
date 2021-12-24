@@ -56,4 +56,16 @@ TEST(Math, Matrix)
 
     auto view = LookAtLH(float3(0, 0, -10), float3(2, 3, 6), float3(0,1,0));
     UNUSED_PARAMETER(view);
+    
+    float4x4 rot;
+
+    XRotation(rot, 2);
+    YRotation(rot, 2);
+    ZRotation(rot, 2);
+
+    RotationAxis(rot, float3(1,2,3), 3.14f);
+
+    float4x4 trans;
+    Translate(trans, 2, 4, 5);
+    Scale(trans, 20);
 }

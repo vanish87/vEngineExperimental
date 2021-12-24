@@ -53,15 +53,4 @@ TEST(Matrix, Compare)
     // Matrix<float, 5000, 2000> mb5(80);
     auto mb3 = Multiply(mb1, mb2);
 
-    float4x4 rot;
-
-    XRotation(rot, 2);
-    YRotation(rot, 2);
-    ZRotation(rot, 2);
-
-    RotationAxis(rot, float3(1,2,3), 3.14f);
-
-    float4x4 trans;
-    Translate(trans, 2, 4, 5);
-    Scale(trans, 20);
 }
