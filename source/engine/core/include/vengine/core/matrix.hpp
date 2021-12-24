@@ -57,25 +57,25 @@ namespace vEngine
                     static_assert(M == 4);
                     static_assert(N == 4);
 
-                    this->data_[0][0] = m00;
-                    this->data_[0][1] = m01;
-                    this->data_[0][2] = m02;
-                    this->data_[0][3] = m03;
+                    this->data_[0][0] = std::move(m00);
+                    this->data_[0][1] = std::move(m01);
+                    this->data_[0][2] = std::move(m02);
+                    this->data_[0][3] = std::move(m03);
 
-                    this->data_[1][0] = m10;
-                    this->data_[1][1] = m11;
-                    this->data_[1][2] = m12;
-                    this->data_[1][3] = m13;
+                    this->data_[1][0] = std::move(m10);
+                    this->data_[1][1] = std::move(m11);
+                    this->data_[1][2] = std::move(m12);
+                    this->data_[1][3] = std::move(m13);
 
-                    this->data_[2][0] = m20;
-                    this->data_[2][1] = m21;
-                    this->data_[2][2] = m22;
-                    this->data_[2][3] = m23;
-
-                    this->data_[3][0] = m30;
-                    this->data_[3][1] = m31;
-                    this->data_[3][2] = m32;
-                    this->data_[3][3] = m33;
+                    this->data_[2][0] = std::move(m20);
+                    this->data_[2][1] = std::move(m21);
+                    this->data_[2][2] = std::move(m22);
+                    this->data_[2][3] = std::move(m23);
+                    
+                    this->data_[3][0] = std::move(m30);
+                    this->data_[3][1] = std::move(m31);
+                    this->data_[3][2] = std::move(m32);
+                    this->data_[3][3] = std::move(m33);
                 }
 
                 // explicit one parameter constructor to avoid implicit
