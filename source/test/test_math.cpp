@@ -36,8 +36,8 @@ TEST(Math, Matrix)
     float4x4 mpv = PerspectiveFovLH(0.5f, 1.2f, 2.0f, 200.0f);
     float4 point(3,1,2,1);
 
-    auto ndc = TransformPoint(point, mpv);
-    auto newndc = TransformVector(float4::Zero(), mpv);
+    // auto ndc = TransformPoint(point, mpv);
+    // auto newndc = TransformVector(float4::Zero(), mpv);
 
     float4x4 identity;
     Identity(identity);
