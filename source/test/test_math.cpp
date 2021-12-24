@@ -47,4 +47,13 @@ TEST(Math, Matrix)
 
     auto det = Determinant(mpv);
     det ++;
+
+    auto outer = OuterProduct(v1, v2);
+    UNUSED_PARAMETER(outer);
+
+    auto outer1 = OuterProduct(Vector<float, 5>(), Vector<float, 10>());
+    UNUSED_PARAMETER(outer1);
+
+    auto view = LookAtLH(float3(0, 0, -10), float3(2, 3, 6), float3(0,1,0));
+    UNUSED_PARAMETER(view);
 }

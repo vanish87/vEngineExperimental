@@ -122,11 +122,21 @@ namespace vEngine
             }
             return ret;
         }
-        template <typename T, int N>
-        Matrix<T, N, N> OuterProduct(Vector<T, N> const& lhs,
-                                     Vector<T, N> const& rhs)
+        template <typename T, int M, int N>
+        Matrix<T, M, N> OuterProduct(const Vector<T, M> & lhs,
+                                     const Vector<T, N> & rhs)
         {
-            NOTIMPL_ASSERT();
+            Matrix<T, M, N> ret;
+
+            for (size_t n = 0; n < N; ++n)
+            {
+                for (size_t m = 0; m < M; ++m)
+                {
+                    ret[n][m] = lhs[m] * rhs[n];
+                }
+            }
+
+            return ret;
         }
 
         template <typename T, int M, int S, int N>
@@ -148,21 +158,6 @@ namespace vEngine
                 }
             }
             return ret;
-        }
-
-        template <typename T>
-        Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect,
-                                         const T zn, const T zf)
-        {
-            float y_scale = Cot(fovy / 2);
-            float x_scale = y_scale / aspect;
-            float m33 = zf / (zf - zn);
-
-            return Matrix<T, 4, 4>(
-                x_scale,    0, 0,         0,
-                0,    y_scale, 0,         0,
-                0,          0, m33,       1, 
-                0,          0, -zn * m33, 0);
         }
 
         template<typename T>
@@ -195,6 +190,36 @@ namespace vEngine
                        (matrix[1][0] * _3243_3342 - matrix[1][1] * _3143_3341 +
                         matrix[1][2] * _3142_3241);
         }
+        template <typename T>
+        Matrix<T, 4, 4> LookAtLH(const Vector<T, 3>& eye,
+                                 const Vector<T, 3>& at, const Vector<T, 3>& up)
+        {
+            auto zaxis = Normalize(at - eye);
+            auto xaxis = Normalize(Cross(up, zaxis));
+            auto yaxis = Cross(zaxis, xaxis);
+
+            return Matrix<T, 4, 4>(
+                xaxis.x(), yaxis.x(), zaxis.x(), 0,
+                xaxis.y(), yaxis.y(), zaxis.y(), 0,
+                xaxis.z(), yaxis.z(), zaxis.z(), 0,
+                -Dot(xaxis, eye), -Dot(yaxis, eye), -Dot(zaxis, eye), 1);
+        }
+
+        template <typename T>
+        Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect,
+                                         const T zn, const T zf)
+        {
+            float y_scale = Cot(fovy / 2);
+            float x_scale = y_scale / aspect;
+            float m33 = zf / (zf - zn);
+
+            return Matrix<T, 4, 4>(
+                x_scale,    0, 0,         0,
+                0,    y_scale, 0,         0,
+                0,          0, m33,       1, 
+                0,          0, -zn * m33, 0);
+        }
+
 
     }  // namespace Math
 }  // namespace vEngine

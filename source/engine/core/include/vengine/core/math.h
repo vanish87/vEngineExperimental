@@ -61,6 +61,9 @@ namespace vEngine
         /// \brief E constant
         float const E = 2.718281828f;
 
+        //=================================================
+        //float related functions
+
         /// \brief Check if two const floats are equal
         ///
         /// \param lhs
@@ -123,6 +126,9 @@ namespace vEngine
         template <typename T>
         T Clamp(const T& value, const T& min, const T& max);
 
+        //=================================================
+        //Vector/Matrix related functions
+
         template <typename T, int N = 4>
         void Identity(Matrix<T, N, N>& lhs);
 
@@ -146,9 +152,9 @@ namespace vEngine
         Vector<T, N> TransformVector(const Vector<T, N>& lhs,
                                      const Matrix<T, N, N>& rhs);
 
-        template <typename T, int N = 4>
-        Matrix<T, N, N> OuterProduct(Vector<T, N> const& lhs,
-                                     Vector<T, N> const& rhs);
+        template <typename T, int M = 4, int N = 4>
+        Matrix<T, M, N> OuterProduct(const Vector<T, M>& lhs,
+                                     const Vector<T, N>& rhs);
 
         // template <typename T, int M = 4, int N = 4>
         // Vector<T, M> Multiply(const Vector<T, M>& lhs,
@@ -159,12 +165,19 @@ namespace vEngine
                                  const Matrix<T, M, S>& rhs);
 
         template <typename T>
-        Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect,
-                                         const T zn, const T zf);
+        T Determinant(const Matrix<T, 4, 4>& matrix);
 
+        //=================================================
+        //View/Projection related functions
 
         template <typename T>
-        T Determinant(const Matrix<T, 4, 4>& matrix);
+        Matrix<T, 4, 4> LookAtLH(const Vector<T, 3>& eye,
+                                 const Vector<T, 3>& at,
+                                 const Vector<T, 3>& up);
+
+        template <typename T>
+        Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect,
+                                         const T zn, const T zf);
 
     }  // namespace Math
 }  // namespace vEngine

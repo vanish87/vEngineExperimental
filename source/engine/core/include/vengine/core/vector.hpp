@@ -282,33 +282,32 @@ namespace vEngine
                 // Boost defined operator
             public:
                 template <typename U>
-                constexpr Vector operator+(const Vector<U, N>& other) noexcept
+                constexpr Vector operator+(
+                    const Vector<U, N>& other) const noexcept
                 {
                     return Vector(*this) += other;
                 }
                 template <typename U>
-                constexpr Vector operator-(const Vector<U, N>& other) noexcept
+                constexpr Vector operator-(
+                    const Vector<U, N>& other) const noexcept
                 {
                     return Vector(*this) -= other;
                 }
                 template <typename U>
-                constexpr Vector operator*(const Vector<U, N>& other) noexcept
+                constexpr Vector operator*(
+                    const Vector<U, N>& other) const noexcept
                 {
                     return Vector(*this) *= other;
                 }
                 // TODO: ambiguous multiply function, use scale
-                template <typename U>
-                constexpr Vector operator*(const U& other) noexcept
-                {
-                    return Vector(*this) *= other;
-                }
                 template <typename U>
                 constexpr Vector operator*(const U& other) const noexcept
                 {
                     return Vector(*this) *= other;
                 }
                 template <typename U>
-                constexpr Vector operator/(const Vector<U, N>& other) noexcept
+                constexpr Vector operator/(
+                    const Vector<U, N>& other) const noexcept
                 {
                     return Vector(*this) /= other;
                 }
