@@ -22,7 +22,7 @@ namespace vEngine
             if (IsNAN(lhs) || IsNAN(rhs)) return false;
             if (IsINF(lhs) || IsINF(rhs)) return false;
             // checking sign
-            if ((std::signbit)(lhs) != (std::signbit)(rhs))
+            if (std::signbit(lhs) != std::signbit(rhs))
             {
                 // for +0.0 and -0.0 error
                 if (lhs == rhs) return true;
@@ -34,21 +34,14 @@ namespace vEngine
             return false;
         }
 
-        bool IsFloatEqual(float& lhs, float& rhs)
-        {
-            return CompareFloat(lhs, rhs);
-        }
+        // bool IsFloatEqual(float& lhs, float& rhs)
+        // {
+        //     return CompareFloat(lhs, rhs);
+        // }
 
         bool IsFloatEqual(const float& lhs, const float& rhs)
         {
             return CompareFloat(lhs, rhs);
-        }
-        /// Another way to compare float with epsilon
-        bool IsFloatEqual(float& lhs, float& rhs, const float epsilon)
-        {
-            auto e = Math::Abs(epsilon);
-            // CHECK_ASSERT(epsilon != 0);
-            return Math::Abs(lhs - rhs) < e;
         }
         /// Another way to compare float with epsilon
         bool IsFloatEqual(const float& lhs, const float& rhs,

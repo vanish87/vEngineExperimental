@@ -61,14 +61,6 @@ namespace vEngine
         /// \brief E constant
         float const E = 2.718281828f;
 
-        /// \brief Check if two floats are equal
-        ///
-        /// \param lhs
-        /// \param rhs
-        /// \return true
-        /// \return false
-        bool CORE_API IsFloatEqual(float& lhs, float& rhs);
-
         /// \brief Check if two const floats are equal
         ///
         /// \param lhs
@@ -76,15 +68,6 @@ namespace vEngine
         /// \return true
         /// \return false
         bool CORE_API IsFloatEqual(const float& lhs, const float& rhs);
-
-        /// \brief Check if two floats are less different than epsilon
-        ///
-        /// \param lhs
-        /// \param rhs
-        /// \param epsilon
-        /// \return true
-        /// \return false
-        bool CORE_API IsFloatEqual(float& lhs, float& rhs, const float epsilon);
 
         /// \brief Check if two floats are less different than epsilon
         ///
