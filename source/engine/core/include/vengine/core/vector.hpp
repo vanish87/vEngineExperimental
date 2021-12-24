@@ -85,7 +85,7 @@ namespace vEngine
                 virtual ~Vector() noexcept {}
 
                 // big five - 4: move constructor
-                // const is not need: constexpr Vector(const Vector &&other)
+                // const is not needed: constexpr Vector(const Vector &&other)
                 // The move constructor:
                 // - Takes an r-value reference as a parameter.
                 // - Discards the object’s current state.
