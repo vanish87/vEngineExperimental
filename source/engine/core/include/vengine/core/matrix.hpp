@@ -4,8 +4,8 @@
 #pragma once
 
 #include <vengine/core/math.h>
-
 #include <vengine/core/vector.hpp>
+#include <vengine/core/debug.hpp>
 
 namespace vEngine
 {
@@ -243,6 +243,7 @@ namespace vEngine
                 template <typename U>
                 const Matrix& operator*=(const Matrix<U, N>& other) noexcept
                 {
+                    UNUSED_PARAMETER(other);
                     // ambiguous operator
                     assert(false);
                     return *this;
@@ -250,6 +251,7 @@ namespace vEngine
                 template <typename U>
                 const Matrix& operator/=(const Matrix<U, N>& other) noexcept
                 {
+                    UNUSED_PARAMETER(other);
                     assert(false);
                     return *this;
                 }
