@@ -15,6 +15,8 @@
 
 #include "interface.h"
 
+#include <vengine/core/debug.hpp>
+
 using namespace vEngine::Core;
 using namespace vEngine::Math;
 
@@ -35,6 +37,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 int main(int argc, char* argv[])
 {
+    UNUSED_PARAMETER(argc);
+    UNUSED_PARAMETER(argv);
+    
     HINSTANCE hInstance = ::GetModuleHandle(nullptr);
 
     WinndowRect wind;

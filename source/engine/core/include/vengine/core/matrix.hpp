@@ -43,9 +43,9 @@ namespace vEngine
                 typedef typename DataType::size_type size_type;
                 typedef typename DataType::difference_type difference_type;
 
-                static constexpr size_t size = M * N;
-                static constexpr size_t row = N;
-                static constexpr size_t col = M;
+                static constexpr size_type size = M * N;
+                static constexpr size_type row = N;
+                static constexpr size_type col = M;
 
             public:
                 // use init list {} to initialize data
@@ -211,12 +211,12 @@ namespace vEngine
                     return &(this->data_[0]);
                 }
 
-                reference operator[](size_t index) noexcept
+                reference operator[](size_type index) noexcept
                 {
                     return this->data_[index];
                 }
                 constexpr const_reference operator[](
-                    size_t index) const noexcept
+                    size_type index) const noexcept
                 {
                     return this->data_[index];
                 }
@@ -225,7 +225,7 @@ namespace vEngine
                 template <typename U>
                 const Matrix& operator+=(const Matrix<U, N>& other) noexcept
                 {
-                    for (auto r = 0; r < row; ++r)
+                    for (size_type r = 0; r < row; ++r)
                     {
                         this->data_[r] += other.data_[r];
                     }
@@ -234,7 +234,7 @@ namespace vEngine
                 template <typename U>
                 const Matrix& operator-=(const Matrix<U, N>& other) noexcept
                 {
-                    for (auto r = 0; r < row; ++r)
+                    for (size_type r = 0; r < row; ++r)
                     {
                         this->data_[r] -= other.data_[r];
                     }
@@ -260,7 +260,7 @@ namespace vEngine
                 Matrix const operator-() const noexcept
                 {
                     Matrix ret;
-                    for (auto r = 0; r < row; ++r)
+                    for (size_type r = 0; r < row; ++r)
                     {
                         ret.data_[r] = -this->data_[r];
                     }
@@ -269,7 +269,7 @@ namespace vEngine
 
                 bool operator==(const Matrix& other) const noexcept
                 {
-                    for (auto r = 0; r < row; ++r)
+                    for (size_type r = 0; r < row; ++r)
                     {
                         if (this->data_[r] != other.data_[r]) return false;
                     }

@@ -7,6 +7,8 @@
 #include <tchar.h>//wchar
 #include <string>
 
+#include <vengine/core/debug.hpp>
+
 using namespace DirectX;
 
 
@@ -38,6 +40,7 @@ void InitD3D(HWND hWnd, int Width, int Height)
 	if (!hWnd)
 	{
 		HRESULT Res = GetLastError();
+		UNUSED_PARAMETER(Res);
 		MessageBox(0, "Error !\n", "Hi", MB_ICONINFORMATION);
 	}
 
@@ -78,6 +81,8 @@ void InitD3D(HWND hWnd, int Width, int Height)
 		&d3d_imm_context_);
 
 	HRESULT result = d3d_swap_chain_->ResizeBuffers(1, Width, Height, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
+
+	UNUSED_PARAMETER(result);
 
 	// get the address of the back buffer
 	ID3D11Texture2D *pBackBuffer;

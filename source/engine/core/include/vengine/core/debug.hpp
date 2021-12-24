@@ -48,4 +48,6 @@ void ErrorText(std::string text);
 #define DEBUG_CLASS_FILE_NAME virtual std::string GetName() override { return __FILE__; };
 #define DEBUG_CLASS_NAME(x) virtual std::string GetName() override { return x; };
 
+#define UNUSED_PARAMETER(x) (&reinterpret_cast<const int&>(x))
+
 #endif /* _DEBUG_HPP */

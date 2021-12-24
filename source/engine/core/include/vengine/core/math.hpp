@@ -41,9 +41,9 @@ namespace vEngine
         template <typename T, int N>
         void Identity(Matrix<T, N, N>& lhs)
         {
-            for (auto r = 0; r < lhs.row; ++r)
+            for (size_t r = 0; r < lhs.row; ++r)
             {
-                for (auto c = 0; c < lhs.col; ++c)
+                for (size_t c = 0; c < lhs.col; ++c)
                 {
                     lhs[r][c] = static_cast<T>(r == c ? 1 : 0);
                 }
@@ -53,9 +53,9 @@ namespace vEngine
         Matrix<T, N, M> Transpose(const Matrix<T, M, N>& lhs)
 		{
             Matrix<T, N, M> ret;
-            for (auto r = 0; r < lhs.row; ++r)
+            for (size_t r = 0; r < lhs.row; ++r)
             {
-                for (auto c = 0; c < lhs.col; ++c)
+                for (size_t c = 0; c < lhs.col; ++c)
                 {
                     ret[c][r] = lhs[r][c];
                 }
@@ -95,9 +95,9 @@ namespace vEngine
             CHECK_ASSERT(IsFloatEqual(lhs[N - 1], 1));
 
             Vector<T, N> ret;
-            for (auto i = 0; i < lhs.size; ++i)
+            for (size_t i = 0; i < lhs.size; ++i)
             {
-                for (auto j = 0; j < rhs.row; ++j)
+                for (size_t j = 0; j < rhs.row; ++j)
                 {
                     ret[i] += lhs[i] * rhs[i][j];
                 }
@@ -113,9 +113,9 @@ namespace vEngine
             CHECK_ASSERT(IsFloatEqual(lhs[N - 1], 0));
 
             Vector<T, N> ret;
-            for (auto i = 0; i < lhs.size; ++i)
+            for (size_t i = 0; i < lhs.size; ++i)
             {
-                for (auto j = 0; j < rhs.row; ++j)
+                for (size_t j = 0; j < rhs.row; ++j)
                 {
                     ret[i] += lhs[i] * rhs[i][j];
                 }
@@ -136,12 +136,12 @@ namespace vEngine
             // CHECK_ASSERT(lhs.row == rhs.col);
             Matrix<T, M, N> ret;
 
-            for (auto row = 0; row < lhs.row; ++row)
+            for (size_t row = 0; row < lhs.row; ++row)
             {
-                for (auto col = 0; col < rhs.col; ++col)
+                for (size_t col = 0; col < rhs.col; ++col)
                 {
                     ret[row][col] = 0;
-                    for (auto i = 0; i < S; ++i)
+                    for (size_t i = 0; i < S; ++i)
                     {
                         ret[row][col] += lhs[row][i] * rhs[i][col];
                     }

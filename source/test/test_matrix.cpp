@@ -37,9 +37,9 @@ TEST(Matrix, Compare)
     ASSERT_FLOAT_EQ(matrixBig[150][80], 10);
 
     Matrix<int, 200, 30> mb4(54);
-    for (auto r = 0; r < mb4.row; ++r)
+    for (size_t r = 0; r < mb4.row; ++r)
     {
-        for (auto c = 0; c < mb4.col; ++c)
+        for (size_t c = 0; c < mb4.col; ++c)
         {
             ASSERT_EQ(mb4[r][c], 54) << r <<" " << c;
         }

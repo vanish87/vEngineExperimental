@@ -40,7 +40,7 @@ namespace vEngine
                 typedef typename DataType::size_type size_type;
                 typedef typename DataType::difference_type difference_type;
 
-                static constexpr size_t size = N;
+                static constexpr size_type size = N;
 
             public:
                 // use init list {} to initialize data
@@ -175,13 +175,13 @@ namespace vEngine
                     return &(this->data_[0]);
                 }
 
-                reference operator[](size_t index) noexcept
+                reference operator[](size_type index) noexcept
                 {
                     CHECK_ASSERT(index < N);
                     return this->data_[index];
                 }
                 constexpr const_reference operator[](
-                    size_t index) const noexcept
+                    size_type index) const noexcept
                 {
                     CHECK_ASSERT(index < N);
                     return this->data_[index];

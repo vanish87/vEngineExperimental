@@ -12,6 +12,14 @@ project(vEngine)
 
 # c++ setting
 set(CMAKE_CXX_STANDARD 17)
+if (MSVC)
+    # warning level 4 and all warnings as errors
+    add_compile_options(/W4 /WX)
+else()
+    # lots of warnings and all warnings as errors
+    add_compile_options(-Wall -Wextra -pedantic -Werror)
+endif()
+
 # lib setting
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
