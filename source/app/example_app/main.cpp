@@ -8,6 +8,17 @@ using namespace vEngine::Core;
 class MyApp : public Application
 {
 
+    private:
+
+    void OnCreate() override
+    {
+
+    }
+    void OnUpdate() override
+    {
+
+    }
+
 };
 
 int main(int argc, char* argv[])

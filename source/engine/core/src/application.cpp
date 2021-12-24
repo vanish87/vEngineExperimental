@@ -10,8 +10,10 @@ namespace vEngine
         {
             // Context::GetInstance().RegisterAppInstance(*this);
             // Make window
-            this->CreateWindow();
+            this->SetupWindow();
             // Context::RenderFactory().CreateRenderWindow();
+
+			this->OnCreate();
         }
         void Application::Run()
         {
@@ -33,6 +35,6 @@ namespace vEngine
         void Application::OnCreate() {}
         void Application::OnUpdate() {}
         void Application::OnDestory() {}
-        void Application::CreateWindow() {}
+        void Application::SetupWindow() {}
     }  // namespace Core
 }  // namespace vEngine

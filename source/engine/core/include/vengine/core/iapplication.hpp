@@ -5,6 +5,7 @@
 
 #include <vengine/core/interface.hpp>
 #include <vengine/core/predeclear.hpp>
+#include <compiler_setting.hpp>
 
 namespace vEngine
 {
@@ -20,14 +21,16 @@ namespace vEngine
             virtual void Init() = 0;
             virtual void Run() = 0;
 
+		protected:
+            WindowPtr window_;
+
         private:
             virtual void OnCreate() = 0;
             virtual void OnUpdate() = 0;
             virtual void OnDestory() = 0;
 
-			virtual void SetupWindow() = 0;
+            virtual void SetupWindow() = 0;
 
-            Window* window_;
         };
     }  // namespace Core
 }  // namespace vEngine

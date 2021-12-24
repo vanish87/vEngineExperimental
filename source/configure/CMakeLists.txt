@@ -16,4 +16,5 @@ string(MAKE_C_IDENTIFIER ${META_PROJECT_NAME} META_PROJECT_ID)
 string(TOUPPER ${META_PROJECT_ID} META_PROJECT_ID)
 
 configure_file(version.hpp.in ${CONFIGURE_INCLUDE}/version.hpp)
+configure_file(compiler_setting.hpp.in ${CONFIGURE_INCLUDE}/compiler_setting.hpp)
 

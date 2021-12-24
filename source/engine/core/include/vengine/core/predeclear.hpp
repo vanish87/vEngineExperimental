@@ -2,6 +2,7 @@
 #define _PREDECLEAR_HPP
 
 #include <cstdint>
+#include <memory>
 
 namespace vEngine
 {
@@ -17,7 +18,6 @@ namespace vEngine
     typedef std::uint64_t uint64_t;
     namespace Math
     {
-
         template <typename T, int N>
         class Vector;
 
@@ -44,7 +44,7 @@ namespace vEngine
     namespace Core
     {
         class Window;
-
+        typedef std::shared_ptr<Window> WindowPtr;
     }  // namespace Core
 }  // namespace vEngine
 
