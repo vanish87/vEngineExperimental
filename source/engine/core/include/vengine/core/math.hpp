@@ -123,8 +123,8 @@ namespace vEngine
             return ret;
         }
         template <typename T, int M, int N>
-        Matrix<T, M, N> OuterProduct(const Vector<T, M> & lhs,
-                                     const Vector<T, N> & rhs)
+        Matrix<T, M, N> OuterProduct(const Vector<T, M>& lhs,
+                                     const Vector<T, N>& rhs)
         {
             Matrix<T, M, N> ret;
 
@@ -160,8 +160,8 @@ namespace vEngine
             return ret;
         }
 
-        template<typename T>
-        T Determinant(const Matrix<T, 4,4>& matrix)
+        template <typename T>
+        T Determinant(const Matrix<T, 4, 4>& matrix)
         {
             // from KlayGE
             T const _3142_3241(matrix[2][0] * matrix[3][1] -
@@ -220,6 +220,80 @@ namespace vEngine
                 0,          0, -zn * m33, 0);
         }
 
+        template <typename T>
+        void XRotation(Matrix<T, 4, 4>& matrix, const float theta)
+        {
+            Identity(lhs);
+            lhs[1][1] = Math::Cos(theta);
+            lhs[1][2] = Math::Sin(theta);
+            lhs[2][1] = -Math::Sin(theta);
+            lhs[2][2] = Math::Cos(theta);
+        }
+
+        template <typename T>
+        void YRotation(Matrix<T, 4, 4>& lhs, const float theta)
+        {
+            Identity(lhs);
+            lhs[0][0] = Math::Cos(theta);
+            lhs[0][2] = -Math::Sin(theta);
+            lhs[2][0] = Math::Sin(theta);
+            lhs[2][2] = Math::Cos(theta);
+        }
+
+        template <typename T>
+        void ZRotation(Matrix<T, 4, 4>& lhs, const float theta)
+        {
+            Identity(lhs);
+            lhs[0][0] = Math::Cos(theta);
+            lhs[0][1] = Math::Sin(theta);
+            lhs[1][0] = -Math::Sin(theta);
+            lhs[1][1] = Math::Cos(theta);
+        }
+
+        template <typename T>
+        void RotationAxis(Matrix<T, 4, 4>& lhs, const Vector<T, 3>& axis,
+                          const float theta)
+        {
+            Identity(lhs);
+            axis = Normalize(axis);
+
+            lhs[0][0] = (1.0f - Cos(theta)) * axis.x() * axis.x() + Cos(theta);
+            lhs[1][0] = (1.0f - Cos(theta)) * axis.x() * axis.y() +
+                        Sin(theta) * axis.z();
+            lhs[2][0] = (1.0f - Cos(theta)) * axis.x() * axis.z() -
+                        Sin(theta) * axis.y();
+            lhs[0][1] = (1.0f - Cos(theta)) * axis.y() * axis.x() -
+                        Sin(theta) * axis.z();
+            lhs[1][1] = (1.0f - Cos(theta)) * axis.y() * axis.y() + Cos(theta);
+            lhs[2][1] = (1.0f - Cos(theta)) * axis.y() * axis.z() +
+                        Sin(theta) * axis.x();
+            lhs[0][2] = (1.0f - Cos(theta)) * axis.z() * axis.x() +
+                        Sin(theta) * axis.y();
+            lhs[1][2] = (1.0f - Cos(theta)) * axis.z() * axis.y() -
+                        Sin(theta) * axis.x();
+            lhs[2][2] = (1.0f - Cos(theta)) * axis.z() * axis.z() + Cos(theta);
+        }
+
+        template <typename T>
+        void Translate(Matrix<T, 4, 4>& lhs, const float x, const float y,
+                       const float z)
+        {
+            Identity(lhs);
+            // left hand coordinate system
+            lhs[3][0] = x;
+            lhs[3][1] = y;
+            lhs[3][2] = z;
+        }
+
+        template <typename T>
+        void Scale(Matrix<T, 4, 4>& lhs, const float scale)
+        {
+            Identity(lhs);
+
+            lhs[0][0] = scale;
+            lhs[1][1] = scale;
+            lhs[2][2] = scale;
+        }
 
     }  // namespace Math
 }  // namespace vEngine

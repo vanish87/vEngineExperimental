@@ -62,7 +62,7 @@ namespace vEngine
         float const E = 2.718281828f;
 
         //=================================================
-        //float related functions
+        // float related functions
 
         /// \brief Check if two const floats are equal
         ///
@@ -127,7 +127,7 @@ namespace vEngine
         T Clamp(const T& value, const T& min, const T& max);
 
         //=================================================
-        //Vector/Matrix related functions
+        // Vector/Matrix related functions
 
         template <typename T, int N = 4>
         void Identity(Matrix<T, N, N>& lhs);
@@ -168,7 +168,7 @@ namespace vEngine
         T Determinant(const Matrix<T, 4, 4>& matrix);
 
         //=================================================
-        //View/Projection related functions
+        // View/Projection related functions
 
         template <typename T>
         Matrix<T, 4, 4> LookAtLH(const Vector<T, 3>& eye,
@@ -178,6 +178,26 @@ namespace vEngine
         template <typename T>
         Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect,
                                          const T zn, const T zf);
+
+        template <typename T>
+        void XRotation(Matrix<T, 4, 4>& matrix, const float theta);
+
+        template <typename T>
+        void YRotation(Matrix<T, 4, 4>& lhs, const float theta);
+
+        template <typename T>
+        void ZRotation(Matrix<T, 4, 4>& lhs, const float theta);
+
+        template <typename T>
+        void RotationAxis(Matrix<T, 4, 4>& lhs, const Vector<T, 3>& axis,
+                          const float theta);
+
+        template <typename T>
+        void Translate(Matrix<T, 4, 4>& lhs, const float x, const float y,
+                       const float z);
+
+        template <typename T>
+        void Scale(Matrix<T, 4, 4>& lhs, const float scale);
 
     }  // namespace Math
 }  // namespace vEngine
