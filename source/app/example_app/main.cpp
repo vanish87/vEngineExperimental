@@ -14,12 +14,15 @@ int main(int argc, char* argv[])
 {
     UNUSED_PARAMETER(argc);
     UNUSED_PARAMETER(argv);
-    
+
     std::cout << "Version " + std::string(Version) << std::endl;
     #ifdef WINDOWS
     std::cout << "Windows"<<std::endl;
     #endif
 
+    // Context::GetIntstance().Setup();
+
     MyApp myapp;
+    myapp.Init();
     myapp.Run();
 }

@@ -13,8 +13,15 @@ namespace vEngine
         class CORE_API Application : public IApplication
         {
             public:
+                virtual void Init() override;
                 virtual void Run() override;
-				void Run1();
+
+            private:
+                virtual void OnCreate() override;
+                virtual void OnUpdate() override;
+                virtual void OnDestory() override;
+
+                virtual void SetupWindow() override;
         };
     }  // namespace Core
 }  // namespace vEngine
