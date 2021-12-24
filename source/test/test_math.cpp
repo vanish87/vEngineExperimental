@@ -29,7 +29,7 @@ TEST(Math, Matrix)
     auto v3 = Dot(v1, v2);
     auto v4 = Cross(v1, v2);
 
-    v3 = v3;
+    UNUSED_PARAMETER(v3);
 
     auto v5 = Normalize(v1);
 
