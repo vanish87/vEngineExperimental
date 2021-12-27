@@ -1,6 +1,6 @@
 
 #include <vengine/rendering/render_engine.hpp>
-class D3D11RenderEngine : public RenderEngine
+class RENDERING_API D3D11RenderEngine : public RenderEngine
 {
 	public:
 	void TestFunc();

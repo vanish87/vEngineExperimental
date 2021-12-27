@@ -1,6 +1,7 @@
 
 #ifdef VENGINE_PLATFORM_LINUX
     #include <vengine/core/window.hpp>
+	// #include <xcb/xcb.h>
 
 namespace vEngine
 {
@@ -13,7 +14,10 @@ namespace vEngine
                 int width;
                 int height;
         };
-        void Window::Init(...) {}
+        void Window::Init(...) 
+		{
+
+		}
         void Window::Deinit(...) {}
         void Window::Update() {}
     }  // namespace Core
