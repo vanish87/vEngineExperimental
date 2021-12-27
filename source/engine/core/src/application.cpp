@@ -1,8 +1,6 @@
 
-#include <iostream>
+// #include <iostream>
 #include <vengine/core/application.hpp>
-#include <vengine/core/debug.hpp>
-#include <vengine/core/window.hpp>
 
 namespace vEngine
 {
