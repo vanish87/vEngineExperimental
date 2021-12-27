@@ -1,6 +1,5 @@
 
-// #include <iostream>
-#include <vengine/core/window.hpp>
+#include <vengine/core/window.hpp>//windows.h should include first in win32 platform
 #include <vengine/core/application.hpp>
 
 namespace vEngine
@@ -20,21 +19,20 @@ namespace vEngine
         void Application::Update() {}
         void Application::Run()
         {
-            #ifdef VENGINE_PLATFORM_WINDOWS
+#ifdef VENGINE_PLATFORM_WINDOWS
             MSG msg = {0};
             while (WM_QUIT != msg.message)
-            #elif LINUX
+#elif VENGINE_PLATFORM_LINUX
             while (true)
-            #endif
+#endif
             {
-                #ifdef VENGINE_PLATFORM_WINDOWS
+#ifdef VENGINE_PLATFORM_WINDOWS
                 if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
                 {
                     TranslateMessage(&msg);
                     DispatchMessage(&msg);
                 }
-                #endif
-
+#endif
 
                 this->OnUpdate();
                 // Context::Update();
