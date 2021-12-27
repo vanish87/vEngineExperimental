@@ -1,5 +1,6 @@
 
 // #include <iostream>
+#include <vengine/core/window.hpp>
 #include <vengine/core/application.hpp>
 
 namespace vEngine
@@ -19,12 +20,22 @@ namespace vEngine
         void Application::Update() {}
         void Application::Run()
         {
-            #ifdef WINDOWS
-            while (true)
+            #ifdef VENGINE_PLATFORM_WINDOWS
+            MSG msg = {0};
+            while (WM_QUIT != msg.message)
             #elif LINUX
             while (true)
             #endif
             {
+                #ifdef VENGINE_PLATFORM_WINDOWS
+                if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+                {
+                    TranslateMessage(&msg);
+                    DispatchMessage(&msg);
+                }
+                #endif
+
+
                 this->OnUpdate();
                 // Context::Update();
 
@@ -40,7 +51,8 @@ namespace vEngine
         void Application::OnDestory() {}
         void Application::SetupWindow()
         {
-            this->window_ = std::shared_ptr<Window>();
+            this->window_ = std::make_shared<Window>();
+            this->window_.get()->Init();
         }
 
     }  // namespace Core

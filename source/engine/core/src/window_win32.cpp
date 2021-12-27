@@ -4,7 +4,7 @@
     // #include <windows.h>
     // #include <vengine/core/debug.hpp>
     #include <vengine/core/window.hpp>
-    // #include <tchar.h>//wchar
+// #include <tchar.h>//wchar
 
 namespace vEngine
 {
@@ -17,12 +17,6 @@ namespace vEngine
                 int width;
                 int height;
         };
-        static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam,
-                                        LPARAM lParam);
-        LRESULT CALLBACK MsgProc(HWND hWnd, UINT message, WPARAM wParam,
-                                 LPARAM lParam);
-        // HWND wnd_;
-        WNDPROC default_wnd_proc_;
         void Window::Init(...)
         {
             HINSTANCE hInstance = ::GetModuleHandle(nullptr);
@@ -56,17 +50,20 @@ namespace vEngine
             wind.left = static_cast<uint16_t>(0);
             wind.width = static_cast<uint16_t>(rc.right - rc.left);
             wind.height = static_cast<uint16_t>(rc.bottom - rc.top);
-            auto wnd_ = CreateWindow(win_name_w.c_str(), win_name_w.c_str(),
-                                     WS_OVERLAPPEDWINDOW, wind.left, wind.top,
-                                     wind.width, wind.height, nullptr, nullptr,
-                                     hInstance, nullptr);
-
-            UNUSED_PARAMETER(wnd_);
+            this->wnd_ = CreateWindow(win_name_w.c_str(), win_name_w.c_str(),
+                                      WS_OVERLAPPEDWINDOW, wind.left, wind.top,
+                                      wind.width, wind.height, nullptr, nullptr,
+                                      hInstance, nullptr);
+            ::ShowWindow(this->wnd_, SW_SHOWNORMAL);
+            ::SetForegroundWindow(this->wnd_);
+            ::SetFocus(this->wnd_);
+            //::ShowCursor(!render_setting.full_screen);
+            ::UpdateWindow(this->wnd_);
         }
         void Window::Deinit(...) {}
         void Window::Update() {}
-        LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam,
-                                 LPARAM lParam)
+        LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT uMsg, WPARAM wParam,
+                                         LPARAM lParam)
         {
             switch (uMsg)
             {
