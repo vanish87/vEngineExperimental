@@ -21,11 +21,11 @@ namespace vEngine
         void Application::Update() {}
         void Application::Run()
         {
-#ifdef WINDOWS
+            #ifdef WINDOWS
             while (true)
-#elif LINUX
+            #elif LINUX
             while (true)
-#endif
+            #endif
             {
                 this->OnUpdate();
                 // Context::Update();
