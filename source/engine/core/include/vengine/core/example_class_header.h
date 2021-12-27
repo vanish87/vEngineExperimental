@@ -1,4 +1,4 @@
-/// \file class_header.h
+/// \file example_class_header.h
 /// \brief Head file for class Ctest.
 ///
 /// A detailed file description.

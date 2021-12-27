@@ -1,4 +1,4 @@
-/// \file class.cpp
+/// \file example_class.cpp
 /// \brief source file for class Ctest.
 ///
 /// A detailed file description.
