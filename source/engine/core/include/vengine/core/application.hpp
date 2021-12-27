@@ -13,8 +13,11 @@ namespace vEngine
         class CORE_API Application : public IApplication
         {
             public:
-                virtual void Init() override;
                 virtual void Run() override;
+                
+                virtual void Init(...) override;
+                virtual void Deinit(...) override;
+                virtual void Update(float dt) override;
 
             private:
                 virtual void OnCreate() override;

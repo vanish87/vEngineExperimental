@@ -1,12 +1,13 @@
 
 #include <iostream>
 #include <vengine/core/application.hpp>
+#include <vengine/core/debug.hpp>
 
 namespace vEngine
 {
     namespace Core
     {
-        void Application::Init()
+        void Application::Init(...)
         {
             // Context::GetInstance().RegisterAppInstance(*this);
             // Make window
@@ -14,6 +15,13 @@ namespace vEngine
             // Context::RenderFactory().CreateRenderWindow();
 
 			this->OnCreate();
+        }
+        void Application::Deinit(...)
+        {
+        }
+        void Application::Update(float dt)
+        {
+            UNUSED_PARAMETER(dt);
         }
         void Application::Run()
         {
@@ -30,6 +38,7 @@ namespace vEngine
             }
 
             this->OnDestory();
+            this->Deinit();
         }
 
         void Application::OnCreate() {}
