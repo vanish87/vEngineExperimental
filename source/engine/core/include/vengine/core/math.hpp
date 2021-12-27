@@ -215,7 +215,7 @@ namespace vEngine
             const T  _3344_3443(rhs[2][2] * rhs[3][3] - rhs[2][3] * rhs[3][2]);
 
 			const T det(Determinant(rhs));
-			if (!det==0)
+			if (det!=0)
 			{
 				T invDet(T(1) / det);
 
