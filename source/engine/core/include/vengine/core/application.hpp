@@ -14,10 +14,10 @@ namespace vEngine
         {
             public:
                 virtual void Run() override;
-                
+
                 virtual void Init(...) override;
                 virtual void Deinit(...) override;
-                virtual void Update(float dt) override;
+                virtual void Update() override;
 
             private:
                 virtual void OnCreate() override;

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vengine/core/application.hpp>
 #include <vengine/core/debug.hpp>
+#include <vengine/core/window.hpp>
 
 namespace vEngine
 {
@@ -14,22 +15,17 @@ namespace vEngine
             this->SetupWindow();
             // Context::RenderFactory().CreateRenderWindow();
 
-			this->OnCreate();
+            this->OnCreate();
         }
-        void Application::Deinit(...)
-        {
-        }
-        void Application::Update(float dt)
-        {
-            UNUSED_PARAMETER(dt);
-        }
+        void Application::Deinit(...) {}
+        void Application::Update() {}
         void Application::Run()
         {
-			#ifdef WINDOWS
+#ifdef WINDOWS
             while (true)
-			#elif LINUX
+#elif LINUX
             while (true)
-			#endif
+#endif
             {
                 this->OnUpdate();
                 // Context::Update();
@@ -44,6 +40,10 @@ namespace vEngine
         void Application::OnCreate() {}
         void Application::OnUpdate() {}
         void Application::OnDestory() {}
-        void Application::SetupWindow() {}
+        void Application::SetupWindow()
+        {
+            this->window_ = std::shared_ptr<Window>();
+        }
+
     }  // namespace Core
 }  // namespace vEngine

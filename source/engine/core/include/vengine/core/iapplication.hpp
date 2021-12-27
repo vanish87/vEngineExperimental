@@ -23,7 +23,7 @@ namespace vEngine
 
             virtual void Init(...) = 0;
             virtual void Deinit(...) = 0;
-            virtual void Update(float dt) = 0;
+            virtual void Update() = 0;
 
         protected:
             WindowPtr window_;
