@@ -1,27 +1,22 @@
-#ifndef _CONTEXT_HPP
-#define _CONTEXT_HPP
+#ifndef _VENGINE_CORE_CONTEXT_HPP
+#define _VENGINE_CORE_CONTEXT_HPP
 
+#pragma once
 namespace vEngine
 {
-	namespace Core
-	{
-		class Context
-		{
-			public:
+    namespace Core
+    {
+        class Context
+        {
+            public:
+                void Setup();
 
-			void Setup();
+                void RegisterAppInstance();
+                // RenderFactory& RenderFactoty();
+        };
 
-			void RegisterAppInstance();
-			// RenderFactory& RenderFactoty();
-		};
+    }  // namespace Core
 
-		
-	} // namespace Core
-	
+}  // namespace vEngine
 
-	
-} // namespace vEngine
-
-
-
-#endif /* _CONTEXT_HPP */
+#endif /* _VENGINE_CORE_CONTEXT_HPP */

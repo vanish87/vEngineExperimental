@@ -7,13 +7,10 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#ifndef _EXAMPLE_CLASS_HEADER_H
-#define _EXAMPLE_CLASS_HEADER_H
+#ifndef _VENGINE_CORE_EXAMPLE_CLASS_HEADER_H
+#define _VENGINE_CORE_EXAMPLE_CLASS_HEADER_H
 
 #pragma once
-
-#include <iostream>
-
 /// A brief namespace description.
 namespace MyNamespace
 {
@@ -40,4 +37,4 @@ namespace MyNamespace
     };
 }  // namespace MyNamespace
 
-#endif /* _EXAMPLE_CLASS_HEADER_H */
+#endif /* _VENGINE_CORE_EXAMPLE_CLASS_HEADER_H */

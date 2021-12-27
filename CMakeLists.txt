@@ -39,10 +39,13 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # debug setting
 set(CMAKE_DEBUG_POSTFIX d)
 
+set(PROJECT_PLATFORM_MARCO ${PROJECT_NAME}_PLATFORM)
+string(TOUPPER ${PROJECT_PLATFORM_MARCO} PROJECT_PLATFORM_MARCO)
+
 if(WIN32)
-add_compile_definitions(WINDOWS)
+add_compile_definitions(${PROJECT_PLATFORM_MARCO}_WINDOWS)
 elseif(UNIX)
-add_compile_definitions(LINUX)
+add_compile_definitions(${PROJECT_PLATFORM_MARCO}_LINUX)
 endif()
 
 add_subdirectory(source)

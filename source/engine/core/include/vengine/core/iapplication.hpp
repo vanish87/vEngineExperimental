@@ -1,12 +1,10 @@
-#ifndef _IAPPLICATION_HPP
-#define _IAPPLICATION_HPP
+#ifndef _VENGINE_CORE_IAPPLICATION_HPP
+#define _VENGINE_CORE_IAPPLICATION_HPP
 
+#pragma once
 #include <CORE_API.h>
 
-#include <compiler_setting.hpp>
-#include <vengine/core/interface.hpp>
 #include <vengine/core/iruntime_module.hpp>
-#include <vengine/core/predeclear.hpp>
 
 namespace vEngine
 {
@@ -16,7 +14,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        Interface CORE_API IApplication : public IRuntimeModule 
+        Interface CORE_API IApplication : public IRuntimeModule
         {
         public:
             virtual void Run() = 0;
@@ -34,9 +32,8 @@ namespace vEngine
             virtual void OnDestory() = 0;
 
             virtual void SetupWindow() = 0;
-
         };
     }  // namespace Core
 }  // namespace vEngine
 
-#endif /* _IAPPLICATION_HPP */
+#endif /* _VENGINE_CORE_IAPPLICATION_HPP */

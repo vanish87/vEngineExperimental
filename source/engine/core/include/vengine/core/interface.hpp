@@ -1,9 +1,9 @@
-#ifndef _INTERFACE_HPP
-#define _INTERFACE_HPP
+#ifndef _VENGINE_CORE_INTERFACE_HPP
+#define _VENGINE_CORE_INTERFACE_HPP
 
 #pragma once
 
 #define Interface class
 // #define implements public
 
-#endif /* _INTERFACE_HPP */
+#endif /* _VENGINE_CORE_INTERFACE_HPP */

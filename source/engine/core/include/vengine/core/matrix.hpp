@@ -1,11 +1,11 @@
-#ifndef _MATRIX4X4_HPP
-#define _MATRIX4X4_HPP
+#ifndef _VENGINE_CORE_MATRIX_HPP
+#define _VENGINE_CORE_MATRIX_HPP
 
 #pragma once
-
 #include <vengine/core/math.h>
+
+#include <engine.hpp>
 #include <vengine/core/vector.hpp>
-#include <vengine/core/debug.hpp>
 
 namespace vEngine
 {
@@ -71,7 +71,7 @@ namespace vEngine
                     this->data_[2][1] = std::move(m21);
                     this->data_[2][2] = std::move(m22);
                     this->data_[2][3] = std::move(m23);
-                    
+
                     this->data_[3][0] = std::move(m30);
                     this->data_[3][1] = std::move(m31);
                     this->data_[3][2] = std::move(m32);
@@ -305,4 +305,4 @@ namespace vEngine
     }  // namespace Math
 }  // namespace vEngine
 
-#endif /* _MATRIX4X4_HPP */
+#endif /* _VENGINE_CORE_MATRIX_HPP */

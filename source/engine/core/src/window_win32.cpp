@@ -1,23 +1,94 @@
 
-#ifdef WINDOWS
+#ifdef VENGINE_PLATFORM_WINDOWS
 
-#include <vengine/core/window.hpp>
-#include <vengine/core/debug.hpp>
+    // #include <windows.h>
+    // #include <vengine/core/debug.hpp>
+    #include <vengine/core/window.hpp>
+    // #include <tchar.h>//wchar
 
 namespace vEngine
 {
     namespace Core
     {
+        struct WindowRect
+        {
+                int top;
+                int left;
+                int width;
+                int height;
+        };
+        static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam,
+                                        LPARAM lParam);
+        LRESULT CALLBACK MsgProc(HWND hWnd, UINT message, WPARAM wParam,
+                                 LPARAM lParam);
+        // HWND wnd_;
+        WNDPROC default_wnd_proc_;
         void Window::Init(...)
         {
+            HINSTANCE hInstance = ::GetModuleHandle(nullptr);
 
-        }
-        void Window::Deinit(...)
-        {
+            WindowRect wind;
 
+            std::string win_name_w = "test";
+
+            WNDCLASS wcex;
+            wcex.style = CS_HREDRAW | CS_VREDRAW |
+                         CS_OWNDC;  // CS_OWNDC to create own device context
+            wcex.lpfnWndProc = WndProc;
+            wcex.cbClsExtra = 0;
+            wcex.cbWndExtra = 0;
+            wcex.hInstance = hInstance;
+            wcex.hIcon = nullptr;
+            wcex.hCursor = ::LoadCursor(nullptr, IDC_ARROW);
+            wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+            wcex.lpszMenuName = nullptr;
+            wcex.lpszClassName = win_name_w.c_str();
+
+            RegisterClass(&wcex);
+
+            RECT rc = {0, 0, 640, 480};
+            // get real window size; should slightly bigger than rendering
+            // resolution we should render a frame with render_setting, so
+            // window is enlarged.
+            ::AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+
+            wind.top = static_cast<uint16_t>(0);
+            wind.left = static_cast<uint16_t>(0);
+            wind.width = static_cast<uint16_t>(rc.right - rc.left);
+            wind.height = static_cast<uint16_t>(rc.bottom - rc.top);
+            auto wnd_ = CreateWindow(win_name_w.c_str(), win_name_w.c_str(),
+                                     WS_OVERLAPPEDWINDOW, wind.left, wind.top,
+                                     wind.width, wind.height, nullptr, nullptr,
+                                     hInstance, nullptr);
+
+            UNUSED_PARAMETER(wnd_);
         }
-        void Window::Update()
+        void Window::Deinit(...) {}
+        void Window::Update() {}
+        LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam,
+                                 LPARAM lParam)
         {
+            switch (uMsg)
+            {
+                case WM_DESTROY:
+                    PostQuitMessage(0);
+                    return 0;
+
+                case WM_PAINT: {
+                    // PAINTSTRUCT ps;
+                    // HDC hdc = BeginPaint(hwnd, &ps);
+
+                    // just test issue flowworks
+
+                    // RenderFrame();
+
+                    // FillRect(hdc, &ps.rcPaint, (HBRUSH) (COLOR_WINDOW+1));
+
+                    // EndPaint(hwnd, &ps);
+                }
+                    return 0;
+            }
+            return DefWindowProc(hwnd, uMsg, wParam, lParam);
         }
     }  // namespace Core
 }  // namespace vEngine

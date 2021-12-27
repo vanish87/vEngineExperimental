@@ -9,7 +9,7 @@
 
 #include <vengine/core/example_class_header.h>
 
-#include <vengine/core/debug.hpp>
+#include <engine.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.

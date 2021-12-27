@@ -1,7 +1,13 @@
 #include <iostream>
 
+// #include <windows.h>
 #include <engine.hpp>
+// #include <vengine/core/example_class_header.h>
 #include <version.hpp>
+
+#include <vengine/core/application.hpp>
+
+
 
 using namespace vEngine::Core;
 
@@ -31,6 +37,7 @@ int main(int argc, char* argv[])
     std::cout << "Windows"<<std::endl;
     #endif
 
+    // MyNamespace::MyClass cla;
     // Context::GetIntstance().Setup();
 
     MyApp myapp;

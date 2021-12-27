@@ -1,10 +1,9 @@
-#ifndef _VENGINE_MATH_H
-#define _VENGINE_MATH_H
+#ifndef _VENGINE_CORE_MATH_H
+#define _VENGINE_CORE_MATH_H
 
+#pragma once
 #include <CORE_API.h>
-
-#include <cmath>
-#include <vengine/core/predeclear.hpp>
+#include <engine.hpp>
 
 namespace vEngine
 {
@@ -208,4 +207,4 @@ namespace vEngine
 // include template definitions after declearations above
 // for separate declearation/definition of template functions
 #include <vengine/core/math.hpp>
-#endif /* _MATH_H */
+#endif /* _VENGINE_CORE_MATH_H */

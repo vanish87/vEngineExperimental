@@ -1,6 +1,7 @@
-#ifndef _PREDECLEAR_HPP
-#define _PREDECLEAR_HPP
+#ifndef _VENGINE_CORE_PREDECLEAR_HPP
+#define _VENGINE_CORE_PREDECLEAR_HPP
 
+#pragma once
 #include <cstdint>
 #include <memory>
 
@@ -48,4 +49,4 @@ namespace vEngine
     }  // namespace Core
 }  // namespace vEngine
 
-#endif /* _PREDECLEAR_HPP */
+#endif /* _VENGINE_CORE_PREDECLEAR_HPP */

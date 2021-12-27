@@ -1,13 +1,11 @@
 
-#ifndef VECTOR_H
-#define VECTOR_H
+#ifndef _VENGINE_CORE_VECTOR_HPP
+#define _VENGINE_CORE_VECTOR_HPP
 
 #pragma once
-
 #include <array>
-#include <iostream>
+#include <engine.hpp>
 #include <vengine/core/template_helper.hpp>
-#include <vengine/core/debug.hpp>
 
 namespace vEngine
 {
@@ -248,8 +246,7 @@ namespace vEngine
                 template <typename U>
                 const Vector& operator*=(const U& other) noexcept
                 {
-                    vector_t<T, N>::do_mul(this->data(), this->data(),
-                                           other);
+                    vector_t<T, N>::do_mul(this->data(), this->data(), other);
                     return *this;
                 }
                 template <typename U>
@@ -317,7 +314,7 @@ namespace vEngine
         {
             return vector_t<T, N>::do_swap(lhs.data(), rhs.data());
         }
-    }  // namespace Core
+    }  // namespace Math
 }  // namespace vEngine
 
-#endif
+#endif /* _VENGINE_CORE_VECTOR_HPP */

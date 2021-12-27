@@ -1,22 +1,23 @@
-#ifndef _IRUNTIME_MODULE_HPP
-#define _IRUNTIME_MODULE_HPP
+#ifndef _VENGINE_CORE_IRUNTIME_MODULE_HPP
+#define _VENGINE_CORE_IRUNTIME_MODULE_HPP
 
 #pragma once
+#include <engine.hpp>
 
 namespace vEngine
 {
     namespace Core
     {
-        class IRuntimeModule
+        Interface IRuntimeModule
         {
-            public:
-                virtual void Init(...) = 0;
-                virtual void Deinit(...) = 0;
-                virtual void Update() = 0;
+        public:
+            virtual void Init(...) = 0;
+            virtual void Deinit(...) = 0;
+            virtual void Update() = 0;
         };
 
     }  // namespace Core
 
 }  // namespace vEngine
 
-#endif /* _IRUNTIME_MODULE_HPP */
+#endif /* _VENGINE_CORE_IRUNTIME_MODULE_HPP */

@@ -10,12 +10,12 @@
 #include <windows.h>
 
 #include <engine.hpp>
+#include <vengine/core/math.h>
+#include <vengine/core/vector.hpp>
 #include <string>
-#include <version.hpp>
 
 #include "interface.h"
 
-#include <vengine/core/debug.hpp>
 
 using namespace vEngine::Core;
 using namespace vEngine::Math;

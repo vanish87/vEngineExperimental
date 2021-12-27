@@ -1,9 +1,8 @@
-#ifndef _VENGINE_MATH_HPP
-#define _VENGINE_MATH_HPP
+#ifndef _VENGINE_CORE_MATH_HPP
+#define _VENGINE_CORE_MATH_HPP
 
 #pragma once
-
-#include <vengine/core/debug.hpp>
+#include <cmath>
 
 namespace vEngine
 {
@@ -51,7 +50,7 @@ namespace vEngine
         }
         template <typename T, int M, int N>
         Matrix<T, N, M> Transpose(const Matrix<T, M, N>& lhs)
-		{
+        {
             Matrix<T, N, M> ret;
             for (size_t r = 0; r < lhs.row; ++r)
             {
@@ -61,7 +60,7 @@ namespace vEngine
                 }
             }
             return ret;
-		}
+        }
 
         template <typename T, int N>
         T Dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
@@ -195,55 +194,71 @@ namespace vEngine
         Matrix<T, 4, 4> Inverse(const Matrix<T, 4, 4>& rhs)
         {
             // from KlayGE
-            const T  _2132_2231(rhs[1][0] * rhs[2][1] - rhs[1][1] * rhs[2][0]);
-            const T  _2133_2331(rhs[1][0] * rhs[2][2] - rhs[1][2] * rhs[2][0]);
-            const T  _2134_2431(rhs[1][0] * rhs[2][3] - rhs[1][3] * rhs[2][0]);
-            const T  _2142_2241(rhs[1][0] * rhs[3][1] - rhs[1][1] * rhs[3][0]);
-            const T  _2143_2341(rhs[1][0] * rhs[3][2] - rhs[1][2] * rhs[3][0]);
-            const T  _2144_2441(rhs[1][0] * rhs[3][3] - rhs[1][3] * rhs[3][0]);
-            const T  _2233_2332(rhs[1][1] * rhs[2][2] - rhs[1][2] * rhs[2][1]);
-            const T  _2234_2432(rhs[1][1] * rhs[2][3] - rhs[1][3] * rhs[2][1]);
-            const T  _2243_2342(rhs[1][1] * rhs[3][2] - rhs[1][2] * rhs[3][1]);
-            const T  _2244_2442(rhs[1][1] * rhs[3][3] - rhs[1][3] * rhs[3][1]);
-            const T  _2334_2433(rhs[1][2] * rhs[2][3] - rhs[1][3] * rhs[2][2]);
-            const T  _2344_2443(rhs[1][2] * rhs[3][3] - rhs[1][3] * rhs[3][2]);
-            const T  _3142_3241(rhs[2][0] * rhs[3][1] - rhs[2][1] * rhs[3][0]);
-            const T  _3143_3341(rhs[2][0] * rhs[3][2] - rhs[2][2] * rhs[3][0]);
-            const T  _3144_3441(rhs[2][0] * rhs[3][3] - rhs[2][3] * rhs[3][0]);
-            const T  _3243_3342(rhs[2][1] * rhs[3][2] - rhs[2][2] * rhs[3][1]);
-            const T  _3244_3442(rhs[2][1] * rhs[3][3] - rhs[2][3] * rhs[3][1]);
-            const T  _3344_3443(rhs[2][2] * rhs[3][3] - rhs[2][3] * rhs[3][2]);
+            const T _2132_2231(rhs[1][0] * rhs[2][1] - rhs[1][1] * rhs[2][0]);
+            const T _2133_2331(rhs[1][0] * rhs[2][2] - rhs[1][2] * rhs[2][0]);
+            const T _2134_2431(rhs[1][0] * rhs[2][3] - rhs[1][3] * rhs[2][0]);
+            const T _2142_2241(rhs[1][0] * rhs[3][1] - rhs[1][1] * rhs[3][0]);
+            const T _2143_2341(rhs[1][0] * rhs[3][2] - rhs[1][2] * rhs[3][0]);
+            const T _2144_2441(rhs[1][0] * rhs[3][3] - rhs[1][3] * rhs[3][0]);
+            const T _2233_2332(rhs[1][1] * rhs[2][2] - rhs[1][2] * rhs[2][1]);
+            const T _2234_2432(rhs[1][1] * rhs[2][3] - rhs[1][3] * rhs[2][1]);
+            const T _2243_2342(rhs[1][1] * rhs[3][2] - rhs[1][2] * rhs[3][1]);
+            const T _2244_2442(rhs[1][1] * rhs[3][3] - rhs[1][3] * rhs[3][1]);
+            const T _2334_2433(rhs[1][2] * rhs[2][3] - rhs[1][3] * rhs[2][2]);
+            const T _2344_2443(rhs[1][2] * rhs[3][3] - rhs[1][3] * rhs[3][2]);
+            const T _3142_3241(rhs[2][0] * rhs[3][1] - rhs[2][1] * rhs[3][0]);
+            const T _3143_3341(rhs[2][0] * rhs[3][2] - rhs[2][2] * rhs[3][0]);
+            const T _3144_3441(rhs[2][0] * rhs[3][3] - rhs[2][3] * rhs[3][0]);
+            const T _3243_3342(rhs[2][1] * rhs[3][2] - rhs[2][2] * rhs[3][1]);
+            const T _3244_3442(rhs[2][1] * rhs[3][3] - rhs[2][3] * rhs[3][1]);
+            const T _3344_3443(rhs[2][2] * rhs[3][3] - rhs[2][3] * rhs[3][2]);
 
-			const T det(Determinant(rhs));
-			if (det!=0)
-			{
-				T invDet(T(1) / det);
+            const T det(Determinant(rhs));
+            if (det != 0)
+            {
+                T invDet(T(1) / det);
 
-				return Matrix<T, 4,4>(
-					+invDet * (rhs[1][1] * _3344_3443 - rhs[1][2] * _3244_3442 + rhs[1][3] * _3243_3342),
-					-invDet * (rhs[0][1] * _3344_3443 - rhs[0][2] * _3244_3442 + rhs[0][3] * _3243_3342),
-					+invDet * (rhs[0][1] * _2344_2443 - rhs[0][2] * _2244_2442 + rhs[0][3] * _2243_2342),
-					-invDet * (rhs[0][1] * _2334_2433 - rhs[0][2] * _2234_2432 + rhs[0][3] * _2233_2332),
+                return Matrix<T, 4, 4>(
+                    +invDet * (rhs[1][1] * _3344_3443 - rhs[1][2] * _3244_3442 +
+                               rhs[1][3] * _3243_3342),
+                    -invDet * (rhs[0][1] * _3344_3443 - rhs[0][2] * _3244_3442 +
+                               rhs[0][3] * _3243_3342),
+                    +invDet * (rhs[0][1] * _2344_2443 - rhs[0][2] * _2244_2442 +
+                               rhs[0][3] * _2243_2342),
+                    -invDet * (rhs[0][1] * _2334_2433 - rhs[0][2] * _2234_2432 +
+                               rhs[0][3] * _2233_2332),
 
-					-invDet * (rhs[1][0] * _3344_3443 - rhs[1][2] * _3144_3441 + rhs[1][3] * _3143_3341),
-					+invDet * (rhs[0][0] * _3344_3443 - rhs[0][2] * _3144_3441 + rhs[0][3] * _3143_3341),
-					-invDet * (rhs[0][0] * _2344_2443 - rhs[0][2] * _2144_2441 + rhs[0][3] * _2143_2341),
-					+invDet * (rhs[0][0] * _2334_2433 - rhs[0][2] * _2134_2431 + rhs[0][3] * _2133_2331),
+                    -invDet * (rhs[1][0] * _3344_3443 - rhs[1][2] * _3144_3441 +
+                               rhs[1][3] * _3143_3341),
+                    +invDet * (rhs[0][0] * _3344_3443 - rhs[0][2] * _3144_3441 +
+                               rhs[0][3] * _3143_3341),
+                    -invDet * (rhs[0][0] * _2344_2443 - rhs[0][2] * _2144_2441 +
+                               rhs[0][3] * _2143_2341),
+                    +invDet * (rhs[0][0] * _2334_2433 - rhs[0][2] * _2134_2431 +
+                               rhs[0][3] * _2133_2331),
 
-					+invDet * (rhs[1][0] * _3244_3442 - rhs[1][1] * _3144_3441 + rhs[1][3] * _3142_3241),
-					-invDet * (rhs[0][0] * _3244_3442 - rhs[0][1] * _3144_3441 + rhs[0][3] * _3142_3241),
-					+invDet * (rhs[0][0] * _2244_2442 - rhs[0][1] * _2144_2441 + rhs[0][3] * _2142_2241),
-					-invDet * (rhs[0][0] * _2234_2432 - rhs[0][1] * _2134_2431 + rhs[0][3] * _2132_2231),
+                    +invDet * (rhs[1][0] * _3244_3442 - rhs[1][1] * _3144_3441 +
+                               rhs[1][3] * _3142_3241),
+                    -invDet * (rhs[0][0] * _3244_3442 - rhs[0][1] * _3144_3441 +
+                               rhs[0][3] * _3142_3241),
+                    +invDet * (rhs[0][0] * _2244_2442 - rhs[0][1] * _2144_2441 +
+                               rhs[0][3] * _2142_2241),
+                    -invDet * (rhs[0][0] * _2234_2432 - rhs[0][1] * _2134_2431 +
+                               rhs[0][3] * _2132_2231),
 
-					-invDet * (rhs[1][0] * _3243_3342 - rhs[1][1] * _3143_3341 + rhs[1][2] * _3142_3241),
-					+invDet * (rhs[0][0] * _3243_3342 - rhs[0][1] * _3143_3341 + rhs[0][2] * _3142_3241),
-					-invDet * (rhs[0][0] * _2243_2342 - rhs[0][1] * _2143_2341 + rhs[0][2] * _2142_2241),
-					+invDet * (rhs[0][0] * _2233_2332 - rhs[0][1] * _2133_2331 + rhs[0][2] * _2132_2231));
-			}
-			else
-			{
-				return rhs;
-			}
+                    -invDet * (rhs[1][0] * _3243_3342 - rhs[1][1] * _3143_3341 +
+                               rhs[1][2] * _3142_3241),
+                    +invDet * (rhs[0][0] * _3243_3342 - rhs[0][1] * _3143_3341 +
+                               rhs[0][2] * _3142_3241),
+                    -invDet * (rhs[0][0] * _2243_2342 - rhs[0][1] * _2143_2341 +
+                               rhs[0][2] * _2142_2241),
+                    +invDet * (rhs[0][0] * _2233_2332 - rhs[0][1] * _2133_2331 +
+                               rhs[0][2] * _2132_2231));
+            }
+            else
+            {
+                return rhs;
+            }
         }
 
         template <typename T>
@@ -313,21 +328,24 @@ namespace vEngine
             Identity(lhs);
             auto naxis = Normalize(axis);
 
-            lhs[0][0] = (1.0f - Cos(theta)) * naxis.x() * naxis.x() + Cos(theta);
+            lhs[0][0] =
+                (1.0f - Cos(theta)) * naxis.x() * naxis.x() + Cos(theta);
             lhs[1][0] = (1.0f - Cos(theta)) * naxis.x() * naxis.y() +
                         Sin(theta) * naxis.z();
             lhs[2][0] = (1.0f - Cos(theta)) * naxis.x() * naxis.z() -
                         Sin(theta) * naxis.y();
             lhs[0][1] = (1.0f - Cos(theta)) * naxis.y() * naxis.x() -
                         Sin(theta) * naxis.z();
-            lhs[1][1] = (1.0f - Cos(theta)) * naxis.y() * naxis.y() + Cos(theta);
+            lhs[1][1] =
+                (1.0f - Cos(theta)) * naxis.y() * naxis.y() + Cos(theta);
             lhs[2][1] = (1.0f - Cos(theta)) * naxis.y() * naxis.z() +
                         Sin(theta) * naxis.x();
             lhs[0][2] = (1.0f - Cos(theta)) * naxis.z() * naxis.x() +
                         Sin(theta) * naxis.y();
             lhs[1][2] = (1.0f - Cos(theta)) * naxis.z() * naxis.y() -
                         Sin(theta) * naxis.x();
-            lhs[2][2] = (1.0f - Cos(theta)) * naxis.z() * naxis.z() + Cos(theta);
+            lhs[2][2] =
+                (1.0f - Cos(theta)) * naxis.z() * naxis.z() + Cos(theta);
         }
 
         template <typename T>
@@ -354,4 +372,4 @@ namespace vEngine
     }  // namespace Math
 }  // namespace vEngine
 
-#endif /* _MATH_HPP */
+#endif /* _VENGINE_CORE_MATH_HPP */

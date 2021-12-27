@@ -1,9 +1,10 @@
-#ifndef _APPLICATION_HPP
-#define _APPLICATION_HPP
+#ifndef _VENGINE_CORE_APPLICATION_HPP
+#define _VENGINE_CORE_APPLICATION_HPP
 
 #pragma once
 
 #include <CORE_API.h>
+
 #include <vengine/core/iapplication.hpp>
 
 namespace vEngine
@@ -29,4 +30,4 @@ namespace vEngine
     }  // namespace Core
 }  // namespace vEngine
 
-#endif /* _APPLICATION_HPP */
+#endif /* _VENGINE_CORE_APPLICATION_HPP */

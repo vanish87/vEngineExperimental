@@ -1,7 +1,10 @@
+#ifndef _VENGINE_CORE_EXAMPLE_DLL_HPP
+#define _VENGINE_CORE_EXAMPLE_DLL_HPP
 
+#pragma once
 #include <CORE_API.h>
 
-#include <vengine/core/debug.hpp>
+#include <engine.hpp>
 
 class CORE_API DLLClass
 {
@@ -25,3 +28,5 @@ class DLLClassFunc
             return 0;
         };
 };
+
+#endif /* _VENGINE_CORE_EXAMPLE_DLL_HPP */
