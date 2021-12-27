@@ -13,6 +13,13 @@ namespace vEngine
 
                 void RegisterAppInstance();
                 // RenderFactory& RenderFactoty();
+
+			public:
+				bool IsQuit();
+				void SetQuit(bool value);
+
+				private:
+				bool quit_;
         };
 
     }  // namespace Core

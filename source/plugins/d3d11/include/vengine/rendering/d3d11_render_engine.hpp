@@ -1,10 +1,10 @@
 
 #include <vengine/rendering/render_engine.hpp>
-class RENDERING_API D3D11RenderEngine : public RenderEngine
+class D3D11RenderEngine : public RenderEngine
 {
 	public:
-	void TestFunc();
-	void Render() override;
+    void TestFunc();
+    void Render() override;
 
 };
 extern "C" 

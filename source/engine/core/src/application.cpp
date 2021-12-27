@@ -19,24 +19,13 @@ namespace vEngine
         void Application::Update() {}
         void Application::Run()
         {
-#ifdef VENGINE_PLATFORM_WINDOWS
-            MSG msg = {0};
-            while (WM_QUIT != msg.message)
-#elif VENGINE_PLATFORM_LINUX
-            while (true)
-#endif
+            while (!this->shouldQuit)
             {
-#ifdef VENGINE_PLATFORM_WINDOWS
-                if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-                {
-                    TranslateMessage(&msg);
-                    DispatchMessage(&msg);
-                }
-#endif
-
+                this->window_.get()->Update();
                 this->OnUpdate();
                 // Context::Update();
 
+                //call here or PAINT event in Winodw Class
                 // Render::Flush();
             }
 

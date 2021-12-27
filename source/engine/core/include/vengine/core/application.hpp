@@ -26,6 +26,8 @@ namespace vEngine
                 virtual void OnDestory() override;
 
                 virtual void SetupWindow() override;
+
+                bool shouldQuit;
         };
     }  // namespace Core
 }  // namespace vEngine

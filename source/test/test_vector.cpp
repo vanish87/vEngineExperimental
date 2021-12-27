@@ -29,6 +29,8 @@ TEST(Vector, IntAdd)
     ASSERT_EQ(v4.z(), 7);
     ASSERT_EQ(v4.w(), 7);
 
+    int4 v5 = {1, 2, 3};
+
     // v4 += float4(2);
     // ASSERT_EQ(v4.x(), 9);
     // ASSERT_EQ(v4.y(), 9);

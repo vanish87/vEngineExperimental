@@ -61,7 +61,16 @@ namespace vEngine
             ::UpdateWindow(this->wnd_);
         }
         void Window::Deinit(...) {}
-        void Window::Update() {}
+        void Window::Update() {
+
+            MSG msg = {0};
+
+                if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+                {
+                    TranslateMessage(&msg);
+                    DispatchMessage(&msg);
+                }
+        }
         LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT uMsg, WPARAM wParam,
                                          LPARAM lParam)
         {
