@@ -7,7 +7,7 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#include <vengine/core/class_header.h>
+#include <vengine/core/example_class_header.h>
 
 #include <vengine/core/debug.hpp>
 

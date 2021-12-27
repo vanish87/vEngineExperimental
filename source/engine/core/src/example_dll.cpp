@@ -1,5 +1,5 @@
 #include <iostream>
-#include <vengine/core/dll.hpp>
+#include <vengine/core/example_dll.hpp>
 
 int DLLClass::DLLFunc(int i)
 {
