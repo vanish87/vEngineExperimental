@@ -1,15 +1,16 @@
 
-#include <vengine/core/context.hpp>
-#include <engine.hpp>
-
 #ifdef VENGINE_PLATFORM_WINDOWS
     #include <windows.h>
 typedef int(__stdcall *f_funci)();
+#include <engine.hpp>
 #else
+#include <engine.hpp>
 extern "C" {
     vEngine::Core::RenderEngine* Create();
 }
 #endif
+#include <vengine/core/context.hpp>
+
 namespace vEngine
 {
     namespace Core
