@@ -1,12 +1,15 @@
 
+#include <vengine/core/context.hpp>
+#include <engine.hpp>
+
 #ifdef VENGINE_PLATFORM_WINDOWS
     #include <windows.h>
 typedef int(__stdcall *f_funci)();
+#else
+extern "C" {
+    vEngine::Core::RenderEngine* Create();
+}
 #endif
-
-#include <vengine/core/context.hpp>
-#include <vengine/core/debug.hpp>
-
 namespace vEngine
 {
     namespace Core
@@ -19,13 +22,16 @@ namespace vEngine
             // auto re = Create();
             // UNUSED_PARAMETER(re);
 
-            HINSTANCE hGetProcIDDLL = LoadLibrary("d3d11_rendering_plugind.dll");
-            // HINSTANCE hGetProcIDDLL = LoadLibrary("opengl_rendering_plugind.dll");
+#ifdef VENGINE_PLATFORM_WINDOWS
+            HINSTANCE hGetProcIDDLL =
+                LoadLibrary("d3d11_rendering_plugind.dll");
+            // HINSTANCE hGetProcIDDLL =
+            // LoadLibrary("opengl_rendering_plugind.dll");
 
             if (!hGetProcIDDLL)
             {
                 std::cout << "could not load the dynamic library" << std::endl;
-				return;
+                return;
                 // return EXIT_FAILURE;
             }
 
@@ -38,9 +44,17 @@ namespace vEngine
             }
 
             std::cout << "funci() returned " << funci() << std::endl;
+#else
+            auto re = Create();
+            UNUSED_PARAMETER(re);
+
+#endif
 
             PRINT("testjJA");
         }
-        void Context::RegisterAppInstance(ApplicationPtr app) {}
+        void Context::RegisterAppInstance(ApplicationPtr app)
+        {
+            UNUSED_PARAMETER(app);
+        }
     }  // namespace Core
 }  // namespace vEngine

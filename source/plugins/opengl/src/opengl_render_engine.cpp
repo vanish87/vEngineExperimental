@@ -7,11 +7,11 @@ namespace vEngine
     {
         void OpenGLRenderEngine::TestFunc(){
 
-        };
+        }
 
         void OpenGLRenderEngine::Render(){
 
-        };
+        }
         RenderEngine* Create()
         {
             std::cout << "OPENGL" << std::endl;
