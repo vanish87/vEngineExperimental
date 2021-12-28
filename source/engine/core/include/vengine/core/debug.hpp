@@ -52,11 +52,6 @@ void ErrorText(std::string text);
             DEBUG_BREAK             \
         }                           \
     }
-#define NOTIMPL_ASSERT()        \
-    {                           \
-        PRINT_FILE_AND_FUCTION; \
-        DEBUG_BREAK             \
-    }
 #define COMPILE_PRINT_AND_ASSERT(exp, x) \
     {                                    \
         static_assert(exp, x);           \
@@ -73,6 +68,5 @@ void ErrorText(std::string text);
         return x;                          \
     };
 
-#define UNUSED_PARAMETER(x) (&reinterpret_cast<const int&>(x))
 
 #endif /* _VENGINE_CORE_DEBUG_HPP */

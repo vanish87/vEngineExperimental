@@ -2,6 +2,8 @@
 #define _VENGINE_ENGINE_
 
 #include <compiler_setting.hpp>
+#include <macros.hpp>
+
 #include <vengine/core/debug.hpp>
 #include <vengine/core/interface.hpp>
 #include <vengine/core/predeclear.hpp>

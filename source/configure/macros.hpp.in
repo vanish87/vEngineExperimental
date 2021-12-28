@@ -1,0 +1,12 @@
+#ifndef _ENGINE_MACROS_HPP
+#define _ENGINE_MACROS_HPP
+
+#define NOTIMPL_ASSERT()        \
+    {                           \
+        PRINT_FILE_AND_FUCTION; \
+        DEBUG_BREAK             \
+    }
+#define UNUSED_PARAMETER(x) (&reinterpret_cast<const int&>(x))
+
+
+#endif /* _ENGINE_MACROS_HPP */

@@ -17,4 +17,5 @@ string(TOUPPER ${META_PROJECT_ID} META_PROJECT_ID)
 
 configure_file(version.hpp.in ${CONFIGURE_INCLUDE}/version.hpp)
 configure_file(compiler_setting.hpp.in ${CONFIGURE_INCLUDE}/compiler_setting.hpp)
+configure_file(macros.hpp.in ${CONFIGURE_INCLUDE}/macros.hpp)
 

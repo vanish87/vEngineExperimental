@@ -7,7 +7,7 @@
 #include <tchar.h>//wchar
 #include <string>
 
-#include <vengine/core/debug.hpp>
+#include <macros.hpp>
 
 using namespace DirectX;
 
