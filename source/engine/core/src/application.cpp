@@ -1,6 +1,8 @@
 
 #include <vengine/core/window.hpp>//windows.h should include first in win32 platform
+#include <memory>
 #include <vengine/core/application.hpp>
+#include <vengine/core/context.hpp>
 
 namespace vEngine
 {
@@ -8,7 +10,9 @@ namespace vEngine
     {
         void Application::Init(...)
         {
-            // Context::GetInstance().RegisterAppInstance(*this);
+            auto ptr = std::shared_ptr<Application>(this);
+            Context::GetInstance().RegisterAppInstance(ptr);
+            Context::GetInstance().Setup();
             // Make window
             this->SetupWindow();
             // Context::RenderFactory().CreateRenderWindow();
