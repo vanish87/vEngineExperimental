@@ -46,6 +46,9 @@ namespace vEngine
     {
         class Window;
         typedef std::shared_ptr<Window> WindowPtr;
+        class Application;
+        typedef std::shared_ptr<Application> ApplicationPtr;
+        class RenderEngine;
     }  // namespace Core
 }  // namespace vEngine
 
