@@ -21,6 +21,7 @@ namespace vEngine
         class CORE_API Window : public IRuntimeModule
         {
             public:
+                virtual ~Window() {}
                 virtual void Init(...) override;
                 virtual void Deinit(...) override;
                 virtual void Update() override;
