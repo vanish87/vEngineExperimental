@@ -2,24 +2,33 @@
 #define _VENGINE_CORE_CONTEXT_HPP
 
 #pragma once
+
+#include <CORE_API.h>
+
+#include <engine.hpp>
+
 namespace vEngine
 {
     namespace Core
     {
         class Context
         {
+                SINGLETON_CLASS(Context)
+
             public:
+                /// \brief Load all factories that create resource
+                ///
                 void Setup();
 
-                void RegisterAppInstance();
+                void RegisterAppInstance(ApplicationPtr app);
                 // RenderFactory& RenderFactoty();
 
-			public:
-				bool IsQuit();
-				void SetQuit(bool value);
+            public:
+                bool ShouldQuit();
+                void SetQuit(bool value);
 
-				private:
-				bool quit_;
+            private:
+                bool quit_;
         };
 
     }  // namespace Core
