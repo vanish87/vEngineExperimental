@@ -1,13 +1,18 @@
 
 #include <vengine/rendering/render_engine.hpp>
-class D3D11RenderEngine : public RenderEngine
+namespace vEngine
 {
-	public:
-    void TestFunc();
-    void Render() override;
+    namespace Rendering
+    {
+        class D3D11RenderEngine : public RenderEngine
+        {
+            public:
+                void TestFunc();
+                void Render() override;
+        };
 
-};
-extern "C" 
-{
-    __declspec(dllexport) RenderEngine* Create(void);
-}
+        extern "C" {
+            RENDERING_API RenderEngine* Create(void);
+        }
+    }  // namespace Rendering
+}  // namespace vEngine
