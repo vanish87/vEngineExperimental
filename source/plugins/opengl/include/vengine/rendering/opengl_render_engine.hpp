@@ -1,5 +1,5 @@
-#ifndef _PLUGINS_OPENGL_OPENGL_RENDER_ENGINE_HPP
-#define _PLUGINS_OPENGL_OPENGL_RENDER_ENGINE_HPP
+#ifndef _VENGINE_RENDERING_OPENGL_RENDER_ENGINE_HPP
+#define _VENGINE_RENDERING_OPENGL_RENDER_ENGINE_HPP
 
 #include <glad/gl.h>
 
@@ -22,4 +22,4 @@ namespace vEngine
         }
     }  // namespace Rendering
 }  // namespace vEngine
-#endif /* _PLUGINS_OPENGL_OPENGL_RENDER_ENGINE_HPP */
+#endif /* _VENGINE_RENDERING_OPENGL_RENDER_ENGINE_HPP */
