@@ -25,7 +25,7 @@ namespace vEngine
         {
             while (!this->shouldQuit)
             {
-                this->window_.get()->Update();
+                this->window_->Update();
                 this->OnUpdate();
                 // Context::Update();
 
