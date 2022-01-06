@@ -1,5 +1,6 @@
 #ifndef _ENGINE_VERSION_HPP
 #define _ENGINE_VERSION_HPP
+#pragma once
 
 #define ${META_PROJECT_ID}_PROJECT_NAME "@META_PROJECT_NAME@"
 

@@ -1,3 +1,6 @@
+#ifndef _VENGINE_RENDERING_D3D11_RENDER_ENGINE_HPP
+#define _VENGINE_RENDERING_D3D11_RENDER_ENGINE_HPP
+#pragma once
 
 #include <vengine/rendering/render_engine.hpp>
 namespace vEngine
@@ -16,3 +19,6 @@ namespace vEngine
         }
     }  // namespace Rendering
 }  // namespace vEngine
+
+
+#endif /* _VENGINE_RENDERING_D3D11_RENDER_ENGINE_HPP */

@@ -1,5 +1,6 @@
 #ifndef _VENGINE_RENDERING_OPENGL_RENDER_ENGINE_HPP
 #define _VENGINE_RENDERING_OPENGL_RENDER_ENGINE_HPP
+#pragma once
 
 #include <glad/gl.h>
 

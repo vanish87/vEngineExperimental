@@ -2,8 +2,8 @@
 #include <gtest/gtest.h>
 
 #include <vengine/core/matrix.hpp>
-#include <vengine/core/predeclear.hpp>
-#include <vengine/core/debug.hpp>
+#include <engine.hpp>
+
 
 using namespace vEngine::Core;
 using namespace vEngine::Math;

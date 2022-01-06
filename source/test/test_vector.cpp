@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 #include <vector>
 
-#include <vengine/core/predeclear.hpp>
+#include <engine.hpp>
 #include <vengine/core/vector.hpp>
 
 using namespace vEngine::Core;

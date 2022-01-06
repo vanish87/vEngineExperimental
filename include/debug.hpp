@@ -1,7 +1,6 @@
-#ifndef _VENGINE_CORE_DEBUG_HPP
-#define _VENGINE_CORE_DEBUG_HPP
+#ifndef _INCLUDE_DEBUG_HPP
+#define _INCLUDE_DEBUG_HPP
 
-#pragma once
 
 #ifdef VENGINE_PLATFORM_WINDOWS
     #define DEBUG_BREAK __debugbreak();
@@ -69,4 +68,4 @@ void ErrorText(std::string text);
     };
 
 
-#endif /* _VENGINE_CORE_DEBUG_HPP */
+#endif /* _INCLUDE_DEBUG_HPP */
