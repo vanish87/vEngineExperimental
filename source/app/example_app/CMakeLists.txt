@@ -10,6 +10,7 @@ add_executable(${PROJECT_NAME} main.cpp)
 target_link_libraries(${PROJECT_NAME}
     engine::core
     engine::rendering
+    engine::opengl_rendering_plugin
 )
 
 
