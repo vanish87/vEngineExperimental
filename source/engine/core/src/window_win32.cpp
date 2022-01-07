@@ -44,7 +44,8 @@ namespace vEngine
             //::ShowCursor(!render_setting.full_screen);
             // ::UpdateWindow(this->wnd_);
 
-            ::SetWindowLongPtr(this->wnd_, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+            // Not used for now
+            // ::SetWindowLongPtr(this->wnd_, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
         }
         void Window::Deinit(...) {}
         void Window::Update()
