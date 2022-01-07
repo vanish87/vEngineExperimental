@@ -3,8 +3,8 @@
 
     // #include <windows.h>
     // #include <vengine/core/debug.hpp>
-    #include <vengine/core/window.hpp>
     #include <vengine/core/context.hpp>
+    #include <vengine/core/window.hpp>
 // #include <tchar.h>//wchar
 
 namespace vEngine
@@ -18,8 +18,7 @@ namespace vEngine
             HINSTANCE hInstance = ::GetModuleHandle(nullptr);
 
             WNDCLASS wcex = {0};
-            wcex.style = CS_HREDRAW | CS_VREDRAW |
-                         CS_OWNDC;  // CS_OWNDC to create own device context
+            wcex.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;  // CS_OWNDC to create own device context
             wcex.lpfnWndProc = WndProc;
             wcex.hInstance = hInstance;
             wcex.hCursor = ::LoadCursor(nullptr, IDC_ARROW);
@@ -37,9 +36,7 @@ namespace vEngine
             int left = CW_USEDEFAULT;
             int width = rc.right - rc.left;
             int height = rc.bottom - rc.top;
-            this->wnd_ = CreateWindow(
-                wcex.lpszClassName, win_name.c_str(), WS_OVERLAPPEDWINDOW, left,
-                top, width, height, nullptr, nullptr, hInstance, nullptr);
+            this->wnd_ = CreateWindow(wcex.lpszClassName, win_name.c_str(), WS_OVERLAPPEDWINDOW, left, top, width, height, nullptr, nullptr, hInstance, nullptr);
 
             ::ShowWindow(this->wnd_, SW_SHOWNORMAL);
             // ::SetForegroundWindow(this->wnd_);
@@ -47,8 +44,7 @@ namespace vEngine
             //::ShowCursor(!render_setting.full_screen);
             // ::UpdateWindow(this->wnd_);
 
-            ::SetWindowLongPtr(this->wnd_, GWLP_USERDATA,
-                               reinterpret_cast<LONG_PTR>(this));
+            ::SetWindowLongPtr(this->wnd_, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
         }
         void Window::Deinit(...) {}
         void Window::Update()
@@ -61,8 +57,7 @@ namespace vEngine
                 DispatchMessage(&msg);
             }
         }
-        LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT uMsg, WPARAM wParam,
-                                         LPARAM lParam)
+        LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         {
             switch (uMsg)
             {
