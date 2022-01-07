@@ -6,6 +6,7 @@
 #ifdef VENGINE_PLATFORM_WINDOWS
     #include <windows.h>
 #elif VENGINE_PLATFORM_LINUX
+class GLFWwindow;
 
 #endif
 
@@ -28,12 +29,16 @@ namespace vEngine
 
 #ifdef VENGINE_PLATFORM_WINDOWS
             private:
-                static LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
-                                                WPARAM wParam, LPARAM lParam);
-                LRESULT CALLBACK MsgProc(HWND hWnd, UINT message, WPARAM wParam,
-                                         LPARAM lParam);
+                static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+                LRESULT CALLBACK MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
                 HWND wnd_;
                 WNDPROC default_wnd_proc_;
+#elif VENGINE_PLATFORM_LINUX
+private:
+
+    GLFWwindow* window;
+
+
 #endif
         };
     }  // namespace Core
