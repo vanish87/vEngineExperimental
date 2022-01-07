@@ -10,6 +10,7 @@ extern "C" {
 }
 #endif
 #include <vengine/core/context.hpp>
+#include <vengine/core/application.hpp>
 
 namespace vEngine
 {
@@ -55,9 +56,16 @@ namespace vEngine
 
             PRINT("testjJA");
         }
+
         void Context::RegisterAppInstance(ApplicationPtr app)
         {
-            UNUSED_PARAMETER(app);
+            // UNUSED_PARAMETER(app);
+            this->appInstance = app;
+            
+        }
+        void Context::SetQuit(bool quit)
+        {
+            this->appInstance->Quit(quit);
         }
     }  // namespace Core
 }  // namespace vEngine

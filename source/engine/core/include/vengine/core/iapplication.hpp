@@ -23,6 +23,8 @@ namespace vEngine
             virtual void Deinit(...) = 0;
             virtual void Update() = 0;
 
+            virtual void Quit(bool quit) = 0;
+
         protected:
             WindowPtr window_;
 

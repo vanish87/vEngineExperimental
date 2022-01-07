@@ -23,6 +23,8 @@ namespace vEngine
         void Application::Update() {}
         void Application::Run()
         {
+            this->shouldQuit = false;
+
             while (!this->shouldQuit)
             {
                 this->window_->Update();
@@ -44,6 +46,10 @@ namespace vEngine
         {
             this->window_ = std::make_shared<Window>();
             this->window_.get()->Init();
+        }
+        void Application::Quit(bool quit)
+        {
+            this->shouldQuit = quit;
         }
 
     }  // namespace Core

@@ -23,6 +23,7 @@ namespace vEngine
                 virtual void Init(...) override;
                 virtual void Deinit(...) override;
                 virtual void Update() override;
+                virtual void Quit(bool quit) override;
 
             private:
                 virtual void OnCreate() override;
@@ -30,8 +31,8 @@ namespace vEngine
                 virtual void OnDestory() override;
 
                 virtual void SetupWindow() override;
-
                 bool shouldQuit;
+
         };
     }  // namespace Core
 }  // namespace vEngine

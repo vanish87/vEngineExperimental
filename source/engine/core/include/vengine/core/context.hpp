@@ -29,6 +29,7 @@ namespace vEngine
 
             private:
                 bool quit_;
+                ApplicationPtr appInstance;
         };
 
     }  // namespace Core
