@@ -1,16 +1,15 @@
 
-#ifndef VECTOR_H
-#define VECTOR_H
+#ifndef _VENGINE_CORE_VECTOR_HPP
+#define _VENGINE_CORE_VECTOR_HPP
 
 #pragma once
-
 #include <array>
-#include <iostream>
+#include <engine.hpp>
 #include <vengine/core/template_helper.hpp>
 
 namespace vEngine
 {
-    namespace Core
+    namespace Math
     {
         // basic data type will be static linked to main app
         // so no CORE_API here
@@ -39,7 +38,7 @@ namespace vEngine
                 typedef typename DataType::size_type size_type;
                 typedef typename DataType::difference_type difference_type;
 
-                static constexpr size_t size = N;
+                static constexpr size_type size = N;
 
             public:
                 // use init list {} to initialize data
@@ -52,7 +51,6 @@ namespace vEngine
                 {
                     vector_t<T, N>::do_assign(this->data(), other);
                 }
-
 
                 // big five - 3: copy constructor
                 // called by
@@ -85,7 +83,7 @@ namespace vEngine
                 virtual ~Vector() noexcept {}
 
                 // big five - 4: move constructor
-                // const is not need: constexpr Vector(const Vector &&other)
+                // const is not needed: constexpr Vector(const Vector &&other)
                 // The move constructor:
                 // - Takes an r-value reference as a parameter.
                 // - Discards the object’s current state.
@@ -112,7 +110,7 @@ namespace vEngine
 
                 // ambiguous/undefined actions
                 // constructor obj with pointer
-                explicit constexpr Vector(const T* other) noexcept 
+                explicit constexpr Vector(const T* other) noexcept
                 {
                     vector_t<T, N>::do_copy(this->data(), other);
                 }
@@ -126,11 +124,18 @@ namespace vEngine
 
                 constexpr Vector(const T& x, const T& y) noexcept : data_{x, y}
                 {}
+                constexpr Vector(const T& x, const T& y, const T& z) noexcept
+                    : data_{x, y, z}
+                {}
+                constexpr Vector(const T& x, const T& y, const T& z,
+                                 const T& w) noexcept
+                    : data_{x, y, z, w}
+                {}
 
             public:
                 static const Vector<T, N>& Zero()
                 {
-                    static const Vector<T, N> zero{0};
+                    static const Vector<T, N> zero(T(0));
                     return zero;
                 }
                 static const Vector<T, N>& One()
@@ -168,13 +173,15 @@ namespace vEngine
                     return &(this->data_[0]);
                 }
 
-                reference operator[](size_t index) noexcept
+                reference operator[](size_type index) noexcept
                 {
+                    CHECK_ASSERT(index < N);
                     return this->data_[index];
                 }
                 constexpr const_reference operator[](
-                    size_t index) const noexcept
+                    size_type index) const noexcept
                 {
+                    CHECK_ASSERT(index < N);
                     return this->data_[index];
                 }
 
@@ -197,29 +204,56 @@ namespace vEngine
                     return this->data_[3];
                 }
 
+                const_reference x() const noexcept
+                {
+                    return this->data_[0];
+                }
+                const_reference y() const noexcept
+                {
+                    return this->data_[1];
+                }
+                const_reference z() const noexcept
+                {
+                    return this->data_[2];
+                }
+                const_reference w() const noexcept
+                {
+                    return this->data_[3];
+                }
+
             public:
                 template <typename U>
                 const Vector& operator+=(const Vector<U, N>& other) noexcept
                 {
-                    vector_t<T, N>::do_add(this->data(), this->data(), other.data());
+                    vector_t<T, N>::do_add(this->data(), this->data(),
+                                           other.data());
                     return *this;
                 }
                 template <typename U>
                 const Vector& operator-=(const Vector<U, N>& other) noexcept
                 {
-                    vector_t<T, N>::do_sub(this->data(), this->data(), other.data());
+                    vector_t<T, N>::do_sub(this->data(), this->data(),
+                                           other.data());
                     return *this;
                 }
                 template <typename U>
                 const Vector& operator*=(const Vector<U, N>& other) noexcept
                 {
-                    vector_t<T, N>::do_mul(this->data(), this->data(), other.data());
+                    vector_t<T, N>::do_mul(this->data(), this->data(),
+                                           other.data());
+                    return *this;
+                }
+                template <typename U>
+                const Vector& operator*=(const U& other) noexcept
+                {
+                    vector_t<T, N>::do_mul(this->data(), this->data(), other);
                     return *this;
                 }
                 template <typename U>
                 const Vector& operator/=(const Vector<U, N>& other) noexcept
                 {
-                    vector_t<T, N>::do_div(this->data(), this->data(), other.data());
+                    vector_t<T, N>::do_div(this->data(), this->data(),
+                                           other.data());
                     return *this;
                 }
                 constexpr Vector const& operator+() const noexcept
@@ -237,28 +271,42 @@ namespace vEngine
                 {
                     return vector_t<T, N>::do_equal(this->data(), other.data());
                 }
+                bool operator!=(const Vector& other) const noexcept
+                {
+                    return !(*this == other);
+                }
 
                 // Boost defined operator
             public:
                 template <typename U>
-                constexpr Vector operator+(Vector<U, N>& other) noexcept
+                constexpr Vector operator+(
+                    const Vector<U, N>& other) const noexcept
                 {
-                    return Vector(this->data()) += other;
+                    return Vector(*this) += other;
                 }
                 template <typename U>
-                constexpr Vector operator-(Vector<U, N>& other) noexcept
+                constexpr Vector operator-(
+                    const Vector<U, N>& other) const noexcept
                 {
-                    return Vector(this->data()) -= other;
+                    return Vector(*this) -= other;
                 }
                 template <typename U>
-                constexpr Vector operator*(Vector<U, N>& other) noexcept
+                constexpr Vector operator*(
+                    const Vector<U, N>& other) const noexcept
                 {
-                    return Vector(this->data()) *= other;
+                    return Vector(*this) *= other;
+                }
+                // TODO: ambiguous multiply function, use scale
+                template <typename U>
+                constexpr Vector operator*(const U& other) const noexcept
+                {
+                    return Vector(*this) *= other;
                 }
                 template <typename U>
-                constexpr Vector operator/(Vector<U, N>& other) noexcept
+                constexpr Vector operator/(
+                    const Vector<U, N>& other) const noexcept
                 {
-                    return Vector(this->data()) /= other;
+                    return Vector(*this) /= other;
                 }
         };
         template <typename T, int N>
@@ -266,7 +314,7 @@ namespace vEngine
         {
             return vector_t<T, N>::do_swap(lhs.data(), rhs.data());
         }
-    }  // namespace Core
+    }  // namespace Math
 }  // namespace vEngine
 
-#endif
+#endif /* _VENGINE_CORE_VECTOR_HPP */

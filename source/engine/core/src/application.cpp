@@ -1,19 +1,56 @@
 
+#include <vengine/core/window.hpp>//windows.h should include first in win32 platform
+#include <memory>
 #include <vengine/core/application.hpp>
-#include <iostream>
+#include <vengine/core/context.hpp>
 
 namespace vEngine
 {
-	namespace Core
-	{
-		void Application::Run()
-		{
-			std::cout<<"Run"<<std::endl;
+    namespace Core
+    {
+        void Application::Init(...)
+        {
+            auto ptr = std::shared_ptr<Application>(this);
+            Context::GetInstance().RegisterAppInstance(ptr);
+            Context::GetInstance().Setup();
+            // Make window
+            this->SetupWindow();
+            // Context::RenderFactory().CreateRenderWindow();
 
-		}
-		void Application::Run1()
-		{
+            this->OnCreate();
+        }
+        void Application::Deinit(...) {}
+        void Application::Update() {}
+        void Application::Run()
+        {
+            this->shouldQuit = false;
 
-		}
-	}
-}
+            while (!this->shouldQuit)
+            {
+                this->window_->Update();
+                this->OnUpdate();
+                // Context::Update();
+
+                //call here or PAINT event in Winodw Class
+                // Render::Flush();
+            }
+
+            this->OnDestory();
+            this->Deinit();
+        }
+
+        void Application::OnCreate() {}
+        void Application::OnUpdate() {}
+        void Application::OnDestory() {}
+        void Application::SetupWindow()
+        {
+            this->window_ = std::make_shared<Window>();
+            this->window_.get()->Init();
+        }
+        void Application::Quit(bool quit)
+        {
+            this->shouldQuit = quit;
+        }
+
+    }  // namespace Core
+}  // namespace vEngine

@@ -1,13 +1,17 @@
-#ifndef _VENGINE_RENDERING_D3D11_RENDER_ENGINE_HPP
-#define _VENGINE_RENDERING_D3D11_RENDER_ENGINE_HPP
+#ifndef _VENGINE_RENDERING_OPENGL_RENDER_ENGINE_HPP
+#define _VENGINE_RENDERING_OPENGL_RENDER_ENGINE_HPP
 #pragma once
 
+#include <glad/gl.h>
+
 #include <vengine/rendering/render_engine.hpp>
+
 namespace vEngine
 {
     namespace Rendering
     {
-        class D3D11RenderEngine : public RenderEngine
+
+        class OpenGLRenderEngine : public RenderEngine
         {
             public:
                 void TestFunc();
@@ -19,6 +23,4 @@ namespace vEngine
         }
     }  // namespace Rendering
 }  // namespace vEngine
-
-
-#endif /* _VENGINE_RENDERING_D3D11_RENDER_ENGINE_HPP */
+#endif /* _VENGINE_RENDERING_OPENGL_RENDER_ENGINE_HPP */

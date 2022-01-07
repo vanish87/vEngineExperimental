@@ -1,14 +1,24 @@
-#ifndef _MATRIX4X4_HPP
-#define _MATRIX4X4_HPP
+#ifndef _VENGINE_CORE_MATRIX_HPP
+#define _VENGINE_CORE_MATRIX_HPP
 
 #pragma once
+#include <vengine/core/math.h>
 
+#include <engine.hpp>
 #include <vengine/core/vector.hpp>
 
 namespace vEngine
 {
-	namespace Core
-	{
+    namespace Math
+    {
+        /// \brief Define a MxN matrix with data type T
+        ///
+        /// Note M is number of row elements, N is number of col elements. \n
+        /// use matrix[row][col] to assess data. \n
+        /// the data layout is colum major, see Math for details.
+        /// \tparam T
+        /// \tparam M number of row elements
+        /// \tparam N number of col elements
         template <typename T = float, int M = 4, int N = 4>
         class Matrix
         {
@@ -33,22 +43,59 @@ namespace vEngine
                 typedef typename DataType::size_type size_type;
                 typedef typename DataType::difference_type difference_type;
 
-                static constexpr size_t size = M * N;
-                static constexpr size_t row = M;
-                static constexpr size_t col = N;
+                static constexpr size_type size = M * N;
+                static constexpr size_type row = N;
+                static constexpr size_type col = M;
 
             public:
                 // use init list {} to initialize data
                 constexpr Matrix() noexcept {}
+                constexpr Matrix(T m00, T m01, T m02, T m03, T m10, T m11,
+                                 T m12, T m13, T m20, T m21, T m22, T m23,
+                                 T m30, T m31, T m32, T m33) noexcept
+                {
+                    static_assert(M == 4);
+                    static_assert(N == 4);
+
+                    this->data_[0][0] = std::move(m00);
+                    this->data_[0][1] = std::move(m01);
+                    this->data_[0][2] = std::move(m02);
+                    this->data_[0][3] = std::move(m03);
+
+                    this->data_[1][0] = std::move(m10);
+                    this->data_[1][1] = std::move(m11);
+                    this->data_[1][2] = std::move(m12);
+                    this->data_[1][3] = std::move(m13);
+
+                    this->data_[2][0] = std::move(m20);
+                    this->data_[2][1] = std::move(m21);
+                    this->data_[2][2] = std::move(m22);
+                    this->data_[2][3] = std::move(m23);
+
+                    this->data_[3][0] = std::move(m30);
+                    this->data_[3][1] = std::move(m31);
+                    this->data_[3][2] = std::move(m32);
+                    this->data_[3][3] = std::move(m33);
+                }
 
                 // explicit one parameter constructor to avoid implicit
                 // conversion
                 explicit constexpr Matrix(const T& other) noexcept
-                // : data_{other} // this only assign first element
                 {
-                    // vector_t<T, N>::do_assign(this->data(), other);
+                    for (auto& r : this->data_)
+                    {
+                        vector_t<T, col>::do_assign(r.data(), other);
+                    }
                 }
+                // explicit constexpr Matrix(const Vector<T, M>& other) noexcept
+                // {
+                //     static_assert(N == 1);
 
+                //     for (auto& r : this->data_)
+                //     {
+                //         vector_t<T, N>::do_assign(r.data(), other);
+                //     }
+                // }
 
                 // big five - 3: copy constructor
                 // called by
@@ -56,6 +103,7 @@ namespace vEngine
                 //  2. Func(ClassA a) -> pass by value
                 //  3. return temp; -> return by value
                 constexpr Matrix(const Matrix& other) noexcept
+                    : data_(other.data_)
                 {
                     // vector_t<T, N>::do_copy(this->data(), other.data());
                 }
@@ -72,7 +120,7 @@ namespace vEngine
                     {
                         // 2.allocate new object before-> to assure memory
                         // before delete existing one
-                        // vector_t<T, N>::do_assign(this->data(), other.data());
+                        this->data_ = other.data_;
                     }
                     return *this;
                 }
@@ -101,38 +149,37 @@ namespace vEngine
                     {
                         // 2.allocate new object before-> to assure memory
                         // before delete existing one
-                        this->data_ = std::move(other.data());
+                        this->data_ = std::move(other.data_);
                     }
                     return *this;
                 }
 
                 // ambiguous/undefined actions
                 // constructor obj with pointer
-                explicit constexpr Matrix(const T* other) noexcept 
+                explicit constexpr Matrix(const T* other) noexcept
                 {
-                    // vector_t<T, N>::do_copy(this->data(), other);
+                    for (auto& r : this->data_)
+                    {
+                        vector_t<T, col>::do_copy(r.data(), other);
+                    }
                 }
 
-                // copy from other vector type
-                template <typename U, int M>
-                constexpr Matrix(Matrix<U, M> const& rhs) noexcept
-                {
-                    // vector_t<T, N>::do_copy(this->data(), rhs.data());
-                }
+                // // copy from other matrix type
+                // template <typename U, int M>
+                // constexpr Matrix(Matrix<U, M> const& rhs) noexcept
+                // {
+                //     // vector_t<T, N>::do_copy(this->data(), rhs.data());
+                // }
 
-                // constexpr Matrix(const T& x, const T& y) noexcept : data_{x, y}
+                // constexpr Matrix(const T& x, const T& y) noexcept : data_{x,
+                // y}
                 // {}
 
             public:
-                static const Vector<T, N>& Zero()
+                static const Matrix<T, M, N>& Zero()
                 {
-                    static const Vector<T, N> zero{0};
+                    static const Matrix<T, M, N> zero(0);
                     return zero;
-                }
-                static const Vector<T, N>& One()
-                {
-                    static const Vector<T, N> one{1};
-                    return one;
                 }
 
             public:
@@ -164,58 +211,48 @@ namespace vEngine
                     return &(this->data_[0]);
                 }
 
-                reference operator[](size_t index) noexcept
+                reference operator[](size_type index) noexcept
                 {
                     return this->data_[index];
                 }
                 constexpr const_reference operator[](
-                    size_t index) const noexcept
+                    size_type index) const noexcept
                 {
                     return this->data_[index];
-                }
-
-                // TODO: use vector swizzle
-                // https://zhuanlan.zhihu.com/p/29618817
-                reference x() noexcept
-                {
-                    return this->data_[0];
-                }
-                reference y() noexcept
-                {
-                    return this->data_[1];
-                }
-                reference z() noexcept
-                {
-                    return this->data_[2];
-                }
-                reference w() noexcept
-                {
-                    return this->data_[3];
                 }
 
             public:
                 template <typename U>
                 const Matrix& operator+=(const Matrix<U, N>& other) noexcept
                 {
-                    // vector_t<T, N>::do_add(this->data(), this->data(), other.data());
+                    for (size_type r = 0; r < row; ++r)
+                    {
+                        this->data_[r] += other.data_[r];
+                    }
                     return *this;
                 }
                 template <typename U>
                 const Matrix& operator-=(const Matrix<U, N>& other) noexcept
                 {
-                    // vector_t<T, N>::do_sub(this->data(), this->data(), other.data());
+                    for (size_type r = 0; r < row; ++r)
+                    {
+                        this->data_[r] -= other.data_[r];
+                    }
                     return *this;
                 }
                 template <typename U>
                 const Matrix& operator*=(const Matrix<U, N>& other) noexcept
                 {
-                    // vector_t<T, N>::do_mul(this->data(), this->data(), other.data());
+                    UNUSED_PARAMETER(other);
+                    // ambiguous operator
+                    assert(false);
                     return *this;
                 }
                 template <typename U>
                 const Matrix& operator/=(const Matrix<U, N>& other) noexcept
                 {
-                    // vector_t<T, N>::do_div(this->data(), this->data(), other.data());
+                    UNUSED_PARAMETER(other);
+                    assert(false);
                     return *this;
                 }
                 constexpr Matrix const& operator+() const noexcept
@@ -225,40 +262,47 @@ namespace vEngine
                 Matrix const operator-() const noexcept
                 {
                     Matrix ret;
-                    // vector_t<T, N>::do_negative(ret.data(), this->data());
+                    for (size_type r = 0; r < row; ++r)
+                    {
+                        ret.data_[r] = -this->data_[r];
+                    }
                     return ret;
                 }
 
                 bool operator==(const Matrix& other) const noexcept
                 {
-					return true;
-                    // return vector_t<T, N>::do_equal(this->data(), other.data());
+                    for (size_type r = 0; r < row; ++r)
+                    {
+                        if (this->data_[r] != other.data_[r]) return false;
+                    }
+                    return true;
                 }
 
                 // Boost defined operator
             public:
                 template <typename U>
-                constexpr Matrix operator+(Matrix<U, N>& other) noexcept
+                constexpr Matrix operator+(Matrix<U, M, N>& other) noexcept
                 {
                     return Matrix(*this) += other;
                 }
                 template <typename U>
-                constexpr Matrix operator-(Matrix<U, N>& other) noexcept
+                constexpr Matrix operator-(Matrix<U, M, N>& other) noexcept
                 {
-                    return Matrix(this->data()) -= other;
+                    return Matrix(*this) -= other;
                 }
                 template <typename U>
-                constexpr Matrix operator*(Matrix<U, N>& other) noexcept
+                constexpr Matrix operator*(Matrix<U, M, N>& other) noexcept
                 {
-                    return Matrix(this->data()) *= other;
+                    return Multiply(*this, other);
                 }
                 template <typename U>
-                constexpr Matrix operator/(Matrix<U, N>& other) noexcept
+                constexpr Matrix operator/(Matrix<U, M, N>& other) noexcept
                 {
-                    return Matrix(this->data()) /= other;
+                    return Matrix(*this) /= other;
                 }
         };
-	}
-}
 
-#endif /* _MATRIX4X4_HPP */
+    }  // namespace Math
+}  // namespace vEngine
+
+#endif /* _VENGINE_CORE_MATRIX_HPP */

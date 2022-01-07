@@ -14,6 +14,7 @@ include_directories(${PROJECT_SOURCE_DIR}/external/googletest/googletest/include
 add_executable(${PROJECT_NAME} 
 	test_vector.cpp
 	test_matrix.cpp
+	test_math.cpp
 	test_main.cpp
 )
 
@@ -22,6 +23,7 @@ add_executable(${PROJECT_NAME}
 # This will cause the include directories for that target to be added to this project
 target_link_libraries(${PROJECT_NAME}
     engine::core
+    engine::opengl_rendering_plugin
 	gtest
 	gtest_main
 )

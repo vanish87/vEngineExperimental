@@ -1,0 +1,27 @@
+#ifndef _ENGINE_MACROS_HPP
+#define _ENGINE_MACROS_HPP
+#pragma once
+
+#define NOTIMPL_ASSERT()        \
+    {                           \
+        PRINT_FILE_AND_FUCTION; \
+        DEBUG_BREAK             \
+    }
+#define UNUSED_PARAMETER(x) (&reinterpret_cast<const int&>(x))
+
+// try to add Init function to init class_name
+#define SINGLETON_CLASS(class_name)                    \
+private:                                               \
+    class_name();                                      \
+    class_name(class_name const&) = delete;            \
+    class_name& operator=(class_name const&) = delete; \
+    virtual ~class_name();                             \
+                                                       \
+public:                                                \
+    static class_name& GetInstance()                   \
+    {                                                  \
+        static class_name Instance;                    \
+        return Instance;                               \
+    };
+
+#endif /* _ENGINE_MACROS_HPP */

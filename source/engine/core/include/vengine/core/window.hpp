@@ -1,18 +1,42 @@
-#ifndef _WINDOW_HPP
-#define _WINDOW_HPP
+#ifndef _VENGINE_CORE_WINDOW_HPP
+#define _VENGINE_CORE_WINDOW_HPP
+
+#pragma once
+
+#ifdef VENGINE_PLATFORM_WINDOWS
+    #include <windows.h>
+#elif VENGINE_PLATFORM_LINUX
+
+#endif
+
+#include <CORE_API.h>
+
+// #include <engine.hpp>
+#include <vengine/core/iruntime_module.hpp>
 
 namespace vEngine
 {
-	namespace Core
-	{
-		class Window
-		{
-			public:
-			Window();
+    namespace Core
+    {
+        class CORE_API Window : public IRuntimeModule
+        {
+            public:
+                virtual ~Window() {}
+                virtual void Init(...) override;
+                virtual void Deinit(...) override;
+                virtual void Update() override;
 
-		};
-	}
-}
+#ifdef VENGINE_PLATFORM_WINDOWS
+            private:
+                static LRESULT CALLBACK WndProc(HWND hWnd, UINT message,
+                                                WPARAM wParam, LPARAM lParam);
+                LRESULT CALLBACK MsgProc(HWND hWnd, UINT message, WPARAM wParam,
+                                         LPARAM lParam);
+                HWND wnd_;
+                WNDPROC default_wnd_proc_;
+#endif
+        };
+    }  // namespace Core
+}  // namespace vEngine
 
-
-#endif /* _WINDOW_HPP */
+#endif /* _VENGINE_CORE_WINDOW_HPP */

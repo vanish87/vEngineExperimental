@@ -1,11 +1,10 @@
-#ifndef _TEMPLATE_HELPER_HPP
-#define _TEMPLATE_HELPER_HPP
+#ifndef _VENGINE_CORE_TEMPLATE_HELPER_HPP
+#define _VENGINE_CORE_TEMPLATE_HELPER_HPP
 
 #pragma once
-
 namespace vEngine
 {
-    namespace Core
+    namespace Math
     {
         template <typename T, int N>
         struct vector_t
@@ -18,9 +17,9 @@ namespace vEngine
                 }
 
                 /// \brief Assign rhs to v recursively
-				/// 
+                ///
                 ///	Only same type can do assignment
-				/// detail
+                /// detail
                 ///
                 /// \param v
                 /// \param rhs
@@ -36,22 +35,32 @@ namespace vEngine
                     vector_t<T, N - 1>::do_assign(v + 1, rhs);
                 }
 
-                static void do_add(T v[N], const T lhs[N], const T rhs[N]) noexcept
+                static void do_add(T v[N], const T lhs[N],
+                                   const T rhs[N]) noexcept
                 {
                     v[0] = lhs[0] + rhs[0];
                     vector_t<T, N - 1>::do_add(v + 1, lhs + 1, rhs + 1);
                 }
-                static void do_sub(T v[N], const T lhs[N], const T rhs[N]) noexcept
+                static void do_sub(T v[N], const T lhs[N],
+                                   const T rhs[N]) noexcept
                 {
                     v[0] = lhs[0] - rhs[0];
                     vector_t<T, N - 1>::do_sub(v + 1, lhs + 1, rhs + 1);
                 }
-                static void do_mul(T v[N], const T lhs[N], const T rhs[N]) noexcept
+                static void do_mul(T v[N], const T lhs[N],
+                                   const T rhs[N]) noexcept
                 {
                     v[0] = lhs[0] * rhs[0];
                     vector_t<T, N - 1>::do_mul(v + 1, lhs + 1, rhs + 1);
                 }
-                static void do_div(T v[N], const T lhs[N], const T rhs[N]) noexcept
+                static void do_mul(T v[N], const T lhs[N],
+                                   const T& rhs) noexcept
+                {
+                    v[0] = lhs[0] * rhs;
+                    vector_t<T, N - 1>::do_mul(v + 1, lhs + 1, rhs);
+                }
+                static void do_div(T v[N], const T lhs[N],
+                                   const T rhs[N]) noexcept
                 {
                     v[0] = lhs[0] / rhs[0];
                     vector_t<T, N - 1>::do_div(v + 1, lhs + 1, rhs + 1);
@@ -68,7 +77,7 @@ namespace vEngine
                 }
                 static void do_swap(T lhs[N], T rhs[N]) noexcept
                 {
-                    std::swap(lhs[0] , rhs[0]);
+                    std::swap(lhs[0], rhs[0]);
                     vector_t<T, N - 1>::do_swap(lhs + 1, rhs + 1);
                 }
         };
@@ -94,19 +103,28 @@ namespace vEngine
                 {
                     v[0] = rhs;
                 }
-                static void do_add(T v[1], const T lhs[1], const T rhs[1]) noexcept
+                static void do_add(T v[1], const T lhs[1],
+                                   const T rhs[1]) noexcept
                 {
                     v[0] = lhs[0] + rhs[0];
                 }
-                static void do_sub(T v[1], const T lhs[1], const T rhs[1]) noexcept
+                static void do_sub(T v[1], const T lhs[1],
+                                   const T rhs[1]) noexcept
                 {
                     v[0] = lhs[0] - rhs[0];
                 }
-                static void do_mul(T v[1], const T lhs[1], const T rhs[1]) noexcept
+                static void do_mul(T v[1], const T lhs[1],
+                                   const T rhs[1]) noexcept
                 {
                     v[0] = lhs[0] * rhs[0];
                 }
-                static void do_div(T v[1], const T lhs[1], const T rhs[1]) noexcept
+                static void do_mul(T v[1], const T lhs[1],
+                                   const T& rhs) noexcept
+                {
+                    v[0] = lhs[0] * rhs;
+                }
+                static void do_div(T v[1], const T lhs[1],
+                                   const T rhs[1]) noexcept
                 {
                     v[0] = lhs[0] / rhs[0];
                 }
@@ -124,7 +142,7 @@ namespace vEngine
                 }
         };
 
-    }  // namespace Core
+    }  // namespace Math
 }  // namespace vEngine
 
-#endif /* _TEMPLATE_HELPER_HPP */
+#endif /* _VENGINE_CORE_TEMPLATE_HELPER_HPP */
