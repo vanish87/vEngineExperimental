@@ -122,8 +122,7 @@ namespace vEngine
             return ret;
         }
         template <typename T, int M, int N>
-        Matrix<T, M, N> OuterProduct(const Vector<T, M>& lhs,
-                                     const Vector<T, N>& rhs)
+        Matrix<T, M, N> OuterProduct(const Vector<T, M>& lhs, const Vector<T, N>& rhs)
         {
             Matrix<T, M, N> ret;
 
@@ -139,8 +138,7 @@ namespace vEngine
         }
 
         template <typename T, int M, int S, int N>
-        Matrix<T, M, N> Multiply(const Matrix<T, S, N>& lhs,
-                                 const Matrix<T, M, S>& rhs)
+        Matrix<T, M, N> Multiply(const Matrix<T, S, N>& lhs, const Matrix<T, M, S>& rhs)
         {
             // CHECK_ASSERT(lhs.row == rhs.col);
             Matrix<T, M, N> ret;
@@ -262,8 +260,7 @@ namespace vEngine
         }
 
         template <typename T>
-        Matrix<T, 4, 4> LookAtLH(const Vector<T, 3>& eye,
-                                 const Vector<T, 3>& at, const Vector<T, 3>& up)
+        Matrix<T, 4, 4> LookAtLH(const Vector<T, 3>& eye, const Vector<T, 3>& at, const Vector<T, 3>& up)
         {
             auto zaxis = Normalize(at - eye);
             auto xaxis = Normalize(Cross(up, zaxis));
@@ -277,8 +274,7 @@ namespace vEngine
         }
 
         template <typename T>
-        Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect,
-                                         const T zn, const T zf)
+        Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect, const T zn, const T zf)
         {
             float y_scale = Cot(fovy / 2);
             float x_scale = y_scale / aspect;
@@ -322,35 +318,24 @@ namespace vEngine
         }
 
         template <typename T>
-        void RotationAxis(Matrix<T, 4, 4>& lhs, const Vector<T, 3>& axis,
-                          const float theta)
+        void RotationAxis(Matrix<T, 4, 4>& lhs, const Vector<T, 3>& axis, const float theta)
         {
             Identity(lhs);
             auto naxis = Normalize(axis);
 
-            lhs[0][0] =
-                (1.0f - Cos(theta)) * naxis.x() * naxis.x() + Cos(theta);
-            lhs[1][0] = (1.0f - Cos(theta)) * naxis.x() * naxis.y() +
-                        Sin(theta) * naxis.z();
-            lhs[2][0] = (1.0f - Cos(theta)) * naxis.x() * naxis.z() -
-                        Sin(theta) * naxis.y();
-            lhs[0][1] = (1.0f - Cos(theta)) * naxis.y() * naxis.x() -
-                        Sin(theta) * naxis.z();
-            lhs[1][1] =
-                (1.0f - Cos(theta)) * naxis.y() * naxis.y() + Cos(theta);
-            lhs[2][1] = (1.0f - Cos(theta)) * naxis.y() * naxis.z() +
-                        Sin(theta) * naxis.x();
-            lhs[0][2] = (1.0f - Cos(theta)) * naxis.z() * naxis.x() +
-                        Sin(theta) * naxis.y();
-            lhs[1][2] = (1.0f - Cos(theta)) * naxis.z() * naxis.y() -
-                        Sin(theta) * naxis.x();
-            lhs[2][2] =
-                (1.0f - Cos(theta)) * naxis.z() * naxis.z() + Cos(theta);
+            lhs[0][0] = (1.0f - Cos(theta)) * naxis.x() * naxis.x() + Cos(theta);
+            lhs[1][0] = (1.0f - Cos(theta)) * naxis.x() * naxis.y() + Sin(theta) * naxis.z();
+            lhs[2][0] = (1.0f - Cos(theta)) * naxis.x() * naxis.z() - Sin(theta) * naxis.y();
+            lhs[0][1] = (1.0f - Cos(theta)) * naxis.y() * naxis.x() - Sin(theta) * naxis.z();
+            lhs[1][1] = (1.0f - Cos(theta)) * naxis.y() * naxis.y() + Cos(theta);
+            lhs[2][1] = (1.0f - Cos(theta)) * naxis.y() * naxis.z() + Sin(theta) * naxis.x();
+            lhs[0][2] = (1.0f - Cos(theta)) * naxis.z() * naxis.x() + Sin(theta) * naxis.y();
+            lhs[1][2] = (1.0f - Cos(theta)) * naxis.z() * naxis.y() - Sin(theta) * naxis.x();
+            lhs[2][2] = (1.0f - Cos(theta)) * naxis.z() * naxis.z() + Cos(theta);
         }
 
         template <typename T>
-        void Translate(Matrix<T, 4, 4>& lhs, const float x, const float y,
-                       const float z)
+        void Translate(Matrix<T, 4, 4>& lhs, const float x, const float y, const float z)
         {
             Identity(lhs);
             // left hand coordinate system

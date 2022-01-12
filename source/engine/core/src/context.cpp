@@ -57,7 +57,7 @@ namespace vEngine
             PRINT("testjJA");
         }
 
-        void Context::RegisterAppInstance(ApplicationPtr app)
+        void Context::RegisterAppInstance(Application* app)
         {
             // UNUSED_PARAMETER(app);
             this->appInstance = app;

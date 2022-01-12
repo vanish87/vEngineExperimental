@@ -3,8 +3,10 @@
 
     // #include <windows.h>
     // #include <vengine/core/debug.hpp>
-    #include <vengine/core/context.hpp>
+
+    // include windows.h first
     #include <vengine/core/window.hpp>
+    #include <vengine/core/context.hpp>
 // #include <tchar.h>//wchar
 
 namespace vEngine
@@ -62,11 +64,11 @@ namespace vEngine
         {
             switch (uMsg)
             {
-                case WM_DESTROY:
+                case WM_DESTROY: {
                     Context::GetInstance().SetQuit(true);
                     PostQuitMessage(0);
                     return 0;
-
+                }
                 case WM_PAINT: {
                     // PAINTSTRUCT ps;
                     // HDC hdc = BeginPaint(hwnd, &ps);
@@ -79,7 +81,11 @@ namespace vEngine
 
                     // EndPaint(hwnd, &ps);
                 }
-                    return 0;
+                break;
+                case WM_KEYDOWN: {
+                    //Do input event here
+                }
+                break;
             }
             return DefWindowProc(hwnd, uMsg, wParam, lParam);
         }

@@ -10,11 +10,14 @@ namespace vEngine
     {
         void Application::Init(...)
         {
-            auto ptr = std::shared_ptr<Application>(this);
-            Context::GetInstance().RegisterAppInstance(ptr);
+            Context::GetInstance().RegisterAppInstance(this);
+            //Load Dll etc.
             Context::GetInstance().Setup();
+
             // Make window
+            // Platform dependent
             this->SetupWindow();
+
             // Context::RenderFactory().CreateRenderWindow();
 
             this->OnCreate();
@@ -27,8 +30,15 @@ namespace vEngine
 
             while (!this->shouldQuit)
             {
+                //Update Window event/messages
+                //this is platform dependent
+                //Win32 will peek/dispatch window messages
                 this->window_->Update();
+
+                //call user update
                 this->OnUpdate();
+
+                //update other context module
                 // Context::Update();
 
                 //call here or PAINT event in Winodw Class
@@ -45,7 +55,7 @@ namespace vEngine
         void Application::SetupWindow()
         {
             this->window_ = std::make_shared<Window>();
-            this->window_.get()->Init();
+            this->window_->Init();
         }
         void Application::Quit(bool quit)
         {

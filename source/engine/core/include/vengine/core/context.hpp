@@ -20,7 +20,7 @@ namespace vEngine
                 ///
                 void Setup();
 
-                void RegisterAppInstance(ApplicationPtr app);
+                void RegisterAppInstance(Application* app);
                 // RenderFactory& RenderFactoty();
 
             public:
@@ -29,7 +29,7 @@ namespace vEngine
 
             private:
                 bool quit_;
-                ApplicationPtr appInstance;
+                Application* appInstance;
         };
 
     }  // namespace Core
