@@ -10,8 +10,14 @@ add_executable(${PROJECT_NAME} main.cpp)
 target_link_libraries(${PROJECT_NAME}
     engine::core
     engine::rendering
+)
+
+if(UNIX)
+# static link opengl rendering for linux
+target_link_libraries(${PROJECT_NAME}
     engine::opengl_rendering_plugin
 )
+endif()
 
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

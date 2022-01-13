@@ -11,6 +11,9 @@ namespace vEngine
 
         };
 
+        void D3D11RenderEngine::CreateRenderWindow(){
+
+        };
         void D3D11RenderEngine::Render(){
 
         };

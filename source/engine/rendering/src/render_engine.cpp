@@ -1,7 +1,8 @@
 #include <vengine/rendering/render_engine.hpp>
-
-
-void RenderEngine::CreateInternal()
+namespace vEngine
 {
-
-}
+    namespace Rendering
+    {
+        void RenderEngine::CreateInternal() {}
+    }  // namespace Rendering
+}  // namespace vEngine

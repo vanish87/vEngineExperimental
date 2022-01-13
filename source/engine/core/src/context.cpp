@@ -9,8 +9,9 @@ extern "C" {
     vEngine::Core::RenderEngine* Create();
 }
 #endif
-#include <vengine/core/context.hpp>
 #include <vengine/core/application.hpp>
+#include <vengine/core/context.hpp>
+#include <vengine/rendering/render_engine.hpp>
 
 namespace vEngine
 {
@@ -48,6 +49,9 @@ namespace vEngine
             }
 
             std::cout << "funci() returned " << funci() << std::endl;
+
+            // RenderEngine* re = reinterpret_cast<RenderEngine*>(funci());
+            // re->CreateRenderWindow();
 #else
             auto re = Create();
             UNUSED_PARAMETER(re);

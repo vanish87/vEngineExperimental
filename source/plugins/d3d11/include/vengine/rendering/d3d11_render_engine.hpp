@@ -12,6 +12,7 @@ namespace vEngine
             public:
                 void TestFunc();
                 void Render() override;
+                void CreateRenderWindow() override;
         };
 
         extern "C" {

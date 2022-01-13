@@ -6,7 +6,10 @@
 #ifdef VENGINE_PLATFORM_WINDOWS
     #include <windows.h>
 #elif VENGINE_PLATFORM_LINUX
-struct GLFWwindow;
+// OpenGL rendering plugin will create glwindow when creating rendering window
+// so this is a empty window in linux platform
+// TODO use x11 window later
+// struct GLFWwindow;
 
 #endif
 
@@ -33,10 +36,9 @@ namespace vEngine
                 HWND wnd_;
                 // LRESULT CALLBACK MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
                 // WNDPROC default_wnd_proc_;
-#elif VENGINE_PLATFORM_LINUX
-private:
-
-    GLFWwindow* window;
+            #elif VENGINE_PLATFORM_LINUX
+            private:
+                // GLFWwindow* window;
 
 
 #endif

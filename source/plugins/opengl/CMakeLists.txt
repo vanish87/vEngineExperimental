@@ -2,6 +2,8 @@
 # Set the project name
 project (opengl_rendering_plugin)
 
+find_package(glfw REQUIRED)
+
 # Add a library with the above sources
 # add_library(${PROJECT_NAME} src/vector.cpp)
 # add_library(engine::core ALIAS ${PROJECT_NAME})
@@ -20,4 +22,5 @@ target_include_directories( ${PROJECT_NAME}
 
 target_link_libraries( ${PROJECT_NAME}
     engine::rendering
+    ${GLFW_LIBRARIES}
 )
