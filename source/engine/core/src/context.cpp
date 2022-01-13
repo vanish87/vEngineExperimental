@@ -28,10 +28,8 @@ namespace vEngine
             // UNUSED_PARAMETER(re);
 
 #ifdef VENGINE_PLATFORM_WINDOWS
-            HINSTANCE hGetProcIDDLL =
-                LoadLibrary("d3d11_rendering_plugind.dll");
-            // HINSTANCE hGetProcIDDLL =
-            // LoadLibrary("opengl_rendering_plugind.dll");
+            // HINSTANCE hGetProcIDDLL = LoadLibrary("d3d11_rendering_plugind.dll");
+            HINSTANCE hGetProcIDDLL = LoadLibrary("opengl_rendering_plugind.dll");
 
             if (!hGetProcIDDLL)
             {
