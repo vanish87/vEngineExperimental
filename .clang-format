@@ -11,6 +11,7 @@ NamespaceIndentation: All
 TabWidth: 0
 BreakBeforeBraces: Custom
 BraceWrapping:
+  AfterCaseLabel: true
   AfterClass: true
   AfterControlStatement: Always
   AfterEnum: true
