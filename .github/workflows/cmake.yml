@@ -58,12 +58,12 @@ jobs:
     - name: Confiugre - Ubuntu/MacOS
       # Build your program with the given configuration
       if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
-      run: cmake . -B ${{github.workspace}}/build_linux
+      run: cmake -S . -B ${{github.workspace}}/build_linux
 
     - name: Build - Ubuntu/MacOS
       # Build your program with the given configuration
       if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
-      run: cmake --build ${{github.workspace}}/build_linux --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}}/build_linux
 
 
     - name: Test on Windows
