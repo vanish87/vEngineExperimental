@@ -5,9 +5,9 @@
     // #include <vengine/core/debug.hpp>
 
     // include windows.h first
+    #include <vengine/core/window.hpp>
     #include <vengine/core/application.hpp>
     #include <vengine/core/context.hpp>
-    #include <vengine/core/window.hpp>
 // #include <tchar.h>//wchar
 
 namespace vEngine
