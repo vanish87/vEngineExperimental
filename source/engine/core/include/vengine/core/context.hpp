@@ -21,6 +21,7 @@ namespace vEngine
                 void Setup();
 
                 void RegisterAppInstance(Application* app);
+                Application& AppInstance() const;
                 // RenderFactory& RenderFactoty();
 
             public:

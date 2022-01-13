@@ -16,7 +16,7 @@ namespace vEngine
 {
     namespace Core
     {
-        Context::Context() {}
+        Context::Context() : appInstance{nullptr} {}
         Context::~Context() {}
 
         /// Load Dll
@@ -63,9 +63,9 @@ namespace vEngine
             this->appInstance = app;
             
         }
-        void Context::SetQuit(bool quit)
+        Application& Context::AppInstance() const
         {
-            this->appInstance->Quit(quit);
+            return *(this->appInstance);
         }
     }  // namespace Core
 }  // namespace vEngine

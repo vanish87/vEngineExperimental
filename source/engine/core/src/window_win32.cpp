@@ -5,8 +5,9 @@
     // #include <vengine/core/debug.hpp>
 
     // include windows.h first
-    #include <vengine/core/window.hpp>
+    #include <vengine/core/application.hpp>
     #include <vengine/core/context.hpp>
+    #include <vengine/core/window.hpp>
 // #include <tchar.h>//wchar
 
 namespace vEngine
@@ -26,7 +27,7 @@ namespace vEngine
             wcex.hCursor = ::LoadCursor(nullptr, IDC_ARROW);
             // wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
             wcex.lpszClassName = win_name.c_str();
-            RegisterClass(&wcex);
+            ::RegisterClass(&wcex);
 
             RECT rc = {0, 0, 640, 480};
             // get real window size; should slightly bigger than rendering
@@ -54,40 +55,34 @@ namespace vEngine
         {
             MSG msg = {0};
 
-            if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+            if (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
             {
-                TranslateMessage(&msg);
-                DispatchMessage(&msg);
+                ::TranslateMessage(&msg);
+                ::DispatchMessage(&msg);
             }
         }
         LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         {
             switch (uMsg)
             {
-                case WM_DESTROY: {
-                    Context::GetInstance().SetQuit(true);
+                case WM_DESTROY:
+                {
+                    Context::GetInstance().AppInstance().Quit(true);
                     PostQuitMessage(0);
                     return 0;
                 }
-                case WM_PAINT: {
-                    // PAINTSTRUCT ps;
-                    // HDC hdc = BeginPaint(hwnd, &ps);
-
-                    // just test issue flowworks
-
-                    // RenderFrame();
-
-                    // FillRect(hdc, &ps.rcPaint, (HBRUSH) (COLOR_WINDOW+1));
-
-                    // EndPaint(hwnd, &ps);
+                case WM_PAINT:
+                {
+                    // maybe Render call here
                 }
                 break;
-                case WM_KEYDOWN: {
-                    //Do input event here
+                case WM_KEYDOWN:
+                {
+                    // Do input event here
                 }
                 break;
             }
-            return DefWindowProc(hwnd, uMsg, wParam, lParam);
+            return ::DefWindowProc(hwnd, uMsg, wParam, lParam);
         }
     }  // namespace Core
 }  // namespace vEngine
