@@ -21,6 +21,9 @@ namespace vEngine
             {
                 glfwSetWindowShouldClose(window, GLFW_TRUE);
                 Core::Context::GetInstance().AppInstance().Quit(true);
+
+                glfwDestroyWindow(window);
+                glfwTerminate();
             }
         }
 
