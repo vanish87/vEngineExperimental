@@ -1,5 +1,7 @@
 
 #include <iostream>
+#include <vengine/core/application.hpp>
+#include <vengine/core/context.hpp>
 #include <vengine/rendering/opengl_render_engine.hpp>
 namespace vEngine
 {
@@ -15,7 +17,11 @@ namespace vEngine
         {
             UNUSED_PARAMETER(scancode);
             UNUSED_PARAMETER(mods);
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) glfwSetWindowShouldClose(window, GLFW_TRUE);
+            if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+            {
+                glfwSetWindowShouldClose(window, GLFW_TRUE);
+                Core::Context::GetInstance().AppInstance().Quit(true);
+            }
         }
 
         void OpenGLRenderEngine::TestFunc() {}

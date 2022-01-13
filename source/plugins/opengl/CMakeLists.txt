@@ -15,6 +15,7 @@ add_library(engine::opengl_rendering_plugin ALIAS ${PROJECT_NAME})
 
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include
+    PUBLIC ${core_SOURCE_DIR}/include
     PUBLIC ${rendering_SOURCE_DIR}/include
 )
 
