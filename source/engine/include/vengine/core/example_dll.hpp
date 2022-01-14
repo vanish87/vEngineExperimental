@@ -2,11 +2,11 @@
 #define _VENGINE_CORE_EXAMPLE_DLL_HPP
 
 #pragma once
-#include <CORE_API.h>
+#include <VENGINE_API.h>
 
 #include <engine.hpp>
 
-class CORE_API DLLClass
+class VENGINE_API DLLClass
 {
     public:
         int i1;
@@ -21,8 +21,8 @@ class DLLClassFunc
         int i1;
 
     public:
-        CORE_API int DLLFunc(int i);
-        CORE_API int DLLFunc1(int i)
+        VENGINE_API int DLLFunc(int i);
+        VENGINE_API int DLLFunc1(int i)
         {
             UNUSED_PARAMETER(i);
             return 0;

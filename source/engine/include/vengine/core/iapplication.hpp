@@ -2,7 +2,7 @@
 #define _VENGINE_CORE_IAPPLICATION_HPP
 
 #pragma once
-#include <CORE_API.h>
+#include <VENGINE_API.h>
 
 #include <vengine/core/iruntime_module.hpp>
 
@@ -14,7 +14,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        Interface CORE_API IApplication : public IRuntimeModule
+        Interface VENGINE_API IApplication : public IRuntimeModule
         {
         public:
             virtual void Run() = 0;

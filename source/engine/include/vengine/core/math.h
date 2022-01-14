@@ -2,7 +2,7 @@
 #define _VENGINE_CORE_MATH_H
 
 #pragma once
-#include <CORE_API.h>
+#include <VENGINE_API.h>
 #include <engine.hpp>
 
 namespace vEngine
@@ -69,7 +69,7 @@ namespace vEngine
         /// \param rhs
         /// \return true
         /// \return false
-        bool CORE_API IsFloatEqual(const float& lhs, const float& rhs);
+        bool VENGINE_API IsFloatEqual(const float& lhs, const float& rhs);
 
         /// \brief Check if two floats are less different than epsilon
         ///
@@ -78,26 +78,25 @@ namespace vEngine
         /// \param epsilon
         /// \return true
         /// \return false
-        bool CORE_API IsFloatEqual(const float& lhs, const float& rhs,
+        bool VENGINE_API IsFloatEqual(const float& lhs, const float& rhs,
                                    const float epsilon);
 
         /// \brief return absolute of a number
         ///
         /// \param num
         /// \return float
-        float CORE_API Abs(float num);
+        float VENGINE_API Abs(float num);
 
-        float CORE_API Sqrt(float x);
-        float CORE_API Sin(float x);
-        float CORE_API Cos(float x);
-        float CORE_API ArcCos(float x);
-        float CORE_API Tan(float x);
-        float CORE_API ArcTan(float x);
-        float CORE_API Cot(float x);
-        float CORE_API InvSqrt(float number);
-
-        float CORE_API Ln(float x);
-        float CORE_API Pow(float base, float exp);
+        float VENGINE_API Sqrt(float x);
+        float VENGINE_API Sin(float x);
+        float VENGINE_API Cos(float x);
+        float VENGINE_API ArcCos(float x);
+        float VENGINE_API Tan(float x);
+        float VENGINE_API ArcTan(float x);
+        float VENGINE_API Cot(float x);
+        float VENGINE_API InvSqrt(float number);
+        float VENGINE_API Ln(float x);
+        float VENGINE_API Pow(float base, float exp);
 
         /// \brief if a number(only float/double) is NAN(not a number)
         ///

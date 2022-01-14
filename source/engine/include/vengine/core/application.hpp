@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <CORE_API.h>
+#include <VENGINE_API.h>
 
 #include <vengine/core/iapplication.hpp>
 
@@ -11,7 +11,7 @@ namespace vEngine
 {
     namespace Core
     {
-        class CORE_API Application : public IApplication
+        class VENGINE_API Application : public IApplication
         {
             public:
                 Application(){};

@@ -13,7 +13,7 @@
 
 #endif
 
-#include <CORE_API.h>
+#include <VENGINE_API.h>
 
 // #include <engine.hpp>
 #include <vengine/core/iruntime_module.hpp>
@@ -22,9 +22,10 @@ namespace vEngine
 {
     namespace Core
     {
-        class CORE_API Window : public IRuntimeModule
+        class VENGINE_API Window : public IRuntimeModule
         {
             public:
+                Window() {}
                 virtual ~Window() {}
                 virtual void Init(...) override;
                 virtual void Deinit(...) override;

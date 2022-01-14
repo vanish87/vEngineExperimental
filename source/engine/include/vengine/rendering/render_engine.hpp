@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <RENDERING_API.h>
+#include <VENGINE_API.h>
 
 #include <engine.hpp>
 
@@ -11,7 +11,7 @@ namespace vEngine
 {
     namespace Rendering
     {
-        class RENDERING_API RenderEngine
+        class VENGINE_API RenderEngine
         {
             public:
                 virtual void CreateRenderWindow() = 0;

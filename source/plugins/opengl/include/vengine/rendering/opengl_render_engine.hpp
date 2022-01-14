@@ -24,7 +24,7 @@ namespace vEngine
         };
 
         extern "C" {
-            RENDERING_API RenderEngine* Create(void);
+            VENGINE_API RenderEngine* Create(void);
         }
     }  // namespace Rendering
 }  // namespace vEngine

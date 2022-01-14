@@ -1,7 +1,7 @@
 
 #include <iostream>
-#include <vengine/core/application.hpp>
-#include <vengine/core/context.hpp>
+// #include <vengine/core/application.hpp>
+// #include <vengine/core/context.hpp>
 #include <vengine/rendering/opengl_render_engine.hpp>
 namespace vEngine
 {
@@ -20,7 +20,7 @@ namespace vEngine
             if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
             {
                 glfwSetWindowShouldClose(window, GLFW_TRUE);
-                Core::Context::GetInstance().AppInstance().Quit(true);
+                // Core::Context::GetInstance().AppInstance().Quit(true);
 
                 glfwDestroyWindow(window);
                 glfwTerminate();
