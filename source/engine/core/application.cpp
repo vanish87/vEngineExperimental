@@ -1,6 +1,7 @@
 
-#include <vengine/core/window.hpp>//windows.h should include first in win32 platform
 #include <memory>
+#include <vengine/core/window.hpp>  //windows.h should include first in win32 platform
+
 #include <vengine/core/application.hpp>
 #include <vengine/core/context.hpp>
 
@@ -11,7 +12,7 @@ namespace vEngine
         void Application::Init(...)
         {
             Context::GetInstance().RegisterAppInstance(this);
-            //Load Dll etc.
+            // Load Dll etc.
             Context::GetInstance().Setup();
 
             // Make window
@@ -22,30 +23,35 @@ namespace vEngine
 
             this->OnCreate();
         }
-        void Application::Deinit(...) {}
-        void Application::Update() {}
+        void Application::Deinit(...)
+        {
+            this->OnDestory();
+        }
+        void Application::Update()
+        {
+            // Update Window event/messages
+            // this is platform dependent
+            // Win32 will peek/dispatch window messages
+            this->window_->Update();
+
+            // call user update
+            this->OnUpdate();
+
+            // update other context module
+            //  Context::Update();
+        }
         void Application::Run()
         {
             this->shouldQuit = false;
 
             while (!this->shouldQuit)
             {
-                //Update Window event/messages
-                //this is platform dependent
-                //Win32 will peek/dispatch window messages
-                this->window_->Update();
+                this->Update();
 
-                //call user update
-                this->OnUpdate();
-
-                //update other context module
-                // Context::Update();
-
-                //call here or PAINT event in Winodw Class
-                // Render::Flush();
+                // call here or PAINT event in Winodw Class
+                //  Render::Flush();
             }
 
-            this->OnDestory();
             this->Deinit();
         }
 

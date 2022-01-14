@@ -49,7 +49,7 @@ namespace vEngine
             this->render_engine_ptr_->PrintInfo();
             // this->render_engine_ptr_->CreateRenderWindow();
 
-            ::FreeLibrary(hGetProcIDDLL);
+            // ::FreeLibrary(hGetProcIDDLL);
 
 #elif VENGINE_PLATFORM_LINUX
 

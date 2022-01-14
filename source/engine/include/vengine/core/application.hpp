@@ -21,11 +21,12 @@ namespace vEngine
                 virtual void Run() override;
 
                 virtual void Init(...) override;
-                virtual void Deinit(...) override;
-                virtual void Update() override;
                 virtual void Quit(bool quit) override;
 
             private:
+                virtual void Update() override;
+                virtual void Deinit(...) override;
+
                 virtual void OnCreate() override;
                 virtual void OnUpdate() override;
                 virtual void OnDestory() override;

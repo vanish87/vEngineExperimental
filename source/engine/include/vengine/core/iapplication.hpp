@@ -19,6 +19,9 @@ namespace vEngine
         public:
             virtual void Run() = 0;
 
+            /// \brief Runtime Module Functions for internal use
+            /// 
+            /// \param ... 
             virtual void Init(...) = 0;
             virtual void Deinit(...) = 0;
             virtual void Update() = 0;
@@ -29,6 +32,8 @@ namespace vEngine
             WindowPtr window_;
 
         private:
+            /// \brief User defined functions
+            ///
             virtual void OnCreate() = 0;
             virtual void OnUpdate() = 0;
             virtual void OnDestory() = 0;
