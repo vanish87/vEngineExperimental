@@ -14,6 +14,10 @@ namespace vEngine
 {
     namespace Core
     {
+        void* Window::WindowHandle()
+        {
+            return this->wnd_;
+        }
         void Window::Init(...)
         {
             std::string win_name = "test";

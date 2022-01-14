@@ -53,7 +53,8 @@ namespace vEngine
 
 #elif VENGINE_PLATFORM_LINUX
 
-            auto handle = dlopen("./libopengl_rendering_plugin.so", RTLD_LAZY);
+            // auto handle = dlopen("./libopengl_rendering_plugin.so", RTLD_LAZY);
+            auto handle = dlopen("./libopengl_rendering_plugind.dylib", RTLD_LAZY);
             if (!handle)
             {
                 std::cerr << "Cannot open library: " << dlerror() << '\n';
