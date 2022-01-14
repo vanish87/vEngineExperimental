@@ -53,7 +53,7 @@ namespace vEngine
         void OpenGLRenderEngine::PrintInfo()
         {
             std::cout << "OpenGL" << std::endl;
-        };
+        }
     }  // namespace Rendering
 }  // namespace vEngine
 

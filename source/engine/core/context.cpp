@@ -1,6 +1,8 @@
 
 #ifdef VENGINE_PLATFORM_WINDOWS
     #include <windows.h>
+#elif  VENGINE_PLATFORM_LINUX
+    #include <dlfcn.h>
 #endif
 
 #include <engine.hpp>
@@ -46,15 +48,41 @@ namespace vEngine
             func(this->render_engine_ptr_);
             this->render_engine_ptr_->PrintInfo();
 
-            // RenderEngine* re = reinterpret_cast<RenderEngine*>(funci());
-            // re->CreateRenderWindow();
-#else
-            // auto re = Create();
-            // UNUSED_PARAMETER(re);
+            ::FreeLibrary(hGetProcIDDLL);
 
+#elif VENGINE_PLATFORM_LINUX
+
+            auto handle = dlopen("./libopengl_rendering_plugin.so", RTLD_LAZY);
+            if (!handle)
+            {
+                std::cerr << "Cannot open library: " << dlerror() << '\n';
+                return;
+            }
+
+            // load the symbol
+            std::cout << "Loading symbol hello...\n";
+
+            // reset errors
+            dlerror();
+            auto func = (CreateRenderEngine)dlsym(handle, "CreateRenderEngine");
+            const char* dlsym_error = dlerror();
+            if (dlsym_error)
+            {
+                std::cerr << "Cannot load symbol 'hello': " << dlsym_error << '\n';
+                dlclose(handle);
+                return;
+            }
+
+            // use it to do the calculation
+            std::cout << "Calling hello...\n";
+            func(this->render_engine_ptr_);
+            this->render_engine_ptr_->PrintInfo();
+
+            // close the library
+            std::cout << "Closing library...\n";
+            dlclose(handle);
 #endif
 
-            PRINT("testjJA");
         }
 
         void Context::RegisterAppInstance(Application* app)
