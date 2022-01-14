@@ -47,6 +47,7 @@ namespace vEngine
 
             func(this->render_engine_ptr_);
             this->render_engine_ptr_->PrintInfo();
+            // this->render_engine_ptr_->CreateRenderWindow();
 
             ::FreeLibrary(hGetProcIDDLL);
 
@@ -77,6 +78,7 @@ namespace vEngine
             std::cout << "Calling hello...\n";
             func(this->render_engine_ptr_);
             this->render_engine_ptr_->PrintInfo();
+            // this->render_engine_ptr_->CreateRenderWindow();
 
             // close the library
             std::cout << "Closing library...\n";
