@@ -1,20 +1,18 @@
 
 #ifdef VENGINE_PLATFORM_WINDOWS
     #include <windows.h>
-typedef int(__stdcall *f_funci)();
-#include <engine.hpp>
-#else
-#include <engine.hpp>
-extern "C" {
-    vEngine::Core::RenderEngine* Create();
-}
+#elif  VENGINE_PLATFORM_LINUX
+    #include <dlfcn.h>
 #endif
+
+#include <engine.hpp>
 #include <vengine/core/application.hpp>
 #include <vengine/core/context.hpp>
 #include <vengine/rendering/render_engine.hpp>
 
 namespace vEngine
 {
+    typedef void (*CreateRenderEngine)(std::unique_ptr<Rendering::RenderEngine>& ptr);
     namespace Core
     {
         Context::Context() : appInstance{nullptr} {}
@@ -28,8 +26,8 @@ namespace vEngine
             // UNUSED_PARAMETER(re);
 
 #ifdef VENGINE_PLATFORM_WINDOWS
-            // HINSTANCE hGetProcIDDLL = LoadLibrary("d3d11_rendering_plugind.dll");
-            HINSTANCE hGetProcIDDLL = LoadLibrary("opengl_rendering_plugind.dll");
+            auto hGetProcIDDLL = ::LoadLibrary("d3d11_rendering_plugind.dll");
+            // auto hGetProcIDDLL = ::LoadLibrary("opengl_rendering_plugind.dll");
 
             if (!hGetProcIDDLL)
             {
@@ -39,25 +37,54 @@ namespace vEngine
             }
 
             // resolve function address here
-            f_funci funci = (f_funci)GetProcAddress(hGetProcIDDLL, "Create");
-            if (!funci)
+            auto func = reinterpret_cast<CreateRenderEngine>(::GetProcAddress(hGetProcIDDLL, "CreateRenderEngine"));
+            if (!func)
             {
                 std::cout << "could not locate the function" << std::endl;
                 return;
                 // return EXIT_FAILURE;
             }
 
-            std::cout << "funci() returned " << funci() << std::endl;
+            func(this->render_engine_ptr_);
+            this->render_engine_ptr_->PrintInfo();
+            // this->render_engine_ptr_->CreateRenderWindow();
 
-            // RenderEngine* re = reinterpret_cast<RenderEngine*>(funci());
-            // re->CreateRenderWindow();
-#else
-            // auto re = Create();
-            // UNUSED_PARAMETER(re);
+            ::FreeLibrary(hGetProcIDDLL);
 
+#elif VENGINE_PLATFORM_LINUX
+
+            auto handle = dlopen("./libopengl_rendering_plugin.so", RTLD_LAZY);
+            if (!handle)
+            {
+                std::cerr << "Cannot open library: " << dlerror() << '\n';
+                return;
+            }
+
+            // load the symbol
+            std::cout << "Loading symbol hello...\n";
+
+            // reset errors
+            dlerror();
+            auto func = (CreateRenderEngine)dlsym(handle, "CreateRenderEngine");
+            const char* dlsym_error = dlerror();
+            if (dlsym_error)
+            {
+                std::cerr << "Cannot load symbol 'hello': " << dlsym_error << '\n';
+                dlclose(handle);
+                return;
+            }
+
+            // use it to do the calculation
+            std::cout << "Calling hello...\n";
+            func(this->render_engine_ptr_);
+            this->render_engine_ptr_->PrintInfo();
+            // this->render_engine_ptr_->CreateRenderWindow();
+
+            // close the library
+            std::cout << "Closing library...\n";
+            dlclose(handle);
 #endif
 
-            PRINT("testjJA");
         }
 
         void Context::RegisterAppInstance(Application* app)
