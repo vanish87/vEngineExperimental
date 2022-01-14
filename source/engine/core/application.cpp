@@ -1,9 +1,11 @@
 
-#include <memory>
+// #include <memory>
 #include <vengine/core/window.hpp>  //windows.h should include first in win32 platform
 
 #include <vengine/core/application.hpp>
 #include <vengine/core/context.hpp>
+#include <vengine/core/timer.hpp>
+#include <vengine/core/constants.hpp>
 
 namespace vEngine
 {
@@ -50,9 +52,28 @@ namespace vEngine
         {
             this->shouldQuit = false;
 
+            Timer updateTimer;
+            double previous = updateTimer.Time();
+            double lag = 0;
+
             while (!this->shouldQuit)
             {
-                this->Update();
+                double current = updateTimer.Time();
+                double elapsed = current - previous;
+                previous = current;
+                lag += elapsed;
+
+                //Update in constant rate
+                //may be changed later
+                while (lag >= TIME_PER_UPDATE)
+                {
+                    this->Update();
+
+                    // Context::Instance().GetStateManager().Update();
+                    // Context::Instance().GetSceneManager().Update();
+
+                    lag -= TIME_PER_UPDATE;
+                }
 
                 // call here or PAINT event in Winodw Class
                 //  Render::Flush();
