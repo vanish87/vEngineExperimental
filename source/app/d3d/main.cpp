@@ -10,12 +10,15 @@
 #include <windows.h>
 
 #include <engine.hpp>
+#include <vengine/core/math.h>
+#include <vengine/core/vector.hpp>
 #include <string>
-#include <version.hpp>
 
 #include "interface.h"
 
+
 using namespace vEngine::Core;
+using namespace vEngine::Math;
 
 Vector<int, 2> NewVec()
 {
@@ -34,6 +37,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 int main(int argc, char* argv[])
 {
+    UNUSED_PARAMETER(argc);
+    UNUSED_PARAMETER(argv);
+    
     HINSTANCE hInstance = ::GetModuleHandle(nullptr);
 
     WinndowRect wind;

@@ -2,6 +2,7 @@ BasedOnStyle: Google
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: AllIfsAndElse
 BreakBeforeBraces: Custom
+ColumnLimit: 200
 IndentAccessModifiers: true
 IndentExternBlock: Indent
 IndentPPDirectives: BeforeHash
@@ -10,6 +11,7 @@ NamespaceIndentation: All
 TabWidth: 0
 BreakBeforeBraces: Custom
 BraceWrapping:
+  AfterCaseLabel: true
   AfterClass: true
   AfterControlStatement: Always
   AfterEnum: true

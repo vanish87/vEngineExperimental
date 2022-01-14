@@ -1,5 +1,19 @@
+#ifndef _INCLUDE_ENGINE_HPP
+#define _INCLUDE_ENGINE_HPP
 
-#include <vengine/core/application.hpp>
-#include <vengine/core/vector.hpp>
-#include <vengine/core/dll.hpp>
-#include <vengine/rendering/render_engine.hpp>
+#include <compiler_setting.hpp>
+#include <macros.hpp>
+// #include <version.hpp>
+
+#include <debug.hpp>
+#include <interface.hpp>
+#include <predeclear.hpp>
+
+// Note math.h will include math.hpp
+// #include <vengine/core/math.h>
+
+// #include <vengine/core/example_dll.hpp>
+// #include <vengine/core/vector.hpp>
+// #include <vengine/rendering/render_engine.hpp>
+
+#endif /* _INCLUDE_ENGINE_HPP */
