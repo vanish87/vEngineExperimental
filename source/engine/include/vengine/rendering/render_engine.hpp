@@ -14,6 +14,8 @@ namespace vEngine
         class VENGINE_API RenderEngine
         {
             public:
+                virtual ~RenderEngine(){};
+                
                 virtual void CreateRenderWindow() = 0;
                 virtual void Render() = 0;
 

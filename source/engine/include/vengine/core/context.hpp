@@ -31,6 +31,8 @@ namespace vEngine
             private:
                 bool quit_;
                 Application* appInstance;
+
+                std::unique_ptr<vEngine::Rendering::RenderEngine> render_engine_ptr_;
         };
 
     }  // namespace Core

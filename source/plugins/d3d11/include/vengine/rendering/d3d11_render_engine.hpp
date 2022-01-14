@@ -15,11 +15,10 @@ namespace vEngine
                 void CreateRenderWindow() override;
         };
 
-        // extern "C" {
-        //     VENGINE_API RenderEngine* Create(void);
-        // }
     }  // namespace Rendering
 }  // namespace vEngine
 
-
+extern "C" {
+    VENGINE_API void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
+}
 #endif /* _VENGINE_RENDERING_D3D11_RENDER_ENGINE_HPP */

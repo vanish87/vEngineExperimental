@@ -1,20 +1,16 @@
 
 #ifdef VENGINE_PLATFORM_WINDOWS
     #include <windows.h>
-typedef int(__stdcall *f_funci)();
-#include <engine.hpp>
-#else
-#include <engine.hpp>
-extern "C" {
-    vEngine::Core::RenderEngine* Create();
-}
 #endif
+
+#include <engine.hpp>
 #include <vengine/core/application.hpp>
 #include <vengine/core/context.hpp>
 #include <vengine/rendering/render_engine.hpp>
 
 namespace vEngine
 {
+    typedef void (*CreateRenderEngine)(std::unique_ptr<Rendering::RenderEngine>& ptr);
     namespace Core
     {
         Context::Context() : appInstance{nullptr} {}
@@ -28,8 +24,8 @@ namespace vEngine
             // UNUSED_PARAMETER(re);
 
 #ifdef VENGINE_PLATFORM_WINDOWS
-            // HINSTANCE hGetProcIDDLL = LoadLibrary("d3d11_rendering_plugind.dll");
-            HINSTANCE hGetProcIDDLL = LoadLibrary("opengl_rendering_plugind.dll");
+            auto hGetProcIDDLL = ::LoadLibrary("d3d11_rendering_plugind.dll");
+            // HINSTANCE hGetProcIDDLL = LoadLibrary("opengl_rendering_plugind.dll");
 
             if (!hGetProcIDDLL)
             {
@@ -39,15 +35,15 @@ namespace vEngine
             }
 
             // resolve function address here
-            f_funci funci = (f_funci)GetProcAddress(hGetProcIDDLL, "Create");
-            if (!funci)
+            auto func = reinterpret_cast<CreateRenderEngine>(::GetProcAddress(hGetProcIDDLL, "CreateRenderEngine"));
+            if (!func)
             {
                 std::cout << "could not locate the function" << std::endl;
                 return;
                 // return EXIT_FAILURE;
             }
 
-            std::cout << "funci() returned " << funci() << std::endl;
+            func(this->render_engine_ptr_);
 
             // RenderEngine* re = reinterpret_cast<RenderEngine*>(funci());
             // re->CreateRenderWindow();
