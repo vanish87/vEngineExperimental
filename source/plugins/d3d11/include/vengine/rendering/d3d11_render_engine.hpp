@@ -1,13 +1,22 @@
+#ifndef _VENGINE_RENDERING_D3D11_RENDER_ENGINE_HPP
+#define _VENGINE_RENDERING_D3D11_RENDER_ENGINE_HPP
+#pragma once
 
 #include <vengine/rendering/render_engine.hpp>
-class D3D11RenderEngine : public RenderEngine
+namespace vEngine
 {
-	public:
-	void TestFunc();
-	void Render() override;
+    namespace Rendering
+    {
+        class D3D11RenderEngine : public RenderEngine
+        {
+            public:
+                void TestFunc();
+                void Render() override;
+                void CreateRenderWindow() override;
+                void PrintInfo() override;
+        };
 
-};
-extern "C" 
-{
-    __declspec(dllexport) RenderEngine* Create(void);
-}
+    }  // namespace Rendering
+}  // namespace vEngine
+
+#endif /* _VENGINE_RENDERING_D3D11_RENDER_ENGINE_HPP */
