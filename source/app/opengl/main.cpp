@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <engine.hpp>
+
 #include "linmath.h"
 
 static const struct
@@ -37,12 +39,15 @@ static const char* fragment_shader_text =
 
 static void error_callback(int error, const char* description)
 {
+    UNUSED_PARAMETER(error);
     fprintf(stderr, "Error: %s\n", description);
 }
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action,
                          int mods)
 {
+    UNUSED_PARAMETER(scancode);
+    UNUSED_PARAMETER(mods);
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
 }

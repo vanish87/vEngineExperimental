@@ -13,6 +13,8 @@ include_directories(${PROJECT_SOURCE_DIR}/external/googletest/googletest/include
 # Create the executable
 add_executable(${PROJECT_NAME} 
 	test_vector.cpp
+	test_matrix.cpp
+	test_math.cpp
 	test_main.cpp
 )
 
