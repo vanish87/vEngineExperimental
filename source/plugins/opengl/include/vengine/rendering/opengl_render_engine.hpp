@@ -23,9 +23,9 @@ namespace vEngine
                 GLFWwindow* window;
         };
 
-        extern "C" {
-            VENGINE_API RenderEngine* Create(void);
-        }
+        // extern "C" {
+        //     VENGINE_API RenderEngine* Create(void);
+        // }
     }  // namespace Rendering
 }  // namespace vEngine
 #endif /* _VENGINE_RENDERING_OPENGL_RENDER_ENGINE_HPP */
