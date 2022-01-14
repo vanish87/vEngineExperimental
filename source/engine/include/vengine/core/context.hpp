@@ -13,7 +13,7 @@ namespace vEngine
     {
         class Context
         {
-                SINGLETON_CLASS(Context)
+            SINGLETON_CLASS(Context)
 
             public:
                 /// \brief Load all factories that create resource
@@ -24,14 +24,8 @@ namespace vEngine
                 Application& AppInstance() const;
                 // RenderFactory& RenderFactoty();
 
-            public:
-                bool ShouldQuit();
-                void SetQuit(bool value);
-
             private:
-                bool quit_;
                 Application* appInstance;
-
                 std::unique_ptr<vEngine::Rendering::RenderEngine> render_engine_ptr_;
         };
 
