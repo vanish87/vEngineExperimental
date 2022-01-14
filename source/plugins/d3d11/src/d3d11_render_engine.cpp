@@ -17,15 +17,17 @@ namespace vEngine
         void D3D11RenderEngine::Render(){
 
         };
+        void D3D11RenderEngine::PrintInfo()
+        {
+            std::cout << "D3D11" << std::endl;
+        };
 
     }  // namespace Rendering
 }  // namespace vEngine
 
-extern "C" 
-{
-     void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
+extern "C" {
+    void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
     {
-        std::cout << "D3D11" << std::endl;
         ptr = std::make_unique<vEngine::Rendering::D3D11RenderEngine>();
     }
 }

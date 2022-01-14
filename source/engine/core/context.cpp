@@ -25,7 +25,7 @@ namespace vEngine
 
 #ifdef VENGINE_PLATFORM_WINDOWS
             auto hGetProcIDDLL = ::LoadLibrary("d3d11_rendering_plugind.dll");
-            // HINSTANCE hGetProcIDDLL = LoadLibrary("opengl_rendering_plugind.dll");
+            // auto hGetProcIDDLL = ::LoadLibrary("opengl_rendering_plugind.dll");
 
             if (!hGetProcIDDLL)
             {
@@ -44,6 +44,7 @@ namespace vEngine
             }
 
             func(this->render_engine_ptr_);
+            this->render_engine_ptr_->PrintInfo();
 
             // RenderEngine* re = reinterpret_cast<RenderEngine*>(funci());
             // re->CreateRenderWindow();

@@ -19,6 +19,7 @@ namespace vEngine
                 void TestFunc();
                 void CreateRenderWindow() override;
                 void Render() override;
+                void PrintInfo() override;
             private:
                 GLFWwindow* window;
         };

@@ -13,12 +13,10 @@ namespace vEngine
                 void TestFunc();
                 void Render() override;
                 void CreateRenderWindow() override;
+                void PrintInfo() override;
         };
 
     }  // namespace Rendering
 }  // namespace vEngine
 
-extern "C" {
-    VENGINE_API void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
-}
 #endif /* _VENGINE_RENDERING_D3D11_RENDER_ENGINE_HPP */

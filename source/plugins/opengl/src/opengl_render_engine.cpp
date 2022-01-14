@@ -50,13 +50,17 @@ namespace vEngine
         }
 
         void OpenGLRenderEngine::Render() {}
-        // RenderEngine* Create()
-        // {
-        //     std::cout << "OPENGL" << std::endl;
-
-        //     auto ret = new OpenGLRenderEngine();
-        //     // ret->CreateRenderWindow();
-        //     return ret;
-        // }
+        void OpenGLRenderEngine::PrintInfo()
+        {
+            std::cout << "OpenGL" << std::endl;
+        };
     }  // namespace Rendering
 }  // namespace vEngine
+
+extern "C" 
+{
+     void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
+    {
+        ptr = std::make_unique<vEngine::Rendering::OpenGLRenderEngine>();
+    }
+}
