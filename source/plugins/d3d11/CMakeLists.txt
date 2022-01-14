@@ -13,11 +13,11 @@ add_library(engine::d3d11_rendering_plugin ALIAS ${PROJECT_NAME})
 
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include
-    PUBLIC ${rendering_SOURCE_DIR}/include
+    PUBLIC ${vengine_SOURCE_DIR}/include
 )
 
 # add_dependencies(${PROJECT_NAME} engine::rendering)
 
 target_link_libraries( ${PROJECT_NAME}
-    engine::rendering
+    engine::core
 )

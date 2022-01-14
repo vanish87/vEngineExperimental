@@ -11,7 +11,15 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 project(vEngine)
 
 # c++ setting
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
+if (MSVC)
+    # warning level 4 and all warnings as errors
+    add_compile_options(/W4 /WX)
+else()
+    # lots of warnings and all warnings as errors
+    add_compile_options(-Wall -Wextra -pedantic -Werror)
+endif()
+
 # lib setting
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 
@@ -31,10 +39,13 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # debug setting
 set(CMAKE_DEBUG_POSTFIX d)
 
+set(PROJECT_PLATFORM_MARCO ${PROJECT_NAME}_PLATFORM)
+string(TOUPPER ${PROJECT_PLATFORM_MARCO} PROJECT_PLATFORM_MARCO)
+
 if(WIN32)
-add_compile_definitions(WINDOWS)
+add_compile_definitions(${PROJECT_PLATFORM_MARCO}_WINDOWS)
 elseif(UNIX)
-add_compile_definitions(LINUX)
+add_compile_definitions(${PROJECT_PLATFORM_MARCO}_LINUX)
 endif()
 
 add_subdirectory(source)

@@ -2,10 +2,11 @@
 #include <gtest/gtest.h>
 #include <vector>
 
-#include <vengine/core/predeclear.hpp>
+#include <engine.hpp>
 #include <vengine/core/vector.hpp>
 
 using namespace vEngine::Core;
+using namespace vEngine::Math;
 using namespace std;
 
 TEST(Vector, IntAdd)
@@ -27,6 +28,8 @@ TEST(Vector, IntAdd)
     ASSERT_EQ(v4.y(), 7);
     ASSERT_EQ(v4.z(), 7);
     ASSERT_EQ(v4.w(), 7);
+
+    int4 v5 = {1, 2, 3};
 
     // v4 += float4(2);
     // ASSERT_EQ(v4.x(), 9);
@@ -66,7 +69,15 @@ TEST(Vector, IntCompare)
     ASSERT_TRUE(int4(1) == int4::One());
     ASSERT_TRUE(int4(0) == int4::Zero());
 
-    int4 v3;
+    auto zero = int4::Zero();
+    ASSERT_EQ(zero.x(), 0);
+    ASSERT_EQ(zero.y(), 0);
+    ASSERT_EQ(zero.z(), 0);
+
+    auto one = int4::One();
+    ASSERT_EQ(one.x(), 1);
+    ASSERT_EQ(one.y(), 1);
+    ASSERT_EQ(one.z(), 1);
 }
 
 TEST(Vector, IntSub)
