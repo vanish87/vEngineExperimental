@@ -6,6 +6,7 @@
 #include <vengine/core/context.hpp>
 #include <vengine/core/timer.hpp>
 #include <vengine/core/constants.hpp>
+#include <vengine/rendering/render_engine.hpp>
 
 namespace vEngine
 {
@@ -21,7 +22,7 @@ namespace vEngine
             // Platform dependent
             this->SetupWindow();
 
-            // Context::RenderFactory().CreateRenderWindow();
+            Context::GetInstance().GetRenderEngine().CreateRenderWindow(this->window_->WindowHandle());
 
             this->OnCreate();
         }

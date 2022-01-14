@@ -17,7 +17,7 @@ namespace vEngine
         {
             public:
                 void TestFunc();
-                void CreateRenderWindow() override;
+                void CreateRenderWindow(void* hwnd) override;
                 void Render() override;
                 void PrintInfo() override;
             private:

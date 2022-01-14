@@ -16,7 +16,7 @@ namespace vEngine
             public:
                 virtual ~RenderEngine(){};
 
-                virtual void CreateRenderWindow() = 0;
+                virtual void CreateRenderWindow(void* hwnd) = 0;
                 virtual void Render() = 0;
 
                 virtual void PrintInfo() = 0;

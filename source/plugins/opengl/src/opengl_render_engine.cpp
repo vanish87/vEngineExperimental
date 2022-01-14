@@ -28,8 +28,10 @@ namespace vEngine
         }
 
         void OpenGLRenderEngine::TestFunc() {}
-        void OpenGLRenderEngine::CreateRenderWindow()
+        void OpenGLRenderEngine::CreateRenderWindow(void* hwnd)
         {
+            UNUSED_PARAMETER(hwnd);
+
             glfwSetErrorCallback(error_callback);
 
             if (!glfwInit()) exit(EXIT_FAILURE);

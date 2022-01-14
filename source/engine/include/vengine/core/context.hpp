@@ -13,7 +13,7 @@ namespace vEngine
     {
         class Context
         {
-            SINGLETON_CLASS(Context)
+                SINGLETON_CLASS(Context)
 
             public:
                 /// \brief Load all factories that create resource
@@ -23,6 +23,12 @@ namespace vEngine
                 void RegisterAppInstance(Application* app);
                 Application& AppInstance() const;
                 // RenderFactory& RenderFactoty();
+
+            public:
+                vEngine::Rendering::RenderEngine& GetRenderEngine()
+                {
+                    return *this->render_engine_ptr_;
+                }
 
             private:
                 Application* appInstance;

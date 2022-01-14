@@ -32,6 +32,12 @@ namespace vEngine
                 virtual void Update() override;
 
 #ifdef VENGINE_PLATFORM_WINDOWS
+            public:
+                void* WindowHandle()
+                {
+                    return this->wnd_;
+                }
+
             private:
                 static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
                 HWND wnd_;
