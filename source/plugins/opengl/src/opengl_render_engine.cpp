@@ -50,13 +50,13 @@ namespace vEngine
         }
 
         void OpenGLRenderEngine::Render() {}
-        RenderEngine* Create()
-        {
-            std::cout << "OPENGL" << std::endl;
+        // RenderEngine* Create()
+        // {
+        //     std::cout << "OPENGL" << std::endl;
 
-            auto ret = new OpenGLRenderEngine();
-            // ret->CreateRenderWindow();
-            return ret;
-        }
+        //     auto ret = new OpenGLRenderEngine();
+        //     // ret->CreateRenderWindow();
+        //     return ret;
+        // }
     }  // namespace Rendering
 }  // namespace vEngine

@@ -17,10 +17,10 @@ namespace vEngine
         void D3D11RenderEngine::Render(){
 
         };
-        RenderEngine* Create(void)
-        {
-            std::cout << "D3D11" << std::endl;
-            return new D3D11RenderEngine();
-        };
+        // RenderEngine* Create(void)
+        // {
+        //     std::cout << "D3D11" << std::endl;
+        //     return new D3D11RenderEngine();
+        // };
     }  // namespace Rendering
 }  // namespace vEngine

@@ -15,9 +15,9 @@ namespace vEngine
                 void CreateRenderWindow() override;
         };
 
-        extern "C" {
-            VENGINE_API RenderEngine* Create(void);
-        }
+        // extern "C" {
+        //     VENGINE_API RenderEngine* Create(void);
+        // }
     }  // namespace Rendering
 }  // namespace vEngine
 

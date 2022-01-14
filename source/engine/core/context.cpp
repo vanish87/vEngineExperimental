@@ -43,6 +43,7 @@ namespace vEngine
             if (!funci)
             {
                 std::cout << "could not locate the function" << std::endl;
+                return;
                 // return EXIT_FAILURE;
             }
 
@@ -51,8 +52,8 @@ namespace vEngine
             // RenderEngine* re = reinterpret_cast<RenderEngine*>(funci());
             // re->CreateRenderWindow();
 #else
-            auto re = Create();
-            UNUSED_PARAMETER(re);
+            // auto re = Create();
+            // UNUSED_PARAMETER(re);
 
 #endif
 
