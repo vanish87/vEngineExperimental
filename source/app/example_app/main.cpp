@@ -18,7 +18,7 @@ class MyApp : public Application
 
     void OnCreate() override
     {
-
+        std::cout << "User Create" << std::endl;
     }
     void OnUpdate() override
     {
