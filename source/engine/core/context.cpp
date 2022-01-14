@@ -43,6 +43,7 @@ namespace vEngine
             if (!funci)
             {
                 std::cout << "could not locate the function" << std::endl;
+                return;
                 // return EXIT_FAILURE;
             }
 
