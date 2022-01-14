@@ -36,3 +36,10 @@ target_link_libraries( ${PROJECT_NAME}
 	${LUA_LIBRARIES}
 	${FREETYPE_LIBRARIES}
 )
+
+if(UNIX)
+target_link_libraries( ${PROJECT_NAME}
+    # ${CMKAE_DL_LIBS}
+    dl
+)
+endif()
