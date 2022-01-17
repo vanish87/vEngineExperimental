@@ -5,35 +5,36 @@
 
 #include <VENGINE_API.h>
 
-#include <vengine/core/iapplication.hpp>
+#include <vengine/core/iruntime_module.hpp>
 
 namespace vEngine
 {
     namespace Core
     {
-        class VENGINE_API Application : public IApplication
+        class VENGINE_API Application : public IRuntimeModule
         {
             public:
                 Application(){};
                 virtual ~Application(){};
 
             public:
-                virtual void Run() override;
+                virtual void Init(...);
+                virtual void Run();
+                virtual void Quit(bool quit);
 
-                virtual void Init(...) override;
-                virtual void Quit(bool quit) override;
+            protected:
+                WindowPtr window_;
 
             private:
-                virtual void Update() override;
-                virtual void Deinit(...) override;
+                virtual void Deinit(...);
+                virtual void Update();
 
-                virtual void OnCreate() override;
-                virtual void OnUpdate() override;
-                virtual void OnDestory() override;
+                virtual void OnCreate();
+                virtual void OnUpdate();
+                virtual void OnDestory();
 
-                virtual void SetupWindow() override;
+                virtual void SetupWindow();
                 bool shouldQuit;
-
         };
     }  // namespace Core
 }  // namespace vEngine
