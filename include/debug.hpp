@@ -1,7 +1,6 @@
 #ifndef _INCLUDE_DEBUG_HPP
 #define _INCLUDE_DEBUG_HPP
 
-
 #ifdef VENGINE_PLATFORM_WINDOWS
     #define DEBUG_BREAK __debugbreak();
 #else
@@ -25,9 +24,7 @@ void ErrorText(std::string text);
         PRINT(x);                      \
         return returnVal;              \
     }
-#define PRINT_FILE_AND_FUCTION                                           \
-    PRINT("in File " << __FILE__ << " Line " << __LINE__ << " Function " \
-                     << __FUNCTION__);
+#define PRINT_FILE_AND_FUCTION PRINT("in File " << __FILE__ << " Line " << __LINE__ << " Function " << __FUNCTION__);
 #define PRINT_AND_BREAK(x)      \
     {                           \
         PRINT(x);               \
@@ -43,6 +40,15 @@ void ErrorText(std::string text);
             DEBUG_BREAK                \
         }                              \
     }
+#define CHECK_ASSERT_NOT_NULL(ptr)   \
+    {                               \
+        if (ptr == nullptr)         \
+        {                           \
+            PRINT_FILE_AND_FUCTION; \
+            DEBUG_BREAK             \
+        }                           \
+    }
+
 #define CHECK_ASSERT(condition)     \
     {                               \
         if (!(condition))           \
@@ -66,6 +72,5 @@ void ErrorText(std::string text);
     {                                      \
         return x;                          \
     };
-
 
 #endif /* _INCLUDE_DEBUG_HPP */
