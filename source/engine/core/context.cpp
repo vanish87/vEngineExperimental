@@ -21,11 +21,14 @@ namespace vEngine
         void Context::Init(...) {}
         void Context::Deinit(...)
         {
+            this->render_engine_ptr_.reset();
+            
 #ifdef VENGINE_PLATFORM_WINDOWS
             ::FreeLibrary(reinterpret_cast<HMODULE>(this->lib_handle));
 #elif VENGINE_PLATFORM_LINUX
             dlclose(this->lib_handle);
 #endif
+
         }
         void Context::Update() {}
 
