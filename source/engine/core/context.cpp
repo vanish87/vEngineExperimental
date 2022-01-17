@@ -1,7 +1,7 @@
 
 #ifdef VENGINE_PLATFORM_WINDOWS
     #include <windows.h>
-#elif  VENGINE_PLATFORM_LINUX
+#elif VENGINE_PLATFORM_LINUX
     #include <dlfcn.h>
 #endif
 
@@ -18,18 +18,29 @@ namespace vEngine
         Context::Context() : appInstance{nullptr} {}
         Context::~Context() {}
 
+        void Context::Init(...) {}
+        void Context::Deinit(...)
+        {
+#ifdef VENGINE_PLATFORM_WINDOWS
+            ::FreeLibrary(reinterpret_cast<HMODULE>(this->lib_handle));
+#elif VENGINE_PLATFORM_LINUX
+            dlclose(this->lib_handle);
+#endif
+        }
+        void Context::Update() {}
+
         /// Load Dll
         /// Create Redering
-        void Context::Setup()
+        void Context::ConfigureWith(const Configure& configure)
         {
-            // auto re = Create();
-            // UNUSED_PARAMETER(re);
+            auto dllName = configure.graphics_configure.render_plugin_name;
 
 #ifdef VENGINE_PLATFORM_WINDOWS
-            auto hGetProcIDDLL = ::LoadLibrary("d3d11_rendering_plugind.dll");
+            dllName += "_rendering_plugind.dll";
+            this->lib_handle = ::LoadLibrary(dllName.c_str());
             // auto hGetProcIDDLL = ::LoadLibrary("opengl_rendering_plugind.dll");
 
-            if (!hGetProcIDDLL)
+            if (!this->lib_handle)
             {
                 std::cout << "could not load the dynamic library" << std::endl;
                 return;
@@ -37,62 +48,48 @@ namespace vEngine
             }
 
             // resolve function address here
-            auto func = reinterpret_cast<CreateRenderEngine>(::GetProcAddress(hGetProcIDDLL, "CreateRenderEngine"));
-            if (!func)
+            auto create_function = reinterpret_cast<CreateRenderEngine>(::GetProcAddress(reinterpret_cast<HMODULE>(this->lib_handle), "CreateRenderEngine"));
+            if (!create_function)
             {
                 std::cout << "could not locate the function" << std::endl;
+                ::FreeLibrary(reinterpret_cast<HMODULE>(this->lib_handle));
                 return;
-                // return EXIT_FAILURE;
             }
-
-            func(this->render_engine_ptr_);
-            this->render_engine_ptr_->PrintInfo();
-            // this->render_engine_ptr_->CreateRenderWindow();
-
-            // ::FreeLibrary(hGetProcIDDLL);
 
 #elif VENGINE_PLATFORM_LINUX
 
-            // auto handle = dlopen("./libopengl_rendering_plugin.so", RTLD_LAZY);
-            auto handle = dlopen("./libopengl_rendering_plugind.dylib", RTLD_LAZY);
-            if (!handle)
+            dllName = "./lib" + dllName + "_rendering_plugind.dylib";
+            // dllName = "./lib" + dllName + "_rendering_plugind.so";
+
+            this->lib_handle = dlopen(dllName.c_str(), RTLD_LAZY);
+            if (!this->lib_handle)
             {
                 std::cerr << "Cannot open library: " << dlerror() << '\n';
                 return;
             }
 
-            // load the symbol
-            std::cout << "Loading symbol hello...\n";
-
             // reset errors
             dlerror();
-            auto func = (CreateRenderEngine)dlsym(handle, "CreateRenderEngine");
+            auto create_function = (CreateRenderEngine)dlsym(this->lib_handle, "CreateRenderEngine");
             const char* dlsym_error = dlerror();
             if (dlsym_error)
             {
                 std::cerr << "Cannot load symbol 'hello': " << dlsym_error << '\n';
-                dlclose(handle);
+                dlclose(this->lib_handle);
                 return;
             }
 
-            // use it to do the calculation
-            std::cout << "Calling hello...\n";
-            func(this->render_engine_ptr_);
-            this->render_engine_ptr_->PrintInfo();
-            // this->render_engine_ptr_->CreateRenderWindow();
-
-            // close the library
-            std::cout << "Closing library...\n";
-            dlclose(handle);
 #endif
 
+            create_function(this->render_engine_ptr_);
+            CHECK_ASSERT_NOT_NULL(this->render_engine_ptr_);
+            this->render_engine_ptr_->PrintInfo();
         }
 
         void Context::RegisterAppInstance(Application* app)
         {
             // UNUSED_PARAMETER(app);
             this->appInstance = app;
-            
         }
         Application& Context::AppInstance() const
         {

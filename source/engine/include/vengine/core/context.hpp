@@ -6,33 +6,43 @@
 #include <VENGINE_API.h>
 
 #include <engine.hpp>
+#include <vengine/core/iruntime_module.hpp>
+#include <vengine/core/configure.hpp>
 
 namespace vEngine
 {
     namespace Core
     {
-        class Context
+        using namespace vEngine::Rendering;
+        class Context : public IRuntimeModule
         {
                 SINGLETON_CLASS(Context)
 
             public:
                 /// \brief Load all factories that create resource
                 ///
-                void Setup();
+                void ConfigureWith(const Configure& configure);
 
                 void RegisterAppInstance(Application* app);
                 Application& AppInstance() const;
                 // RenderFactory& RenderFactoty();
 
             public:
-                vEngine::Rendering::RenderEngine& GetRenderEngine()
+                RenderEngine& GetRenderEngine()
                 {
                     return *this->render_engine_ptr_;
                 }
 
+            public:
+                void Init(...) override;
+                void Deinit(...) override;
+                void Update() override;
+
             private:
                 Application* appInstance;
                 std::unique_ptr<vEngine::Rendering::RenderEngine> render_engine_ptr_;
+
+                void* lib_handle;
         };
 
     }  // namespace Core

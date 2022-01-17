@@ -1,11 +1,11 @@
 
-// #include <memory>
 #include <vengine/core/window.hpp>  //windows.h should include first in win32 platform
-
+// #include <memory>
 #include <vengine/core/application.hpp>
+#include <vengine/core/configure.hpp>
+#include <vengine/core/constants.hpp>
 #include <vengine/core/context.hpp>
 #include <vengine/core/timer.hpp>
-#include <vengine/core/constants.hpp>
 #include <vengine/rendering/render_engine.hpp>
 
 namespace vEngine
@@ -15,8 +15,13 @@ namespace vEngine
         void Application::Init(...)
         {
             Context::GetInstance().RegisterAppInstance(this);
+
+            Configure configure;
+            configure.app_name = "Example";
+            configure.graphics_configure.render_plugin_name = "d3d11";
+
             // Load Dll etc.
-            Context::GetInstance().Setup();
+            Context::GetInstance().ConfigureWith(configure);
 
             // Make window
             // Platform dependent
@@ -30,11 +35,13 @@ namespace vEngine
         {
             this->OnDestory();
 
-            //Destory RenderEngine etc;
+            // Destory RenderEngine etc;
 
-            //Destory Window
+            // Destory Window
 
-            //Destory Context
+            // Destory Context
+
+            Context::GetInstance().Deinit();
         }
         void Application::Update()
         {
@@ -64,8 +71,8 @@ namespace vEngine
                 previous = current;
                 lag += elapsed;
 
-                //Update in constant rate
-                //may be changed later
+                // Update in constant rate
+                // may be changed later
                 while (lag >= TIME_PER_UPDATE)
                 {
                     this->Update();
