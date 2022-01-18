@@ -15,7 +15,7 @@ namespace vEngine
     namespace Core
     {
         typedef void (*HandleRenderEngine)(std::unique_ptr<RenderEngine>& ptr);
-        
+
         Context::Context() : app_instance_{nullptr} {}
         Context::~Context() {}
 
@@ -37,8 +37,8 @@ namespace vEngine
 
             // reset errors
             dlerror();
-            auto function = reinterpret_cast<CreateRenderEngine>(dlsym(this->lib_handle, func_name.c_str()));
-            const char* dlsym_error = dlerror();
+            auto function = reinterpret_cast<HandleRenderEngine>(dlsym(this->render_plugin_dll_handle_, func_name.c_str()));
+            auto dlsym_error = dlerror();
             if (dlsym_error)
             {
                 PRINT_AND_BREAK("Cannot load symbol " + func_name + dlsym_error);
@@ -90,7 +90,8 @@ namespace vEngine
             this->render_plugin_dll_handle_ = dlopen(render_dll_name.c_str(), RTLD_LAZY);
             if (!this->render_plugin_dll_handle_)
             {
-                PRINT_AND_BREAK("Cannot open library: " + dlerror());
+                auto dlsym_error = dlerror();
+                PRINT_AND_BREAK("Cannot open library: " + std::string(dlsym_error));
             }
             #endif
         }
