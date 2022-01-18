@@ -29,5 +29,6 @@ namespace vEngine
 
 extern "C" {
     VENGINE_API void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
+    VENGINE_API void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
 }
 #endif /* _VENGINE_RENDERING_RENDER_ENGINE_HPP */

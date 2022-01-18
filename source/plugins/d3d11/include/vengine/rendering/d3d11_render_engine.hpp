@@ -12,6 +12,14 @@ namespace vEngine
         class D3D11RenderEngine : public RenderEngine
         {
             public:
+                D3D11RenderEngine()
+                {
+                    PRINT("Create D3D11");
+                }
+                ~D3D11RenderEngine()
+                {
+                    PRINT("Destructor D3D11");
+                }
                 void TestFunc();
                 void Render() override;
                 void CreateRenderWindow(void* hwnd) override;
