@@ -84,7 +84,7 @@ namespace vEngine
             }
             #elif VENGINE_PLATFORM_LINUX
             render_dll_name = "./lib" + render_dll_name + "_rendering_plugind.dylib";
-            // dllName = "./lib" + dllName + "_rendering_plugind.so";
+            // render_dll_name = "./lib" + render_dll_name + "_rendering_plugind.so";
 
             dlerror();
             this->render_plugin_dll_handle_ = dlopen(render_dll_name.c_str(), RTLD_LAZY);
