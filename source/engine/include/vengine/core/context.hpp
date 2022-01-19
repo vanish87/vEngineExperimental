@@ -15,7 +15,7 @@ namespace vEngine
     {
         using namespace vEngine::Rendering;
 
-        class Context : public IRuntimeModule
+        class VENGINE_API Context : public IRuntimeModule
         {
                 SINGLETON_CLASS(Context)
 

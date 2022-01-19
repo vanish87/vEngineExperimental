@@ -13,7 +13,7 @@ namespace vEngine
                 int width;
                 int height;
 
-                GraphicsConfigure() : render_plugin_name{"opengl_rendering_plugin"}, width{640}, height{480} {}
+                GraphicsConfigure() : render_plugin_name{"empty_plugin"}, width{640}, height{480} {}
         };
         struct Configure
         {

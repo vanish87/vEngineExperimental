@@ -16,14 +16,7 @@ namespace vEngine
         {
             Context::GetInstance().RegisterAppInstance(this);
 
-            Configure configure;
-            // configure.graphics_configure.width = 1920;
-            // configure.graphics_configure.height = 1920;
-            #ifdef VENGINE_PLATFORM_WINDOWS
-            configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
-            #endif
-            // configure.graphics_configure.render_plugin_name = "opengl_rendering_plugin";
-
+            auto configure = Context::GetInstance().CurrentConfigure();
             // Load Dll etc.
             Context::GetInstance().ConfigureWith(configure);
 
