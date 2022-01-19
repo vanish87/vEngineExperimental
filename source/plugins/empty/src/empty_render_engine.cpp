@@ -6,21 +6,17 @@ namespace vEngine
     namespace Rendering
     {
 
-        void EmptyRenderEngine::TestFunc(){
-
-        };
+        void EmptyRenderEngine::TestFunc() {}
 
         void EmptyRenderEngine::CreateRenderWindow(void* hwnd)
         {
             UNUSED_PARAMETER(hwnd);
-        };
-        void EmptyRenderEngine::Render(){
-
-        };
+        }
+        void EmptyRenderEngine::Render() {}
         void EmptyRenderEngine::PrintInfo()
         {
             std::cout << "Empty" << std::endl;
-        };
+        }
 
     }  // namespace Rendering
 }  // namespace vEngine

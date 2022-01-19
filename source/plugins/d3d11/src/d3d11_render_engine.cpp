@@ -7,9 +7,7 @@ namespace vEngine
     namespace Rendering
     {
 
-        void D3D11RenderEngine::TestFunc(){
-
-        };
+        void D3D11RenderEngine::TestFunc() {}
 
         void D3D11RenderEngine::CreateRenderWindow(void* hwnd)
         {
@@ -55,14 +53,12 @@ namespace vEngine
             viewport.Height = static_cast<FLOAT>(h);
 
             d3d_imm_context_->RSSetViewports(1, &viewport);
-        };
-        void D3D11RenderEngine::Render(){
-
-        };
+        }
+        void D3D11RenderEngine::Render() {}
         void D3D11RenderEngine::PrintInfo()
         {
             std::cout << "D3D11" << std::endl;
-        };
+        }
 
     }  // namespace Rendering
 }  // namespace vEngine
