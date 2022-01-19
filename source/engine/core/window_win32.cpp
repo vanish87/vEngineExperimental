@@ -20,7 +20,8 @@ namespace vEngine
         }
         void Window::Init(...)
         {
-            std::string win_name = "test";
+            const auto configure = Context::GetInstance().CurrentConfigure();
+            std::string win_name = configure.app_name;
 
             HINSTANCE hInstance = ::GetModuleHandle(nullptr);
 
@@ -33,7 +34,7 @@ namespace vEngine
             wcex.lpszClassName = win_name.c_str();
             ::RegisterClass(&wcex);
 
-            RECT rc = {0, 0, 640, 480};
+            RECT rc = {0, 0, configure.graphics_configure.width, configure.graphics_configure.height};
             // get real window size; should slightly bigger than rendering
             // resolution we should render a frame with render_setting, so
             // window is enlarged.

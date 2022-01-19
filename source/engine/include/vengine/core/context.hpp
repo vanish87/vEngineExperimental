@@ -23,6 +23,7 @@ namespace vEngine
                 /// \brief Load all factories that create resource
                 ///
                 void ConfigureWith(const Configure& configure);
+                const Configure CurrentConfigure() const;
 
                 void RegisterAppInstance(Application* app);
                 Application& AppInstance() const;

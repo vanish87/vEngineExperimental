@@ -63,6 +63,11 @@ namespace vEngine
             this->LoadDll();
         }
 
+        const Configure Context::CurrentConfigure() const
+        {
+            return this->configure_;
+        }
+
         void Context::RegisterAppInstance(Application* app)
         {
             this->app_instance_ = app;
