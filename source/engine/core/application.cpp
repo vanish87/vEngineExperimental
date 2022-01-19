@@ -18,8 +18,8 @@ namespace vEngine
 
             Configure configure;
             configure.app_name = "Example";
-            configure.graphics_configure.render_plugin_name = "d3d11";
-            // configure.graphics_configure.render_plugin_name = "opengl";
+            configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
+            // configure.graphics_configure.render_plugin_name = "opengl_rendering_plugin";
 
             // Load Dll etc.
             Context::GetInstance().ConfigureWith(configure);

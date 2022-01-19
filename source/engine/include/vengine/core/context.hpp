@@ -40,8 +40,6 @@ namespace vEngine
                 void LoadDll();
                 void FreeDll();
 
-                void ProcessRenderEngine(const std::string func_name);
-
             private:
                 Configure configure_;
                 Application* app_instance_;
@@ -49,6 +47,11 @@ namespace vEngine
                 void* render_plugin_dll_handle_;
                 std::unique_ptr<RenderEngine> render_engine_ptr_;
         };
+
+        void* LoadLibrary(const std::string lib_name);
+        void  FreeLibrary(void* handle);
+        template <typename T>
+        void ProcessSharedFunction(const std::string func_name, void* handle, std::unique_ptr<T>& ptr);
 
     }  // namespace Core
 
