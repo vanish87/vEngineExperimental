@@ -16,4 +16,4 @@ subprocess.run(["cmake", "-S" + sourcePath, "-B" + buildPath, "-DCMAKE_BUILD_TYP
 subprocess.run(["cmake", "--build", buildPath, "--target", "install", "--config", "Release"])
 
 # os.system("pause")
-input()
+# input()
