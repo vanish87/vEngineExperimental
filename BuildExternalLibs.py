@@ -4,7 +4,6 @@ import platform
 
 sourcePath=os.path.abspath("./external")
 buildPath=os.path.abspath("./build_"+ platform.system().lower() + "/external")
-print(buildPath)
 if not os.path.exists(buildPath):
 	os.makedirs(buildPath, exist_ok=True)
 

@@ -38,7 +38,7 @@ jobs:
       run: brew install doxygen
       
     - name: Build External
-      run: python BuildExternalLibs.py
+      run: python3 BuildExternalLibs.py
       
     - name: Configure - Windows
       # Build your program with the given configuration
