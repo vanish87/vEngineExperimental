@@ -24,6 +24,7 @@ namespace vEngine
         {
             //prt.reset() does same thing as this->ProcessRenderEngine("DestoryRenderEngine");
             this->render_engine_ptr_.reset();
+
             this->FreeDll();
         }
         void Context::Update() {}
@@ -64,7 +65,6 @@ namespace vEngine
 
         void Context::RegisterAppInstance(Application* app)
         {
-            // UNUSED_PARAMETER(app);
             this->app_instance_ = app;
         }
         Application& Context::AppInstance() const
@@ -83,15 +83,11 @@ namespace vEngine
                 PRINT_AND_BREAK("could not load the dynamic library");
             }
             #elif VENGINE_PLATFORM_LINUX
-            // render_dll_name = "./lib" + render_dll_name + "_rendering_plugind.dylib";
-            // render_dll_name = "./lib" + render_dll_name + "_rendering_plugind.so";
-
             dlerror();
             auto handle = dlopen(dll_name.c_str(), RTLD_LAZY);
             if (!handle)
             {
-                auto dlsym_error = dlerror();
-                PRINT_AND_BREAK("Cannot open library: " + std::string(dlsym_error));
+                PRINT_AND_BREAK("Cannot open library: " + std::string(dlerror()));
             }
             #endif
 
