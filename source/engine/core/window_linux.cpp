@@ -7,6 +7,10 @@ namespace vEngine
 {
     namespace Core
     {
+        void* Window::WindowHandle()
+        {
+            return nullptr;
+        }
         void Window::Init(...) 
 		{
             // this->window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);

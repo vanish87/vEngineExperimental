@@ -31,7 +31,10 @@ namespace vEngine
                 virtual void Deinit(...) override;
                 virtual void Update() override;
 
+            public:
+                void* WindowHandle();
 #ifdef VENGINE_PLATFORM_WINDOWS
+
             private:
                 static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
                 HWND wnd_;

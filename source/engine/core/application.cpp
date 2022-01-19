@@ -1,8 +1,12 @@
 
-#include <vengine/core/window.hpp>//windows.h should include first in win32 platform
-#include <memory>
+#include <vengine/core/window.hpp>  //windows.h should include first in win32 platform
+// #include <memory>
 #include <vengine/core/application.hpp>
+#include <vengine/core/configure.hpp>
+#include <vengine/core/constants.hpp>
 #include <vengine/core/context.hpp>
+#include <vengine/core/timer.hpp>
+#include <vengine/rendering/render_engine.hpp>
 
 namespace vEngine
 {
@@ -11,41 +15,79 @@ namespace vEngine
         void Application::Init(...)
         {
             Context::GetInstance().RegisterAppInstance(this);
-            //Load Dll etc.
-            Context::GetInstance().Setup();
+
+            Configure configure;
+            configure.app_name = "Example";
+            configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
+            // configure.graphics_configure.render_plugin_name = "opengl_rendering_plugin";
+
+            // Load Dll etc.
+            Context::GetInstance().ConfigureWith(configure);
 
             // Make window
             // Platform dependent
             this->SetupWindow();
 
-            // Context::RenderFactory().CreateRenderWindow();
+            Context::GetInstance().GetRenderEngine().CreateRenderWindow(this->window_->WindowHandle());
 
             this->OnCreate();
         }
-        void Application::Deinit(...) {}
-        void Application::Update() {}
+        void Application::Deinit(...)
+        {
+            this->OnDestory();
+
+            // Destory RenderEngine etc;
+
+            // Destory Window
+
+            // Destory Context
+
+            Context::GetInstance().Deinit();
+        }
+        void Application::Update()
+        {
+            // Update Window event/messages
+            // this is platform dependent
+            // Win32 will peek/dispatch window messages
+            this->window_->Update();
+
+            // call user update
+            this->OnUpdate();
+
+            // update other context module
+            //  Context::Update();
+        }
         void Application::Run()
         {
             this->shouldQuit = false;
 
+            Timer updateTimer;
+            double previous = updateTimer.Time();
+            double lag = 0;
+
             while (!this->shouldQuit)
             {
-                //Update Window event/messages
-                //this is platform dependent
-                //Win32 will peek/dispatch window messages
-                this->window_->Update();
+                double current = updateTimer.Time();
+                double elapsed = current - previous;
+                previous = current;
+                lag += elapsed;
 
-                //call user update
-                this->OnUpdate();
+                // Update in constant rate
+                // may be changed later
+                while (lag >= TIME_PER_UPDATE)
+                {
+                    this->Update();
 
-                //update other context module
-                // Context::Update();
+                    // Context::Instance().GetStateManager().Update();
+                    // Context::Instance().GetSceneManager().Update();
 
-                //call here or PAINT event in Winodw Class
-                // Render::Flush();
+                    lag -= TIME_PER_UPDATE;
+                }
+
+                // call here or PAINT event in Winodw Class
+                //  Render::Flush();
             }
 
-            this->OnDestory();
             this->Deinit();
         }
 

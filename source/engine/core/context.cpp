@@ -1,7 +1,7 @@
 
 #ifdef VENGINE_PLATFORM_WINDOWS
     #include <windows.h>
-#elif  VENGINE_PLATFORM_LINUX
+#elif VENGINE_PLATFORM_LINUX
     #include <dlfcn.h>
 #endif
 
@@ -12,90 +12,124 @@
 
 namespace vEngine
 {
-    typedef void (*CreateRenderEngine)(std::unique_ptr<Rendering::RenderEngine>& ptr);
     namespace Core
     {
-        Context::Context() : appInstance{nullptr} {}
+        typedef void (*HandleRenderEngine)(std::unique_ptr<RenderEngine>& ptr);
+
+        Context::Context() : app_instance_{nullptr} {}
         Context::~Context() {}
+
+        void Context::Init(...) {}
+        void Context::Deinit(...)
+        {
+            //prt.reset() does same thing as this->ProcessRenderEngine("DestoryRenderEngine");
+            this->render_engine_ptr_.reset();
+            this->FreeDll();
+        }
+        void Context::Update() {}
+
+        RenderEngine& Context::GetRenderEngine()
+        {
+            if (this->render_engine_ptr_ == nullptr)
+            {
+                ProcessSharedFunction("CreateRenderEngine", this->render_plugin_dll_handle_, this->render_engine_ptr_);
+            }
+            return *this->render_engine_ptr_;
+        }
+
+        void Context::LoadDll()
+        {
+            this->FreeDll();
+
+            auto render_dll_name = this->configure_.graphics_configure.render_plugin_name;
+            this->render_plugin_dll_handle_ = LoadLibrary(render_dll_name);
+
+        }
+        void Context::FreeDll()
+        {
+            if (this->render_plugin_dll_handle_ != nullptr)
+            {
+                FreeLibrary(this->render_plugin_dll_handle_);
+                this->render_plugin_dll_handle_ = nullptr;
+            }
+        }
 
         /// Load Dll
         /// Create Redering
-        void Context::Setup()
+        void Context::ConfigureWith(const Configure& configure)
         {
-            // auto re = Create();
-            // UNUSED_PARAMETER(re);
-
-#ifdef VENGINE_PLATFORM_WINDOWS
-            auto hGetProcIDDLL = ::LoadLibrary("d3d11_rendering_plugind.dll");
-            // auto hGetProcIDDLL = ::LoadLibrary("opengl_rendering_plugind.dll");
-
-            if (!hGetProcIDDLL)
-            {
-                std::cout << "could not load the dynamic library" << std::endl;
-                return;
-                // return EXIT_FAILURE;
-            }
-
-            // resolve function address here
-            auto func = reinterpret_cast<CreateRenderEngine>(::GetProcAddress(hGetProcIDDLL, "CreateRenderEngine"));
-            if (!func)
-            {
-                std::cout << "could not locate the function" << std::endl;
-                return;
-                // return EXIT_FAILURE;
-            }
-
-            func(this->render_engine_ptr_);
-            this->render_engine_ptr_->PrintInfo();
-            // this->render_engine_ptr_->CreateRenderWindow();
-
-            ::FreeLibrary(hGetProcIDDLL);
-
-#elif VENGINE_PLATFORM_LINUX
-
-            auto handle = dlopen("./libopengl_rendering_plugin.so", RTLD_LAZY);
-            if (!handle)
-            {
-                std::cerr << "Cannot open library: " << dlerror() << '\n';
-                return;
-            }
-
-            // load the symbol
-            std::cout << "Loading symbol hello...\n";
-
-            // reset errors
-            dlerror();
-            auto func = (CreateRenderEngine)dlsym(handle, "CreateRenderEngine");
-            const char* dlsym_error = dlerror();
-            if (dlsym_error)
-            {
-                std::cerr << "Cannot load symbol 'hello': " << dlsym_error << '\n';
-                dlclose(handle);
-                return;
-            }
-
-            // use it to do the calculation
-            std::cout << "Calling hello...\n";
-            func(this->render_engine_ptr_);
-            this->render_engine_ptr_->PrintInfo();
-            // this->render_engine_ptr_->CreateRenderWindow();
-
-            // close the library
-            std::cout << "Closing library...\n";
-            dlclose(handle);
-#endif
-
+            this->configure_ = configure;
+            this->LoadDll();
         }
 
         void Context::RegisterAppInstance(Application* app)
         {
             // UNUSED_PARAMETER(app);
-            this->appInstance = app;
-            
+            this->app_instance_ = app;
         }
         Application& Context::AppInstance() const
         {
-            return *(this->appInstance);
+            return *(this->app_instance_);
+        }
+
+        void* LoadLibrary(const std::string lib_name)
+        {
+            std::string dll_name = VENGINE_SHADRED_LIB_PREFIX + lib_name + VENGINE_SHADRED_LIB_DEBUG_POSTFIX + VENGINE_SHADRED_LIB_EXT;
+
+            #ifdef VENGINE_PLATFORM_WINDOWS
+            auto handle = ::LoadLibrary(dll_name.c_str());
+            if (!handle)
+            {
+                PRINT_AND_BREAK("could not load the dynamic library");
+            }
+            #elif VENGINE_PLATFORM_LINUX
+            // render_dll_name = "./lib" + render_dll_name + "_rendering_plugind.dylib";
+            // render_dll_name = "./lib" + render_dll_name + "_rendering_plugind.so";
+
+            dlerror();
+            auto handle = dlopen(dll_name.c_str(), RTLD_LAZY);
+            if (!handle)
+            {
+                auto dlsym_error = dlerror();
+                PRINT_AND_BREAK("Cannot open library: " + std::string(dlsym_error));
+            }
+            #endif
+
+            return handle;
+        }
+
+        void FreeLibrary(void* handle)
+        {
+            #ifdef VENGINE_PLATFORM_WINDOWS
+            ::FreeLibrary(reinterpret_cast<HMODULE>(handle));
+            #elif VENGINE_PLATFORM_LINUX
+            dlclose(handle);
+            #endif
+        }
+
+        template <typename T>
+        void ProcessSharedFunction(const std::string func_name, void* handle, std::unique_ptr<T>& ptr)
+        {
+            #ifdef VENGINE_PLATFORM_WINDOWS
+            auto function = reinterpret_cast<HandleRenderEngine>(::GetProcAddress(reinterpret_cast<HMODULE>(handle), func_name.c_str()));
+            #elif VENGINE_PLATFORM_LINUX
+            // reset errors
+            dlerror();
+            auto function = reinterpret_cast<HandleRenderEngine>(dlsym(handle, func_name.c_str()));
+            auto dlsym_error = dlerror();
+            if (dlsym_error)
+            {
+                PRINT_AND_BREAK("Cannot load symbol " + func_name + dlsym_error);
+            }
+            #endif
+            if (function != nullptr)
+            {
+                function(ptr);
+            }
+            else
+            {
+                PRINT_AND_BREAK("could not locate the function CreateRenderEngine");
+            }
         }
     }  // namespace Core
 }  // namespace vEngine
