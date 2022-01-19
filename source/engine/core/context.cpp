@@ -79,7 +79,7 @@ namespace vEngine
 
         void* LoadLibrary(const std::string lib_name)
         {
-            std::string dll_name = VENGINE_SHADRED_LIB_PREFIX + lib_name + VENGINE_SHADRED_LIB_DEBUG_POSTFIX + VENGINE_SHADRED_LIB_EXT;
+            auto dll_name = VENGINE_SHADRED_LIB_PREFIX + lib_name + VENGINE_SHADRED_LIB_DEBUG_POSTFIX + VENGINE_SHADRED_LIB_EXT;
 
             #ifdef VENGINE_PLATFORM_WINDOWS
             auto handle = ::LoadLibrary(dll_name.c_str());

@@ -94,7 +94,6 @@ namespace vEngine
             this->window_->Init();
 
             const auto graphics_configure = Context::GetInstance().CurrentConfigure().graphics_configure;
-
             Context::GetInstance().GetRenderEngine().CreateRenderWindow(this->window_->WindowHandle(), graphics_configure.width, graphics_configure.height);
         }
         void Application::Quit(bool quit)
