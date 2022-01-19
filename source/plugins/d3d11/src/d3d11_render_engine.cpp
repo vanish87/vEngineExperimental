@@ -1,5 +1,3 @@
-
-#include <iostream>
 #include <vengine/rendering/d3d11_render_engine.hpp>
 
 namespace vEngine
@@ -9,7 +7,7 @@ namespace vEngine
 
         void D3D11RenderEngine::TestFunc() {}
 
-        void D3D11RenderEngine::CreateRenderWindow(void* hwnd)
+        void D3D11RenderEngine::CreateRenderWindow(void* hwnd, int width, int height)
         {
             DXGI_SWAP_CHAIN_DESC scd;
 
@@ -26,8 +24,8 @@ namespace vEngine
 
             D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, NULL, NULL, NULL, D3D11_SDK_VERSION, &scd, &d3d_swap_chain_, &d3d_device_, NULL, &d3d_imm_context_);
 
-            auto w = 640;
-            auto h = 480;
+            auto w = width;
+            auto h = height;
             HRESULT result = d3d_swap_chain_->ResizeBuffers(1, w, h, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
 
             UNUSED_PARAMETER(result);

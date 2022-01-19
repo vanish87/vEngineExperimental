@@ -22,7 +22,7 @@ namespace vEngine
                 }
                 void TestFunc();
                 void Render() override;
-                void CreateRenderWindow(void* hwnd) override;
+                void CreateRenderWindow(void* hwnd, int width, int height) override;
                 void PrintInfo() override;
         };
     }  // namespace Rendering

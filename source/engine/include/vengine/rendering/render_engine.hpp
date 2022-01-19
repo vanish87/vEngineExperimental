@@ -15,8 +15,12 @@ namespace vEngine
         {
             public:
                 virtual ~RenderEngine(){};
-
-                virtual void CreateRenderWindow(void* hwnd) = 0;
+                /// \brief Create a Render Window with size
+                ///
+                /// \param hwnd
+                /// \param width is backbuffer width
+                /// \param height is backbuffer height
+                virtual void CreateRenderWindow(void* hwnd, int width, int height) = 0;
                 virtual void Render() = 0;
 
                 virtual void PrintInfo() = 0;

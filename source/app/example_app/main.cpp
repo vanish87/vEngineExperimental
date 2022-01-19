@@ -38,12 +38,9 @@ int main(int argc, char* argv[])
     std::cout << "Windows"<<std::endl;
     #endif
 
-    // MyNamespace::MyClass cla;
-    // Context::GetIntstance().Setup();
-
     Configure configure;
-    // configure.graphics_configure.width = 1920;
-    // configure.graphics_configure.height = 1080;
+    configure.graphics_configure.width = 1280;
+    configure.graphics_configure.height = 720;
     #ifdef VENGINE_PLATFORM_WINDOWS
         configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
     #endif

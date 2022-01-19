@@ -8,9 +8,11 @@ namespace vEngine
 
         void EmptyRenderEngine::TestFunc() {}
 
-        void EmptyRenderEngine::CreateRenderWindow(void* hwnd)
+        void EmptyRenderEngine::CreateRenderWindow(void* hwnd, int width, int height)
         {
             UNUSED_PARAMETER(hwnd);
+            UNUSED_PARAMETER(width);
+            UNUSED_PARAMETER(height);
         }
         void EmptyRenderEngine::Render() {}
         void EmptyRenderEngine::PrintInfo()

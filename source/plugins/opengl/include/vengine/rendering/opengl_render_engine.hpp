@@ -25,7 +25,7 @@ namespace vEngine
                     PRINT("Destructor OpenGL");
                 }
                 void TestFunc();
-                void CreateRenderWindow(void* hwnd) override;
+                void CreateRenderWindow(void* hwnd, int width, int height) override;
                 void Render() override;
                 void PrintInfo() override;
             private:

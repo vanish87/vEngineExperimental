@@ -21,10 +21,7 @@ namespace vEngine
             Context::GetInstance().ConfigureWith(configure);
 
             // Make window
-            // Platform dependent
             this->SetupWindow();
-
-            Context::GetInstance().GetRenderEngine().CreateRenderWindow(this->window_->WindowHandle());
 
             this->OnCreate();
         }
@@ -92,8 +89,13 @@ namespace vEngine
         void Application::OnDestory() {}
         void Application::SetupWindow()
         {
+            // Platform dependent
             this->window_ = std::make_shared<Window>();
             this->window_->Init();
+
+            const auto graphics_configure = Context::GetInstance().CurrentConfigure().graphics_configure;
+
+            Context::GetInstance().GetRenderEngine().CreateRenderWindow(this->window_->WindowHandle(), graphics_configure.width, graphics_configure.height);
         }
         void Application::Quit(bool quit)
         {

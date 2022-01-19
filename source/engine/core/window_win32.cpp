@@ -44,6 +44,9 @@ namespace vEngine
             int left = CW_USEDEFAULT;
             int width = rc.right - rc.left;
             int height = rc.bottom - rc.top;
+
+            // PRINT("Window size " << width << " " << height);
+
             this->wnd_ = CreateWindow(wcex.lpszClassName, win_name.c_str(), WS_OVERLAPPEDWINDOW, left, top, width, height, nullptr, nullptr, hInstance, nullptr);
 
             ::ShowWindow(this->wnd_, SW_SHOWNORMAL);

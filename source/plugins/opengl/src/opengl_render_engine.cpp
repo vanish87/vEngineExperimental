@@ -28,7 +28,7 @@ namespace vEngine
         }
 
         void OpenGLRenderEngine::TestFunc() {}
-        void OpenGLRenderEngine::CreateRenderWindow(void* hwnd)
+        void OpenGLRenderEngine::CreateRenderWindow(void* hwnd, int width, int height)
         {
             UNUSED_PARAMETER(hwnd);
 
@@ -39,7 +39,7 @@ namespace vEngine
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-            window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
+            window = glfwCreateWindow(width, height, "Simple example", NULL, NULL);
             if (!window)
             {
                 glfwTerminate();
