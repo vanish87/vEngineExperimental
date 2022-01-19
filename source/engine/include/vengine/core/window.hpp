@@ -27,8 +27,8 @@ namespace vEngine
             public:
                 Window() {}
                 virtual ~Window() {}
-                virtual void Init(...) override;
-                virtual void Deinit(...) override;
+                virtual void Init() override;
+                virtual void Deinit() override;
                 virtual void Update() override;
 
             public:

@@ -33,8 +33,8 @@ namespace vEngine
                 RenderEngine& GetRenderEngine();
 
             public:
-                void Init(...) override;
-                void Deinit(...) override;
+                void Init() override;
+                void Deinit() override;
                 void Update() override;
 
             private:

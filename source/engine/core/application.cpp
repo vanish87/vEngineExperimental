@@ -12,7 +12,7 @@ namespace vEngine
 {
     namespace Core
     {
-        void Application::Init(...)
+        void Application::Init()
         {
             Context::GetInstance().RegisterAppInstance(this);
 
@@ -35,7 +35,7 @@ namespace vEngine
 
             this->OnCreate();
         }
-        void Application::Deinit(...)
+        void Application::Deinit()
         {
             this->OnDestory();
 

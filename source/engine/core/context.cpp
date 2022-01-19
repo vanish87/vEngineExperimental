@@ -19,8 +19,8 @@ namespace vEngine
         Context::Context() : app_instance_{nullptr} {}
         Context::~Context() {}
 
-        void Context::Init(...) {}
-        void Context::Deinit(...)
+        void Context::Init() {}
+        void Context::Deinit()
         {
             //prt.reset() does same thing as this->ProcessRenderEngine("DestoryRenderEngine");
             this->render_engine_ptr_.reset();

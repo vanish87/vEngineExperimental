@@ -18,7 +18,7 @@ namespace vEngine
                 virtual ~Application(){};
 
             public:
-                virtual void Init(...);
+                virtual void Init();
                 virtual void Run();
                 virtual void Quit(bool quit);
 
@@ -26,7 +26,7 @@ namespace vEngine
                 WindowPtr window_;
 
             private:
-                virtual void Deinit(...);
+                virtual void Deinit();
                 virtual void Update();
 
                 virtual void OnCreate();

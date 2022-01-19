@@ -18,7 +18,7 @@ namespace vEngine
         {
             return this->wnd_;
         }
-        void Window::Init(...)
+        void Window::Init()
         {
             const auto configure = Context::GetInstance().CurrentConfigure();
             std::string win_name = configure.app_name;
@@ -55,7 +55,7 @@ namespace vEngine
             // Not used for now
             // ::SetWindowLongPtr(this->wnd_, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
         }
-        void Window::Deinit(...) {}
+        void Window::Deinit() {}
         void Window::Update()
         {
             MSG msg = {0};
