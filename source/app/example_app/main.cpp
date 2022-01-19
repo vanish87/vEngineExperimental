@@ -4,6 +4,7 @@
 #include <engine.hpp>
 // #include <vengine/core/example_class_header.h>
 #include <vengine/core/application.hpp>
+#include <vengine/core/constants.hpp>
 #include <vengine/core/context.hpp>
 #include <version.hpp>
 
@@ -16,7 +17,10 @@ class MyApp : public Application
         {
             std::cout << "User Create" << std::endl;
         }
-        void OnUpdate() override {}
+        void OnUpdate() override
+        {
+            // std::cout << "User Update" << vEngine::TIME_PER_UPDATE << std::endl;
+        }
 };
 
 int main(int argc, char* argv[])
