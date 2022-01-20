@@ -1,12 +1,10 @@
+#include <d3dcompiler.h>
 #include <vengine/core/window.hpp>
+
 #include <vengine/core/application.hpp>
 #include <vengine/core/context.hpp>
-#include <vengine/rendering/d3d11_render_engine.hpp>
-
 #include <vengine/core/vector.hpp>
-
-#include <d3dcompiler.h>
-
+#include <vengine/rendering/d3d11_render_engine.hpp>
 
 namespace vEngine
 {
@@ -14,7 +12,6 @@ namespace vEngine
     {
         using namespace vEngine::Core;
         using namespace vEngine::Math;
-
 
         void D3D11RenderEngine::Init()
         {
@@ -71,7 +68,6 @@ namespace vEngine
 
             d3d_imm_context_->RSSetViewports(1, &viewport);
 
-
             this->InitPipline();
         }
         void D3D11RenderEngine::Update()
@@ -113,8 +109,8 @@ namespace vEngine
             }";
         struct VERTEX
         {
-                float X, Y, Z;  // position
-                float Color[4];   // color
+                float X, Y, Z;   // position
+                float Color[4];  // color
         };
         void D3D11RenderEngine::InitPipline()
         {
@@ -131,8 +127,7 @@ namespace vEngine
             this->d3d_imm_context_->VSSetShader(this->vs, 0, 0);
             this->d3d_imm_context_->PSSetShader(this->ps, 0, 0);
 
-            D3D11_INPUT_ELEMENT_DESC input_desc[] = 
-            {
+            D3D11_INPUT_ELEMENT_DESC input_desc[] = {
                 {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
                 {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
             };
@@ -143,12 +138,7 @@ namespace vEngine
             this->d3d_imm_context_->IASetInputLayout(this->layout);
 
             // create a triangle using the VERTEX struct
-            VERTEX OurVertices[] = 
-            {
-                {0.0f, 0.5f, 0.0f,    {1.0f, 0.0f, 0.0f, 1.0f}}, 
-                {0.45f, -0.5, 0.0f,   {0.0f, 1.0f, 0.0f, 1.0f}}, 
-                {-0.45f, -0.5f, 0.0f, {0.0f, 0.0f, 1.0f, 1.0f}}
-            };
+            VERTEX OurVertices[] = {{0.0f, 0.5f, 0.0f, {1.0f, 0.0f, 0.0f, 1.0f}}, {0.45f, -0.5, 0.0f, {0.0f, 1.0f, 0.0f, 1.0f}}, {-0.45f, -0.5f, 0.0f, {0.0f, 0.0f, 1.0f, 1.0f}}};
 
             // create the vertex buffer
             D3D11_BUFFER_DESC bd;
@@ -181,7 +171,7 @@ namespace vEngine
             // draw the vertex buffer to the back buffer
             this->d3d_imm_context_->Draw(3, 0);
         }
-        void D3D11RenderEngine::DeinitPipline() 
+        void D3D11RenderEngine::DeinitPipline()
         {
             this->vs_blob->Release();
             this->ps_blob->Release();
