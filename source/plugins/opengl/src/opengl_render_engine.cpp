@@ -1,12 +1,14 @@
 
 #include <iostream>
 // #include <vengine/core/application.hpp>
-// #include <vengine/core/context.hpp>
+#include <vengine/core/context.hpp>
 #include <vengine/rendering/opengl_render_engine.hpp>
 namespace vEngine
 {
     namespace Rendering
     {
+        using namespace vEngine::Core;
+
         static void error_callback(int error, const char* description)
         {
             UNUSED_PARAMETER(error);
@@ -27,10 +29,11 @@ namespace vEngine
             }
         }
 
-        void OpenGLRenderEngine::TestFunc() {}
-        void OpenGLRenderEngine::CreateRenderWindow(void* hwnd, int width, int height)
+        void OpenGLRenderEngine::Init()
         {
-            UNUSED_PARAMETER(hwnd);
+            const auto config = Context::GetInstance().CurrentConfigure();
+            auto width = config.graphics_configure.width;
+            auto height = config.graphics_configure.height;
 
             glfwSetErrorCallback(error_callback);
 
@@ -51,7 +54,8 @@ namespace vEngine
             glfwMakeContextCurrent(window);
         }
 
-        void OpenGLRenderEngine::Render() {}
+        void OpenGLRenderEngine::Update() {}
+        void OpenGLRenderEngine::Deinit() {}
         void OpenGLRenderEngine::PrintInfo()
         {
             std::cout << "OpenGL" << std::endl;

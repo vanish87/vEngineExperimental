@@ -22,6 +22,9 @@ namespace vEngine
                 virtual void Run();
                 virtual void Quit(bool quit);
 
+            public:
+                WindowPtr CurrentWindow();
+
             protected:
                 WindowPtr window_;
 

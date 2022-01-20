@@ -12,6 +12,10 @@ namespace vEngine
 {
     namespace Core
     {
+        WindowPtr Application::CurrentWindow()
+        {
+            return this->window_;
+        }
         void Application::Init()
         {
             Context::GetInstance().RegisterAppInstance(this);
@@ -22,6 +26,7 @@ namespace vEngine
 
             // Make window
             this->SetupWindow();
+            Context::GetInstance().GetRenderEngine().Init();
 
             this->OnCreate();
         }
@@ -30,6 +35,7 @@ namespace vEngine
             this->OnDestory();
 
             // Destory RenderEngine etc;
+            Context::GetInstance().GetRenderEngine().Deinit();
 
             // Destory Window
 
@@ -78,7 +84,7 @@ namespace vEngine
                 }
 
                 // call here or PAINT event in Winodw Class
-                //  Render::Flush();
+                Context::GetInstance().GetRenderEngine().Update();
             }
 
             this->Deinit();
@@ -92,9 +98,6 @@ namespace vEngine
             // Platform dependent
             this->window_ = std::make_shared<Window>();
             this->window_->Init();
-
-            const auto graphics_configure = Context::GetInstance().CurrentConfigure().graphics_configure;
-            Context::GetInstance().GetRenderEngine().CreateRenderWindow(this->window_->WindowHandle(), graphics_configure.width, graphics_configure.height);
         }
         void Application::Quit(bool quit)
         {
