@@ -4,8 +4,10 @@
 #pragma once
 
 #include <EDITOR_API.h>
+#include <engine.hpp>
 
-extern "C" {
+extern "C" 
+{
     EDITOR_API void Context_Init(void* hwnd);
     EDITOR_API void Context_Deinit();
 }
