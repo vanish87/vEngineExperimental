@@ -1,4 +1,7 @@
 
 add_subdirectory(editor_helper)
-add_subdirectory(wpf_editor)
+
+if(WIN32)
+	 add_subdirectory(wpf_editor)
+endif()
 
