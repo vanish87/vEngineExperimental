@@ -3,6 +3,7 @@
 #pragma once
 
 #define GLFW_INCLUDE_NONE
+#define GLAD_GL_IMPLEMENTATION
 #include <GLFW/glfw3.h>
 #include <glad/gl.h>
 
@@ -28,8 +29,16 @@ namespace vEngine
                 void Update() override;
                 void Deinit() override;
                 void PrintInfo() override;
+
             private:
                 GLFWwindow* window;
+
+            private:
+                void InitPipline();
+                void DebugTriangleDraw();
+                void DeinitPipline();
+                GLuint vertex_buffer, vertex_shader, fragment_shader, program;
+                GLint mvp_location, vpos_location, vcol_location;
         };
 
         // extern "C" {
