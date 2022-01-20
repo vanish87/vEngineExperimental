@@ -3,13 +3,13 @@
 
 #pragma once
 
-#include <EDITOR_API.h>
+#include <EDITOR_HELPER_API.h>
 #include <engine.hpp>
 
 extern "C" 
 {
-    EDITOR_API void Context_Init(void* hwnd);
-    EDITOR_API void Context_Deinit();
+    EDITOR_HELPER_API void Context_Init(void* hwnd);
+    EDITOR_HELPER_API void Context_Deinit();
 }
 
 #endif /* _VENGINE_EDITOR_DLL_FUNCTIONS_HPP */

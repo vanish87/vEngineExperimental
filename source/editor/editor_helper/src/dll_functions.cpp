@@ -19,6 +19,6 @@ extern "C"
 
 	void Context_Deinit()
 	{
-
+		PRINT("Context_Deinit");
 	}
 }
