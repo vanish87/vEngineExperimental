@@ -1,40 +1,47 @@
 
-// #include <memory>
 #include <vengine/core/window.hpp>  //windows.h should include first in win32 platform
-
+// #include <memory>
 #include <vengine/core/application.hpp>
+#include <vengine/core/configure.hpp>
+#include <vengine/core/constants.hpp>
 #include <vengine/core/context.hpp>
 #include <vengine/core/timer.hpp>
-#include <vengine/core/constants.hpp>
 #include <vengine/rendering/render_engine.hpp>
 
 namespace vEngine
 {
     namespace Core
     {
-        void Application::Init(...)
+        WindowPtr Application::CurrentWindow()
+        {
+            return this->window_;
+        }
+        void Application::Init()
         {
             Context::GetInstance().RegisterAppInstance(this);
+
+            auto configure = Context::GetInstance().CurrentConfigure();
             // Load Dll etc.
-            Context::GetInstance().Setup();
+            Context::GetInstance().ConfigureWith(configure);
 
             // Make window
-            // Platform dependent
             this->SetupWindow();
-
-            Context::GetInstance().GetRenderEngine().CreateRenderWindow(this->window_->WindowHandle());
+            Context::GetInstance().GetRenderEngine().Init();
 
             this->OnCreate();
         }
-        void Application::Deinit(...)
+        void Application::Deinit()
         {
             this->OnDestory();
 
-            //Destory RenderEngine etc;
+            // Destory RenderEngine etc;
+            Context::GetInstance().GetRenderEngine().Deinit();
 
-            //Destory Window
+            // Destory Window
 
-            //Destory Context
+            // Destory Context
+
+            Context::GetInstance().Deinit();
         }
         void Application::Update()
         {
@@ -64,8 +71,8 @@ namespace vEngine
                 previous = current;
                 lag += elapsed;
 
-                //Update in constant rate
-                //may be changed later
+                // Update in constant rate
+                // may be changed later
                 while (lag >= TIME_PER_UPDATE)
                 {
                     this->Update();
@@ -77,7 +84,7 @@ namespace vEngine
                 }
 
                 // call here or PAINT event in Winodw Class
-                //  Render::Flush();
+                Context::GetInstance().GetRenderEngine().Update();
             }
 
             this->Deinit();
@@ -88,6 +95,7 @@ namespace vEngine
         void Application::OnDestory() {}
         void Application::SetupWindow()
         {
+            // Platform dependent
             this->window_ = std::make_shared<Window>();
             this->window_->Init();
         }

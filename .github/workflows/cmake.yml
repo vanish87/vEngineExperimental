@@ -37,11 +37,10 @@ jobs:
       if: matrix.platform == 'macos-latest'
       run: brew install doxygen
       
-    - name: Build External - Windows
-      if: matrix.platform == 'windows-latest'
-      run: python BuildExternalLibs.py
+    - name: Build External
+      run: python3 BuildExternalLibs.py
       
-    - name: Confiugre - Windows
+    - name: Configure - Windows
       # Build your program with the given configuration
       if: matrix.platform == 'windows-latest'
       run: cmake . -B ${{github.workspace}}/build_windows
@@ -50,21 +49,27 @@ jobs:
       if: matrix.platform == 'windows-latest'
       run: cmake --build ${{github.workspace}}/build_windows --config ${{env.BUILD_TYPE}}
 
-    - name: Build External - Ubuntu/MacOS
-      # Build your program with the given configuration
-      if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
-      run: python3 BuildExternalLibsLinux.py
       
-    - name: Confiugre - Ubuntu/MacOS
+    - name: Configure - Ubuntu
       # Build your program with the given configuration
-      if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
+      if: matrix.platform == 'ubuntu-latest'
       run: cmake -S . -B ${{github.workspace}}/build_linux
 
-    - name: Build - Ubuntu/MacOS
+    - name: Build - Ubuntu
       # Build your program with the given configuration
-      if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
+      if: matrix.platform == 'ubuntu-latest'
       run: cmake --build ${{github.workspace}}/build_linux
 
+
+    - name: Configure - MacOS
+      # Build your program with the given configuration
+      if: matrix.platform == 'macos-latest'
+      run: cmake -S . -B ${{github.workspace}}/build_darwin
+
+    - name: Build - MacOS
+      # Build your program with the given configuration
+      if: matrix.platform == 'macos-latest'
+      run: cmake --build ${{github.workspace}}/build_darwin
 
     - name: Test on Windows
       # test execution on windows-latest
@@ -72,8 +77,14 @@ jobs:
       if: matrix.platform == 'windows-latest'
       run: ./build_windows/bin/${{env.BUILD_TYPE}}/test_example.exe
 
-    - name: Test on Ubuntu/MacOS
+    - name: Test on Ubuntu
      # test execution on ubuntu-latest
-      id: ubuntu-mac
-      if: matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
+      id: ubuntu
+      if: matrix.platform == 'ubuntu-latest'
       run: ./build_linux/bin/test_example
+
+    - name: Test on MacOS
+     # test execution on mac-latest
+      id: mac
+      if: matrix.platform == 'macos-latest'
+      run: ./build_darwin/bin/test_example

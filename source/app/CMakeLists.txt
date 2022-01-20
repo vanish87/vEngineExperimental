@@ -1,7 +1,6 @@
 if(WIN32)
-	add_subdirectory(d3d)
+	add_subdirectory(d3d11_app)
 endif(WIN32)
 	
-	
-add_subdirectory(opengl)
+add_subdirectory(opengl_app)
 add_subdirectory(example_app)

@@ -22,4 +22,5 @@ target_link_libraries( ${PROJECT_NAME}
     engine::core
     d3d11.lib
     dxgi.lib
+    d3dcompiler.lib
 )
