@@ -1,7 +1,9 @@
-#include <vengine/core/application.hpp>
-#include <vengine/core/context.hpp>
 #include <vengine/rendering/opengl_render_engine.hpp>
 
+#include <vengine/core/application.hpp>
+#include <vengine/core/context.hpp>
+
+// Test include
 #include <glad/linmath.h>
 namespace vEngine
 {
@@ -28,8 +30,12 @@ namespace vEngine
         void OpenGLRenderEngine::Init()
         {
             const auto config = Context::GetInstance().CurrentConfigure();
+            auto app_name = config.app_name;
             auto width = config.graphics_configure.width;
             auto height = config.graphics_configure.height;
+            // auto width = 640;
+            // auto height = 640;
+            // auto app_name = "test";
 
             glfwSetErrorCallback(error_callback);
 
@@ -38,7 +44,7 @@ namespace vEngine
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-            window = glfwCreateWindow(width, height, config.app_name.c_str(), NULL, NULL);
+            window = glfwCreateWindow(width, height, app_name.c_str(), NULL, NULL);
             if (!window)
             {
                 glfwTerminate();

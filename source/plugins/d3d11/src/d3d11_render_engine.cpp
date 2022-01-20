@@ -1,9 +1,9 @@
 #include <d3dcompiler.h>
-#include <vengine/core/window.hpp>
 
 #include <vengine/core/application.hpp>
 #include <vengine/core/context.hpp>
 #include <vengine/core/vector.hpp>
+#include <vengine/core/window.hpp>
 #include <vengine/rendering/d3d11_render_engine.hpp>
 
 namespace vEngine

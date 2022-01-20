@@ -14,6 +14,7 @@ namespace vEngine
 {
     namespace Core
     {
+        static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
         void* Window::WindowHandle()
         {
             return this->wnd_;
@@ -47,9 +48,10 @@ namespace vEngine
 
             // PRINT("Window size " << width << " " << height);
 
-            this->wnd_ = CreateWindow(wcex.lpszClassName, win_name.c_str(), WS_OVERLAPPEDWINDOW, left, top, width, height, nullptr, nullptr, hInstance, nullptr);
+            auto hwnd = CreateWindow(wcex.lpszClassName, win_name.c_str(), WS_OVERLAPPEDWINDOW, left, top, width, height, nullptr, nullptr, hInstance, nullptr);
+            ::ShowWindow(hwnd, SW_SHOWNORMAL);
 
-            ::ShowWindow(this->wnd_, SW_SHOWNORMAL);
+            this->wnd_ = hwnd;
             // ::SetForegroundWindow(this->wnd_);
             // ::SetFocus(this->wnd_);
             //::ShowCursor(!render_setting.full_screen);
@@ -69,9 +71,9 @@ namespace vEngine
                 ::DispatchMessage(&msg);
             }
         }
-        LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+        static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
-            switch (uMsg)
+            switch (message)
             {
                 case WM_DESTROY:
                 {
@@ -90,7 +92,7 @@ namespace vEngine
                 }
                 break;
             }
-            return ::DefWindowProc(hwnd, uMsg, wParam, lParam);
+            return ::DefWindowProc(hWnd, message, wParam, lParam);
         }
     }  // namespace Core
 }  // namespace vEngine
