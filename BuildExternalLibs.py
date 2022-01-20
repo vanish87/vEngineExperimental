@@ -1,7 +1,9 @@
 import subprocess
 import os
+import platform
+
 sourcePath=os.path.abspath("./external")
-buildPath=os.path.abspath("./build_windows/external")
+buildPath=os.path.abspath("./build_"+ platform.system().lower() + "/external")
 if not os.path.exists(buildPath):
 	os.makedirs(buildPath, exist_ok=True)
 
@@ -13,4 +15,5 @@ subprocess.run(["cmake", "--build", buildPath, "--target", "install", "--config"
 subprocess.run(["cmake", "-S" + sourcePath, "-B" + buildPath, "-DCMAKE_BUILD_TYPE=Release"])
 subprocess.run(["cmake", "--build", buildPath, "--target", "install", "--config", "Release"])
 
-os.system("pause")
+# os.system("pause")
+# input()
