@@ -20,9 +20,9 @@ namespace vEngine
                 {
                     PRINT("Destructor Empty");
                 }
-                void TestFunc();
-                void Render() override;
-                void CreateRenderWindow(void* hwnd, int width, int height) override;
+                void Init() override;
+                void Update() override;
+                void Deinit() override;
                 void PrintInfo() override;
         };
     }  // namespace Rendering

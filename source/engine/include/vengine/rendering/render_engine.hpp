@@ -6,27 +6,22 @@
 #include <VENGINE_API.h>
 
 #include <engine.hpp>
+#include <vengine/core/iruntime_module.hpp>
 
 namespace vEngine
 {
     namespace Rendering
     {
-        class VENGINE_API RenderEngine
+        class VENGINE_API RenderEngine : public vEngine::Core::IRuntimeModule
         {
             public:
                 virtual ~RenderEngine(){};
-                /// \brief Create a Render Window with size
-                ///
-                /// \param hwnd
-                /// \param width is backbuffer width
-                /// \param height is backbuffer height
-                virtual void CreateRenderWindow(void* hwnd, int width, int height) = 0;
-                virtual void Render() = 0;
 
                 virtual void PrintInfo() = 0;
 
-            private:
-                void CreateInternal();
+                virtual void Init() = 0;
+                virtual void Deinit() = 0;
+                virtual void Update() = 0;
         };
     }  // namespace Rendering
 }  // namespace vEngine

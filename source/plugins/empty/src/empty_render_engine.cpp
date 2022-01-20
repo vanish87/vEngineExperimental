@@ -6,15 +6,11 @@ namespace vEngine
     namespace Rendering
     {
 
-        void EmptyRenderEngine::TestFunc() {}
-
-        void EmptyRenderEngine::CreateRenderWindow(void* hwnd, int width, int height)
+        void EmptyRenderEngine::Init()
         {
-            UNUSED_PARAMETER(hwnd);
-            UNUSED_PARAMETER(width);
-            UNUSED_PARAMETER(height);
         }
-        void EmptyRenderEngine::Render() {}
+        void EmptyRenderEngine::Update() {}
+        void EmptyRenderEngine::Deinit() {}
         void EmptyRenderEngine::PrintInfo()
         {
             std::cout << "Empty" << std::endl;

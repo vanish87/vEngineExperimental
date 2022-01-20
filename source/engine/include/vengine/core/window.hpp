@@ -33,8 +33,8 @@ namespace vEngine
 
             public:
                 void* WindowHandle();
-#ifdef VENGINE_PLATFORM_WINDOWS
 
+            #ifdef VENGINE_PLATFORM_WINDOWS
             private:
                 static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
                 HWND wnd_;
@@ -43,9 +43,7 @@ namespace vEngine
             #elif VENGINE_PLATFORM_LINUX
             private:
                 // GLFWwindow* window;
-
-
-#endif
+            #endif
         };
     }  // namespace Core
 }  // namespace vEngine
