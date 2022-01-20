@@ -14,9 +14,15 @@ namespace vEngine
 {
     namespace Core
     {
-        void Window::Init(...)
+        static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+        void* Window::WindowHandle()
         {
-            std::string win_name = "test";
+            return this->wnd_;
+        }
+        void Window::Init()
+        {
+            const auto configure = Context::GetInstance().CurrentConfigure();
+            std::string win_name = configure.app_name;
 
             HINSTANCE hInstance = ::GetModuleHandle(nullptr);
 
@@ -29,7 +35,7 @@ namespace vEngine
             wcex.lpszClassName = win_name.c_str();
             ::RegisterClass(&wcex);
 
-            RECT rc = {0, 0, 640, 480};
+            RECT rc = {0, 0, configure.graphics_configure.width, configure.graphics_configure.height};
             // get real window size; should slightly bigger than rendering
             // resolution we should render a frame with render_setting, so
             // window is enlarged.
@@ -39,9 +45,13 @@ namespace vEngine
             int left = CW_USEDEFAULT;
             int width = rc.right - rc.left;
             int height = rc.bottom - rc.top;
-            this->wnd_ = CreateWindow(wcex.lpszClassName, win_name.c_str(), WS_OVERLAPPEDWINDOW, left, top, width, height, nullptr, nullptr, hInstance, nullptr);
 
-            ::ShowWindow(this->wnd_, SW_SHOWNORMAL);
+            // PRINT("Window size " << width << " " << height);
+
+            auto hwnd = CreateWindow(wcex.lpszClassName, win_name.c_str(), WS_OVERLAPPEDWINDOW, left, top, width, height, nullptr, nullptr, hInstance, nullptr);
+            ::ShowWindow(hwnd, SW_SHOWNORMAL);
+
+            this->wnd_ = hwnd;
             // ::SetForegroundWindow(this->wnd_);
             // ::SetFocus(this->wnd_);
             //::ShowCursor(!render_setting.full_screen);
@@ -50,7 +60,7 @@ namespace vEngine
             // Not used for now
             // ::SetWindowLongPtr(this->wnd_, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
         }
-        void Window::Deinit(...) {}
+        void Window::Deinit() {}
         void Window::Update()
         {
             MSG msg = {0};
@@ -61,9 +71,9 @@ namespace vEngine
                 ::DispatchMessage(&msg);
             }
         }
-        LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+        static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
-            switch (uMsg)
+            switch (message)
             {
                 case WM_DESTROY:
                 {
@@ -82,7 +92,7 @@ namespace vEngine
                 }
                 break;
             }
-            return ::DefWindowProc(hwnd, uMsg, wParam, lParam);
+            return ::DefWindowProc(hWnd, message, wParam, lParam);
         }
     }  // namespace Core
 }  // namespace vEngine

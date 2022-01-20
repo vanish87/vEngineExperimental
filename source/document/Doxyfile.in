@@ -872,11 +872,14 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  =  @DOXYGEN_SRC_ROOT@/app/
-#INPUT                  += @DOXYGEN_SRC_ROOT@/editor/
 INPUT                  += @DOXYGEN_SRC_ROOT@/engine/
-INPUT                  += @DOXYGEN_SRC_ROOT@/plugins/
+INPUT                  += @DOXYGEN_SRC_ROOT@/plugins/d3d11/
+INPUT                  += @DOXYGEN_SRC_ROOT@/plugins/opengl/include/vengine/
+INPUT                  += @DOXYGEN_SRC_ROOT@/plugins/opengl/src/
+INPUT                  += @DOXYGEN_SRC_ROOT@/plugins/empty/
 INPUT                  += @DOXYGEN_MAINPAGE_ROOT@/README.md
 
+#INPUT                  += @DOXYGEN_SRC_ROOT@/editor/
 #INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/../app/
 #INPUT                  += @CMAKE_CURRENT_SOURCE_DIR@/../editor/
 #INPUT                  += @CMAKE_CURRENT_SOURCE_DIR@/../engine/

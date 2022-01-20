@@ -3,7 +3,6 @@
 
 #include <cstdint>
 #include <memory>
-
 namespace vEngine
 {
     typedef std::int8_t int8_t;

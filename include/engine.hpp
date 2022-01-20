@@ -3,6 +3,7 @@
 
 #include <compiler_setting.hpp>
 #include <macros.hpp>
+#include <defines.hpp>
 // #include <version.hpp>
 
 #include <debug.hpp>
