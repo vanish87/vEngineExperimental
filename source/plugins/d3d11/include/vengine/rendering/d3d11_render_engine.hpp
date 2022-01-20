@@ -25,6 +25,19 @@ namespace vEngine
                 void Update() override;
                 void PrintInfo() override;
 
+
+            private:
+                ID3D11InputLayout* layout;
+                ID3DBlob* vs_blob;
+                ID3DBlob* ps_blob;
+                ID3D11VertexShader* vs;
+                ID3D11PixelShader* ps;
+                ID3D11Buffer* vertex_buffer;
+
+                void InitPipline();
+                void DeinitPipline();
+                void TriangleDraw();
+
             private:
                 ID3D11Device* d3d_device_;
                 ID3D11DeviceContext* d3d_imm_context_;
