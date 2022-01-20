@@ -11,201 +11,205 @@ using System.Windows.Media;
 
 namespace D3DWPFExample
 {
-    public class D3DDLL
-    {
-        [DllImport("D3DDLL.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitD3D(IntPtr window, int Width, int Height);
+	public class D3DDLL
+	{
+		[DllImport("editor_helperd.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern void Context_Init(IntPtr window);
 
-        [DllImport("D3DDLL.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void RenderFrame();
+		[DllImport("editor_helperd.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern void Context_Deinit();
 
-        [DllImport("D3DDLL.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void CleanD3D();
-    }
+		// [DllImport("editor_helper.dll", CallingConvention = CallingConvention.Cdecl)]
+		// public static extern void CleanD3D();
+	}
 
-    public class D3DHwndHost : HwndHost
-    {
-        protected IntPtr Hwnd { get; private set; }
-        protected bool HwndInitialized { get; private set; }
+	public class D3DHwndHost : HwndHost
+	{
+		protected IntPtr Hwnd { get; private set; }
+		protected bool HwndInitialized { get; private set; }
 
-        private const string WindowClass = "HwndWrapper";
+		private const string WindowClass = "vEngineEditor";
 
-        public D3DHwndHost()
-        {
-            Loaded += OnLoaded;
-            Unloaded += OnUnloaded;
-        }
+		public D3DHwndHost()
+		{
+			Loaded += OnLoaded;
+			Unloaded += OnUnloaded;
+		}
 
-        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
-        {
-            Initialize();
-            HwndInitialized = true;
+		private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+		{
+			Initialize();
+			HwndInitialized = true;
 
-            Loaded -= OnLoaded;
+			Loaded -= OnLoaded;
 
-            CompositionTarget.Rendering += OnCompositionTargetRendering;
-        }
+			CompositionTarget.Rendering += OnCompositionTargetRendering;
+		}
 
-        private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs)
-        {
+		private void OnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+		{
 
-            CompositionTarget.Rendering -= OnCompositionTargetRendering;
+			CompositionTarget.Rendering -= OnCompositionTargetRendering;
 
-            Uninitialize();
-            HwndInitialized = false;
+			Deinitialize();
+			HwndInitialized = false;
 
-            Unloaded -= OnUnloaded;
+			Unloaded -= OnUnloaded;
 
-            Dispose();
-        }
+			Dispose();
+		}
 
-        private void OnCompositionTargetRendering(object sender, EventArgs eventArgs)
-        {
-            D3DDLL.RenderFrame();
-        }
+		private void OnCompositionTargetRendering(object sender, EventArgs eventArgs)
+		{
+			// D3DDLL.RenderFrame();
+		}
 
-        protected void Initialize()
-        {
-            D3DDLL.InitD3D(Hwnd, 320, 240);
-        }
-        protected void Uninitialize() { }
-        protected void Resized() { }
+		protected void Initialize()
+		{
+			D3DDLL.Context_Init(Hwnd);
+		}
+		protected void Deinitialize()
+		{
+			D3DDLL.Context_Deinit();
 
-        protected override HandleRef BuildWindowCore(HandleRef hwndParent)
-        {
-            var wndClass = new NativeMethods.WndClassEx();
-            wndClass.cbSize = (uint)Marshal.SizeOf(wndClass);
-            wndClass.hInstance = NativeMethods.GetModuleHandle(null);
-            wndClass.lpfnWndProc = NativeMethods.DefaultWindowProc;
-            wndClass.lpszClassName = WindowClass;
-            wndClass.hCursor = NativeMethods.LoadCursor(IntPtr.Zero, NativeMethods.IDC_ARROW);
-            NativeMethods.RegisterClassEx(ref wndClass);
+		}
+		protected void Resized() { }
 
-            Hwnd = NativeMethods.CreateWindowEx(
-                0, WindowClass, "", NativeMethods.WS_CHILD | NativeMethods.WS_VISIBLE,
-                0, 0, (int)Width, (int)Height, hwndParent.Handle, IntPtr.Zero, IntPtr.Zero, 0);
+		protected override HandleRef BuildWindowCore(HandleRef hwndParent)
+		{
+			var wndClass = new NativeMethods.WndClassEx();
+			wndClass.cbSize = (uint)Marshal.SizeOf(wndClass);
+			wndClass.hInstance = NativeMethods.GetModuleHandle(null);
+			wndClass.lpfnWndProc = NativeMethods.DefaultWindowProc;
+			wndClass.lpszClassName = WindowClass;
+			wndClass.hCursor = NativeMethods.LoadCursor(IntPtr.Zero, NativeMethods.IDC_ARROW);
+			NativeMethods.RegisterClassEx(ref wndClass);
 
-            return new HandleRef(this, Hwnd);
-        }
+			Hwnd = NativeMethods.CreateWindowEx(
+				0, WindowClass, "", NativeMethods.WS_CHILD | NativeMethods.WS_VISIBLE,
+				0, 0, (int)Width, (int)Height, hwndParent.Handle, IntPtr.Zero, IntPtr.Zero, 0);
 
-        protected override void DestroyWindowCore(HandleRef hwnd)
-        {
-            NativeMethods.DestroyWindow(hwnd.Handle);
-            Hwnd = IntPtr.Zero;
-        }
+			return new HandleRef(this, Hwnd);
+		}
 
-        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
-        {
-            UpdateWindowPos();
+		protected override void DestroyWindowCore(HandleRef hwnd)
+		{
+			NativeMethods.DestroyWindow(hwnd.Handle);
+			Hwnd = IntPtr.Zero;
+		}
 
-            base.OnRenderSizeChanged(sizeInfo);
+		protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+		{
+			UpdateWindowPos();
 
-            if (HwndInitialized)
-                Resized();
-        }
+			base.OnRenderSizeChanged(sizeInfo);
 
-        protected override IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-        {
-            switch (msg)
-            {
-                case NativeMethods.WM_LBUTTONDOWN:
-                    RaiseMouseEvent(MouseButton.Left, Mouse.MouseDownEvent);
-                    break;
+			if (HwndInitialized)
+				Resized();
+		}
 
-                case NativeMethods.WM_LBUTTONUP:
-                    RaiseMouseEvent(MouseButton.Left, Mouse.MouseUpEvent);
-                    break;
+		protected override IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+		{
+			switch (msg)
+			{
+				case NativeMethods.WM_LBUTTONDOWN:
+					RaiseMouseEvent(MouseButton.Left, Mouse.MouseDownEvent);
+					break;
 
-                case NativeMethods.WM_RBUTTONDOWN:
-                    RaiseMouseEvent(MouseButton.Right, Mouse.MouseDownEvent);
-                    break;
+				case NativeMethods.WM_LBUTTONUP:
+					RaiseMouseEvent(MouseButton.Left, Mouse.MouseUpEvent);
+					break;
 
-                case NativeMethods.WM_RBUTTONUP:
-                    RaiseMouseEvent(MouseButton.Right, Mouse.MouseUpEvent);
-                    break;
-            }
+				case NativeMethods.WM_RBUTTONDOWN:
+					RaiseMouseEvent(MouseButton.Right, Mouse.MouseDownEvent);
+					break;
 
-            return base.WndProc(hwnd, msg, wParam, lParam, ref handled);
-        }
+				case NativeMethods.WM_RBUTTONUP:
+					RaiseMouseEvent(MouseButton.Right, Mouse.MouseUpEvent);
+					break;
+			}
 
-        private void RaiseMouseEvent(MouseButton button, RoutedEvent @event)
-        {
-            RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, button)
-            {
-                RoutedEvent = @event,
-                Source = this,
-            });
-        }
+			return base.WndProc(hwnd, msg, wParam, lParam, ref handled);
+		}
 
-        protected override void Dispose(bool disposing)
-        {
-            //throw new NotImplementedException();
-        }
-    }
+		private void RaiseMouseEvent(MouseButton button, RoutedEvent @event)
+		{
+			RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, button)
+			{
+				RoutedEvent = @event,
+				Source = this,
+			});
+		}
 
-    internal class NativeMethods
-    {
-        // ReSharper disable InconsistentNaming
-        public const int WS_CHILD = 0x40000000;
-        public const int WS_VISIBLE = 0x10000000;
+		protected override void Dispose(bool disposing)
+		{
+			//throw new NotImplementedException();
+		}
+	}
 
-        public const int WM_LBUTTONDOWN = 0x0201;
-        public const int WM_LBUTTONUP = 0x0202;
-        public const int WM_RBUTTONDOWN = 0x0204;
-        public const int WM_RBUTTONUP = 0x0205;
+	internal class NativeMethods
+	{
+		// ReSharper disable InconsistentNaming
+		public const int WS_CHILD = 0x40000000;
+		public const int WS_VISIBLE = 0x10000000;
 
-        public const int IDC_ARROW = 32512;
+		public const int WM_LBUTTONDOWN = 0x0201;
+		public const int WM_LBUTTONUP = 0x0202;
+		public const int WM_RBUTTONDOWN = 0x0204;
+		public const int WM_RBUTTONUP = 0x0205;
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct WndClassEx
-        {
-            public uint cbSize;
-            public uint style;
-            [MarshalAs(UnmanagedType.FunctionPtr)]
-            public WndProc lpfnWndProc;
-            public int cbClsExtra;
-            public int cbWndExtra;
-            public IntPtr hInstance;
-            public IntPtr hIcon;
-            public IntPtr hCursor;
-            public IntPtr hbrBackground;
-            public string lpszMenuName;
-            public string lpszClassName;
-            public IntPtr hIconSm;
-        }
+		public const int IDC_ARROW = 32512;
 
-        [DllImport("user32.dll")]
-        public static extern IntPtr DefWindowProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
+		[StructLayout(LayoutKind.Sequential)]
+		public struct WndClassEx
+		{
+			public uint cbSize;
+			public uint style;
+			[MarshalAs(UnmanagedType.FunctionPtr)]
+			public WndProc lpfnWndProc;
+			public int cbClsExtra;
+			public int cbWndExtra;
+			public IntPtr hInstance;
+			public IntPtr hIcon;
+			public IntPtr hCursor;
+			public IntPtr hbrBackground;
+			public string lpszMenuName;
+			public string lpszClassName;
+			public IntPtr hIconSm;
+		}
 
-        public delegate IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+		[DllImport("user32.dll")]
+		public static extern IntPtr DefWindowProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
 
-        public static readonly WndProc DefaultWindowProc = DefWindowProc;
+		public delegate IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
-        [DllImport("user32.dll", EntryPoint = "CreateWindowEx", CharSet = CharSet.Auto)]
-        public static extern IntPtr CreateWindowEx(
-            int exStyle,
-            string className,
-            string windowName,
-            int style,
-            int x, int y,
-            int width, int height,
-            IntPtr hwndParent,
-            IntPtr hMenu,
-            IntPtr hInstance,
-            [MarshalAs(UnmanagedType.AsAny)] object pvParam);
+		public static readonly WndProc DefaultWindowProc = DefWindowProc;
 
-        [DllImport("user32.dll", EntryPoint = "DestroyWindow", CharSet = CharSet.Auto)]
-        public static extern bool DestroyWindow(IntPtr hwnd);
+		[DllImport("user32.dll", EntryPoint = "CreateWindowEx", CharSet = CharSet.Auto)]
+		public static extern IntPtr CreateWindowEx(
+			int exStyle,
+			string className,
+			string windowName,
+			int style,
+			int x, int y,
+			int width, int height,
+			IntPtr hwndParent,
+			IntPtr hMenu,
+			IntPtr hInstance,
+			[MarshalAs(UnmanagedType.AsAny)] object pvParam);
 
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr GetModuleHandle(string module);
+		[DllImport("user32.dll", EntryPoint = "DestroyWindow", CharSet = CharSet.Auto)]
+		public static extern bool DestroyWindow(IntPtr hwnd);
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.U2)]
-        public static extern short RegisterClassEx([In] ref WndClassEx lpwcx);
+		[DllImport("kernel32.dll")]
+		public static extern IntPtr GetModuleHandle(string module);
 
-        [DllImport("user32.dll")]
-        public static extern IntPtr LoadCursor(IntPtr hInstance, int lpCursorName);
-        // ReSharper restore InconsistentNaming
-    }
+		[DllImport("user32.dll")]
+		[return: MarshalAs(UnmanagedType.U2)]
+		public static extern short RegisterClassEx([In] ref WndClassEx lpwcx);
+
+		[DllImport("user32.dll")]
+		public static extern IntPtr LoadCursor(IntPtr hInstance, int lpCursorName);
+		// ReSharper restore InconsistentNaming
+	}
 }
