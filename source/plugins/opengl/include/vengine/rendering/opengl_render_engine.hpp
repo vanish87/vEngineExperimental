@@ -16,8 +16,16 @@ namespace vEngine
         class OpenGLRenderEngine : public RenderEngine
         {
             public:
+                OpenGLRenderEngine()
+                {
+                    PRINT("Create OpenGL");
+                }
+                ~OpenGLRenderEngine()
+                {
+                    PRINT("Destructor OpenGL");
+                }
                 void TestFunc();
-                void CreateRenderWindow() override;
+                void CreateRenderWindow(void* hwnd, int width, int height) override;
                 void Render() override;
                 void PrintInfo() override;
             private:
