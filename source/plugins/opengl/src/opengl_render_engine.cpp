@@ -33,9 +33,6 @@ namespace vEngine
             auto app_name = config.app_name;
             auto width = config.graphics_configure.width;
             auto height = config.graphics_configure.height;
-            // auto width = 640;
-            // auto height = 640;
-            // auto app_name = "test";
 
             glfwSetErrorCallback(error_callback);
 

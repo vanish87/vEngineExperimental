@@ -9,7 +9,7 @@ namespace vEngine
     {
         void* Window::WindowHandle()
         {
-            return nullptr;
+            return this->wnd_;
         }
         void Window::Init()
 		{
