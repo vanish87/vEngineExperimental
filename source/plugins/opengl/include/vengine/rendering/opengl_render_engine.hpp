@@ -2,10 +2,10 @@
 #define _VENGINE_RENDERING_OPENGL_RENDER_ENGINE_HPP
 #pragma once
 
-#define GLFW_INCLUDE_NONE
 #define GLAD_GL_IMPLEMENTATION
-#include <GLFW/glfw3.h>
 #include <glad/gl.h>
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 
 #include <vengine/rendering/render_engine.hpp>
 
