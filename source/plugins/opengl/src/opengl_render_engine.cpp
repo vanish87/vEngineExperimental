@@ -61,11 +61,8 @@ namespace vEngine
                 Context::GetInstance().AppInstance().Quit(true);
                 return;
             }
-            float ratio;
             int width, height;
-
             glfwGetFramebufferSize(window, &width, &height);
-            ratio = width / (float)height;
 
             glViewport(0, 0, width, height);
             glClear(GL_COLOR_BUFFER_BIT);
