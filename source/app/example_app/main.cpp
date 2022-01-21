@@ -1,27 +1,37 @@
-#include <iostream>
-
-// #include <windows.h>
 #include <engine.hpp>
-// #include <vengine/core/example_class_header.h>
-#include <vengine/core/application.hpp>
-#include <vengine/core/constants.hpp>
-#include <vengine/core/context.hpp>
 #include <version.hpp>
+#include <vengine/core/application.hpp>
+#include <vengine/core/context.hpp>
 
 using namespace vEngine::Core;
 
-class MyApp : public Application
+/// Namespace for example applications
+namespace Example
 {
-    private:
-        void OnCreate() override
-        {
-            std::cout << "User Create" << std::endl;
-        }
-        void OnUpdate() override
-        {
-            // std::cout << "User Update" << vEngine::TIME_PER_UPDATE << std::endl;
-        }
-};
+    /// \brief A general example of user application
+    class ExampleApp : public Application
+    {
+        private:
+            /// \brief user function for create
+            /// 
+            void OnCreate() override
+            {
+                PRINT("User Create");
+            }
+            /// \brief user function for update
+            ///
+            /// Will be call at const seconds
+            /// vEngine::TIME_PER_UPDATE
+            void OnUpdate() override
+            {
+            }
+            /// \brief user function for destory
+            void OnDestory() override
+            {
+                PRINT("User Destory");
+            }
+    };
+}  // namespace Example
 
 int main(int argc, char* argv[])
 {
@@ -41,7 +51,7 @@ int main(int argc, char* argv[])
 
     Context::GetInstance().ConfigureWith(configure);
 
-    MyApp myapp;
-    myapp.Init();
-    myapp.Run();
+    Example::ExampleApp app;
+    app.Init();
+    app.Run();
 }

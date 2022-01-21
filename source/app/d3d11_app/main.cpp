@@ -1,27 +1,17 @@
-#include <iostream>
-
-// #include <windows.h>
 #include <engine.hpp>
-// #include <vengine/core/example_class_header.h>
+#include <version.hpp>
 #include <vengine/core/application.hpp>
 #include <vengine/core/constants.hpp>
 #include <vengine/core/context.hpp>
-#include <version.hpp>
 
 using namespace vEngine::Core;
 
-class MyApp : public Application
+namespace Example
 {
-    private:
-        void OnCreate() override
-        {
-            std::cout << "User Create" << std::endl;
-        }
-        void OnUpdate() override
-        {
-            // std::cout << "User Update" << vEngine::TIME_PER_UPDATE << std::endl;
-        }
-};
+    class D3D11App : public Application
+    {
+    };
+}  // namespace Example
 
 int main(int argc, char* argv[])
 {
@@ -38,7 +28,7 @@ int main(int argc, char* argv[])
 
     Context::GetInstance().ConfigureWith(configure);
 
-    MyApp myapp;
+    Example::D3D11App myapp;
     myapp.Init();
     myapp.Run();
 }
