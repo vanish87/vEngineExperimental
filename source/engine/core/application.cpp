@@ -50,9 +50,10 @@ namespace vEngine
             Context::GetInstance().GetRenderEngine().Deinit();
 
             // Destory Window
+            this->window_->Deinit();
+            this->window_.reset();
 
             // Destory Context
-
             Context::GetInstance().Deinit();
         }
         void Application::Update()
@@ -88,10 +89,6 @@ namespace vEngine
                 while (lag >= TIME_PER_UPDATE)
                 {
                     this->Update();
-
-                    // Context::Instance().GetStateManager().Update();
-                    // Context::Instance().GetSceneManager().Update();
-
                     lag -= TIME_PER_UPDATE;
                 }
 
