@@ -41,7 +41,7 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY VS_DOTNET_REFERENCES
     "System.Core"
     "System.Data"
     "System.Data.DataSetExtensions"
-    "System.Net.Http"
+    # "System.Net.Http"
     "System.Xaml"
     "System.Xml"
     "System.Xml.Linq"

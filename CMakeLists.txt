@@ -1,6 +1,17 @@
 # cmake minium version required
 cmake_minimum_required(VERSION 3.13)
 
+# cmake setting
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
+# Include cmake modules
+include(GenerateExportHeader)
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+#Setup Git Rev
+# ${GIT_REV}${GIT_DIFF}${GIT_TAG}${GIT_BRANCH}
+include(GetGitRev)
+
 # Meta information about the project
 set(META_PROJECT_NAME        "vEngine")
 set(META_PROJECT_DESCRIPTION "CMake Template")
@@ -14,12 +25,6 @@ set(META_VERSION_REVISION    "${GIT_REV}")
 set(META_VERSION             "${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH}")
 set(META_NAME_VERSION        "${META_PROJECT_NAME} v${META_VERSION} (${META_VERSION_REVISION})")
 set(META_CMAKE_INIT_SHA      "${GIT_REV}")
-
-# cmake setting
-set(CMAKE_VERBOSE_MAKEFILE ON)
-include(GenerateExportHeader)
-# Include cmake modules
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 # project setting
 project(vEngine)
