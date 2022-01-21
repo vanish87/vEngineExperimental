@@ -877,6 +877,7 @@ INPUT                  += @DOXYGEN_SRC_ROOT@/plugins/d3d11/
 INPUT                  += @DOXYGEN_SRC_ROOT@/plugins/opengl/include/vengine/
 INPUT                  += @DOXYGEN_SRC_ROOT@/plugins/opengl/src/
 INPUT                  += @DOXYGEN_SRC_ROOT@/plugins/empty/
+INPUT                  += @DOXYGEN_MAINPAGE_ROOT@/DOC_MAIN_PAGE.md
 INPUT                  += @DOXYGEN_MAINPAGE_ROOT@/README.md
 
 #INPUT                  += @DOXYGEN_SRC_ROOT@/editor/
@@ -1081,7 +1082,7 @@ FILTER_SOURCE_PATTERNS =
 # (index.html). This can be useful if you have a project on for instance GitHub
 # and want to reuse the introduction page also for the doxygen output.
 
-USE_MDFILE_AS_MAINPAGE = README.md
+USE_MDFILE_AS_MAINPAGE = DOC_MAIN_PAGE.md
 
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing
