@@ -126,7 +126,7 @@ TEST(Vector, IntDiv)
 }
 TEST(Vector, IntContainer)
 {
-    vector<int4> vec(10, int4(5));
+    std::vector<int4> vec(10, int4(5));
     for(auto v : vec)
     {
         ASSERT_TRUE(v == int4(5));
