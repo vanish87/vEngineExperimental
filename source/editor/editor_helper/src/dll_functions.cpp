@@ -1,24 +1,45 @@
-#include <vengine/editor/dll_functions.hpp>
-
 #include <vengine/core/context.hpp>
+#include <vengine/editor/dll_functions.hpp>
+#include <vengine/rendering/render_engine.hpp>
 
-extern "C" 
+namespace vEngine
 {
-	using namespace vEngine::Core;
+    namespace Editor
+    {
+        using namespace vEngine::Core;
 
-	void Context_Init(void* hwnd)
-	{
-		UNUSED_PARAMETER(hwnd);
-		PRINT("Context_Init");
+        EditorApp editor_app;
 
-		Configure configure;
-		configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
-		Context::GetInstance().ConfigureWith(configure);
+        void EditorApp::EditorUpdate()
+        {
+            this->Update();
+            Context::GetInstance().GetRenderEngine().Update();
+        }
+    }  // namespace Editor
 
-	}
+}  // namespace vEngine
+extern "C" {
+    using namespace vEngine::Core;
+    using namespace vEngine::Editor;
+    void Context_Init(void* hwnd)
+    {
+        CHECK_ASSERT_NOT_NULL(hwnd);
 
-	void Context_Deinit()
-	{
-		PRINT("Context_Deinit");
-	}
+        PRINT("Context_Init");
+
+        Configure configure;
+        configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
+        Context::GetInstance().ConfigureWith(configure);
+
+        editor_app.Init(hwnd);
+    }
+    void Context_Update()
+    {
+        editor_app.EditorUpdate();
+    }
+
+    void Context_Deinit()
+    {
+        editor_app.Deinit();
+    }
 }

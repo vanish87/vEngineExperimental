@@ -18,8 +18,11 @@ namespace vEngine
                 virtual ~Application(){};
 
             public:
-                virtual void Init() override;
                 virtual void Init(void* wnd);
+                virtual void Init() override;
+                virtual void Update() override;
+                virtual void Deinit() override;
+                
                 virtual void Run();
                 virtual void Quit(bool quit);
 
@@ -30,9 +33,6 @@ namespace vEngine
                 WindowPtr window_;
 
             private:
-                virtual void Deinit() override;
-                virtual void Update() override;
-
                 virtual void OnCreate();
                 virtual void OnUpdate();
                 virtual void OnDestory();

@@ -17,10 +17,11 @@ namespace D3DWPFExample
 		public static extern void Context_Init(IntPtr window);
 
 		[DllImport("editor_helperd.dll", CallingConvention = CallingConvention.Cdecl)]
+		public static extern void Context_Update();
+		
+		[DllImport("editor_helperd.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern void Context_Deinit();
 
-		// [DllImport("editor_helper.dll", CallingConvention = CallingConvention.Cdecl)]
-		// public static extern void CleanD3D();
 	}
 
 	public class D3DHwndHost : HwndHost
@@ -61,7 +62,7 @@ namespace D3DWPFExample
 
 		private void OnCompositionTargetRendering(object sender, EventArgs eventArgs)
 		{
-			// D3DDLL.RenderFrame();
+			D3DDLL.Context_Update();
 		}
 
 		protected void Initialize()
