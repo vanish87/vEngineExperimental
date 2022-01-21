@@ -18,6 +18,15 @@ namespace vEngine
         }
         void Application::Init()
         {
+            this->InitInternal(nullptr);
+        }
+        void Application::Init(void* wnd)
+        {
+            this->InitInternal(wnd);
+        }
+
+        void Application::InitInternal(void* wnd)
+        {
             Context::GetInstance().RegisterAppInstance(this);
 
             auto configure = Context::GetInstance().CurrentConfigure();
@@ -25,7 +34,10 @@ namespace vEngine
             Context::GetInstance().ConfigureWith(configure);
 
             // Make window
-            this->SetupWindow();
+            // Platform dependent
+            this->window_ = std::make_shared<Window>();
+            this->window_->Init(wnd);
+
             Context::GetInstance().GetRenderEngine().Init();
 
             this->OnCreate();
@@ -93,12 +105,6 @@ namespace vEngine
         void Application::OnCreate() {}
         void Application::OnUpdate() {}
         void Application::OnDestory() {}
-        void Application::SetupWindow()
-        {
-            // Platform dependent
-            this->window_ = std::make_shared<Window>();
-            this->window_->Init();
-        }
         void Application::Quit(bool quit)
         {
             this->shouldQuit = quit;

@@ -14,26 +14,32 @@
 #endif
 
 #include <VENGINE_API.h>
-#include <vengine/core/iruntime_module.hpp>
 
 namespace vEngine
 {
     namespace Core
     {
-        class VENGINE_API Window : public IRuntimeModule
+        class VENGINE_API Window
         {
             public:
                 Window() {}
                 virtual ~Window() {}
-                virtual void Init() override;
-                virtual void Deinit() override;
-                virtual void Update() override;
+                virtual void Init(void* wnd) ;
+                virtual void Deinit();
+                virtual void Update();
 
             public:
                 void* WindowHandle();
 
             private:
                 void* wnd_;
+
+                #ifdef VENGINE_PLATFORM_WINDOWS
+                static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
+                LRESULT CALLBACK MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+                WNDPROC default_wnd_proc_;
+                #endif
         };
     }  // namespace Core
 }  // namespace vEngine
