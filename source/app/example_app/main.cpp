@@ -1,31 +1,37 @@
-#include <iostream>
-
-// #include <windows.h>
 #include <engine.hpp>
-// #include <vengine/core/example_class_header.h>
 #include <version.hpp>
-
 #include <vengine/core/application.hpp>
-
-
+#include <vengine/core/context.hpp>
 
 using namespace vEngine::Core;
 
-class MyApp : public Application
+/// Namespace for example applications
+namespace Example
 {
-
-    private:
-
-    void OnCreate() override
+    /// \brief A general example of user application
+    class ExampleApp : public Application
     {
-
-    }
-    void OnUpdate() override
-    {
-
-    }
-
-};
+        private:
+            /// \brief user function for create
+            /// 
+            void OnCreate() override
+            {
+                PRINT("User Create");
+            }
+            /// \brief user function for update
+            ///
+            /// Will be call at const seconds
+            /// vEngine::TIME_PER_UPDATE
+            void OnUpdate() override
+            {
+            }
+            /// \brief user function for destory
+            void OnDestory() override
+            {
+                PRINT("User Destory");
+            }
+    };
+}  // namespace Example
 
 int main(int argc, char* argv[])
 {
@@ -33,14 +39,19 @@ int main(int argc, char* argv[])
     UNUSED_PARAMETER(argv);
 
     std::cout << "Version " + std::string(Version) << std::endl;
-    #ifdef WINDOWS
-    std::cout << "Windows"<<std::endl;
+
+    Configure configure;
+    configure.graphics_configure.width = 1280;
+    configure.graphics_configure.height = 720;
+    #ifdef VENGINE_PLATFORM_WINDOWS
+    configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
+    #else
+    configure.graphics_configure.render_plugin_name = "opengl_rendering_plugin";
     #endif
 
-    // MyNamespace::MyClass cla;
-    // Context::GetIntstance().Setup();
+    Context::GetInstance().ConfigureWith(configure);
 
-    MyApp myapp;
-    myapp.Init();
-    myapp.Run();
+    Example::ExampleApp app;
+    app.Init();
+    app.Run();
 }
