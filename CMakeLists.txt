@@ -1,10 +1,6 @@
 # cmake minium version required
 cmake_minimum_required(VERSION 3.13)
 
-if(APPLE)
-    add_subdirectory(ios)
-endif()
-
 # cmake setting
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
