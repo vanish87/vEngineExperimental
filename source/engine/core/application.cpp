@@ -12,36 +12,48 @@ namespace vEngine
 {
     namespace Core
     {
-        void Application::Init(...)
+        WindowPtr Application::CurrentWindow()
+        {
+            return this->window_;
+        }
+        void Application::Init()
+        {
+            this->InitInternal(nullptr);
+        }
+        void Application::Init(void* wnd)
+        {
+            this->InitInternal(wnd);
+        }
+
+        void Application::InitInternal(void* wnd)
         {
             Context::GetInstance().RegisterAppInstance(this);
 
-            Configure configure;
-            configure.app_name = "Example";
-            configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
-            // configure.graphics_configure.render_plugin_name = "opengl_rendering_plugin";
-
+            auto configure = Context::GetInstance().CurrentConfigure();
             // Load Dll etc.
             Context::GetInstance().ConfigureWith(configure);
 
             // Make window
             // Platform dependent
-            this->SetupWindow();
+            this->window_ = std::make_shared<Window>();
+            this->window_->Init(wnd);
 
-            Context::GetInstance().GetRenderEngine().CreateRenderWindow(this->window_->WindowHandle());
+            Context::GetInstance().GetRenderEngine().Init();
 
             this->OnCreate();
         }
-        void Application::Deinit(...)
+        void Application::Deinit()
         {
             this->OnDestory();
 
             // Destory RenderEngine etc;
+            Context::GetInstance().GetRenderEngine().Deinit();
 
             // Destory Window
+            this->window_->Deinit();
+            this->window_.reset();
 
             // Destory Context
-
             Context::GetInstance().Deinit();
         }
         void Application::Update()
@@ -77,15 +89,11 @@ namespace vEngine
                 while (lag >= TIME_PER_UPDATE)
                 {
                     this->Update();
-
-                    // Context::Instance().GetStateManager().Update();
-                    // Context::Instance().GetSceneManager().Update();
-
                     lag -= TIME_PER_UPDATE;
                 }
 
                 // call here or PAINT event in Winodw Class
-                //  Render::Flush();
+                Context::GetInstance().GetRenderEngine().Update();
             }
 
             this->Deinit();
@@ -94,11 +102,6 @@ namespace vEngine
         void Application::OnCreate() {}
         void Application::OnUpdate() {}
         void Application::OnDestory() {}
-        void Application::SetupWindow()
-        {
-            this->window_ = std::make_shared<Window>();
-            this->window_->Init();
-        }
         void Application::Quit(bool quit)
         {
             this->shouldQuit = quit;

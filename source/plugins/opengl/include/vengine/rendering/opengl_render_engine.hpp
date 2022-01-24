@@ -2,9 +2,10 @@
 #define _VENGINE_RENDERING_OPENGL_RENDER_ENGINE_HPP
 #pragma once
 
+#define GLAD_GL_IMPLEMENTATION
+#include <glad/gl.h>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
-#include <glad/gl.h>
 
 #include <vengine/rendering/render_engine.hpp>
 
@@ -24,12 +25,20 @@ namespace vEngine
                 {
                     PRINT("Destructor OpenGL");
                 }
-                void TestFunc();
-                void CreateRenderWindow(void* hwnd) override;
-                void Render() override;
+                void Init() override;
+                void Update() override;
+                void Deinit() override;
                 void PrintInfo() override;
+
             private:
                 GLFWwindow* window;
+
+            private:
+                void InitPipline();
+                void DebugTriangleDraw();
+                void DeinitPipline();
+                GLuint vertex_buffer, vertex_shader, fragment_shader, program;
+                GLint mvp_location, vpos_location, vcol_location;
         };
 
         // extern "C" {

@@ -19,11 +19,12 @@ namespace vEngine
         Context::Context() : app_instance_{nullptr} {}
         Context::~Context() {}
 
-        void Context::Init(...) {}
-        void Context::Deinit(...)
+        void Context::Init() {}
+        void Context::Deinit()
         {
             //prt.reset() does same thing as this->ProcessRenderEngine("DestoryRenderEngine");
             this->render_engine_ptr_.reset();
+
             this->FreeDll();
         }
         void Context::Update() {}
@@ -62,9 +63,13 @@ namespace vEngine
             this->LoadDll();
         }
 
+        const Configure Context::CurrentConfigure() const
+        {
+            return this->configure_;
+        }
+
         void Context::RegisterAppInstance(Application* app)
         {
-            // UNUSED_PARAMETER(app);
             this->app_instance_ = app;
         }
         Application& Context::AppInstance() const
@@ -74,7 +79,7 @@ namespace vEngine
 
         void* LoadLibrary(const std::string lib_name)
         {
-            std::string dll_name = VENGINE_SHADRED_LIB_PREFIX + lib_name + VENGINE_SHADRED_LIB_DEBUG_POSTFIX + VENGINE_SHADRED_LIB_EXT;
+            auto dll_name = VENGINE_SHADRED_LIB_PREFIX + lib_name + VENGINE_SHADRED_LIB_DEBUG_POSTFIX + VENGINE_SHADRED_LIB_EXT;
 
             #ifdef VENGINE_PLATFORM_WINDOWS
             auto handle = ::LoadLibrary(dll_name.c_str());
@@ -83,15 +88,11 @@ namespace vEngine
                 PRINT_AND_BREAK("could not load the dynamic library");
             }
             #elif VENGINE_PLATFORM_LINUX
-            // render_dll_name = "./lib" + render_dll_name + "_rendering_plugind.dylib";
-            // render_dll_name = "./lib" + render_dll_name + "_rendering_plugind.so";
-
             dlerror();
             auto handle = dlopen(dll_name.c_str(), RTLD_LAZY);
             if (!handle)
             {
-                auto dlsym_error = dlerror();
-                PRINT_AND_BREAK("Cannot open library: " + std::string(dlsym_error));
+                PRINT_AND_BREAK("Cannot open library: " + std::string(dlerror()));
             }
             #endif
 

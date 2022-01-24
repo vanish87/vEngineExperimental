@@ -1,9 +1,8 @@
 
 #include <gtest/gtest.h>
 
-#include <vengine/core/matrix.hpp>
 #include <engine.hpp>
-
+#include <vengine/core/matrix.hpp>
 
 using namespace vEngine::Core;
 using namespace vEngine::Math;
@@ -41,7 +40,7 @@ TEST(Matrix, Compare)
     {
         for (size_t c = 0; c < mb4.col; ++c)
         {
-            ASSERT_EQ(mb4[r][c], 54) << r <<" " << c;
+            ASSERT_EQ(mb4[r][c], 54) << r << " " << c;
         }
     }
 
@@ -50,7 +49,20 @@ TEST(Matrix, Compare)
     Matrix<float, 200, 80> mb1(50);
     Matrix<float, 50, 200> mb2(80);
 
-    // Matrix<float, 5000, 2000> mb5(80);
     auto mb3 = Multiply(mb1, mb2);
 
+    Matrix<int, 3, 2> m4;
+    Matrix<int, 2, 3> m5;
+
+    m4[0][0] = 4; m4[0][1] = 5; m4[0][2] = 7;
+    m4[1][0] = 2; m4[1][1] = 1; m4[1][2] = 0;
+
+    m5[0][0] = 2; m5[0][1] = 3;
+    m5[1][0] = 8; m5[1][1] = 9;
+    m5[2][0] = 1; m5[2][1] = 1;
+
+    auto m6 = Multiply(m4, m5);
+
+    ASSERT_EQ(m6[0][0], 55); ASSERT_EQ(m6[0][1], 64);
+    ASSERT_EQ(m6[1][0], 12); ASSERT_EQ(m6[1][1], 15);
 }

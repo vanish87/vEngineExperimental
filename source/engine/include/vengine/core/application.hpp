@@ -18,22 +18,26 @@ namespace vEngine
                 virtual ~Application(){};
 
             public:
-                virtual void Init(...);
+                virtual void Init(void* wnd);
+                virtual void Init() override;
+                virtual void Update() override;
+                virtual void Deinit() override;
+                
                 virtual void Run();
                 virtual void Quit(bool quit);
+
+            public:
+                WindowPtr CurrentWindow();
 
             protected:
                 WindowPtr window_;
 
             private:
-                virtual void Deinit(...);
-                virtual void Update();
-
                 virtual void OnCreate();
                 virtual void OnUpdate();
                 virtual void OnDestory();
 
-                virtual void SetupWindow();
+                virtual void InitInternal(void* wnd);
                 bool shouldQuit;
         };
     }  // namespace Core

@@ -15,7 +15,7 @@ namespace vEngine
     {
         using namespace vEngine::Rendering;
 
-        class Context : public IRuntimeModule
+        class VENGINE_API Context : public IRuntimeModule
         {
                 SINGLETON_CLASS(Context)
 
@@ -23,6 +23,7 @@ namespace vEngine
                 /// \brief Load all factories that create resource
                 ///
                 void ConfigureWith(const Configure& configure);
+                const Configure CurrentConfigure() const;
 
                 void RegisterAppInstance(Application* app);
                 Application& AppInstance() const;
@@ -32,8 +33,8 @@ namespace vEngine
                 RenderEngine& GetRenderEngine();
 
             public:
-                void Init(...) override;
-                void Deinit(...) override;
+                void Init() override;
+                void Deinit() override;
                 void Update() override;
 
             private:
