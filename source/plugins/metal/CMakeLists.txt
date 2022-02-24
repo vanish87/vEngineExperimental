@@ -31,3 +31,18 @@ target_include_directories( ${PROJECT_NAME}
 target_link_libraries( ${PROJECT_NAME}
     engine::core
 )
+
+set_target_properties(${PROJECT_NAME} PROPERTIES
+  FRAMEWORK TRUE
+  # https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPFrameworks/Concepts/VersionInformation.html
+  # as Major verison
+  FRAMEWORK_VERSION A
+  MACOSX_FRAMEWORK_IDENTIFIER com.cmake.dynamicFramework
+  MACOSX_FRAMEWORK_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/framework.plist.in
+  # "current version" in semantic format in Mach-O binary file
+  VERSION 16.4.0
+  # "compatibility version" in semantic format in Mach-O binary file
+  SOVERSION 1.0.0
+  PUBLIC_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/render.h
+  # XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "iPhone Developer"
+)
