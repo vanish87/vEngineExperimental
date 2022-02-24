@@ -1,6 +1,8 @@
 # cmake minium version required
 cmake_minimum_required(VERSION 3.13)
 
+option(BUILD_IOS "Build IOS" OFF)
+
 # cmake setting
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
@@ -28,6 +30,10 @@ set(META_CMAKE_INIT_SHA      "${GIT_REV}")
 
 # project setting
 project(vEngine)
+
+if(BUILDI_IOS)
+    set(CMAKE_SYSTEM_NAME iOS)
+endif()
 
 # c++ setting
 set(CMAKE_CXX_STANDARD 17)
