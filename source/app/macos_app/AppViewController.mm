@@ -2,6 +2,7 @@
 #import "AppViewController.hpp"
 #import <engine.hpp>
 #import <vengine/core/vector.hpp>
+#import <vengine/rendering/render_engine.hpp>
 
 
 @implementation AppViewController
@@ -17,6 +18,10 @@
     vEngine::Math::float4 test;
     test.x() = 2;
     // RenderFunction();
+
+    std::unique_ptr<vEngine::Rendering::RenderEngine> engine;
+    CreateRenderEngine(engine);
+    engine->PrintInfo();
 
 	// UIWindow* window = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
 	// window.rootViewController = [[AppViewController alloc] init];;

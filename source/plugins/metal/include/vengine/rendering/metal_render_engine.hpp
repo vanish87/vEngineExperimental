@@ -2,7 +2,7 @@
 #define _VENGINE_RENDERING_METAL_RENDERING_ENGINE_HPP
 #pragma once
 
-// #include <metal/metal.hpp>
+#include <metal/metal.hpp>
 #include <vengine/rendering/render_engine.hpp>
 namespace vEngine
 {

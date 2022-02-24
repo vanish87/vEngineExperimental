@@ -13,7 +13,9 @@ namespace vEngine
         void MetalRenderEngine::Deinit() {}
         void MetalRenderEngine::PrintInfo()
         {
+            auto device = MTL::CreateSystemDefaultDevice();
             std::cout << "Metal" << std::endl;
+            std::cout << device->name()->cString(NS::UTF8StringEncoding) << std::endl;
         }
 
     }  // namespace Rendering
