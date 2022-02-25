@@ -1,5 +1,5 @@
-#import <app_main.hpp>
-#import <apple_app.hpp>
+#import "apple_app.hpp"
+#import <vengine/core/apple/app_main.hpp>
 
 void AppleAppMain(void* wnd)
 {

@@ -1,7 +1,7 @@
 #ifndef _CORE_APPLE_APP_DELEGATE_HPP
 #define _CORE_APPLE_APP_DELEGATE_HPP
 
-#import "define.hpp"
+#import <vengine/core/apple/define.hpp>
 
 #if defined(APP_PLATFORM_TARGET_DARWIN)
 #import <AppKit/AppKit.h>
