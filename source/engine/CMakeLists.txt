@@ -37,10 +37,10 @@ target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include
 )
 
-target_link_libraries( ${PROJECT_NAME}
-	${LUA_LIBRARIES}
-	${FREETYPE_LIBRARIES}
-)
+# target_link_libraries( ${PROJECT_NAME}
+# 	${LUA_LIBRARIES}
+# 	${FREETYPE_LIBRARIES}
+# )
 
 if(UNIX)
 target_link_libraries( ${PROJECT_NAME}

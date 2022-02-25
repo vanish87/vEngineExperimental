@@ -2,9 +2,12 @@ if(WIN32)
 	add_subdirectory(d3d11)
 endif()
 
-add_subdirectory(opengl)
-add_subdirectory(empty)
-
-if(APPLE)
-	add_subdirectory(metal)
+if(UNIX)
+	if(APPLE)
+		add_subdirectory(metal)
+	else()
+		add_subdirectory(opengl)
+	endif()
 endif()
+
+add_subdirectory(empty)
