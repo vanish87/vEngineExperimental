@@ -33,7 +33,11 @@ namespace vEngine
         {
             if (this->render_engine_ptr_ == nullptr)
             {
+                #ifdef VENGINE_PLATFORM_APPLE
+                CreateRenderEngine(this->render_engine_ptr);
+                #else
                 ProcessSharedFunction("CreateRenderEngine", this->render_plugin_dll_handle_, this->render_engine_ptr_);
+                #endif
             }
             return *this->render_engine_ptr_;
         }
