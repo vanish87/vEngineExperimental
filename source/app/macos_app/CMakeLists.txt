@@ -12,15 +12,15 @@ message("${CMAKE_OSX_SYSROOT}")
 message("${BUILD_IOS}")
 
 set(COMMON_HEADER_FILES
-	${CMAKE_CURRENT_SOURCE_DIR}/define.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/AppDelegate.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/AppViewController.hpp
+	define.hpp
+	AppDelegate.hpp
+	AppViewController.hpp
 )
 
 set(COMMON_SOURCE_FILES
-	${CMAKE_CURRENT_SOURCE_DIR}/AppDelegate.mm
-	${CMAKE_CURRENT_SOURCE_DIR}/AppViewController.mm
-	${CMAKE_CURRENT_SOURCE_DIR}/main.mm
+	AppDelegate.mm
+	AppViewController.mm
+	main.mm
 )
 
 # add_subdirectory(macos)

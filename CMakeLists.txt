@@ -1,7 +1,7 @@
 # cmake minium version required
 cmake_minimum_required(VERSION 3.13)
 
-option(BUILD_IOS "Build IOS" OFF)
+set(BUILD_IOS OFF)
 
 # cmake setting
 set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -70,9 +70,13 @@ set(PROJECT_PLATFORM_MARCO ${PROJECT_NAME}_PLATFORM)
 string(TOUPPER ${PROJECT_PLATFORM_MARCO} PROJECT_PLATFORM_MARCO)
 
 if(WIN32)
-add_compile_definitions(${PROJECT_PLATFORM_MARCO}_WINDOWS)
+    add_compile_definitions(${PROJECT_PLATFORM_MARCO}_WINDOWS)
 elseif(UNIX)
-add_compile_definitions(${PROJECT_PLATFORM_MARCO}_LINUX)
+    add_compile_definitions(${PROJECT_PLATFORM_MARCO}_UNIX)
+endif()
+
+if(APPLE)
+    add_compile_definitions(${PROJECT_PLATFORM_MARCO}_APPLE)
 endif()
 
 add_subdirectory(source)
