@@ -1,7 +1,7 @@
 
 #ifdef VENGINE_PLATFORM_WINDOWS
     #include <windows.h>
-#elif VENGINE_PLATFORM_LINUX
+#elif VENGINE_PLATFORM_UNIX
     #include <dlfcn.h>
 #endif
 
@@ -33,7 +33,11 @@ namespace vEngine
         {
             if (this->render_engine_ptr_ == nullptr)
             {
+                #ifdef VENGINE_PLATFORM_APPLE
+                CreateRenderEngine(this->render_engine_ptr_);
+                #else
                 ProcessSharedFunction("CreateRenderEngine", this->render_plugin_dll_handle_, this->render_engine_ptr_);
+                #endif
             }
             return *this->render_engine_ptr_;
         }
@@ -87,7 +91,7 @@ namespace vEngine
             {
                 PRINT_AND_BREAK("could not load the dynamic library");
             }
-            #elif VENGINE_PLATFORM_LINUX
+            #elif VENGINE_PLATFORM_UNIX
             dlerror();
             auto handle = dlopen(dll_name.c_str(), RTLD_LAZY);
             if (!handle)
@@ -103,7 +107,7 @@ namespace vEngine
         {
             #ifdef VENGINE_PLATFORM_WINDOWS
             ::FreeLibrary(reinterpret_cast<HMODULE>(handle));
-            #elif VENGINE_PLATFORM_LINUX
+            #elif VENGINE_PLATFORM_UNIX
             dlclose(handle);
             #endif
         }
@@ -113,7 +117,7 @@ namespace vEngine
         {
             #ifdef VENGINE_PLATFORM_WINDOWS
             auto function = reinterpret_cast<HandleRenderEngine>(::GetProcAddress(reinterpret_cast<HMODULE>(handle), func_name.c_str()));
-            #elif VENGINE_PLATFORM_LINUX
+            #elif VENGINE_PLATFORM_UNIX
             // reset errors
             dlerror();
             auto function = reinterpret_cast<HandleRenderEngine>(dlsym(handle, func_name.c_str()));

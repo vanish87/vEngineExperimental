@@ -1,6 +1,8 @@
 # cmake minium version required
 cmake_minimum_required(VERSION 3.13)
 
+set(BUILD_IOS OFF)
+
 # cmake setting
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
@@ -29,11 +31,17 @@ set(META_CMAKE_INIT_SHA      "${GIT_REV}")
 # project setting
 project(vEngine)
 
+if(BUILDI_IOS)
+    set(CMAKE_SYSTEM_NAME iOS)
+endif()
+
 # c++ setting
 set(CMAKE_CXX_STANDARD 17)
 if (MSVC)
     # warning level 4 and all warnings as errors
     add_compile_options(/W4 /WX)
+elseif(APPLE)
+    # no warning as error for macos/metal build for now
 else()
     # lots of warnings and all warnings as errors
     add_compile_options(-Wall -Wextra -pedantic -Werror)
@@ -62,9 +70,13 @@ set(PROJECT_PLATFORM_MARCO ${PROJECT_NAME}_PLATFORM)
 string(TOUPPER ${PROJECT_PLATFORM_MARCO} PROJECT_PLATFORM_MARCO)
 
 if(WIN32)
-add_compile_definitions(${PROJECT_PLATFORM_MARCO}_WINDOWS)
+    add_compile_definitions(${PROJECT_PLATFORM_MARCO}_WINDOWS)
 elseif(UNIX)
-add_compile_definitions(${PROJECT_PLATFORM_MARCO}_LINUX)
+    add_compile_definitions(${PROJECT_PLATFORM_MARCO}_UNIX)
+endif()
+
+if(APPLE)
+    add_compile_definitions(${PROJECT_PLATFORM_MARCO}_APPLE)
 endif()
 
 add_subdirectory(source)
