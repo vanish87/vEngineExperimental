@@ -1,27 +1,28 @@
 
-#import "AppViewController.hpp"
+#import "app_view_controller.hpp"
+#import <app_main.hpp>
 #import <engine.hpp>
-#import <vengine/core/vector.hpp>
-#import <vengine/rendering/render_engine.hpp>
+// #import <vengine/core/window.hpp>
 
 
 @implementation AppViewController
 {
     // MTK::View* view_;
 	// MTL::Device* device_;
+    // vEngine::Core::window window_;
 }
 
 - (void)CreateViewControllerManully
 {
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
     
-    vEngine::Math::float4 test;
-    test.x() = 2;
-    // RenderFunction();
+    // vEngine::Math::float4 test;
+    // test.x() = 2;
+    // // RenderFunction();
 
-    std::unique_ptr<vEngine::Rendering::RenderEngine> engine;
-    CreateRenderEngine(engine);
-    engine->PrintInfo();
+    // std::unique_ptr<vEngine::Rendering::RenderEngine> engine;
+    // CreateRenderEngine(engine);
+    // engine->PrintInfo();
 
 	// UIWindow* window = [[UIWindow alloc] initWithFrame: [UIScreen mainScreen].bounds];
 	// window.rootViewController = [[AppViewController alloc] init];;
@@ -30,10 +31,17 @@
 	[pool release];
 }
 
+ - (void)app_main_loop: (void*) view
+ {
+	 //Trigger app main loop here
+	 AppleAppMain(view);
+ }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self CreateViewControllerManully];
+
+	[self performSelector:@selector(app_main_loop) withObject:self.view afterDelay:0.0];
 
     // self.device_ = MTL::CreateSystemDefaultDevice();
 

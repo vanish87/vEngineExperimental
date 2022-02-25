@@ -1,24 +1,18 @@
-#import "define.hpp"
+#import <app_main.hpp>
+#import <AppleApp.hpp>
 
-#if defined(APP_PLATFORM_TARGET_DARWIN)
-#import <Cocoa/Cocoa.h>
-#else
-#import <Availability.h>
-#import <UIKit/UIKit.h>
-#import "AppDelegate.hpp"
-#endif
-
-
-#if defined(APP_PLATFORM_TARGET_DARWIN)
-int main(int argc, const char * argv[])
+void AppleAppMain(void* wnd)
 {
-    return NSApplicationMain(argc, argv);
+    std::cout << "Version " + std::string(Version) << std::endl;
+
+    Configure configure;
+    configure.graphics_configure.width = 1280;
+    configure.graphics_configure.height = 720;
+    configure.graphics_configure.render_plugin_name = "metal_rendering_plugin";
+
+    Context::GetInstance().ConfigureWith(configure);
+
+    AppleApp::ExampleApp app;
+    app.Init(wnd);
+    app.Run();
 }
-#else
-int main(int argc, char * argv[])
-{
-    @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
-    }
-}
-#endif

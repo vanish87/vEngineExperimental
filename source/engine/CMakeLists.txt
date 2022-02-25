@@ -45,6 +45,9 @@ target_link_libraries( ${PROJECT_NAME}
 endif()
 
 if(APPLE)
+    aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core/apple apple_sources)
+    add_library(${PROJECT_NAME} ${apple_sources})
+
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${EXTERNAL_BUILD_DIR}/lib"

@@ -1,5 +1,5 @@
-#ifndef _DEFINE_HPP
-#define _DEFINE_HPP
+#ifndef _APP_MACOS_APP_DEFINE_HPP
+#define _APP_MACOS_APP_DEFINE_HPP
 
 #include <TargetConditionals.h>
 
@@ -18,4 +18,4 @@
 	#define APP_PLATFORM_TARGET_IOS_SIMULATOR
 #endif
 
-#endif /* _DEFINE_HPP */
+#endif /* _APP_MACOS_APP_DEFINE_HPP */

@@ -1,7 +1,6 @@
-#ifndef _APPVIEWCONTROLLER_HPP
-#define _APPVIEWCONTROLLER_HPP
+#ifndef _APP_MACOS_APP_APPVIEWCONTROLLER_HPP
+#define _APP_MACOS_APP_APPVIEWCONTROLLER_HPP
 
-#pragma once
 
 #import "define.hpp"
 
@@ -21,4 +20,4 @@
 @end
 
 
-#endif /* _APPVIEWCONTROLLER_HPP */
+#endif /* _APP_MACOS_APP_APPVIEWCONTROLLER_HPP */

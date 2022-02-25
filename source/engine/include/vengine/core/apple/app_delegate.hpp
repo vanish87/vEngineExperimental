@@ -1,3 +1,5 @@
+#ifndef _CORE_APPLE_APP_DELEGATE_HPP
+#define _CORE_APPLE_APP_DELEGATE_HPP
 
 #import "define.hpp"
 
@@ -16,3 +18,6 @@
 #endif
 
 @end
+
+
+#endif /* _CORE_APPLE_APP_DELEGATE_HPP */

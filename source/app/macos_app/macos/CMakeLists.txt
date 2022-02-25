@@ -16,11 +16,8 @@ add_executable(${PROJECT_NAME}
 	${RESOURCES}
 )
 
-find_library(APPKIT_LIB AppKit)
-find_library(FOUNDATION_LIB Foundation)
-
-target_link_libraries(${PROJECT_NAME} ${FOUNDATION_LIB})
-target_link_libraries(${PROJECT_NAME} ${APPKIT_LIB})
+# target_link_libraries(${PROJECT_NAME} "-framework Foundation")
+target_link_libraries(${PROJECT_NAME} "-framework AppKit")
 target_link_libraries(${PROJECT_NAME} engine::metal_rendering_plugin)
 target_link_libraries(${PROJECT_NAME} engine::core)
 

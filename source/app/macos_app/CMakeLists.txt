@@ -12,18 +12,13 @@ message("${CMAKE_OSX_SYSROOT}")
 message("${BUILD_IOS}")
 
 set(COMMON_HEADER_FILES
-	define.hpp
-	AppDelegate.hpp
-	AppViewController.hpp
+	AppleApp.hpp
 )
 
 set(COMMON_SOURCE_FILES
-	AppDelegate.mm
-	AppViewController.mm
 	main.mm
 )
 
-# add_subdirectory(macos)
 if(BUILD_IOS)
   add_subdirectory(ios)
 else()
