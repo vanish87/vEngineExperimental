@@ -12,7 +12,7 @@ message("${CMAKE_OSX_SYSROOT}")
 message("${BUILD_IOS}")
 
 set(COMMON_HEADER_FILES
-	AppleApp.hpp
+	apple_app.hpp
 )
 
 set(COMMON_SOURCE_FILES
