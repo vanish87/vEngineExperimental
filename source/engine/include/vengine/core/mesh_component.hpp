@@ -1,5 +1,5 @@
-/// \file game_object.hpp
-/// \brief Head file for Game Object
+/// \file mesh_component.hpp
+/// \brief Head file for Mesh Component
 ///
 /// A detailed file description.
 ///
@@ -7,8 +7,11 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#ifndef _VENGINE_CORE_GAME_OBJECT_HPP
-#define _VENGINE_CORE_GAME_OBJECT_HPP
+#ifndef _VENGINE_CORE_MESH_COMPONENT_HPP
+#define _VENGINE_CORE_MESH_COMPONENT_HPP
+
+#include <vengine/core/component.hpp>
+#include <vengine/core/mesh.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -19,17 +22,16 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class GameObject
+        class MeshComponent : public Component<Mesh>
         {
             public:
                 /// \brief brief constructor description.
-                GameObject();
+                MeshComponent();
 
+				// std::shared_ptr<T> game_object;
 
-                //uuid
-                //type?
         };
     }  // namespace Core
 }  // namespace vEngine
 
-#endif /* _VENGINE_CORE_GAME_OBJECT_HPP */
+#endif /* _VENGINE_CORE_MESH_COMPONENT_HPP */

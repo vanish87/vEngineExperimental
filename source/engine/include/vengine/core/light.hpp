@@ -1,5 +1,5 @@
-/// \file game_object.hpp
-/// \brief Head file for Game Object
+/// \file light.hpp
+/// \brief Head file for Light
 ///
 /// A detailed file description.
 ///
@@ -7,8 +7,10 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#ifndef _VENGINE_CORE_GAME_OBJECT_HPP
-#define _VENGINE_CORE_GAME_OBJECT_HPP
+#ifndef _VENGINE_CORE_LIGHT_HPP
+#define _VENGINE_CORE_LIGHT_HPP
+
+#include <vengine/core/game_object.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -19,17 +21,19 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class GameObject
+        class Light : public GameObject
         {
             public:
                 /// \brief brief constructor description.
-                GameObject();
+                Light();
+
+				//color
+				//intensity
+				//etc.
 
 
-                //uuid
-                //type?
         };
     }  // namespace Core
 }  // namespace vEngine
 
-#endif /* _VENGINE_CORE_GAME_OBJECT_HPP */
+#endif /* _VENGINE_CORE_LIGHT_HPP */
