@@ -10,9 +10,14 @@ project (vengine)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core core_sources)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/rendering rendering_source)
 
+if(APPLE)
+    aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core/apple apple_sources)
+endif()
+
 add_library(${PROJECT_NAME} 
 	${core_sources}
 	${rendering_sources}
+    ${apple_sources}
 )
 add_library(engine::core ALIAS ${PROJECT_NAME})
 
@@ -45,9 +50,6 @@ target_link_libraries( ${PROJECT_NAME}
 endif()
 
 if(APPLE)
-    aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core/apple apple_sources)
-    add_library(${PROJECT_NAME} ${apple_sources})
-
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${EXTERNAL_BUILD_DIR}/lib"
