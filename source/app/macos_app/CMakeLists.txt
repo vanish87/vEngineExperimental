@@ -12,11 +12,11 @@ message("${CMAKE_OSX_SYSROOT}")
 message("${BUILD_IOS}")
 
 set(COMMON_HEADER_FILES
-	apple_app.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/apple_app.hpp
 )
 
 set(COMMON_SOURCE_FILES
-	main.mm
+	${CMAKE_CURRENT_SOURCE_DIR}/main.mm
 )
 
 if(BUILD_IOS)
