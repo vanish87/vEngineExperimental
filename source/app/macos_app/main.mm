@@ -13,6 +13,7 @@
 #import "app_main.hpp"
 #import <vengine/core/context.hpp>
 #import <vengine/core/configure.hpp>
+#import <vengine/rendering/render_engine.hpp>
 
 #if defined(APP_PLATFORM_TARGET_DARWIN)
 int main(int argc, const char * argv[])
@@ -39,6 +40,8 @@ void AppleAppMain(void* wnd)
     configure.graphics_configure.render_plugin_name = "metal_rendering_plugin";
 
     vEngine::Core::Context::GetInstance().ConfigureWith(configure);
+    vEngine::Rendering::RenderEngine& re = vEngine::Core::Context::GetInstance().GetRenderEngine();
+    re.PrintInfo();
 
     AppleApp::ExampleApp app;
     app.Init(wnd);

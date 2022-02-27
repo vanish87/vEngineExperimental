@@ -44,6 +44,9 @@ namespace vEngine
 
         void Context::LoadDll()
         {
+            #ifdef VENGINE_PLATFORM_APPLE_STATIC
+            return;
+            #endif
             this->FreeDll();
 
             auto render_dll_name = this->configure_.graphics_configure.render_plugin_name;

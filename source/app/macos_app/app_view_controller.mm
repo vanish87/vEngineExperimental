@@ -41,7 +41,7 @@
     [super viewDidLoad];
     [self CreateViewControllerManully];
 
-	 [self performSelector:@selector(app_main_loop:) withObject:self.view afterDelay:0.0];
+    [self performSelectorInBackground:@selector(app_main_loop:) withObject:self.view];
 
     // self.device_ = MTL::CreateSystemDefaultDevice();
 
