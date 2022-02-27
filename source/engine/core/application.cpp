@@ -12,7 +12,7 @@ namespace vEngine
 {
     namespace Core
     {
-        WindowPtr Application::CurrentWindow()
+        vEngineWindowPtr Application::CurrentWindow()
         {
             return this->window_;
         }

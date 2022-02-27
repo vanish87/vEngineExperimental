@@ -27,10 +27,10 @@ namespace vEngine
                 virtual void Quit(bool quit);
 
             public:
-                WindowPtr CurrentWindow();
+                vEngineWindowPtr CurrentWindow();
 
             protected:
-                WindowPtr window_;
+                vEngineWindowPtr window_;
 
             private:
                 virtual void OnCreate();
