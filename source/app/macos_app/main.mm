@@ -6,7 +6,7 @@
 #else
 #import <Availability.h>
 #import <UIKit/UIKit.h>
-#import <vengine/core/apple/app_delegate.hpp>
+#import "app_delegate.hpp"
 #endif
 
 #import "apple_app.hpp"

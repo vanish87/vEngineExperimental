@@ -36,6 +36,7 @@ project(vEngine)
 
 if(VENGINE_BUILD_IOS)
     set(CMAKE_SYSTEM_NAME iOS)
+    set(CMAKE_OSX_SYSROOT iphoneos)
 endif()
 
 # c++ setting
