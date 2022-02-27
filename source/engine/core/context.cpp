@@ -33,7 +33,7 @@ namespace vEngine
         {
             if (this->render_engine_ptr_ == nullptr)
             {
-                #ifdef VENGINE_PLATFORM_APPLE
+                #ifdef VENGINE_PLATFORM_APPLE_STATIC
                 CreateRenderEngine(this->render_engine_ptr_);
                 #else
                 ProcessSharedFunction("CreateRenderEngine", this->render_plugin_dll_handle_, this->render_engine_ptr_);
@@ -44,6 +44,9 @@ namespace vEngine
 
         void Context::LoadDll()
         {
+            #ifdef VENGINE_PLATFORM_APPLE_STATIC
+            return;
+            #endif
             this->FreeDll();
 
             auto render_dll_name = this->configure_.graphics_configure.render_plugin_name;

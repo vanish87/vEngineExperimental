@@ -3,6 +3,7 @@ project(macos_app)
 # set(CMAKE_SYSTEM_NAME iOS)
 # set(CMAKE_OSX_SYSROOT iphoneos)
 message("${CMAKE_OSX_SYSROOT}")
+message("${CMAKE_OSX_ARCHITECTURES}")
 
 set(RESOURCES
   Main.storyboard

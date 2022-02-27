@@ -1,7 +1,11 @@
 # cmake minium version required
 cmake_minimum_required(VERSION 3.13)
 
-set(BUILD_IOS OFF)
+if(APPLE)
+    set(VENGINE_BUILD_STATIC ON)
+    set(VENGINE_BUILD_IOS OFF)
+    set(CMAKE_OSX_ARCHITECTURES arm64)
+endif()
 
 # cmake setting
 set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -31,8 +35,9 @@ set(META_CMAKE_INIT_SHA      "${GIT_REV}")
 # project setting
 project(vEngine)
 
-if(BUILDI_IOS)
+if(VENGINE_BUILD_IOS)
     set(CMAKE_SYSTEM_NAME iOS)
+    set(CMAKE_OSX_SYSROOT iphoneos)
 endif()
 
 # c++ setting
@@ -48,7 +53,12 @@ else()
 endif()
 
 # lib setting
-option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+if(VENGINE_BUILD_STATIC)
+    option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
+else()
+    option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+endif()
+
 
 # include setting
 # set configure include path
@@ -77,6 +87,10 @@ endif()
 
 if(APPLE)
     add_compile_definitions(${PROJECT_PLATFORM_MARCO}_APPLE)
+endif()
+
+if(VENGINE_BUILD_STATIC)
+    add_compile_definitions(${PROJECT_PLATFORM_MARCO}_APPLE_STATIC)
 endif()
 
 add_subdirectory(source)

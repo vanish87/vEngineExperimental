@@ -23,6 +23,7 @@ target_link_libraries(${PROJECT_NAME} ${FOUNDATION_LIB})
 # find_library(UIKIT_LIB UIKit)
 # target_link_libraries(${PROJECT_NAME} ${UIKIT_LIB})
 target_link_libraries(${PROJECT_NAME} "-framework UIKit")
+target_link_libraries(${PROJECT_NAME} engine::metal_rendering_plugin)
 target_link_libraries(${PROJECT_NAME} engine::core)
 
 # target_include_directories(${PROJECT_NAME}
@@ -36,7 +37,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
                     #   XCODE_ATTRIBUTE_GCC_PRECOMPILE_PREFIX_HEADER "YES"
                     #   XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET ${DEPLOYMENT_TARGET}
                     #   XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY ${CODE_SIGN_IDENTITY}
-                    #   XCODE_ATTRIBUTE_DEVELOPMENT_TEAM ${DEVELOPMENT_TEAM_ID}
+                        XCODE_ATTRIBUTE_DEVELOPMENT_TEAM ${APP_DEVELOPMENT_TEAM_ID}
                     #   XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY ${DEVICE_FAMILY}
                         MACOSX_BUNDLE_GUI_IDENTIFIER ${APP_BUNDLE_IDENTIFIER}
                         MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/plist.in
