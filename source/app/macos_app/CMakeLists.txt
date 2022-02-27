@@ -12,14 +12,20 @@ message("${CMAKE_OSX_SYSROOT}")
 message("${BUILD_IOS}")
 
 set(COMMON_HEADER_FILES
+	${CMAKE_CURRENT_SOURCE_DIR}/define.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/app_main.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/app_delegate.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/app_view_controller.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/apple_app.hpp
 )
 
 set(COMMON_SOURCE_FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/main.mm
+	${CMAKE_CURRENT_SOURCE_DIR}/app_delegate.mm
+	${CMAKE_CURRENT_SOURCE_DIR}/app_view_controller.mm
 )
 
-if(BUILD_IOS)
+if(VENGINE_BUILD_IOS)
   add_subdirectory(ios)
 else()
   add_subdirectory(macos)

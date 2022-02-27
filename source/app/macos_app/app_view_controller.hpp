@@ -1,7 +1,7 @@
-#ifndef _APP_MACOS_APP_APPVIEWCONTROLLER_HPP
-#define _APP_MACOS_APP_APPVIEWCONTROLLER_HPP
+#ifndef _APP_MACOS_APP_APP_VIEW_CONTROLLER_HPP
+#define _APP_MACOS_APP_APP_VIEW_CONTROLLER_HPP
 
-#import <vengine/core/apple/define.hpp>
+#import "define.hpp"
 
 #if defined(APP_PLATFORM_TARGET_DARWIN)
 #import <AppKit/AppKit.h>
@@ -19,4 +19,4 @@
 @end
 
 
-#endif /* _APP_MACOS_APP_APPVIEWCONTROLLER_HPP */
+#endif /* _APP_MACOS_APP_APP_VIEW_CONTROLLER_HPP */

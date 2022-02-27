@@ -1,4 +1,4 @@
-#import <vengine/core/apple/app_delegate.hpp>
+#import "app_delegate.hpp"
 
 @implementation AppDelegate
 
