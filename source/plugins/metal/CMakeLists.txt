@@ -2,9 +2,9 @@
 project(metal_rendering_plugin)
 
 # dynamic link is not working for ios
-# so always build metal a framework
-# it works as static lib
-set(METAL_AS_FRAMEWORK ON)
+# lib build and link in static lib
+# framework is lagacy code
+set(METAL_AS_FRAMEWORK OFF)
 
 # header only lib
 # add_library(${PROJECT_NAME} INTERFACE)
@@ -33,9 +33,9 @@ target_include_directories( ${PROJECT_NAME}
     PUBLIC ${vengine_SOURCE_DIR}/include
 )
 
-target_link_libraries( ${PROJECT_NAME}
-    engine::core
-)
+# target_link_libraries( ${PROJECT_NAME}
+#     engine::core
+# )
 
 if(METAL_AS_FRAMEWORK)
   set_target_properties(${PROJECT_NAME} PROPERTIES
