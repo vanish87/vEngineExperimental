@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.13)
 if(APPLE)
     set(VENGINE_BUILD_STATIC ON)
     set(VENGINE_BUILD_IOS OFF)
+    set(CMAKE_OSX_ARCHITECTURES arm64)
 endif()
 
 # cmake setting
