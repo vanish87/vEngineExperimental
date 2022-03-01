@@ -10,6 +10,8 @@
 #ifndef _VENGINE_CORE_GAME_OBJECT_HPP
 #define _VENGINE_CORE_GAME_OBJECT_HPP
 
+#pragma once
+
 /// A brief namespace description.
 namespace vEngine
 {

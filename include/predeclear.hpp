@@ -5,6 +5,18 @@
 #include <memory>
 namespace vEngine
 {
+    #define CLASS_AND_SHARED_POINTER(name) \
+	class name;\
+	typedef std::shared_ptr<name> name##SharedPtr;
+
+	#define CLASS_AND_UNIQUE_POINTER(name) \
+	class name;\
+	typedef std::unique_ptr<name> name##UniquePtr;
+
+	#define STRUCT_AND_SHARED_POINTER(name) \
+	struct name;\
+	typedef std::shared_ptr<name> name##SharedPtr;
+
     typedef std::int8_t int8_t;
     typedef std::int16_t int16_t;
     typedef std::int32_t int32_t;
@@ -45,11 +57,17 @@ namespace vEngine
         class Window;
         typedef std::shared_ptr<Window> vEngineWindowPtr;
         class Application;
+
+        CLASS_AND_SHARED_POINTER(GameNode);
     }  // namespace Core
     namespace Rendering
     {
         class RenderEngine;
     }
+
+	#undef CLASS_AND_SHARED_POINTER
+	#undef CLASS_AND_UNIQUE_POINTER
+	#undef STRUCT_AND_SHARED_POINTER
 }  // namespace vEngine
 
 #endif /* _INCLUDE_PREDECLEAR_HPP */

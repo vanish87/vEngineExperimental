@@ -18,10 +18,10 @@ namespace vEngine
 {
     namespace Core
     {
-        /// \brief A brief class description.
+        /// \brief Component model
         ///
-        /// A detailed class description, it
-        /// should be 2 lines at least.
+        /// Unity-like Component model attached
+        /// as game node in the scene
 		template<typename T>
         class Component : public GameNode
         {
