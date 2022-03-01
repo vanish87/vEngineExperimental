@@ -27,9 +27,6 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 MeshComponent();
-
-				// std::shared_ptr<T> game_object;
-
         };
     }  // namespace Core
 }  // namespace vEngine
