@@ -35,6 +35,7 @@ namespace vEngine
                 virtual void Render() {}
 
 				std::shared_ptr<T> renderable_;
+				MaterialSharedPtr material_;
 
         };
     }  // namespace Core
