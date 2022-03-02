@@ -12,6 +12,8 @@
 
 #pragma once
 
+#include <vengine/core/uuid.hpp>
+
 /// A brief namespace description.
 namespace vEngine
 {
@@ -27,9 +29,9 @@ namespace vEngine
                 /// \brief brief constructor description.
                 GameObject();
 
-
-                //uuid
-                //type?
+                // uuid
+                UUID uuid_;
+                // type?
         };
     }  // namespace Core
 }  // namespace vEngine
