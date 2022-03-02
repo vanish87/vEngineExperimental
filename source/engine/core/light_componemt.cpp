@@ -1,5 +1,5 @@
-/// \file component.cpp
-/// \brief source file for Component
+/// \file light_component.cpp
+/// \brief source file for Light Component
 ///
 /// A detailed file description.
 ///
@@ -7,7 +7,7 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#include <vengine/core/component.hpp>
+#include <vengine/core/light_component.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -18,8 +18,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-		template<typename T>
-        Component<T>::Component() {}
+        LightComponent::LightComponent() {}
     }  // namespace Core
 
 }  // namespace vEngine

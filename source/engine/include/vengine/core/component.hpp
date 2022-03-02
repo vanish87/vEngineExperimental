@@ -10,8 +10,10 @@
 #ifndef _VENGINE_CORE_COMPONENT_HPP
 #define _VENGINE_CORE_COMPONENT_HPP
 
-#include <vengine/core/game_node.hpp>
+#pragma once
+
 #include <memory>
+#include <vengine/core/game_node.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -22,15 +24,14 @@ namespace vEngine
         ///
         /// Unity-like Component model attached
         /// as game node in the scene
-		template<typename T>
+        template <typename T>
         class Component : public GameNode
         {
             public:
                 /// \brief brief constructor description.
-                Component();
+                Component(){};
 
-				std::shared_ptr<T> game_object_;
-
+                std::shared_ptr<T> game_object_;
         };
     }  // namespace Core
 }  // namespace vEngine
