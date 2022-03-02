@@ -25,8 +25,8 @@ namespace vEngine
         /// \brief Game Node is basic game scene object
         ///
         /// It contains a tranfrom and a list of children nodes
-        /// and contructs a tree struture to present game scene
-        /// child of GameNode could be a normal game node or
+        /// and contructs a tree struture that presents the game scene
+        /// the child of GameNode could be a normal game node or
         /// a component that referenced to other game object class
         class GameNode
         {
