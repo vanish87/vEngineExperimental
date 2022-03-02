@@ -14,7 +14,7 @@ namespace vEngine
 {
     namespace Core
     {
-        typedef void (*HandleRenderEngine)(std::unique_ptr<RenderEngine>& ptr);
+        typedef void (*HandleRenderEngine)(Rendering::RenderEngineUniquePtr& ptr);
 
         Context::Context() : app_instance_{nullptr} {}
         Context::~Context() {}
@@ -29,7 +29,7 @@ namespace vEngine
         }
         void Context::Update() {}
 
-        RenderEngine& Context::GetRenderEngine()
+        Rendering::RenderEngine& Context::GetRenderEngine()
         {
             if (this->render_engine_ptr_ == nullptr)
             {

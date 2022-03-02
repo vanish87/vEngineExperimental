@@ -71,7 +71,7 @@ namespace vEngine
     }  // namespace Core
     namespace Rendering
     {
-        class RenderEngine;
+        CLASS_AND_UNIQUE_POINTER(RenderEngine);
     }
 
 	#undef CLASS_AND_SHARED_POINTER

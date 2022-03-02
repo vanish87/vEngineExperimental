@@ -12,9 +12,12 @@
 
 #pragma once
 
-#include <engine.hpp>
 #include <list>
+
+#include <VENGINE_API.h>
+#include <engine.hpp>
 #include <vengine/core/matrix.hpp>
+#include <vengine/core/uuid.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -28,11 +31,15 @@ namespace vEngine
         /// and contructs a tree struture that presents the game scene
         /// the child of GameNode could be a normal game node or
         /// a component that referenced to other game object class
-        class GameNode
+        class VENGINE_API GameNode
         {
             public:
                 /// \brief brief constructor description.
                 GameNode();
+
+                void AddComponent(const GameNodeSharedPtr component);
+                void RemoveComponent(const GameNodeSharedPtr component);
+
 
             private:
                 // transform

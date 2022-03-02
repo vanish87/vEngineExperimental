@@ -11,6 +11,7 @@
 #define _VENGINE_CORE_COMPONENT_HPP
 
 #pragma once
+#include <VENGINE_API.h>
 
 #include <memory>
 #include <vengine/core/game_node.hpp>
@@ -25,7 +26,7 @@ namespace vEngine
         /// Unity-like Component model attached
         /// as game node in the scene
         template <typename T>
-        class Component : public GameNode
+        class VENGINE_API Component : public GameNode
         {
             public:
                 /// \brief brief constructor description.
