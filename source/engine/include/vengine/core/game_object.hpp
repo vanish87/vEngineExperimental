@@ -12,6 +12,8 @@
 
 #pragma once
 
+#include <VENGINE_API.h>
+
 #include <vengine/core/uuid.hpp>
 
 /// A brief namespace description.
@@ -23,7 +25,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class GameObject
+        class VENGINE_API GameObject
         {
             public:
                 /// \brief brief constructor description.

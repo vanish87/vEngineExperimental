@@ -9,6 +9,8 @@
 
 #include <vengine/core/context.hpp>
 #include <vengine/core/mesh_renderer.hpp>
+#include <vengine/core/mesh.hpp>
+#include <vengine/core/render_component.hpp>
 #include <vengine/rendering/render_engine.hpp>
 
 /// A detailed namespace description, it
@@ -28,6 +30,16 @@ namespace vEngine
         {
             auto& re = Context::GetInstance().GetRenderEngine();
             auto mesh = this->renderable_;
+
+			RendererComponent<Mesh> meshRendererComponent;
+			// auto pos = meshRendererComponent.transform_;
+
+			auto meshRenderer = meshRendererComponent.game_object_;
+			meshRenderer->Render();
+			meshRenderer->uuid_;
+
+			auto originalMesh = meshRenderer->renderable_;
+			originalMesh->uuid_;
 
 			re.PrintInfo();
         }
