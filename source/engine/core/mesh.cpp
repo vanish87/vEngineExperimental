@@ -20,8 +20,8 @@ namespace vEngine
         /// should be 2 lines
         Mesh::Mesh()
         {
-            auto desc = GraphicsBufferDescriptor<Vertex>();
-            this->buffer_ = vEngine::Rendering::GraphicsBuffer<Vertex>::Create(desc);
+            auto desc = GraphicsBufferDescriptor();
+            this->buffer_ = vEngine::Rendering::GraphicsBuffer::Create(desc);
         }
     }  // namespace Core
 

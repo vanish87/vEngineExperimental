@@ -31,17 +31,8 @@ namespace vEngine
             auto& re = Context::GetInstance().GetRenderEngine();
             auto mesh = this->renderable_;
 
-			MeshRendererComponent meshRendererComponent;
-			// auto pos = meshRendererComponent.transform_;
+			re.Render(mesh->buffer_);
 
-			auto meshRenderer = meshRendererComponent.game_object_;
-			meshRenderer->Render();
-			meshRenderer->uuid_;
-
-			auto originalMesh = meshRenderer->renderable_;
-			auto originalMaterial = meshRenderer->material_;
-			originalMesh->uuid_;
-			auto indexBuffer = originalMesh->buffer_;
 
 			re.PrintInfo();
         }

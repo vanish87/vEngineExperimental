@@ -36,7 +36,7 @@ namespace vEngine
                 Mesh();
 
 
-                GraphicsBuffer<Vertex> buffer_;
+                GraphicsBuffer buffer_;
                 //vertex
                 //index
 

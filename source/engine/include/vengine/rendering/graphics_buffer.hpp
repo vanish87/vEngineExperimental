@@ -37,7 +37,6 @@ namespace vEngine
 			GBT_LineList,
 			GBT_TriangleList,
 		};
-		template<typename T>
 		class GraphicsBufferDescriptor
 		{
 			GraphicsBufferType type;
@@ -52,7 +51,7 @@ namespace vEngine
         /// Graphics buffer could be index/vertex buffer or
 		/// constant buffer.
 		/// It could be used in cpu and/or gpu
-		template<typename T>
+		// template<typename T>
         class GraphicsBuffer
         {
             public:
@@ -62,7 +61,7 @@ namespace vEngine
                 /// class variable description
                 // int public_variable_;
 
-				GraphicsBufferDescriptor<T> descriptor_;
+				GraphicsBufferDescriptor descriptor_;
 
             public:
                 /// \brief A brief function description.
@@ -70,11 +69,10 @@ namespace vEngine
                 /// \param p1 Description for p1.
                 /// \param p2 Description for p2.
                 /// \return Description for return value.
-                static GraphicsBuffer<T> Create(const GraphicsBufferDescriptor<T>& desc)
+                static GraphicsBuffer Create(const GraphicsBufferDescriptor& desc)
 				{
 					UNUSED_PARAMETER(desc);
-					
-					return GraphicsBuffer<T>();
+					return GraphicsBuffer();
 				}
         };
     }  // namespace Rendering
