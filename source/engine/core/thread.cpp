@@ -7,8 +7,8 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#include <vengine/core/thread.hpp>
 #include <engine.hpp>
+#include <vengine/core/thread.hpp>
 
 namespace vEngine
 {

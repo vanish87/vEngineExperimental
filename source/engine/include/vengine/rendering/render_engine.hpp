@@ -22,6 +22,23 @@ namespace vEngine
                 virtual void Init() = 0;
                 virtual void Deinit() = 0;
                 virtual void Update() = 0;
+
+                virtual void BeginRender();
+                virtual void Render()
+                {
+                    //very basic rendering of sth.
+                    //IASetBuffer
+                    //IASetTopology
+                    //DrawIndexed
+
+                };
+                virtual void EndRender();
+
+                virtual void Dispatch();
+
+                // virutal void SetupFrameTextureToRender
+                //GPU Resource management
+                // virtual void 
         };
     }  // namespace Rendering
 }  // namespace vEngine

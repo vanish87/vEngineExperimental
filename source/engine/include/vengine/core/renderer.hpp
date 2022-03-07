@@ -32,9 +32,16 @@ namespace vEngine
                 /// \brief brief constructor description.
                 Renderer(){};
 
-                virtual void Render() {}
+                virtual void Render() 
+                {
+                    //pepare gpu dat from renderable_
+                    //Get render engine
+                    //render with gpu data
+                    //re.Render(vertice info, this->material etc)
+                }
 
 				std::shared_ptr<T> renderable_;
+                //gpu buffer etc.
 				MaterialSharedPtr material_;
 
         };
