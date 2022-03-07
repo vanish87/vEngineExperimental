@@ -10,24 +10,33 @@
 #ifndef _VENGINE_CORE_MESH_HPP
 #define _VENGINE_CORE_MESH_HPP
 
+#include <VENGINE_API.h>
 #include <vengine/core/game_object.hpp>
+#include <vengine/rendering/graphics_buffer.hpp>
 
 /// A brief namespace description.
 namespace vEngine
 {
     namespace Core
     {
+        using namespace vEngine::Rendering;
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Mesh : public GameObject
+
+        class Vertex
+        {
+
+        };
+        class VENGINE_API Mesh : public GameObject
         {
             public:
                 /// \brief brief constructor description.
                 Mesh();
 
 
+                GraphicsBuffer<Vertex> buffer_;
                 //vertex
                 //index
 

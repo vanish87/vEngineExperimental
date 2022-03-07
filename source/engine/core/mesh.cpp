@@ -18,7 +18,11 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Mesh::Mesh() {}
+        Mesh::Mesh()
+        {
+            auto desc = GraphicsBufferDescriptor<Vertex>();
+            this->buffer_ = vEngine::Rendering::GraphicsBuffer<Vertex>::Create(desc);
+        }
     }  // namespace Core
 
 }  // namespace vEngine

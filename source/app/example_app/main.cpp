@@ -2,6 +2,7 @@
 #include <version.hpp>
 #include <vengine/core/application.hpp>
 #include <vengine/core/context.hpp>
+#include <vengine/core/mesh.hpp>
 
 using namespace vEngine::Core;
 
@@ -17,6 +18,9 @@ namespace Example
             void OnCreate() override
             {
                 PRINT("User Create");
+
+                Mesh mesh;
+                auto buffer = mesh.buffer_;
             }
             /// \brief user function for update
             ///

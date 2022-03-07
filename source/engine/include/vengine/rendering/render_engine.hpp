@@ -23,7 +23,7 @@ namespace vEngine
                 virtual void Deinit() = 0;
                 virtual void Update() = 0;
 
-                virtual void BeginRender();
+                virtual void BeginRender(){};
                 virtual void Render()
                 {
                     //very basic rendering of sth.
@@ -32,9 +32,9 @@ namespace vEngine
                     //DrawIndexed
 
                 };
-                virtual void EndRender();
+                virtual void EndRender(){};
 
-                virtual void Dispatch();
+                virtual void Dispatch(){};
 
                 // virutal void SetupFrameTextureToRender
                 //GPU Resource management

@@ -16,8 +16,9 @@
 /// A brief namespace description.
 namespace vEngine
 {
-    namespace Core
+    namespace Rendering
     {
+        using namespace vEngine::Core;
         /// \brief A brief class description.
         ///
         /// A detailed class description, it

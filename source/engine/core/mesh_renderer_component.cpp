@@ -13,7 +13,7 @@
 /// should be 2 lines at least.
 namespace vEngine
 {
-    namespace Core
+    namespace Rendering
     {
 
         /// constructor detailed defintion,
