@@ -16,13 +16,9 @@ namespace vEngine
     {
         /// constructor detailed defintion,
         /// should be 2 lines
-        Thread::Thread(){
+        Thread::Thread() {}
 
-        };
-
-        Thread::~Thread(){
-
-        };
+        Thread::~Thread() {}
 
         int Thread::Create(void* paramter, std::string name)
         {
@@ -43,7 +39,7 @@ namespace vEngine
             }
 
             return 0;
-        };
+        }
 
         int Thread::Join()
         {
@@ -68,7 +64,7 @@ namespace vEngine
             // RunningInstance->ThreadInstance.detach();
             // return value is ignored by std::thread
             return data;
-        };
+        }
     }  // namespace Core
 
 }  // namespace vEngine

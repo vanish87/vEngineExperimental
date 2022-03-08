@@ -58,20 +58,20 @@ namespace vEngine
         typedef std::shared_ptr<Window> vEngineWindowPtr;
         class Application;
 
-        CLASS_AND_SHARED_POINTER(GameObject);
-        CLASS_AND_SHARED_POINTER(Material);
-        CLASS_AND_SHARED_POINTER(Camera);
-        CLASS_AND_SHARED_POINTER(Light);
-        CLASS_AND_SHARED_POINTER(Mesh);
+        CLASS_AND_SHARED_POINTER(GameObject)
+        CLASS_AND_SHARED_POINTER(Material)
+        CLASS_AND_SHARED_POINTER(Camera)
+        CLASS_AND_SHARED_POINTER(Light)
+        CLASS_AND_SHARED_POINTER(Mesh)
 
-        CLASS_AND_SHARED_POINTER(GameNode);
-        CLASS_AND_SHARED_POINTER(CameraComponent);
-        CLASS_AND_SHARED_POINTER(LightComponent);
-        CLASS_AND_SHARED_POINTER(MeshComponent);
+        CLASS_AND_SHARED_POINTER(GameNode)
+        CLASS_AND_SHARED_POINTER(CameraComponent)
+        CLASS_AND_SHARED_POINTER(LightComponent)
+        CLASS_AND_SHARED_POINTER(MeshComponent)
     }  // namespace Core
     namespace Rendering
     {
-        CLASS_AND_UNIQUE_POINTER(RenderEngine);
+        CLASS_AND_UNIQUE_POINTER(RenderEngine)
     }
 
 	#undef CLASS_AND_SHARED_POINTER
