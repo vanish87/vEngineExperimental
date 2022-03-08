@@ -1,5 +1,6 @@
-/// \file texture.cpp
-/// \brief source file for Texture
+
+/// \file d3d11_texture.cpp
+/// \brief source file for D3D11 Texture
 ///
 /// A detailed file description.
 ///
@@ -7,7 +8,8 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#include <vengine/rendering/texture.hpp>
+#include <engine.hpp>
+#include <vengine/rendering/d3d11_texture.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -18,7 +20,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Texture::Texture() {}
+        D3D11Texture::D3D11Texture() : Texture() {}
 
         /// A detailed function description, it
         /// should be 2 lines at least.

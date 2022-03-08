@@ -12,6 +12,7 @@
 
 #pragma once
 
+#include <VENGINE_API.h>
 #include <engine.hpp>
 #include <vengine/core/data_format.hpp>
 
@@ -46,7 +47,7 @@ namespace vEngine
 		/// constant buffer.
 		/// It could be used in cpu and/or gpu
 		// template<typename T>
-        class Texture
+        class VENGINE_API Texture
         {
             public:
                 /// \brief brief constructor description.
@@ -63,7 +64,7 @@ namespace vEngine
                 /// \param p1 Description for p1.
                 /// \param p2 Description for p2.
                 /// \return Description for return value.
-                static Texture Create(const TextureDescriptor& desc);
+                // static Texture Create(const TextureDescriptor& desc);
         };
     }  // namespace Rendering
 

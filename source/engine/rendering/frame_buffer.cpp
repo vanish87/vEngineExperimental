@@ -8,6 +8,8 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/rendering/frame_buffer.hpp>
+#include <vengine/rendering/render_engine.hpp>
+#include <vengine/core/context.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -18,7 +20,12 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        FrameBuffer::FrameBuffer() {}
+        FrameBuffer::FrameBuffer() 
+        {
+            auto& re = Core::Context::GetInstance().GetRenderEngine();
+            TextureDescriptor desc;
+            auto tex = re.Create(desc);
+        }
 
         FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc)
         {

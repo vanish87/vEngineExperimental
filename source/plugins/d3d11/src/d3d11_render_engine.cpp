@@ -5,6 +5,7 @@
 #include <vengine/core/vector.hpp>
 #include <vengine/core/window.hpp>
 #include <vengine/rendering/d3d11_render_engine.hpp>
+#include <vengine/rendering/d3d11_texture.hpp>
 
 namespace vEngine
 {
@@ -179,6 +180,11 @@ namespace vEngine
             this->ps->Release();
             this->layout->Release();
             this->vertex_buffer->Release();
+        }
+        TextureSharedPtr D3D11RenderEngine::Create(const TextureDescriptor& desc)
+        {
+            UNUSED_PARAMETER(desc);
+            return std::make_shared<D3D11Texture>();
         }
 
     }  // namespace Rendering

@@ -25,6 +25,7 @@ namespace vEngine
                 void Update() override;
                 void PrintInfo() override;
 
+                TextureSharedPtr Create(const TextureDescriptor& desc) override;
 
             private:
                 ID3D11InputLayout* layout;
