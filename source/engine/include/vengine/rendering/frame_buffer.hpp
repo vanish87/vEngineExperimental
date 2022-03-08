@@ -1,5 +1,5 @@
-/// \file graphics_buffer.hpp
-/// \brief Head file for Graphics Buffer
+/// \file frame_buffer.hpp
+/// \brief Head file for Frame Buffer
 ///
 /// A detailed file description.
 ///
@@ -7,42 +7,22 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#ifndef _VENGINE_RENDERING_GRAPHICS_BUFFER_HPP
-#define _VENGINE_RENDERING_GRAPHICS_BUFFER_HPP
+#ifndef _VENGINE_RENDERING_FRAME_BUFFER_HPP
+#define _VENGINE_RENDERING_FRAME_BUFFER_HPP
 
-#include <VENGINE_API.h>
 #include <engine.hpp>
+#include <vengine/core/game_object.hpp>
 
 namespace vEngine
 {
     namespace Rendering
     {
-		enum class GraphicsBufferType
+		class FrameBufferDescriptor
 		{
-			GBT_Index,
-			GBT_Vertex,
-		};
-
-		enum class GraphicsBufferUsage
-		{
-			GBU_CPU = 1 << 0,
-			GBU_GPU = 1 << 1,
-		};
-		enum class GraphicsBufferTopology
-		{
-			GBT_Undefined,
-			GBT_PointList,
-			GBT_LineList,
-			GBT_TriangleList,
-		};
-		class GraphicsBufferDescriptor
-		{
-			GraphicsBufferType type;
-			GraphicsBufferUsage usage;
+			// DataFormat format;
+			// TextureUsage usage;
 			// std::vector<std::pair<
 
-			int offset;
-			int stride;
 		};
         /// \brief Unity-like Graphics buffer
         ///
@@ -50,16 +30,16 @@ namespace vEngine
 		/// constant buffer.
 		/// It could be used in cpu and/or gpu
 		// template<typename T>
-        class VENGINE_API GraphicsBuffer
+        class FrameBuffer
         {
             public:
                 /// \brief brief constructor description.
-                GraphicsBuffer();
+                FrameBuffer();
 
                 /// class variable description
                 // int public_variable_;
 
-				GraphicsBufferDescriptor descriptor_;
+				FrameBufferDescriptor descriptor_;
 
             public:
                 /// \brief A brief function description.
@@ -67,10 +47,11 @@ namespace vEngine
                 /// \param p1 Description for p1.
                 /// \param p2 Description for p2.
                 /// \return Description for return value.
-                static GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc);
+                static FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc);
         };
     }  // namespace Rendering
 
 }  // namespace vEngine
 
-#endif /* _VENGINE_RENDERING_GRAPHICS_BUFFER_HPP */
+#endif /* _VENGINE_RENDERING_FRAME_BUFFER_HPP */
+

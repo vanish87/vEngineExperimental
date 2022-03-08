@@ -7,7 +7,6 @@
 
 #include <engine.hpp>
 #include <vengine/core/iruntime_module.hpp>
-#include <vengine/rendering/graphics_buffer.hpp>
 
 namespace vEngine
 {
@@ -25,7 +24,7 @@ namespace vEngine
                 virtual void Update() = 0;
 
                 virtual void BeginRender(){};
-                virtual void Render(GraphicsBuffer vertex)
+                virtual void Render(GraphicsBufferSharedPtr vertex)
                 {
                     UNUSED_PARAMETER(vertex);
                     //very basic rendering of sth.

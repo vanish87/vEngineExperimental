@@ -1,5 +1,5 @@
-/// \file graphics_buffer.hpp
-/// \brief Head file for Graphics Buffer
+/// \file texture.hpp
+/// \brief Head file for Texture
 ///
 /// A detailed file description.
 ///
@@ -7,42 +7,38 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#ifndef _VENGINE_RENDERING_GRAPHICS_BUFFER_HPP
-#define _VENGINE_RENDERING_GRAPHICS_BUFFER_HPP
+#ifndef _VENGINE_RENDERING_TEXTURE_HPP
+#define _VENGINE_RENDERING_TEXTURE_HPP
 
-#include <VENGINE_API.h>
+#pragma once
+
 #include <engine.hpp>
+#include <vengine/core/data_format.hpp>
 
 namespace vEngine
 {
     namespace Rendering
     {
-		enum class GraphicsBufferType
+		enum class TextureDimension
 		{
-			GBT_Index,
-			GBT_Vertex,
-		};
+			TD_1D,
+			TD_2D,
+			TD_3D,
+			TD_Cure,
 
-		enum class GraphicsBufferUsage
+		};
+		enum class TextureUsage
 		{
 			GBU_CPU = 1 << 0,
 			GBU_GPU = 1 << 1,
 		};
-		enum class GraphicsBufferTopology
+		class TextureDescriptor
 		{
-			GBT_Undefined,
-			GBT_PointList,
-			GBT_LineList,
-			GBT_TriangleList,
-		};
-		class GraphicsBufferDescriptor
-		{
-			GraphicsBufferType type;
-			GraphicsBufferUsage usage;
+			TextureDimension dimension;
+			DataFormat format;
+			TextureUsage usage;
 			// std::vector<std::pair<
 
-			int offset;
-			int stride;
 		};
         /// \brief Unity-like Graphics buffer
         ///
@@ -50,16 +46,16 @@ namespace vEngine
 		/// constant buffer.
 		/// It could be used in cpu and/or gpu
 		// template<typename T>
-        class VENGINE_API GraphicsBuffer
+        class Texture
         {
             public:
                 /// \brief brief constructor description.
-                GraphicsBuffer();
+                Texture();
 
                 /// class variable description
                 // int public_variable_;
 
-				GraphicsBufferDescriptor descriptor_;
+				TextureDescriptor descriptor_;
 
             public:
                 /// \brief A brief function description.
@@ -67,10 +63,10 @@ namespace vEngine
                 /// \param p1 Description for p1.
                 /// \param p2 Description for p2.
                 /// \return Description for return value.
-                static GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc);
+                static Texture Create(const TextureDescriptor& desc);
         };
     }  // namespace Rendering
 
 }  // namespace vEngine
 
-#endif /* _VENGINE_RENDERING_GRAPHICS_BUFFER_HPP */
+#endif /* _VENGINE_RENDERING_TEXTURE_HPP */

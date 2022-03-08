@@ -1,5 +1,5 @@
-/// \file graphics_buffer.cpp
-/// \brief source file for graphics buffer
+/// \file frame_buffer.cpp
+/// \brief source file for Frame Buffer
 ///
 /// A detailed file description.
 ///
@@ -7,8 +7,7 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#include <engine.hpp>
-#include <vengine/rendering/graphics_buffer.hpp>
+#include <vengine/rendering/frame_buffer.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -19,12 +18,12 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        GraphicsBuffer::GraphicsBuffer() {}
+        FrameBuffer::FrameBuffer() {}
 
-        GraphicsBufferSharedPtr GraphicsBuffer::Create(const GraphicsBufferDescriptor& desc)
+        FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc)
         {
             UNUSED_PARAMETER(desc);
-            return std::make_shared<GraphicsBuffer>();
+            return std::make_shared<FrameBuffer>();
         }
 
         /// A detailed function description, it

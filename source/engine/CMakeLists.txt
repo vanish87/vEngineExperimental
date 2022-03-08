@@ -7,7 +7,7 @@ project (vengine)
 # add_library(${PROJECT_NAME} src/vector.cpp)
 # add_library(engine::core ALIAS ${PROJECT_NAME})
 
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core core_sources)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core core_source)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/rendering rendering_source)
 
 # if(APPLE)
@@ -15,8 +15,8 @@ aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/rendering rendering_source)
 # endif()
 
 add_library(${PROJECT_NAME} 
-	${core_sources}
-	${rendering_sources}
+    ${core_source}
+    ${rendering_source}
     # ${apple_sources}
 )
 add_library(engine::core ALIAS ${PROJECT_NAME})

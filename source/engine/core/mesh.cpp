@@ -8,6 +8,7 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/core/mesh.hpp>
+#include <vengine/rendering/graphics_buffer.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -20,8 +21,8 @@ namespace vEngine
         /// should be 2 lines
         Mesh::Mesh()
         {
-            auto desc = GraphicsBufferDescriptor();
-            this->buffer_ = vEngine::Rendering::GraphicsBuffer::Create(desc);
+            GraphicsBufferDescriptor desc;
+            this->buffer_ = GraphicsBuffer::Create(desc);
         }
     }  // namespace Core
 

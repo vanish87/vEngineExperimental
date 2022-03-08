@@ -11,8 +11,8 @@
 #define _VENGINE_CORE_MESH_HPP
 
 #include <VENGINE_API.h>
+#include <engine.hpp>
 #include <vengine/core/game_object.hpp>
-#include <vengine/rendering/graphics_buffer.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -36,7 +36,7 @@ namespace vEngine
                 Mesh();
 
 
-                GraphicsBuffer buffer_;
+                GraphicsBufferSharedPtr buffer_;
                 //vertex
                 //index
 
