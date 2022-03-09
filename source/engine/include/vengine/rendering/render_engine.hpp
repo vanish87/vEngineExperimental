@@ -23,6 +23,14 @@ namespace vEngine
                 virtual void Deinit() = 0;
                 virtual void Update() = 0;
 
+                virtual void Bind(const FrameBufferSharedPtr frameBuffer)
+                {
+                    this->current_frame_buffer = frameBuffer;
+                    this->OnBind(frameBuffer);
+                }
+
+                virtual void OnBind(const FrameBufferSharedPtr frameBuffer) = 0;
+
                 virtual void BeginRender(){};
                 virtual void Render(GraphicsBufferSharedPtr vertex)
                 {
@@ -44,6 +52,9 @@ namespace vEngine
                 virtual TextureSharedPtr Create(const TextureDescriptor& desc) = 0;
                 virtual FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) = 0;
                 virtual GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) = 0;
+
+
+                FrameBufferSharedPtr current_frame_buffer;
                 
         };
     }  // namespace Rendering

@@ -26,6 +26,7 @@ namespace vEngine
             TextureDescriptor desc;
             auto tex = re.Create(desc);
         }
+        FrameBuffer::~FrameBuffer() {}
 
         /// A detailed function description, it
         /// should be 2 lines at least.

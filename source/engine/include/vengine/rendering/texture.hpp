@@ -30,6 +30,7 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 Texture();
+                virtual ~Texture();
 
                 /// class variable description
                 // int public_variable_;

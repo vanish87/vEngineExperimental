@@ -20,6 +20,7 @@ namespace vEngine
         /// constructor detailed defintion,
         /// should be 2 lines
         GraphicsBuffer::GraphicsBuffer() {}
+        GraphicsBuffer::~GraphicsBuffer() {}
 
         /// A detailed function description, it
         /// should be 2 lines at least.

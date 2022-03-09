@@ -28,6 +28,7 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 GraphicsBuffer();
+                virtual ~GraphicsBuffer();
 
                 /// class variable description
                 // int public_variable_;

@@ -4,6 +4,7 @@
 
 #include <d3d11.h>
 
+#include <vengine/rendering/d3d11_predeclear.hpp>
 #include <vengine/rendering/render_engine.hpp>
 namespace vEngine
 {
@@ -24,6 +25,8 @@ namespace vEngine
                 void Deinit() override;
                 void Update() override;
                 void PrintInfo() override;
+
+                void OnBind(const FrameBufferSharedPtr FrameBuffer) override;
 
                 TextureSharedPtr Create(const TextureDescriptor& desc) override;
                 FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override;

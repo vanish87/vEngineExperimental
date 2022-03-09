@@ -28,6 +28,7 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 FrameBuffer();
+                virtual ~FrameBuffer();
 
                 /// class variable description
                 // int public_variable_;
@@ -40,7 +41,6 @@ namespace vEngine
                 /// \param p1 Description for p1.
                 /// \param p2 Description for p2.
                 /// \return Description for return value.
-                static FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc);
         };
     }  // namespace Rendering
 

@@ -19,6 +19,7 @@ namespace vEngine
         /// constructor detailed defintion,
         /// should be 2 lines
         Texture::Texture() {}
+        Texture::~Texture() {}
 
         /// A detailed function description, it
         /// should be 2 lines at least.

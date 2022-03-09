@@ -183,6 +183,12 @@ namespace vEngine
             this->layout->Release();
             this->vertex_buffer->Release();
         }
+        void D3D11RenderEngine::OnBind(const FrameBufferSharedPtr frameBuffer)
+        {
+            auto d3d_fb = dynamic_cast<D3D11FrameBuffer*>(frameBuffer.get());
+            UNUSED_PARAMETER(d3d_fb);
+            // this->d3d_imm_context_->OMSetRenderTargets(1, d3d_fb->GetRenderTargetView(), d3d_fb->GetDepthStencilView());
+        }
         TextureSharedPtr D3D11RenderEngine::Create(const TextureDescriptor& desc)
         {
             UNUSED_PARAMETER(desc);
