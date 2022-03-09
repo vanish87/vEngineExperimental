@@ -14,33 +14,11 @@
 
 #include <VENGINE_API.h>
 #include <engine.hpp>
-#include <vengine/core/data_format.hpp>
 
 namespace vEngine
 {
     namespace Rendering
     {
-		enum class TextureDimension
-		{
-			TD_1D,
-			TD_2D,
-			TD_3D,
-			TD_Cure,
-
-		};
-		enum class TextureUsage
-		{
-			GBU_CPU = 1 << 0,
-			GBU_GPU = 1 << 1,
-		};
-		class TextureDescriptor
-		{
-			TextureDimension dimension;
-			DataFormat format;
-			TextureUsage usage;
-			// std::vector<std::pair<
-
-		};
         /// \brief Unity-like Graphics buffer
         ///
         /// Graphics buffer could be index/vertex buffer or

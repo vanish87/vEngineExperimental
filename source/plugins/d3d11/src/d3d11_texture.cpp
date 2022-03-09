@@ -8,7 +8,6 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#include <engine.hpp>
 #include <vengine/rendering/d3d11_texture.hpp>
 
 /// A detailed namespace description, it

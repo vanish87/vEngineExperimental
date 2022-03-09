@@ -4,6 +4,8 @@
 #include <vengine/core/context.hpp>
 #include <vengine/core/vector.hpp>
 #include <vengine/core/window.hpp>
+#include <vengine/rendering/d3d11_frame_buffer.hpp>
+#include <vengine/rendering/d3d11_graphics_buffer.hpp>
 #include <vengine/rendering/d3d11_render_engine.hpp>
 #include <vengine/rendering/d3d11_texture.hpp>
 
@@ -185,6 +187,16 @@ namespace vEngine
         {
             UNUSED_PARAMETER(desc);
             return std::make_shared<D3D11Texture>();
+        }
+        FrameBufferSharedPtr D3D11RenderEngine::Create(const FrameBufferDescriptor& desc)
+        {
+            UNUSED_PARAMETER(desc);
+            return std::make_shared<D3D11FrameBuffer>();
+        }
+        GraphicsBufferSharedPtr D3D11RenderEngine::Create(const GraphicsBufferDescriptor& desc)
+        {
+            UNUSED_PARAMETER(desc);
+            return std::make_shared<D3D11GraphicsBuffer>();
         }
 
     }  // namespace Rendering

@@ -17,33 +17,6 @@ namespace vEngine
 {
     namespace Rendering
     {
-		enum class GraphicsBufferType
-		{
-			GBT_Index,
-			GBT_Vertex,
-		};
-
-		enum class GraphicsBufferUsage
-		{
-			GBU_CPU = 1 << 0,
-			GBU_GPU = 1 << 1,
-		};
-		enum class GraphicsBufferTopology
-		{
-			GBT_Undefined,
-			GBT_PointList,
-			GBT_LineList,
-			GBT_TriangleList,
-		};
-		class GraphicsBufferDescriptor
-		{
-			GraphicsBufferType type;
-			GraphicsBufferUsage usage;
-			// std::vector<std::pair<
-
-			int offset;
-			int stride;
-		};
         /// \brief Unity-like Graphics buffer
         ///
         /// Graphics buffer could be index/vertex buffer or
@@ -67,7 +40,6 @@ namespace vEngine
                 /// \param p1 Description for p1.
                 /// \param p2 Description for p2.
                 /// \return Description for return value.
-                static GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc);
         };
     }  // namespace Rendering
 

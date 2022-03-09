@@ -7,7 +7,6 @@
 
 #include <engine.hpp>
 #include <vengine/core/iruntime_module.hpp>
-#include <vengine/rendering/texture.hpp>
 
 namespace vEngine
 {
@@ -43,6 +42,8 @@ namespace vEngine
                 // virtual void 
 
                 virtual TextureSharedPtr Create(const TextureDescriptor& desc) = 0;
+                virtual FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) = 0;
+                virtual GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) = 0;
                 
         };
     }  // namespace Rendering

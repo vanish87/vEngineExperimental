@@ -26,6 +26,8 @@ namespace vEngine
                 void PrintInfo() override;
 
                 TextureSharedPtr Create(const TextureDescriptor& desc) override;
+                FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override;
+                GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override;
 
             private:
                 ID3D11InputLayout* layout;
