@@ -8,8 +8,9 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#include <vengine/rendering/d3d11_render_engine.hpp>
 #include <vengine/rendering/d3d11_texture.hpp>
+#include <vengine/core/context.hpp>
+#include <vengine/rendering/d3d11_render_engine.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -31,6 +32,23 @@ namespace vEngine
             // this->descriptor_.format = D3D11RenderEngine::D3DFormatToDataFormat(d3d_desc.Format);
 
             this->tex2D_ = backBuffer;
+        }
+
+        ComPtr<ID3D11RenderTargetView> D3D11Texture::AsRTV()
+        {
+            if (this->rt_view_ == nullptr)
+            {
+                auto& re = Core::Context::GetInstance().GetRenderEngine();
+                auto d3d_re = dynamic_cast<D3D11RenderEngine*>(&re);
+                auto device = d3d_re->Device();
+
+                device->CreateRenderTargetView(this->tex2D_.Get(), nullptr, this->rt_view_.GetAddressOf());
+            }
+            return this->rt_view_;
+        }
+        ComPtr<ID3D11DepthStencilView> D3D11Texture::AsDSV()
+        {
+            return this->ds_view_;
         }
 
         /// A detailed function description, it

@@ -29,25 +29,6 @@ namespace vEngine
             // auto& re = Context::GetInstance().GetRenderEngine();
             this->colorTextures_.push_back(backBuffer);
         }
-        Microsoft::WRL::ComPtr<ID3D11RenderTargetView> D3D11FrameBuffer::GetRenderTargetView()
-        {
-            if (this->rt_view_ == nullptr)
-            {
-                auto& re = Context::GetInstance().GetRenderEngine();
-                auto d3d_re = dynamic_cast<D3D11RenderEngine*>(&re);
-                auto device = d3d_re->Device();
-                auto d3d_tex = dynamic_cast<D3D11Texture*>(this->colorTextures_[0].get());
-
-
-                device->CreateRenderTargetView(d3d_tex->D3DTexture().Get(), nullptr, this->rt_view_.GetAddressOf());
-            }
-
-            return this->rt_view_;
-        }
-        Microsoft::WRL::ComPtr<ID3D11DepthStencilView> D3D11FrameBuffer::GetDepthStencilView()
-        {
-            return this->ds_view_;
-        }
 
         /// A detailed function description, it
         /// should be 2 lines at least.

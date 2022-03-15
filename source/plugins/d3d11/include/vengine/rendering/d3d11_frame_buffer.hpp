@@ -30,14 +30,9 @@ namespace vEngine
                 D3D11FrameBuffer();
                 D3D11FrameBuffer(TextureSharedPtr backBuffer, const FrameBufferDescriptor& desc);
 
-                Microsoft::WRL::ComPtr<ID3D11RenderTargetView> GetRenderTargetView();
-                Microsoft::WRL::ComPtr<ID3D11DepthStencilView> GetDepthStencilView();
-
                 /// class variable description
                 // int public_variable_;
 
-                Microsoft::WRL::ComPtr<ID3D11RenderTargetView> rt_view_;
-                Microsoft::WRL::ComPtr<ID3D11DepthStencilView> ds_view_;
 
             public:
                 /// \brief A brief function description.

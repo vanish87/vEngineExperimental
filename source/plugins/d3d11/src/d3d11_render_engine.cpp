@@ -190,9 +190,9 @@ namespace vEngine
         }
         void D3D11RenderEngine::OnBind(const FrameBufferSharedPtr frameBuffer)
         {
-            auto d3d_fb = dynamic_cast<D3D11FrameBuffer*>(frameBuffer.get());
-            UNUSED_PARAMETER(d3d_fb);
-            this->d3d_imm_context_->OMSetRenderTargets(1, d3d_fb->GetRenderTargetView().GetAddressOf(), d3d_fb->GetDepthStencilView().Get());
+            auto color = dynamic_cast<D3D11Texture*>(frameBuffer->GetColor(0).get());
+            auto depth = dynamic_cast<D3D11Texture*>(frameBuffer->GetDepthStencil().get());
+            this->d3d_imm_context_->OMSetRenderTargets(1, color->AsRTV().GetAddressOf(), depth->AsDSV().Get());
         }
         TextureSharedPtr D3D11RenderEngine::Create(const TextureDescriptor& desc)
         {

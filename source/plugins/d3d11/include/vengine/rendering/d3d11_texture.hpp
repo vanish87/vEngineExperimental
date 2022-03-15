@@ -29,10 +29,9 @@ namespace vEngine
                 /// \brief brief constructor description.
                 D3D11Texture(const TextureDescriptor& desc);
                 D3D11Texture(ComPtr<ID3D11Texture2D> backBuffer);
-                ComPtr<ID3D11Texture2D> D3DTexture()
-                {
-                    return this->tex2D_;
-                };
+
+                ComPtr<ID3D11RenderTargetView> AsRTV();
+                ComPtr<ID3D11DepthStencilView> AsDSV();
 
                 /// class variable description
                 // int public_variable_;
@@ -45,6 +44,8 @@ namespace vEngine
                 /// \return Description for return value.
             private:
                 ComPtr<ID3D11Texture2D> tex2D_;
+                ComPtr<ID3D11RenderTargetView> rt_view_;
+                ComPtr<ID3D11DepthStencilView> ds_view_;
         };
     }  // namespace Rendering
 
