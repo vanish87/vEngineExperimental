@@ -23,11 +23,14 @@ namespace vEngine
         /// constant buffer.
         /// It could be used in cpu and/or gpu
         // template<typename T>
+
+        // TODO D3D11FrameBuffer is not necessary because all data of FrameBuffer is api independent
         class D3D11FrameBuffer : public FrameBuffer
         {
             public:
                 /// \brief brief constructor description.
-                D3D11FrameBuffer();
+                // D3D11FrameBuffer();
+                D3D11FrameBuffer(const FrameBufferDescriptor& desc);
                 D3D11FrameBuffer(TextureSharedPtr backBuffer, const FrameBufferDescriptor& desc);
 
                 /// class variable description

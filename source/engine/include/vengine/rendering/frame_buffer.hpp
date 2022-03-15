@@ -29,7 +29,8 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                FrameBuffer();
+                FrameBuffer(const FrameBufferDescriptor& desc);
+                FrameBuffer(TextureSharedPtr backBuffer, const FrameBufferDescriptor& desc);
                 virtual ~FrameBuffer();
 
                 TextureSharedPtr GetColor(const uint8_t index)
