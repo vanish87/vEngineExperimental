@@ -7,6 +7,7 @@ namespace vEngine
     {
         enum class DataFormat
         {
+            DF_Default,
             DF_RGBA32,
 
             DF_RGBFloat,

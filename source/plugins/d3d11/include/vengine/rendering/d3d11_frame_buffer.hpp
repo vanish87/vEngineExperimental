@@ -10,6 +10,7 @@
 #ifndef _VENGINE_RENDERING_D3D11_FRAME_BUFFER_HPP
 #define _VENGINE_RENDERING_D3D11_FRAME_BUFFER_HPP
 
+#include <vengine/rendering/d3d11_predeclear.hpp>
 #include <vengine/rendering/frame_buffer.hpp>
 
 namespace vEngine
@@ -27,9 +28,16 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 D3D11FrameBuffer();
+                D3D11FrameBuffer(TextureSharedPtr backBuffer, const FrameBufferDescriptor& desc);
+
+                Microsoft::WRL::ComPtr<ID3D11RenderTargetView> GetRenderTargetView();
+                Microsoft::WRL::ComPtr<ID3D11DepthStencilView> GetDepthStencilView();
 
                 /// class variable description
                 // int public_variable_;
+
+                Microsoft::WRL::ComPtr<ID3D11RenderTargetView> rt_view_;
+                Microsoft::WRL::ComPtr<ID3D11DepthStencilView> ds_view_;
 
             public:
                 /// \brief A brief function description.

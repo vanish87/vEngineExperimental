@@ -25,7 +25,7 @@ namespace vEngine
 
                 virtual void Bind(const FrameBufferSharedPtr frameBuffer)
                 {
-                    this->current_frame_buffer = frameBuffer;
+                    this->current_frame_buffer_ = frameBuffer;
                     this->OnBind(frameBuffer);
                 }
 
@@ -54,7 +54,7 @@ namespace vEngine
                 virtual GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) = 0;
 
 
-                FrameBufferSharedPtr current_frame_buffer;
+                FrameBufferSharedPtr current_frame_buffer_;
                 
         };
     }  // namespace Rendering

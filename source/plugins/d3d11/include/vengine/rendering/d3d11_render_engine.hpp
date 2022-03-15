@@ -2,8 +2,6 @@
 #define _VENGINE_RENDERING_D3D11_RENDER_ENGINE_HPP
 #pragma once
 
-#include <d3d11.h>
-
 #include <vengine/rendering/d3d11_predeclear.hpp>
 #include <vengine/rendering/render_engine.hpp>
 namespace vEngine
@@ -31,6 +29,24 @@ namespace vEngine
                 TextureSharedPtr Create(const TextureDescriptor& desc) override;
                 FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override;
                 GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override;
+
+                ID3D11Device* Device()
+                {
+                    return this->d3d_device_;
+                }
+
+                static DataFormat D3DFormatToDataFormat(DXGI_FORMAT formart)
+                {
+                    switch (formart)
+                    {
+                        case DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM:
+                            return DataFormat::DF_RGBA32;
+                        default:
+                            break;
+                    }
+
+                    return DataFormat::DF_Default;
+                }
 
             private:
                 ID3D11InputLayout* layout;

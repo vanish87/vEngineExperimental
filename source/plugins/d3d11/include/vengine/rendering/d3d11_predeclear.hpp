@@ -2,6 +2,8 @@
 #define _VENGINE_RENDERING_D3D11_PREDECLEAR_HPP
 
 #include <memory>
+#include <wrl/client.h>
+#include <d3d11.h>
 
 namespace vEngine
 {

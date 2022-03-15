@@ -52,6 +52,11 @@ namespace vEngine
             hr = d3d_swap_chain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
             CHECK_ASSERT(hr == S_OK);
 
+            auto backbufferTexture = std::make_shared<D3D11Texture>(pBackBuffer);
+            FrameBufferDescriptor desc;
+            auto frameBuffer = std::make_shared<D3D11FrameBuffer>(backbufferTexture, desc);
+            this->Bind(frameBuffer);
+
             // use the back buffer address to create the render target
             hr = d3d_device_->CreateRenderTargetView(pBackBuffer, nullptr, &this->backbuffer_);
             CHECK_ASSERT(hr == S_OK);
@@ -187,7 +192,7 @@ namespace vEngine
         {
             auto d3d_fb = dynamic_cast<D3D11FrameBuffer*>(frameBuffer.get());
             UNUSED_PARAMETER(d3d_fb);
-            // this->d3d_imm_context_->OMSetRenderTargets(1, d3d_fb->GetRenderTargetView(), d3d_fb->GetDepthStencilView());
+            this->d3d_imm_context_->OMSetRenderTargets(1, d3d_fb->GetRenderTargetView().GetAddressOf(), d3d_fb->GetDepthStencilView().Get());
         }
         TextureSharedPtr D3D11RenderEngine::Create(const TextureDescriptor& desc)
         {

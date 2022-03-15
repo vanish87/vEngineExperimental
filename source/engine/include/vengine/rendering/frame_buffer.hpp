@@ -11,7 +11,9 @@
 #define _VENGINE_RENDERING_FRAME_BUFFER_HPP
 
 #include <VENGINE_API.h>
+
 #include <engine.hpp>
+#include <vector>
 
 namespace vEngine
 {
@@ -20,9 +22,9 @@ namespace vEngine
         /// \brief Unity-like Graphics buffer
         ///
         /// Graphics buffer could be index/vertex buffer or
-		/// constant buffer.
-		/// It could be used in cpu and/or gpu
-		// template<typename T>
+        /// constant buffer.
+        /// It could be used in cpu and/or gpu
+        // template<typename T>
         class VENGINE_API FrameBuffer
         {
             public:
@@ -30,10 +32,19 @@ namespace vEngine
                 FrameBuffer();
                 virtual ~FrameBuffer();
 
+                TextureSharedPtr GetColor(const uint8_t index)
+                {
+                    return this->colorTextures_[index];
+                }
+                TextureSharedPtr GetDepthStencil()
+                {
+                    return this->depthStencilTexture_;
+                };
+
                 /// class variable description
                 // int public_variable_;
 
-				FrameBufferDescriptor descriptor_;
+                FrameBufferDescriptor descriptor_;
 
             public:
                 /// \brief A brief function description.
@@ -41,10 +52,11 @@ namespace vEngine
                 /// \param p1 Description for p1.
                 /// \param p2 Description for p2.
                 /// \return Description for return value.
+                std::vector<TextureSharedPtr> colorTextures_;
+                TextureSharedPtr depthStencilTexture_;
         };
     }  // namespace Rendering
 
 }  // namespace vEngine
 
 #endif /* _VENGINE_RENDERING_FRAME_BUFFER_HPP */
-

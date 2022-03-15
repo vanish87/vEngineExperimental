@@ -10,6 +10,7 @@
 #ifndef _VENGINE_RENDERING_D3D11_TEXTURE_HPP
 #define _VENGINE_RENDERING_D3D11_TEXTURE_HPP
 
+#include <vengine/rendering/d3d11_predeclear.hpp>
 #include <vengine/rendering/texture.hpp>
 
 namespace vEngine
@@ -27,6 +28,11 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 D3D11Texture();
+                D3D11Texture(::Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer);
+                ::Microsoft::WRL::ComPtr<ID3D11Texture2D> D3DTexture()
+                {
+                    return this->tex2D_;
+                };
 
                 /// class variable description
                 // int public_variable_;
@@ -37,6 +43,8 @@ namespace vEngine
                 /// \param p1 Description for p1.
                 /// \param p2 Description for p2.
                 /// \return Description for return value.
+            private:
+                ::Microsoft::WRL::ComPtr<ID3D11Texture2D> tex2D_;
         };
     }  // namespace Rendering
 

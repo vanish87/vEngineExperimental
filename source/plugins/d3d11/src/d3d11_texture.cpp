@@ -9,6 +9,7 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/rendering/d3d11_texture.hpp>
+#include <vengine/rendering/d3d11_render_engine.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -20,6 +21,17 @@ namespace vEngine
         /// constructor detailed defintion,
         /// should be 2 lines
         D3D11Texture::D3D11Texture() : Texture() {}
+        D3D11Texture::D3D11Texture(Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer) : Texture() 
+		{
+            D3D11_TEXTURE2D_DESC d3d_desc;
+            backBuffer->GetDesc(&d3d_desc);
+
+            this->descriptor_.dimension = TextureDimension::TD_2D;
+            this->descriptor_.format = D3D11RenderEngine::D3DFormatToDataFormat(d3d_desc.Format);
+            // this->descriptor_.format = D3D11RenderEngine::D3DFormatToDataFormat(d3d_desc.Format);
+
+            this->tex2D_ = backBuffer;
+		}
 
         /// A detailed function description, it
         /// should be 2 lines at least.

@@ -1,8 +1,9 @@
 #ifndef _VENGINE_RENDERING_DATA_STRUCT_HPP
 #define _VENGINE_RENDERING_DATA_STRUCT_HPP
 
-#include <vengine/rendering/data_format.hpp>
+#pragma once
 
+#include <vengine/rendering/data_format.hpp>
 namespace vEngine
 {
     namespace Rendering
@@ -35,8 +36,8 @@ namespace vEngine
         };
         enum class TextureUsage
         {
-            GBU_CPU = 1 << 0,
-            GBU_GPU = 1 << 1,
+            TU_CPU = 1 << 0,
+            TU_GPU = 1 << 1,
         };
         struct TextureDescriptor
         {
@@ -56,7 +57,9 @@ namespace vEngine
         };
         struct FrameBufferDescriptor
         {
-                // DataFormat format;
+                DataFormat colorFormat;
+                DataFormat depthStencilFormat;
+                TextureUsage usage;
                 // TextureUsage usage;
                 // std::vector<std::pair<
         };
