@@ -5,6 +5,8 @@
 #include <wrl/client.h>
 #include <d3d11.h>
 
+using namespace ::Microsoft::WRL;
+
 namespace vEngine
 {
 	#define CLASS_AND_SHARED_POINTER(name) \

@@ -18,7 +18,10 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Texture::Texture() {}
+        Texture::Texture(const TextureDescriptor& desc)
+        {
+            UNUSED_PARAMETER(desc);
+        }
         Texture::~Texture() {}
 
         /// A detailed function description, it

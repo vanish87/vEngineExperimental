@@ -45,6 +45,12 @@ namespace vEngine
                 DataFormat format;
                 TextureUsage usage;
                 // std::vector<std::pair<
+
+                static const TextureDescriptor& Default()
+                {
+                    static TextureDescriptor desc;
+                    return desc;
+                }
         };
         struct GraphicsBufferDescriptor
         {

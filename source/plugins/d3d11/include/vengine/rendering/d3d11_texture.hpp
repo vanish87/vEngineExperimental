@@ -27,9 +27,9 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                D3D11Texture();
-                D3D11Texture(::Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer);
-                ::Microsoft::WRL::ComPtr<ID3D11Texture2D> D3DTexture()
+                D3D11Texture(const TextureDescriptor& desc);
+                D3D11Texture(ComPtr<ID3D11Texture2D> backBuffer);
+                ComPtr<ID3D11Texture2D> D3DTexture()
                 {
                     return this->tex2D_;
                 };
@@ -44,7 +44,7 @@ namespace vEngine
                 /// \param p2 Description for p2.
                 /// \return Description for return value.
             private:
-                ::Microsoft::WRL::ComPtr<ID3D11Texture2D> tex2D_;
+                ComPtr<ID3D11Texture2D> tex2D_;
         };
     }  // namespace Rendering
 

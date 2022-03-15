@@ -29,7 +29,7 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                Texture();
+                Texture(const TextureDescriptor& desc);
                 virtual ~Texture();
 
                 /// class variable description

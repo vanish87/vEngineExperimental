@@ -196,8 +196,8 @@ namespace vEngine
         }
         TextureSharedPtr D3D11RenderEngine::Create(const TextureDescriptor& desc)
         {
-            UNUSED_PARAMETER(desc);
-            return std::make_shared<D3D11Texture>();
+            // UNUSED_PARAMETER(desc);
+            return std::make_shared<D3D11Texture>(desc);
         }
         FrameBufferSharedPtr D3D11RenderEngine::Create(const FrameBufferDescriptor& desc)
         {
