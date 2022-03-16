@@ -64,9 +64,9 @@ namespace vEngine
                 void TriangleDraw();
 
             private:
-                ComPtr<ID3D11Device> d3d_device_;
-                ComPtr<ID3D11DeviceContext> d3d_imm_context_;
-                ComPtr<IDXGISwapChain> d3d_swap_chain_;
+                ComPtr<ID3D11Device> d3d_device_;// for create resource/buffer/textures/views
+                ComPtr<ID3D11DeviceContext> d3d_imm_context_;  // for draw calls/set state/set buffers
+                ComPtr<IDXGISwapChain> d3d_swap_chain_; // for screen buffers
         };
 
     }  // namespace Rendering
