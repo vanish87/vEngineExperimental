@@ -21,7 +21,13 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        D3D11Texture::D3D11Texture(const TextureDescriptor& desc) : Texture(desc) {}
+        D3D11Texture::D3D11Texture(const TextureDescriptor& desc) : Texture(desc)
+        {
+            auto& re = Core::Context::GetInstance().GetRenderEngine();
+            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(&re);
+            auto device = d3d_re->Device();
+            // device->CreateTexture2D();
+        }
         D3D11Texture::D3D11Texture(ComPtr<ID3D11Texture2D> backBuffer) : Texture(TextureDescriptor::Default())
         {
             D3D11_TEXTURE2D_DESC d3d_desc;

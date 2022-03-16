@@ -30,7 +30,7 @@ namespace vEngine
                 FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override;
                 GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override;
 
-                ID3D11Device* Device()
+                ComPtr<ID3D11Device> Device()
                 {
                     return this->d3d_device_;
                 }
@@ -61,10 +61,9 @@ namespace vEngine
                 void TriangleDraw();
 
             private:
-                ID3D11Device* d3d_device_;
-                ID3D11DeviceContext* d3d_imm_context_;
-                IDXGISwapChain* d3d_swap_chain_;
-                ID3D11RenderTargetView* backbuffer_; 
+                ComPtr<ID3D11Device> d3d_device_;
+                ComPtr<ID3D11DeviceContext> d3d_imm_context_;
+                ComPtr<IDXGISwapChain> d3d_swap_chain_;
         };
 
     }  // namespace Rendering
