@@ -11,7 +11,7 @@ namespace vEngine
         class D3D11RenderEngine : public RenderEngine
         {
             public:
-                D3D11RenderEngine()
+                D3D11RenderEngine() : RenderEngine()
                 {
                     PRINT("Create D3D11");
                 }
@@ -30,6 +30,9 @@ namespace vEngine
                 FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override;
                 GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override;
 
+                /// \brief mainly used to create Resource Views(ie. RenderTargetView)
+                /// 
+                /// \return ComPtr<ID3D11Device> 
                 ComPtr<ID3D11Device> Device()
                 {
                     return this->d3d_device_;

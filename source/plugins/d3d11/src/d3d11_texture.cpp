@@ -23,8 +23,8 @@ namespace vEngine
         /// should be 2 lines
         D3D11Texture::D3D11Texture(const TextureDescriptor& desc) : Texture(desc)
         {
-            auto& re = Core::Context::GetInstance().GetRenderEngine();
-            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(&re);
+            auto re = &Core::Context::GetInstance().GetRenderEngine();
+            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
             auto device = d3d_re->Device();
             // device->CreateTexture2D();
         }
@@ -44,8 +44,8 @@ namespace vEngine
         {
             if (this->rt_view_ == nullptr)
             {
-                auto& re = Core::Context::GetInstance().GetRenderEngine();
-                auto d3d_re = dynamic_cast<D3D11RenderEngine*>(&re);
+                auto re = &Core::Context::GetInstance().GetRenderEngine();
+                auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
                 auto device = d3d_re->Device();
 
                 device->CreateRenderTargetView(this->tex2D_.Get(), nullptr, this->rt_view_.GetAddressOf());
