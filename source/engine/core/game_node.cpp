@@ -20,6 +20,7 @@ namespace vEngine
         /// constructor detailed defintion,
         /// should be 2 lines
         GameNode::GameNode() {}
+        GameNode::~GameNode() {}
         void GameNode::AddComponent(const GameNodeSharedPtr component) 
         {
             this->children_.push_back(component);

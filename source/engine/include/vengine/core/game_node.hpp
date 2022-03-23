@@ -36,6 +36,7 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 GameNode();
+                virtual ~GameNode();
 
                 void AddComponent(const GameNodeSharedPtr component);
                 void RemoveComponent(const GameNodeSharedPtr component);
