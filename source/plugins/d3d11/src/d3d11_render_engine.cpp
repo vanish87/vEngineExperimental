@@ -198,8 +198,7 @@ namespace vEngine
         }
         GraphicsBufferSharedPtr D3D11RenderEngine::Create(const GraphicsBufferDescriptor& desc)
         {
-            UNUSED_PARAMETER(desc);
-            return std::make_shared<D3D11GraphicsBuffer>();
+            return std::make_shared<D3D11GraphicsBuffer>(desc);
         }
 
     }  // namespace Rendering

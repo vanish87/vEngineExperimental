@@ -32,9 +32,10 @@ namespace vEngine
                 virtual void OnBind(const FrameBufferSharedPtr frameBuffer) = 0;
 
                 virtual void BeginRender(){};
-                virtual void Render(GraphicsBufferSharedPtr vertex)
+                virtual void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice)
                 {
-                    UNUSED_PARAMETER(vertex);
+                    auto v = vertice;
+                    auto i = indice;
                     //very basic rendering of sth.
                     //IASetBuffer
                     //IASetTopology

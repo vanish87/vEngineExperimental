@@ -19,7 +19,11 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        GraphicsBuffer::GraphicsBuffer() {}
+        GraphicsBuffer::GraphicsBuffer(const GraphicsBufferDescriptor& desc) 
+        {
+            this->descriptor_ = desc;
+
+        }
         GraphicsBuffer::~GraphicsBuffer() {}
 
         /// A detailed function description, it

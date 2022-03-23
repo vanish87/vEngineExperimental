@@ -12,6 +12,7 @@
 
 #pragma once
 
+#include <vengine/rendering/d3d11_predeclear.hpp>
 #include <vengine/rendering/graphics_buffer.hpp>
 
 namespace vEngine
@@ -28,12 +29,14 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                D3D11GraphicsBuffer();
+                D3D11GraphicsBuffer(const GraphicsBufferDescriptor& desc);
 
                 /// class variable description
                 // int public_variable_;
 
             public:
+                ComPtr<ID3D11Buffer> buffer_;
+            
                 /// \brief A brief function description.
                 ///
                 /// \param p1 Description for p1.

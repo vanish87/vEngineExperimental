@@ -22,8 +22,26 @@ namespace vEngine
         /// should be 2 lines
         Mesh::Mesh()
         {
+        }
+
+        /// Load mesh from assimp lib
+        /// store them in cpu side, then update to gpu later
+        void Mesh::Load(const std::string filename)
+        {
+        }
+
+        /// Create GPU related buffer
+        /// ie. Index/Vertice buffer for rendering
+        void Mesh::UpdateGPUBuffer()
+        {
             GraphicsBufferDescriptor desc;
-            this->buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
+            desc.type = GraphicsBufferType::GBT_Vertex;
+            desc.usage = GraphicsBufferUsage::GBU_GPU;
+            this->vertex_buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
+
+            desc.type = GraphicsBufferType::GBT_Index;
+            desc.usage = GraphicsBufferUsage::GBU_GPU;
+            this->index_buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
         }
     }  // namespace Core
 
