@@ -21,16 +21,23 @@ namespace vEngine
 {
     namespace Core
     {
+        Interface VENGINE_API IComponent
+        {
+        protected:
+            virtual ~IComponent(){};
+        };
+
         /// \brief Component model
         ///
         /// Unity-like Component model attached
         /// as game node in the scene
         template <typename T>
-        class VENGINE_API Component : public GameNode
+        class VENGINE_API Component : public GameNode, public IComponent
         {
             public:
                 /// \brief brief constructor description.
                 Component(){};
+                virtual ~Component(){};
 
                 std::shared_ptr<T> game_object_;
         };

@@ -12,10 +12,11 @@
 
 #pragma once
 
-#include <list>
-
 #include <VENGINE_API.h>
+
 #include <engine.hpp>
+#include <functional>
+#include <list>
 #include <vengine/core/matrix.hpp>
 #include <vengine/core/uuid.hpp>
 
@@ -41,6 +42,18 @@ namespace vEngine
                 void AddComponent(const GameNodeSharedPtr component);
                 void RemoveComponent(const GameNodeSharedPtr component);
 
+                template <typename T>
+                void ForEach(std::function<void(T*)> const& iter)
+                {
+                    for (auto c : this->children_)
+                    {
+                        auto go = dynamic_cast<T*>(c.get());
+                        if (go != nullptr)
+                        {
+                            iter(go);
+                        }
+                    }
+                }
 
             private:
                 // transform

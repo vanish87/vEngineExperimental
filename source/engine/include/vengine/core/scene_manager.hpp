@@ -17,6 +17,7 @@
 
 #include <vengine/core/iruntime_module.hpp>
 #include <vengine/core/renderer.hpp>
+#include <vengine/core/game_node.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -39,9 +40,9 @@ namespace vEngine
 
 				void AddToSceneRoot(const GameNodeSharedPtr newNode);
 
-				GameNodeSharedPtr root_;
+				GameNode root_;
 
-				std::queue<IRenderer> render_queue_;
+				std::queue<IRenderer*> render_queue_;
         };
     }  // namespace Core
 }  // namespace vEngine
