@@ -15,18 +15,13 @@
 
 #include <memory>
 #include <vengine/core/game_node.hpp>
+#include <vengine/core/icomponent.hpp>
 
 /// A brief namespace description.
 namespace vEngine
 {
     namespace Core
     {
-        Interface VENGINE_API IComponent
-        {
-        protected:
-            virtual ~IComponent(){};
-        };
-
         /// \brief Component model
         ///
         /// Unity-like Component model attached

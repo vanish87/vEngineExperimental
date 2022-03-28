@@ -16,18 +16,13 @@
 #include <VENGINE_API.h>
 
 #include <vengine/core/game_object.hpp>
+#include <vengine/core/irenderer.hpp>
 
 /// A brief namespace description.
 namespace vEngine
 {
     namespace Core
     {
-        Interface IRenderer
-        {
-        public:
-            virtual void Render() = 0;
-        };
-
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
