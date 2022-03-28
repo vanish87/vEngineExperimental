@@ -23,11 +23,12 @@ namespace vEngine
         /// should be 2 lines
         D3D11GraphicsBuffer::D3D11GraphicsBuffer(const GraphicsBufferDescriptor& desc) : GraphicsBuffer(desc)
         {
+            PRINT("D3DGraphicsBuffer");
             auto re = &Core::Context::GetInstance().GetRenderEngine();
             auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
             auto device = d3d_re->Device();
-            D3D11_BUFFER_DESC d3d_desc;
-            device->CreateBuffer(&d3d_desc, nullptr, this->buffer_.GetAddressOf());
+            // D3D11_BUFFER_DESC d3d_desc;
+            // device->CreateBuffer(&d3d_desc, nullptr, this->buffer_.GetAddressOf());
         }
 
         /// A detailed function description, it

@@ -32,7 +32,10 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                Renderer(){};
+                Renderer()
+                {
+
+                };
 
                 virtual void Render()
                 {

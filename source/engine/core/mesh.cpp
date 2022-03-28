@@ -20,9 +20,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Mesh::Mesh()
-        {
-        }
+        Mesh::Mesh() : vertex_buffer_(nullptr), index_buffer_(nullptr) {}
 
         /// Load mesh from assimp lib
         /// store them in cpu side, then update to gpu later

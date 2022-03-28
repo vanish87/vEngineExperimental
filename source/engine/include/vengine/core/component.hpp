@@ -31,7 +31,10 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                Component(){};
+                Component()
+                {
+                    this->game_object_ = std::make_shared<T>();
+                };
                 virtual ~Component(){};
 
                 std::shared_ptr<T> game_object_;

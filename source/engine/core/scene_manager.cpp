@@ -28,34 +28,34 @@ namespace vEngine
 		{
 
                 auto mp = std::make_shared<Rendering::MeshRendererComponent>();
-                mp->game_object_ = std::make_shared<Rendering::MeshRenderer>();
+                // mp->game_object_ = std::make_shared<Rendering::MeshRenderer>();
                 // auto mp = std::make_shared<MeshRendererComponent>();
                 // auto mp = std::make_shared<MeshComponent>();
                 SceneManager::GetInstance().AddToSceneRoot(mp);
-
-				GameNodeSharedPtr go = mp;
-				auto ic = dynamic_cast<IComponent*>(go.get());
-
-				if(ic != nullptr)
-				{
-					PRINT("IComponent");
-				}
-
 		}
         void SceneManager::Deinit() {}
         void SceneManager::Update()
         {
-            // find render component in root
-            this->root_.ForEach<IComponent>([&](IComponent* c) {
-                auto renderer = dynamic_cast<Rendering::MeshRendererComponent*>(c);
-				PRINT("IComponent");
-                if (renderer != nullptr)
-                {
-                    PRINT("IRender");
-                    // add IRenderer to render queue
-                    this->render_queue_.push(renderer->game_object_.get());
-                }
+            auto nodes = std::vector<GameNode*>();
+            this->root_.Traverse<GameNode>([&](GameNode* n) {
+                nodes.push_back(n);
+                return true;
             });
+
+            for (const auto& n : nodes)
+            {
+                // find render component in root
+                n->ForEach<IComponent>([&](IComponent* c) {
+                    PRINT("IComponent");
+                    auto renderer = dynamic_cast<Rendering::MeshRendererComponent*>(c);
+                    if (renderer != nullptr)
+                    {
+                        PRINT("MeshRendererComponent");
+                        // add IRenderer to render queue
+                        this->render_queue_.push(renderer->game_object_.get());
+                    }
+                });
+            }
 
             while (!this->render_queue_.empty())
             {

@@ -54,6 +54,17 @@ namespace vEngine
                         }
                     }
                 }
+                template <typename T>
+                void Traverse(std::function<bool(T*)> const& func)
+                {
+                    if (func(this))
+                    {
+                        for (const auto& c : this->children_)
+                        {
+                            c->Traverse(func);
+                        }
+                    }
+                }
 
             private:
                 // transform

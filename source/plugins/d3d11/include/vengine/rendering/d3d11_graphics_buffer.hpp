@@ -35,7 +35,7 @@ namespace vEngine
                 // int public_variable_;
 
             public:
-                ComPtr<ID3D11Buffer> buffer_;
+                // ComPtr<ID3D11Buffer> buffer_;
             
                 /// \brief A brief function description.
                 ///

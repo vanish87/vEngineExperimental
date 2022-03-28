@@ -8,8 +8,8 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/core/context.hpp>
-#include <vengine/core/mesh_renderer.hpp>
 #include <vengine/core/mesh.hpp>
+#include <vengine/core/mesh_renderer.hpp>
 #include <vengine/core/mesh_renderer_component.hpp>
 #include <vengine/rendering/render_engine.hpp>
 
@@ -22,18 +22,27 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        MeshRenderer::MeshRenderer() 
-		{
-			PRINT("Mesh renderer");
-		}
+        MeshRenderer::MeshRenderer()
+        {
+            PRINT("Mesh renderer");
+        }
         void MeshRenderer::Render()
         {
             auto& re = Context::GetInstance().GetRenderEngine();
             auto mesh = this->renderable_;
+            if (mesh != nullptr)
+            {
+                mesh->UpdateGPUBuffer();
 
-            re.Render(mesh->vertex_buffer_, mesh->index_buffer_);
+                PRINT("MeshRenderer Call re.Render(vertex, index)");
+                re.Render(mesh->vertex_buffer_, mesh->index_buffer_);
 
-            re.PrintInfo();
+                re.PrintInfo();
+            }
+            else
+            {
+                PRINT("Mesh is null");
+            }
         }
     }  // namespace Core
 
