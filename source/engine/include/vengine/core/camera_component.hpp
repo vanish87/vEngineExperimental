@@ -12,6 +12,7 @@
 
 #pragma once
 
+#include <VENGINE_API.h>
 #include <vengine/core/component.hpp>
 #include <vengine/core/camera.hpp>
 
@@ -24,7 +25,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class CameraComponent : public Component<Camera>
+        class VENGINE_API CameraComponent : public Component<Camera>
         {
             public:
                 /// \brief brief constructor description.

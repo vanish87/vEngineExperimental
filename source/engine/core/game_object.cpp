@@ -20,6 +20,7 @@ namespace vEngine
         /// constructor detailed defintion,
         /// should be 2 lines
         GameObject::GameObject() {}
+        GameObject::~GameObject() {}
     }  // namespace Core
 
 }  // namespace vEngine

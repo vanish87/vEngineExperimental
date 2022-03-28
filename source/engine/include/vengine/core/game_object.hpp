@@ -30,6 +30,7 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 GameObject();
+                virtual ~GameObject();
 
                 // uuid
                 UUID uuid_;

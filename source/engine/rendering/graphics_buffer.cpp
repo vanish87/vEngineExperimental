@@ -19,13 +19,12 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        GraphicsBuffer::GraphicsBuffer() {}
-
-        GraphicsBufferSharedPtr GraphicsBuffer::Create(const GraphicsBufferDescriptor& desc)
+        GraphicsBuffer::GraphicsBuffer(const GraphicsBufferDescriptor& desc) 
         {
-            UNUSED_PARAMETER(desc);
-            return std::make_shared<GraphicsBuffer>();
+            this->descriptor_ = desc;
+
         }
+        GraphicsBuffer::~GraphicsBuffer() {}
 
         /// A detailed function description, it
         /// should be 2 lines at least.

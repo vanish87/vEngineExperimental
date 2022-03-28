@@ -4,7 +4,10 @@
 #include <vengine/core/context.hpp>
 #include <vengine/core/vector.hpp>
 #include <vengine/core/window.hpp>
+#include <vengine/rendering/d3d11_frame_buffer.hpp>
+#include <vengine/rendering/d3d11_graphics_buffer.hpp>
 #include <vengine/rendering/d3d11_render_engine.hpp>
+#include <vengine/rendering/d3d11_texture.hpp>
 
 namespace vEngine
 {
@@ -40,22 +43,19 @@ namespace vEngine
             auto hr = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &scd, &d3d_swap_chain_, &d3d_device_, nullptr, &d3d_imm_context_);
 
             CHECK_ASSERT(hr == S_OK);
-            CHECK_ASSERT_NOT_NULL(d3d_swap_chain_);
-            CHECK_ASSERT_NOT_NULL(d3d_device_);
-            CHECK_ASSERT_NOT_NULL(d3d_imm_context_);
+            CHECK_ASSERT_NOT_NULL(this->d3d_swap_chain_);
+            CHECK_ASSERT_NOT_NULL(this->d3d_device_);
+            CHECK_ASSERT_NOT_NULL(this->d3d_imm_context_);
 
             // get the address of the back buffer
             ID3D11Texture2D* pBackBuffer;
-            hr = d3d_swap_chain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+            hr = this->d3d_swap_chain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
             CHECK_ASSERT(hr == S_OK);
 
-            // use the back buffer address to create the render target
-            hr = d3d_device_->CreateRenderTargetView(pBackBuffer, nullptr, &this->backbuffer_);
-            CHECK_ASSERT(hr == S_OK);
-            pBackBuffer->Release();
-
-            // set the render target as the back buffer
-            d3d_imm_context_->OMSetRenderTargets(1, &this->backbuffer_, nullptr);
+            auto backbufferTexture = std::make_shared<D3D11Texture>(pBackBuffer);
+            FrameBufferDescriptor desc;
+            auto frameBuffer = std::make_shared<D3D11FrameBuffer>(backbufferTexture, desc);
+            this->Bind(frameBuffer);
 
             // Set the viewport
             D3D11_VIEWPORT viewport;
@@ -72,8 +72,9 @@ namespace vEngine
         }
         void D3D11RenderEngine::Update()
         {
-            const float color[4] = {0.0f, 0.2f, 0.4f, 1.0f};
-            this->d3d_imm_context_->ClearRenderTargetView(this->backbuffer_, color);
+            const float bg[4] = {0.0f, 0.2f, 0.4f, 1.0f};
+            auto color = dynamic_cast<D3D11Texture*>(this->current_frame_buffer_->GetColor(0).get());
+            this->d3d_imm_context_->ClearRenderTargetView(color->AsRTV().Get(), bg);
             this->TriangleDraw();
             this->d3d_swap_chain_->Present(0, 0);
         }
@@ -179,6 +180,25 @@ namespace vEngine
             this->ps->Release();
             this->layout->Release();
             this->vertex_buffer->Release();
+        }
+        void D3D11RenderEngine::OnBind(const FrameBufferSharedPtr frameBuffer)
+        {
+            auto color = dynamic_cast<D3D11Texture*>(frameBuffer->GetColor(0).get());
+            // auto depth = dynamic_cast<D3D11Texture*>(frameBuffer->GetDepthStencil().get());
+            this->d3d_imm_context_->OMSetRenderTargets(1, color->AsRTV().GetAddressOf(), nullptr);
+            // this->d3d_imm_context_->OMSetRenderTargets(1, color->AsRTV().GetAddressOf(), depth->AsDSV().Get());
+        }
+        TextureSharedPtr D3D11RenderEngine::Create(const TextureDescriptor& desc)
+        {
+            return std::make_shared<D3D11Texture>(desc);
+        }
+        FrameBufferSharedPtr D3D11RenderEngine::Create(const FrameBufferDescriptor& desc)
+        {
+            return std::make_shared<D3D11FrameBuffer>(desc);
+        }
+        GraphicsBufferSharedPtr D3D11RenderEngine::Create(const GraphicsBufferDescriptor& desc)
+        {
+            return std::make_shared<D3D11GraphicsBuffer>(desc);
         }
 
     }  // namespace Rendering

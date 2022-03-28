@@ -12,45 +12,25 @@
 
 #pragma once
 
+#include <VENGINE_API.h>
 #include <engine.hpp>
-#include <vengine/core/data_format.hpp>
 
 namespace vEngine
 {
     namespace Rendering
     {
-		enum class TextureDimension
-		{
-			TD_1D,
-			TD_2D,
-			TD_3D,
-			TD_Cure,
-
-		};
-		enum class TextureUsage
-		{
-			GBU_CPU = 1 << 0,
-			GBU_GPU = 1 << 1,
-		};
-		class TextureDescriptor
-		{
-			TextureDimension dimension;
-			DataFormat format;
-			TextureUsage usage;
-			// std::vector<std::pair<
-
-		};
         /// \brief Unity-like Graphics buffer
         ///
         /// Graphics buffer could be index/vertex buffer or
 		/// constant buffer.
 		/// It could be used in cpu and/or gpu
 		// template<typename T>
-        class Texture
+        class VENGINE_API Texture
         {
             public:
                 /// \brief brief constructor description.
-                Texture();
+                Texture(const TextureDescriptor& desc);
+                virtual ~Texture();
 
                 /// class variable description
                 // int public_variable_;
@@ -63,7 +43,7 @@ namespace vEngine
                 /// \param p1 Description for p1.
                 /// \param p2 Description for p2.
                 /// \return Description for return value.
-                static Texture Create(const TextureDescriptor& desc);
+                // static Texture Create(const TextureDescriptor& desc);
         };
     }  // namespace Rendering
 

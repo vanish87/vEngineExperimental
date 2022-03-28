@@ -15,6 +15,7 @@
 
 #include <memory>
 #include <vengine/core/game_node.hpp>
+#include <vengine/core/icomponent.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -26,11 +27,12 @@ namespace vEngine
         /// Unity-like Component model attached
         /// as game node in the scene
         template <typename T>
-        class VENGINE_API Component : public GameNode
+        class VENGINE_API Component : public GameNode, public IComponent
         {
             public:
                 /// \brief brief constructor description.
                 Component(){};
+                virtual ~Component(){};
 
                 std::shared_ptr<T> game_object_;
         };

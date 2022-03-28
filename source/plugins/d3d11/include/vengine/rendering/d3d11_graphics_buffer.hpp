@@ -1,5 +1,5 @@
-/// \file graphics_buffer.hpp
-/// \brief Head file for Graphics Buffer
+/// \file d3d11_graphics_buffer.hpp
+/// \brief Head file for D3D11GraphicsBuffer
 ///
 /// A detailed file description.
 ///
@@ -7,11 +7,13 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#ifndef _VENGINE_RENDERING_GRAPHICS_BUFFER_HPP
-#define _VENGINE_RENDERING_GRAPHICS_BUFFER_HPP
+#ifndef _VENGINE_RENDERING_D3D11_GRAPHICS_BUFFER_HPP
+#define _VENGINE_RENDERING_D3D11_GRAPHICS_BUFFER_HPP
 
-#include <VENGINE_API.h>
-#include <engine.hpp>
+#pragma once
+
+#include <vengine/rendering/d3d11_predeclear.hpp>
+#include <vengine/rendering/graphics_buffer.hpp>
 
 namespace vEngine
 {
@@ -20,22 +22,21 @@ namespace vEngine
         /// \brief Unity-like Graphics buffer
         ///
         /// Graphics buffer could be index/vertex buffer or
-		/// constant buffer.
-		/// It could be used in cpu and/or gpu
-		// template<typename T>
-        class VENGINE_API GraphicsBuffer
+        /// constant buffer.
+        /// It could be used in cpu and/or gpu
+        // template<typename T>
+        class D3D11GraphicsBuffer : public GraphicsBuffer
         {
             public:
                 /// \brief brief constructor description.
-                GraphicsBuffer(const GraphicsBufferDescriptor& desc);
-                virtual ~GraphicsBuffer();
+                D3D11GraphicsBuffer(const GraphicsBufferDescriptor& desc);
 
                 /// class variable description
                 // int public_variable_;
 
-				GraphicsBufferDescriptor descriptor_;
-
             public:
+                ComPtr<ID3D11Buffer> buffer_;
+            
                 /// \brief A brief function description.
                 ///
                 /// \param p1 Description for p1.
@@ -46,4 +47,4 @@ namespace vEngine
 
 }  // namespace vEngine
 
-#endif /* _VENGINE_RENDERING_GRAPHICS_BUFFER_HPP */
+#endif /* _VENGINE_RENDERING_D3D11_GRAPHICS_BUFFER_HPP */

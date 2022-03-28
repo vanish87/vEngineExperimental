@@ -31,10 +31,9 @@ namespace vEngine
             auto& re = Context::GetInstance().GetRenderEngine();
             auto mesh = this->renderable_;
 
-			re.Render(mesh->buffer_);
+            re.Render(mesh->vertex_buffer_, mesh->index_buffer_);
 
-
-			re.PrintInfo();
+            re.PrintInfo();
         }
     }  // namespace Core
 

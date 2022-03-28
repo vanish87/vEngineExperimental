@@ -10,9 +10,12 @@
 #ifndef _VENGINE_CORE_MESH_HPP
 #define _VENGINE_CORE_MESH_HPP
 
+#include <vector>
+
 #include <VENGINE_API.h>
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
+
 
 /// A brief namespace description.
 namespace vEngine
@@ -34,9 +37,14 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 Mesh();
+                void Load(const std::string file_name);
+                void UpdateGPUBuffer();
 
 
-                GraphicsBufferSharedPtr buffer_;
+                GraphicsBufferSharedPtr vertex_buffer_;
+                GraphicsBufferSharedPtr index_buffer_;
+
+                std::vector<Vertex> vertex_data_;
                 //vertex
                 //index
 

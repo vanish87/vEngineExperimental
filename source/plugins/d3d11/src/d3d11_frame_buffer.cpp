@@ -1,5 +1,5 @@
-/// \file frame_buffer.cpp
-/// \brief source file for Frame Buffer
+/// \file d3d11_frame_buffer.cpp
+/// \brief source file for D3D11 FrameBuffer
 ///
 /// A detailed file description.
 ///
@@ -8,8 +8,9 @@
 /// \date xxxx-xx-xxx
 
 // #include <vengine/core/context.hpp>
-#include <vengine/rendering/frame_buffer.hpp>
-// #include <vengine/rendering/render_engine.hpp>
+#include <vengine/rendering/d3d11_frame_buffer.hpp>
+// #include <vengine/rendering/d3d11_render_engine.hpp>
+// #include <vengine/rendering/d3d11_texture.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -17,21 +18,12 @@ namespace vEngine
 {
     namespace Rendering
     {
-        FrameBuffer::FrameBuffer(const FrameBufferDescriptor& desc)
-        {
-            UNUSED_PARAMETER(desc);
-        }
+        // using namespace vEngine::Core;
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        FrameBuffer::FrameBuffer(TextureSharedPtr backBuffer, const FrameBufferDescriptor& desc)
-        {
-            UNUSED_PARAMETER(desc);
-            // auto& re = Context::GetInstance().GetRenderEngine();
-            this->colorTextures_.push_back(backBuffer);
-            // this->depthStencilTexture_ = 
-        }
-        FrameBuffer::~FrameBuffer() {}
+        D3D11FrameBuffer::D3D11FrameBuffer(const FrameBufferDescriptor& desc) : FrameBuffer(desc) {}
+        D3D11FrameBuffer::D3D11FrameBuffer(TextureSharedPtr backBuffer, const FrameBufferDescriptor& desc) : FrameBuffer(backBuffer, desc) {}
 
         /// A detailed function description, it
         /// should be 2 lines at least.

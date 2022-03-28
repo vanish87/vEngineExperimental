@@ -23,10 +23,19 @@ namespace vEngine
                 virtual void Deinit() = 0;
                 virtual void Update() = 0;
 
-                virtual void BeginRender(){};
-                virtual void Render(GraphicsBufferSharedPtr vertex)
+                virtual void Bind(const FrameBufferSharedPtr frameBuffer)
                 {
-                    UNUSED_PARAMETER(vertex);
+                    this->current_frame_buffer_ = frameBuffer;
+                    this->OnBind(frameBuffer);
+                }
+
+                virtual void OnBind(const FrameBufferSharedPtr frameBuffer) = 0;
+
+                virtual void BeginRender(){};
+                virtual void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice)
+                {
+                    auto v = vertice;
+                    auto i = indice;
                     //very basic rendering of sth.
                     //IASetBuffer
                     //IASetTopology
@@ -40,6 +49,14 @@ namespace vEngine
                 // virutal void SetupFrameTextureToRender
                 //GPU Resource management
                 // virtual void 
+
+                virtual TextureSharedPtr Create(const TextureDescriptor& desc) = 0;
+                virtual FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) = 0;
+                virtual GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) = 0;
+
+
+                FrameBufferSharedPtr current_frame_buffer_;
+                
         };
     }  // namespace Rendering
 }  // namespace vEngine

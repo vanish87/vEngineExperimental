@@ -1,5 +1,6 @@
-/// \file texture.cpp
-/// \brief source file for Texture
+
+/// \file d3d11_graphics_buffer.cpp
+/// \brief source file for D3D11 GraphicsBuffer
 ///
 /// A detailed file description.
 ///
@@ -7,7 +8,9 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#include <vengine/rendering/texture.hpp>
+#include <vengine/rendering/d3d11_graphics_buffer.hpp>
+#include <vengine/core/context.hpp>
+#include <vengine/rendering/d3d11_render_engine.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -18,11 +21,14 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Texture::Texture(const TextureDescriptor& desc)
+        D3D11GraphicsBuffer::D3D11GraphicsBuffer(const GraphicsBufferDescriptor& desc) : GraphicsBuffer(desc)
         {
-            UNUSED_PARAMETER(desc);
+            auto re = &Core::Context::GetInstance().GetRenderEngine();
+            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
+            auto device = d3d_re->Device();
+            D3D11_BUFFER_DESC d3d_desc;
+            device->CreateBuffer(&d3d_desc, nullptr, this->buffer_.GetAddressOf());
         }
-        Texture::~Texture() {}
 
         /// A detailed function description, it
         /// should be 2 lines at least.
