@@ -36,6 +36,11 @@ namespace vEngine
                 {
 
                 };
+                
+                virtual bool UpdateRenderable()
+                {
+
+                }
 
                 virtual void Render()
                 {

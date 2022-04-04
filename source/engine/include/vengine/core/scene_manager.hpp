@@ -38,11 +38,11 @@ namespace vEngine
                 void Deinit() override;
                 void Update() override;
 
-				void AddToSceneRoot(const GameNodeSharedPtr newNode);
+                void AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node = nullptr);
 
-				GameNode root_;
+                GameNode root_;
 
-				std::queue<IRenderer*> render_queue_;
+                std::queue<IRenderer*> render_queue_;
         };
     }  // namespace Core
 }  // namespace vEngine

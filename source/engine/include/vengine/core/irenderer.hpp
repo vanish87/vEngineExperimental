@@ -8,6 +8,7 @@ namespace vEngine
         Interface IRenderer
         {
         public:
+            virtual bool UpdateRenderable() = 0;
             virtual void Render() = 0;
         };
     }  // namespace Core

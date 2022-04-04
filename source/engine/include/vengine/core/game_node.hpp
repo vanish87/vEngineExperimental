@@ -39,11 +39,14 @@ namespace vEngine
                 GameNode();
                 virtual ~GameNode();
 
+                void AddChild(const GameNodeSharedPtr game_node);
+                void RemoveChild(const GameNodeSharedPtr game_node);
+                
                 void AddComponent(const GameNodeSharedPtr component);
                 void RemoveComponent(const GameNodeSharedPtr component);
 
                 template <typename T>
-                void ForEach(std::function<void(T*)> const& iter)
+                void ForEachChild(std::function<void(T*)> const& iter)
                 {
                     for (auto c : this->children_)
                     {
