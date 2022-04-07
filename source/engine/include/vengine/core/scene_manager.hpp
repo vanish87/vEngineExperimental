@@ -40,9 +40,9 @@ namespace vEngine
 
                 void AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node = nullptr);
 
-                GameNode root_;
+                GameNodeSharedPtr root_;
 
-                std::queue<IRenderer*> render_queue_;
+                std::queue<IRendererSharedPtr> render_queue_;
         };
     }  // namespace Core
 }  // namespace vEngine

@@ -68,6 +68,9 @@ namespace vEngine
         CLASS_AND_SHARED_POINTER(CameraComponent)
         CLASS_AND_SHARED_POINTER(LightComponent)
         CLASS_AND_SHARED_POINTER(MeshComponent)
+
+        CLASS_AND_SHARED_POINTER(IComponent)
+        CLASS_AND_SHARED_POINTER(IRenderer)
     }  // namespace Core
     namespace Rendering
     {

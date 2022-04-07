@@ -73,7 +73,7 @@ namespace vEngine
         void D3D11RenderEngine::Update()
         {
             const float bg[4] = {0.0f, 0.2f, 0.4f, 1.0f};
-            auto color = dynamic_cast<D3D11Texture*>(this->current_frame_buffer_->GetColor(0).get());
+            auto color = std::dynamic_pointer_cast<D3D11Texture>(this->current_frame_buffer_->GetColor(0));
             this->d3d_imm_context_->ClearRenderTargetView(color->AsRTV().Get(), bg);
             this->TriangleDraw();
             this->d3d_swap_chain_->Present(0, 0);
@@ -183,7 +183,8 @@ namespace vEngine
         }
         void D3D11RenderEngine::OnBind(const FrameBufferSharedPtr frameBuffer)
         {
-            auto color = dynamic_cast<D3D11Texture*>(frameBuffer->GetColor(0).get());
+            // auto color = dynamic_cast<D3D11Texture*>(frameBuffer->GetColor(0).get());
+            auto color = std::dynamic_pointer_cast<D3D11Texture>(frameBuffer->GetColor(0));
             // auto depth = dynamic_cast<D3D11Texture*>(frameBuffer->GetDepthStencil().get());
             this->d3d_imm_context_->OMSetRenderTargets(1, color->AsRTV().GetAddressOf(), nullptr);
             // this->d3d_imm_context_->OMSetRenderTargets(1, color->AsRTV().GetAddressOf(), depth->AsDSV().Get());
@@ -194,10 +195,12 @@ namespace vEngine
         }
         FrameBufferSharedPtr D3D11RenderEngine::Create(const FrameBufferDescriptor& desc)
         {
+            PRINT("Create D3D11FrameBuffer");
             return std::make_shared<D3D11FrameBuffer>(desc);
         }
         GraphicsBufferSharedPtr D3D11RenderEngine::Create(const GraphicsBufferDescriptor& desc)
         {
+            PRINT("Create D3D11GraphicsBuffer");
             return std::make_shared<D3D11GraphicsBuffer>(desc);
         }
 

@@ -9,6 +9,7 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/core/game_node.hpp>
+#include <vengine/core/mesh_component.hpp>
 #include <vengine/core/mesh_renderer_component.hpp>
 #include <vengine/core/scene_manager.hpp>
 
@@ -25,9 +26,14 @@ namespace vEngine
         SceneManager::~SceneManager() {}
         void SceneManager::Init()
         {
+            this->root_ = std::make_shared<GameNode>();
+
             auto gn = std::make_shared<GameNode>();
-            auto mp = std::make_shared<Rendering::MeshRendererComponent>();
-            gn->AddComponent(mp);
+            auto mrc = std::make_shared<Rendering::MeshRendererComponent>();
+            gn->AddComponent(mrc);
+            auto mc = std::make_shared<Rendering::MeshComponent>();
+            mc->game_object_->Load("MyMesh.obj");
+            gn->AddComponent(mc);
             // mp->game_object_ = std::make_shared<Rendering::MeshRenderer>();
             // auto mp = std::make_shared<MeshRendererComponent>();
             // auto mp = std::make_shared<MeshComponent>();
@@ -36,8 +42,8 @@ namespace vEngine
         void SceneManager::Deinit() {}
         void SceneManager::Update()
         {
-            auto nodes = std::vector<GameNode*>();
-            this->root_.Traverse<GameNode>([&](GameNode* n) {
+            auto nodes = std::vector<GameNodeSharedPtr>();
+            this->root_->Traverse<GameNode>([&](GameNodeSharedPtr n) {
                 nodes.push_back(n);
                 return true;
             });
@@ -45,21 +51,37 @@ namespace vEngine
             for (const auto& n : nodes)
             {
                 // find render component in root
-                n->ForEachChild<IComponent>([&](IComponent* c) {
+                n->ForEachChild<IComponent>([&](IComponentSharedPtr c) {
                     PRINT("IComponent");
-                    auto renderer = dynamic_cast<Rendering::MeshRendererComponent*>(c);
+                    auto renderer = std::dynamic_pointer_cast<Rendering::MeshRendererComponent>(c);
                     if (renderer != nullptr)
                     {
-                        PRINT("MeshRendererComponent");
-                        // add IRenderer to render queue
-                        this->render_queue_.push(renderer->game_object_.get());
+                        auto meshComponent = n->FirstOf<MeshComponent>();
+                        if(meshComponent != nullptr)
+                        {
+                            renderer->game_object_->renderable_ = meshComponent->game_object_;
+                            PRINT("MeshRendererComponent");
+                            // add IRenderer to render queue
+                            this->render_queue_.push(renderer->game_object_);
+                        }
                     }
                 });
+
+                // n->ForEachChild<IComponent>([&](IComponent* c) {
+                //     PRINT("IComponent");
+                //     auto renderer = dynamic_cast<Rendering::MeshRendererComponent*>(c);
+                //     if (renderer != nullptr)
+                //     {
+                //         PRINT("MeshRendererComponent");
+                //         // add IRenderer to render queue
+                //         this->render_queue_.push(renderer->game_object_.get());
+                //     }
+                // });
             }
 
             while (!this->render_queue_.empty())
             {
-                auto& r = this->render_queue_.front();
+                auto r = this->render_queue_.front();
                 this->render_queue_.pop();
 
                 r->Render();
@@ -70,12 +92,12 @@ namespace vEngine
         {
             if (game_node == nullptr)
             {
-                this->root_.AddChild(new_node);
+                this->root_->AddChild(new_node);
             }
             else
             {
-                this->root_.Traverse<GameNode>([&](GameNode* n) {
-                    if (n == game_node.get())
+                this->root_->Traverse<GameNode>([&](GameNodeSharedPtr n) {
+                    if (n == game_node)
                     {
                         n->AddChild(new_node);
                         return false;

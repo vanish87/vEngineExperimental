@@ -32,7 +32,7 @@ namespace vEngine
         /// and contructs a tree struture that presents the game scene
         /// the child of GameNode could be a normal game node or
         /// a component that referenced to other game object class
-        class VENGINE_API GameNode
+        class VENGINE_API GameNode : public std::enable_shared_from_this<GameNode>
         {
             public:
                 /// \brief brief constructor description.
@@ -46,11 +46,24 @@ namespace vEngine
                 void RemoveComponent(const GameNodeSharedPtr component);
 
                 template <typename T>
-                void ForEachChild(std::function<void(T*)> const& iter)
+                std::shared_ptr<T> FirstOf()
                 {
                     for (auto c : this->children_)
                     {
-                        auto go = dynamic_cast<T*>(c.get());
+                        auto go = std::dynamic_pointer_cast<T>(c);
+                        if (go != nullptr)
+                        {
+                            return go;
+                        }
+                    }
+                    return nullptr;
+                }
+                template <typename T>
+                void ForEachChild(std::function<void(std::shared_ptr<T>)> const& iter)
+                {
+                    for (auto c : this->children_)
+                    {
+                        auto go = std::dynamic_pointer_cast<T>(c);
                         if (go != nullptr)
                         {
                             iter(go);
@@ -58,9 +71,9 @@ namespace vEngine
                     }
                 }
                 template <typename T>
-                void Traverse(std::function<bool(T*)> const& func)
+                void Traverse(std::function<bool(std::shared_ptr<T>)> const& func)
                 {
-                    if (func(this))
+                    if (func(shared_from_this()))
                     {
                         for (const auto& c : this->children_)
                         {
@@ -68,6 +81,29 @@ namespace vEngine
                         }
                     }
                 }
+                // template <typename T>
+                // void ForEachChild(std::function<void(T*)> const& iter)
+                // {
+                //     for (auto c : this->children_)
+                //     {
+                //         auto go = dynamic_cast<T*>(c.get());
+                //         if (go != nullptr)
+                //         {
+                //             iter(go);
+                //         }
+                //     }
+                // }
+                // template <typename T>
+                // void Traverse(std::function<bool(T*)> const& func)
+                // {
+                //     if (func(this))
+                //     {
+                //         for (const auto& c : this->children_)
+                //         {
+                //             c->Traverse(func);
+                //         }
+                //     }
+                // }
 
             private:
                 // transform

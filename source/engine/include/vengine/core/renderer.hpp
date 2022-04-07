@@ -39,7 +39,7 @@ namespace vEngine
                 
                 virtual bool UpdateRenderable()
                 {
-
+                    return false;
                 }
 
                 virtual void Render()

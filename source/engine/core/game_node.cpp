@@ -25,7 +25,7 @@ namespace vEngine
 
         void GameNode::AddComponent(const GameNodeSharedPtr component)
         {
-            auto com = dynamic_cast<IComponent*>(component.get());
+            auto com = std::dynamic_pointer_cast<IComponent>(component);
             CHECK_ASSERT_NOT_NULL(com);
             if (com != nullptr)
             {
@@ -34,7 +34,7 @@ namespace vEngine
         }
         void GameNode::RemoveComponent(const GameNodeSharedPtr component)
         {
-            auto com = dynamic_cast<IComponent*>(component.get());
+            auto com = std::dynamic_pointer_cast<IComponent>(component);
             CHECK_ASSERT_NOT_NULL(com);
             if (com != nullptr)
             {

@@ -24,7 +24,7 @@ namespace vEngine
         /// should be 2 lines
         MeshRenderer::MeshRenderer()
         {
-            PRINT("Mesh renderer");
+            PRINT("Mesh renderer created");
         }
         void MeshRenderer::Render()
         {
