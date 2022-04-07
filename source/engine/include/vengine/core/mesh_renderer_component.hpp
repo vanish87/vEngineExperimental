@@ -12,6 +12,7 @@
 
 #include <vengine/core/component.hpp>
 #include <vengine/core/mesh_renderer.hpp>
+#include <vengine/core/mesh_component.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -28,6 +29,13 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 MeshRendererComponent();
+
+                virtual void Update(GameNodeSharedPtr parent) override
+                {
+                    PRINT("MeshRendererComponent Update");
+                    auto meshComponent = parent->FirstOf<MeshComponent>();
+                    this->game_object_->renderable_ = meshComponent->game_object_;
+                };
         };
     }  // namespace Core
 }  // namespace vEngine

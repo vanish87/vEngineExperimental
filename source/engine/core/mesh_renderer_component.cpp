@@ -19,6 +19,7 @@ namespace vEngine
         /// constructor detailed defintion,
         /// should be 2 lines
         MeshRendererComponent::MeshRendererComponent() {}
+
     }  // namespace Core
 
 }  // namespace vEngine

@@ -8,6 +8,9 @@ namespace vEngine
     {
         Interface VENGINE_API IComponent
         {
+        public:
+            virtual void Update(GameNodeSharedPtr parent){};
+
         protected:
             virtual ~IComponent(){};
         };

@@ -9,7 +9,6 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/core/game_node.hpp>
-#include <vengine/core/mesh_component.hpp>
 #include <vengine/core/mesh_renderer_component.hpp>
 #include <vengine/core/scene_manager.hpp>
 
@@ -53,18 +52,18 @@ namespace vEngine
                 // find render component in root
                 n->ForEachChild<IComponent>([&](IComponentSharedPtr c) {
                     PRINT("IComponent");
+                    //Render mesh
                     auto renderer = std::dynamic_pointer_cast<Rendering::MeshRendererComponent>(c);
                     if (renderer != nullptr)
                     {
-                        auto meshComponent = n->FirstOf<MeshComponent>();
-                        if(meshComponent != nullptr)
+                        renderer->Update(n);
+                        if(renderer->game_object_ != nullptr)
                         {
-                            renderer->game_object_->renderable_ = meshComponent->game_object_;
-                            PRINT("MeshRendererComponent");
                             // add IRenderer to render queue
                             this->render_queue_.push(renderer->game_object_);
                         }
                     }
+                    //Render other renderers(transparent, particle etc.) if possible
                 });
 
                 // n->ForEachChild<IComponent>([&](IComponent* c) {
