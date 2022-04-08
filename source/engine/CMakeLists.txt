@@ -25,6 +25,7 @@ set(HEADER_NAME ${PROJECT_NAME})
 string(TOUPPER ${HEADER_NAME} HEADER_NAME)
 
 message(STATUS "CMAKE_BINARY_DIR= ${CMAKE_BINARY_DIR}")
+message(STATUS "ASSIMP_INCLUDE_DIR= ${ASSIMP_INCLUDE_DIR}")
 
 GENERATE_EXPORT_HEADER( ${PROJECT_NAME}
              BASE_NAME ${HEADER_NAME}
@@ -35,12 +36,14 @@ GENERATE_EXPORT_HEADER( ${PROJECT_NAME}
 
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include
+    PUBLIC ${ASSIMP_INCLUDE_DIR}
 )
 
-# target_link_libraries( ${PROJECT_NAME}
-# 	${LUA_LIBRARIES}
-# 	${FREETYPE_LIBRARIES}
-# )
+target_link_libraries( ${PROJECT_NAME}
+	${ASSIMP_LIBRARIES}
+	# ${LUA_LIBRARIES}
+	# ${FREETYPE_LIBRARIES}
+)
 
 if(UNIX)
 target_link_libraries( ${PROJECT_NAME}
@@ -48,6 +51,12 @@ target_link_libraries( ${PROJECT_NAME}
     dl
 )
 endif()
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${EXTERNAL_BUILD_DIR}/bin"
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/
+)
 
 if(APPLE)
     # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

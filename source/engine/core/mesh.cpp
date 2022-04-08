@@ -7,6 +7,9 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
+
 #include <vengine/core/context.hpp>
 #include <vengine/core/mesh.hpp>
 #include <vengine/rendering/render_engine.hpp>
@@ -30,12 +33,20 @@ namespace vEngine
         /// store them in cpu side, then update to gpu later
         void Mesh::Load(const std::string file_name)
         {
-            PRINT("Load mesh from file " + file_name);
+            // PRINT("Load mesh from file " + file_name);
             this->file_name_ = file_name;
         }
         bool Mesh::Load()
         {
+            this->file_name_ = "bunny.obj";
             PRINT("Load mesh from file " + this->file_name_);
+
+            Assimp::Importer importer;
+
+            const aiScene* pScene = importer.ReadFile(this->file_name_, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
+
+            UNUSED_PARAMETER(pScene);
+
             return true;
         }
 

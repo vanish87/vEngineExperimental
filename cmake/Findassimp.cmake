@@ -11,6 +11,8 @@ endif(CMAKE_SIZEOF_VOID_P EQUAL 8)
 if(WIN32)
 	set(ASSIMP_ROOT_DIR ${EXTERNAL_BUILD_DIR})
 
+	# message(STATUS "ASSIMP_ROOT_DIR= ${ASSIMP_ROOT_DIR}")
+
 	# Find path of each library
 	find_path(ASSIMP_INCLUDE_DIR
 		NAMES
@@ -19,10 +21,12 @@ if(WIN32)
 			${ASSIMP_ROOT_DIR}/include
 	)
 
+	# message(STATUS "ASSIMP_INCLUDE_DIR= ${ASSIMP_INCLUDE_DIR}")
+
 	if(MSVC12)
 		set(ASSIMP_MSVC_VERSION "vc120")
 	elseif(MSVC14)	
-		set(ASSIMP_MSVC_VERSION "vc140")
+		set(ASSIMP_MSVC_VERSION "vc142")
 	endif(MSVC12)
 	
 	if(MSVC12 OR MSVC14)
