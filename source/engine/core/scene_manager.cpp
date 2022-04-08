@@ -12,6 +12,7 @@
 #include <vengine/core/mesh_renderer_component.hpp>
 #include <vengine/core/scene_manager.hpp>
 
+#include <vengine/core/resource_loader.hpp>
 /// A detailed namespace description, it
 /// should be 2 lines at least.
 namespace vEngine
@@ -31,12 +32,17 @@ namespace vEngine
             auto mrc = std::make_shared<Rendering::MeshRendererComponent>();
             gn->AddComponent(mrc);
             auto mc = std::make_shared<Rendering::MeshComponent>();
-            mc->game_object_->Load("MyMesh.obj");
+            // mc->game_object_->Load("MyMesh.obj");
+            ResourceLoader::GetInstance().AddAsync(mc->game_object_, [&](IResourceSharedPtr c) {
+                PRINT("Resource loaded");
+            });
+
             gn->AddComponent(mc);
             // mp->game_object_ = std::make_shared<Rendering::MeshRenderer>();
             // auto mp = std::make_shared<MeshRendererComponent>();
             // auto mp = std::make_shared<MeshComponent>();
             SceneManager::GetInstance().AddToSceneNode(gn);
+
         }
         void SceneManager::Deinit() {}
         void SceneManager::Update()

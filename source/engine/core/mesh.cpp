@@ -11,6 +11,7 @@
 #include <vengine/core/mesh.hpp>
 #include <vengine/rendering/render_engine.hpp>
 
+
 /// A detailed namespace description, it
 /// should be 2 lines at least.
 namespace vEngine
@@ -27,9 +28,15 @@ namespace vEngine
 
         /// Load mesh from assimp lib
         /// store them in cpu side, then update to gpu later
-        void Mesh::Load(const std::string filename)
+        void Mesh::Load(const std::string file_name)
         {
-            PRINT("Load mesh from file " + filename);
+            PRINT("Load mesh from file " + file_name);
+            this->file_name_ = file_name;
+        }
+        bool Mesh::Load()
+        {
+            PRINT("Load mesh from file " + this->file_name_);
+            return true;
         }
 
         /// Create GPU related buffer

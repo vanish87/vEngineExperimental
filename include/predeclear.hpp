@@ -71,6 +71,9 @@ namespace vEngine
 
         CLASS_AND_SHARED_POINTER(IComponent)
         CLASS_AND_SHARED_POINTER(IRenderer)
+        CLASS_AND_SHARED_POINTER(IResource)
+
+        CLASS_AND_SHARED_POINTER(ThreadJob)
     }  // namespace Core
     namespace Rendering
     {

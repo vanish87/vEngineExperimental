@@ -15,6 +15,7 @@
 #include <VENGINE_API.h>
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
+#include <vengine/core/iresource.hpp>
 
 
 /// A brief namespace description.
@@ -32,12 +33,13 @@ namespace vEngine
         {
 
         };
-        class VENGINE_API Mesh : public GameObject
+        class VENGINE_API Mesh : public GameObject, public IResource
         {
             public:
                 /// \brief brief constructor description.
                 Mesh();
                 void Load(const std::string file_name);
+                virtual bool Load() override;
                 void UpdateGPUBuffer();
 
 
@@ -45,6 +47,8 @@ namespace vEngine
                 GraphicsBufferSharedPtr index_buffer_;
 
                 std::vector<Vertex> vertex_data_;
+
+                std::string file_name_;
                 //vertex
                 //index
 
