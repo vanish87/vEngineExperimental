@@ -48,7 +48,7 @@ namespace vEngine
                             break;
                     }
 
-                    return DataFormat::DF_Default;
+                    return DataFormat::DF_Undifiend;
                 }
 
             private:

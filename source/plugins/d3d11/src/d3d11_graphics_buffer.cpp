@@ -28,6 +28,7 @@ namespace vEngine
             auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
             auto device = d3d_re->Device();
             // D3D11_BUFFER_DESC d3d_desc;
+            // d3d_desc.Usage = D3D11_USAGE_IMMUTABLE;
             // device->CreateBuffer(&d3d_desc, nullptr, this->buffer_.GetAddressOf());
         }
 

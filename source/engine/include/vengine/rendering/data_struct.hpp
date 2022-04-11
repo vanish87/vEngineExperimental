@@ -21,7 +21,7 @@ namespace vEngine
         };
         enum class GraphicsBufferTopology
         {
-            GBT_Undefined,
+            GBT_Undefined, // for compute buffer or other data buffers that have not topology relations
             GBT_PointList,
             GBT_LineList,
             GBT_TriangleList,
@@ -56,6 +56,8 @@ namespace vEngine
         {
                 GraphicsBufferType type;
                 GraphicsBufferUsage usage;
+                GraphicsBufferTopology topology;
+                // DataFormat format;// undefined format for compute buffer
                 // std::vector<std::pair<
 
                 int offset;
