@@ -105,10 +105,14 @@ namespace vEngine
                 PRINT("Create mesh vertex Buffer");
                 GraphicsBufferDescriptor desc;
                 desc.type = GraphicsBufferType::GBT_Vertex;
-                desc.usage = GraphicsBufferUsage::GBU_GPU;
+                desc.usage = GraphicsBufferUsage::GBU_GPU_Read;
                 desc.topology = GraphicsBufferTopology::GBT_TriangleList;
                 desc.offset = 0;
                 desc.stride = sizeof(Vertex);
+                desc.count = this->vertex_data_.size();
+                desc.total_size = desc.count * desc.stride;
+                desc.data = this->vertex_data_.data();
+
                 this->vertex_buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
             }
 
@@ -117,8 +121,13 @@ namespace vEngine
                 PRINT("Create mesh index Buffer");
                 GraphicsBufferDescriptor desc;
                 desc.type = GraphicsBufferType::GBT_Index;
-                desc.usage = GraphicsBufferUsage::GBU_GPU;
+                desc.usage = GraphicsBufferUsage::GBU_GPU_Read;
                 desc.topology = GraphicsBufferTopology::GBT_Undefined;
+                desc.offset = 0;
+                desc.stride = sizeof(uint32_t);
+                desc.count = this->index_data_.size();
+                desc.total_size = desc.count * desc.stride;
+                desc.data = this->index_data_.data();
                 this->index_buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
             }
         }

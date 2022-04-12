@@ -16,8 +16,11 @@ namespace vEngine
 
         enum class GraphicsBufferUsage
         {
-            GBU_CPU = 1 << 0,
-            GBU_GPU = 1 << 1,
+            //similar design https://docs.microsoft.com/en-us/windows/win32/api/d3d11/ne-d3d11-d3d11_usage
+            GBU_CPU_GPU_ReadWrite,
+            GPU_CPU_Write_GPU_Read,
+            GBU_GPU_Read,
+            GBU_GPU_ReadWrite,
         };
         enum class GraphicsBufferTopology
         {
@@ -60,8 +63,11 @@ namespace vEngine
                 // DataFormat format;// undefined format for compute buffer
                 // std::vector<std::pair<
 
-                int offset;
-                int stride;
+                uint32_t offset;
+                uint32_t stride;
+                uint64_t count;
+                uint64_t total_size;
+                void* data;
         };
         struct FrameBufferDescriptor
         {
