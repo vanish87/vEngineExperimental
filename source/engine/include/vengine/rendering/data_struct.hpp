@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <vector>
 #include <vengine/rendering/data_format.hpp>
 namespace vEngine
 {
@@ -16,18 +17,18 @@ namespace vEngine
 
         enum class GraphicsBufferUsage
         {
-            //similar design https://docs.microsoft.com/en-us/windows/win32/api/d3d11/ne-d3d11-d3d11_usage
+            // similar design https://docs.microsoft.com/en-us/windows/win32/api/d3d11/ne-d3d11-d3d11_usage
             GBU_CPU_GPU_ReadWrite,
             GPU_CPU_Write_GPU_Read,
-            GBU_GPU_Read,
+            GBU_GPU_Read_Only,
             GBU_GPU_ReadWrite,
         };
-        enum class GraphicsBufferTopology
+        enum class ElementTopology
         {
-            GBT_Undefined, // for compute buffer or other data buffers that have not topology relations
-            GBT_PointList,
-            GBT_LineList,
-            GBT_TriangleList,
+            ET_Undefined,  // for compute buffer or other data buffers that have not topology relations
+            ET_PointList,
+            ET_LineList,
+            ET_TriangleList,
         };
         enum class TextureDimension
         {
@@ -55,11 +56,23 @@ namespace vEngine
                     return desc;
                 }
         };
+        struct ElementLayout
+        {
+                struct Element
+                {
+                        Element(const std::string sematic_name, const DataFormat format) : sematic_name_{sematic_name}, format_{format} {}
+                        std::string sematic_name_;
+                        DataFormat format_;
+                };
+
+                std::vector<Element> elements_;
+                ElementTopology topology;
+        };
         struct GraphicsBufferDescriptor
         {
                 GraphicsBufferType type;
                 GraphicsBufferUsage usage;
-                GraphicsBufferTopology topology;
+                ElementLayout layout;
                 // DataFormat format;// undefined format for compute buffer
                 // std::vector<std::pair<
 

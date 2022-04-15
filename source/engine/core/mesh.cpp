@@ -46,8 +46,36 @@ namespace vEngine
             Assimp::Importer importer;
 
             const aiScene* pScene = importer.ReadFile(this->file_name_, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
+            UNUSED_PARAMETER(pScene);
 
             this->HandleNode(pScene->mRootNode, pScene);
+
+            // Vertex v;
+            // v.pos = {0.0f, 0.5f, 0.0f};
+            // v.color = {1.0f, 0.0f, 0.0f, 1.0f};
+            // this->vertex_data_.push_back(v);
+
+            // v.pos = {0.45f, -0.5f, 0.0f};
+            // v.color = {0.0f, 1.0f, 0.0f, 1.0f};
+            // this->vertex_data_.push_back(v);
+
+            // v.pos = {-0.25f, -0.5f, 0.0f};
+            // v.color = {0.0f, 0.0f, 1.0f, 1.0f};
+            // this->vertex_data_.push_back(v);
+
+            // this->vertex_data_[0].pos = {0.5f, -0.5f, 0.0f};
+            // this->vertex_data_[1].pos = {0.45f, -0.5f, 0.0f};
+            // this->vertex_data_[2].pos = {-0.25f, -0.5f, 0.0f};
+
+            // this->index_data_.clear();
+            // this->index_data_.push_back(0);
+			// this->index_data_.push_back(1);
+            // this->index_data_.push_back(3);
+
+            // {{0.45f, -0.5f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 1.0f, 0.0f, 1.0f}},
+            // {{-0.45f, -0.5f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f}}
+
+            this->loaded = true;
 
             return true;
         }
@@ -80,8 +108,11 @@ namespace vEngine
             {
                 Vertex v;
                 v.pos = hasPos ? float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z) : float3(0, 0, 0);
+                v.pos *= 0.2f;
+                v.pos.z() = 0;
                 v.normal = hasNormal ? float3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z) : float3(0, 0, 0);
                 v.uv = hasUV ? float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y) : float2(0, 0);
+                v.color = float4(1,1,1,1);
 
                 this->vertex_data_.emplace_back(v);
             }
@@ -100,29 +131,33 @@ namespace vEngine
         /// ie. Index/Vertice buffer for rendering
         void Mesh::UpdateGPUBuffer()
         {
-            if (this->vertex_buffer_ == nullptr)
+            if (this->vertex_buffer_ == nullptr && this->loaded)
             {
                 PRINT("Create mesh vertex Buffer");
                 GraphicsBufferDescriptor desc;
                 desc.type = GraphicsBufferType::GBT_Vertex;
-                desc.usage = GraphicsBufferUsage::GBU_GPU_Read;
-                desc.topology = GraphicsBufferTopology::GBT_TriangleList;
+                desc.usage = GraphicsBufferUsage::GBU_GPU_Read_Only;
                 desc.offset = 0;
                 desc.stride = sizeof(Vertex);
                 desc.count = this->vertex_data_.size();
                 desc.total_size = desc.count * desc.stride;
                 desc.data = this->vertex_data_.data();
 
+                desc.layout.elements_.push_back(ElementLayout::Element("POSITION", DataFormat::DF_RGBFloat));
+                desc.layout.elements_.push_back(ElementLayout::Element("NORMAL", DataFormat::DF_RGBFloat));
+                desc.layout.elements_.push_back(ElementLayout::Element("UV", DataFormat::DF_RGFloat));
+                desc.layout.elements_.push_back(ElementLayout::Element("COLOR", DataFormat::DF_RGBA32));
+                desc.layout.topology = ElementTopology::ET_TriangleList;
+
                 this->vertex_buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
             }
 
-            if (this->index_buffer_ == nullptr)
+            if (this->index_buffer_ == nullptr && this->loaded)
             {
                 PRINT("Create mesh index Buffer");
                 GraphicsBufferDescriptor desc;
                 desc.type = GraphicsBufferType::GBT_Index;
-                desc.usage = GraphicsBufferUsage::GBU_GPU_Read;
-                desc.topology = GraphicsBufferTopology::GBT_Undefined;
+                desc.usage = GraphicsBufferUsage::GBU_GPU_Read_Only;
                 desc.offset = 0;
                 desc.stride = sizeof(uint32_t);
                 desc.count = this->index_data_.size();

@@ -32,16 +32,16 @@ namespace vEngine
                 virtual void OnBind(const FrameBufferSharedPtr frameBuffer) = 0;
 
                 virtual void BeginRender(){};
-                virtual void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice)
-                {
-                    auto v = vertice;
-                    auto i = indice;
-                    //very basic rendering of sth.
-                    //IASetBuffer
-                    //IASetTopology
-                    //DrawIndexed
+                virtual void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) = 0;
+                // {
+                //     auto v = vertice;
+                //     auto i = indice;
+                //     //very basic rendering of sth.
+                //     //IASetBuffer
+                //     //IASetTopology
+                //     //DrawIndexed
 
-                };
+                // };
                 virtual void EndRender(){};
 
                 virtual void Dispatch(){};

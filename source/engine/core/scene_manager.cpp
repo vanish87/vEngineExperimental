@@ -33,7 +33,7 @@ namespace vEngine
             gn->AddComponent(mrc);
             auto mc = std::make_shared<Rendering::MeshComponent>();
             // mc->game_object_->Load("MyMesh.obj");
-            ResourceLoader::GetInstance().AddAsync(mc->game_object_, [&](IResourceSharedPtr c) {
+            ResourceLoader::GetInstance().LoadAsync(mc->game_object_, [&](IResourceSharedPtr c) {
                 PRINT("Resource loaded");
             });
 

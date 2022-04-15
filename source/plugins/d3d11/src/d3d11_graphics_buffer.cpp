@@ -49,7 +49,7 @@ namespace vEngine
                     return D3D11_USAGE_STAGING;
                 case GraphicsBufferUsage::GPU_CPU_Write_GPU_Read:
                     return D3D11_USAGE_DYNAMIC;
-                case GraphicsBufferUsage::GBU_GPU_Read:
+                case GraphicsBufferUsage::GBU_GPU_Read_Only:
                     return D3D11_USAGE_IMMUTABLE;
                 case GraphicsBufferUsage::GBU_GPU_ReadWrite:
                     return D3D11_USAGE_DEFAULT;

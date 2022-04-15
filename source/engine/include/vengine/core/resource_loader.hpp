@@ -46,7 +46,7 @@ namespace vEngine
         class ResourceLoadingJob : public ThreadJob
         {
             public:
-                ResourceLoadingJob(IResourceSharedPtr JobObj, std::function<void(IResourceSharedPtr user_data)> const& func);
+                ResourceLoadingJob(IResourceSharedPtr JobObj, std::function<void(IResourceSharedPtr user_data)> const& complete_callback);
                 ~ResourceLoadingJob();
 
             public:
@@ -63,7 +63,7 @@ namespace vEngine
 
             public:
 
-                void AddAsync(IResourceSharedPtr resource, std::function<void(IResourceSharedPtr user_data)> const& func = nullptr);
+                void LoadAsync(IResourceSharedPtr resource, std::function<void(IResourceSharedPtr user_data)> const& complete_callback = nullptr);
                 // void AddSync();
             private:
                 ResourceLoadingThread loading_thread_;

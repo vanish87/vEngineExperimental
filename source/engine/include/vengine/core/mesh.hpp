@@ -20,6 +20,7 @@
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
 #include <vengine/core/iresource.hpp>
+#include <vengine/core/element.hpp>
 #include <vengine/core/vector.hpp>
 
 
@@ -40,9 +41,18 @@ namespace vEngine
             float3 pos;
             float3 normal;
             float2 uv;
+            float4 color;
+        };
+
+        template <typename T = Vertex>
+        class Mesh_T : public GameObject, public IResource
+        {
+            static_assert(std::is_base_of<IElement, T>::value, "T must derived from IElement");
         };
         class VENGINE_API Mesh : public GameObject, public IResource
         {
+            // static_assert(std::is_base_of<IElement, V>::value, "T must derived from IElement");
+
             public:
                 /// \brief brief constructor description.
                 Mesh();
@@ -60,7 +70,9 @@ namespace vEngine
                 std::vector<Vertex> vertex_data_;
                 std::vector<uint32_t> index_data_;
 
+
                 std::string file_name_;
+                bool loaded = false;
                 //vertex
                 //index
 

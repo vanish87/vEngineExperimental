@@ -57,15 +57,15 @@ namespace vEngine
             this->loading_thread_.Join();
         }
 
-        void ResourceLoader::AddAsync(IResourceSharedPtr resource, std::function<void(IResourceSharedPtr user_data)> const& func /*= nullptr*/)
+        void ResourceLoader::LoadAsync(IResourceSharedPtr resource, std::function<void(IResourceSharedPtr user_data)> const& complete_callback /*= nullptr*/)
         {
-            this->loading_thread_.AddToQueue(std::make_shared<ResourceLoadingJob>(resource, func));
+            this->loading_thread_.AddToQueue(std::make_shared<ResourceLoadingJob>(resource, complete_callback));
         }
 
-        ResourceLoadingJob::ResourceLoadingJob(IResourceSharedPtr resource, std::function<void(IResourceSharedPtr user_data)> const& func /*= nullptr*/)
+        ResourceLoadingJob::ResourceLoadingJob(IResourceSharedPtr resource, std::function<void(IResourceSharedPtr user_data)> const& complete_callback /*= nullptr*/)
         {
             this->resource_to_load_ = resource;
-            this->complete_call_back_ = func;
+            this->complete_call_back_ = complete_callback;
         }
 
         ResourceLoadingJob::~ResourceLoadingJob() {}

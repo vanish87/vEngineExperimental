@@ -74,9 +74,9 @@ namespace vEngine
         {
             const float bg[4] = {0.0f, 0.2f, 0.4f, 1.0f};
             auto color = std::dynamic_pointer_cast<D3D11Texture>(this->current_frame_buffer_->GetColor(0));
-            this->d3d_imm_context_->ClearRenderTargetView(color->AsRTV().Get(), bg);
-            this->TriangleDraw();
-            this->d3d_swap_chain_->Present(0, 0);
+            // this->d3d_imm_context_->ClearRenderTargetView(color->AsRTV().Get(), bg);
+            // this->TriangleDraw();
+            // this->d3d_swap_chain_->Present(0, 0);
         }
         void D3D11RenderEngine::Deinit()
         {
@@ -86,13 +86,41 @@ namespace vEngine
             this->d3d_swap_chain_->Release();
             this->d3d_imm_context_->Release();
         }
+        void D3D11RenderEngine::Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice)
+        {
+            if(vertice == nullptr || indice == nullptr) return;
+
+            const float bg[4] = {0.0f, 0.2f, 0.4f, 1.0f};
+            auto color = std::dynamic_pointer_cast<D3D11Texture>(this->current_frame_buffer_->GetColor(0));
+            this->d3d_imm_context_->ClearRenderTargetView(color->AsRTV().Get(), bg);
+            // this->TriangleDraw();
+
+            auto v = std::dynamic_pointer_cast<D3D11GraphicsBuffer>(vertice);
+            auto i = std::dynamic_pointer_cast<D3D11GraphicsBuffer>(indice);
+
+            UINT stride = v->descriptor_.stride;
+            UINT offset = 0;
+            this->d3d_imm_context_->IASetVertexBuffers(0, 1, v->buffer_.GetAddressOf(), &stride, &offset);
+            this->d3d_imm_context_->IASetIndexBuffer(i->buffer_.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+            // select which primtive type we are using
+            this->d3d_imm_context_->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+            // draw the vertex buffer to the back buffer
+            this->d3d_imm_context_->DrawIndexed((UINT)(i->descriptor_.count), 0, 0);
+
+            this->d3d_swap_chain_->Present(0, 0);
+        }
         void D3D11RenderEngine::PrintInfo()
         {
             std::cout << "D3D11" << std::endl;
         }
+
         static const std::string shader =
             "struct vs_in {\
                 float3 position : POSITION;\
+                float3 normal : NORMAL;\
+                float2 texcoord : TEXCOORD;\
                 float4 color : COLOR;\
             };\
             struct vs_out {\
@@ -110,8 +138,17 @@ namespace vEngine
             }";
         struct VERTEX
         {
-                float X, Y, Z;   // position
-                float Color[4];  // color
+            // static constexpr size_t byte_size()
+            // {
+            //     return float3::byte_size + float4::byte_size;
+            // }
+                float3 pos;   // position
+                float3 normal;// normal
+                float2 uv;    // uv
+                float4 color;
+                // float3 pos;
+                // // float x, y, z;
+                // float4 color;
         };
         void D3D11RenderEngine::InitPipline()
         {
@@ -129,24 +166,56 @@ namespace vEngine
             this->d3d_imm_context_->PSSetShader(this->ps, 0, 0);
 
             D3D11_INPUT_ELEMENT_DESC input_desc[] = {
-                {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-                {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
             };
 
-            hr = this->d3d_device_->CreateInputLayout(input_desc, 2, this->vs_blob->GetBufferPointer(), this->vs_blob->GetBufferSize(), &this->layout);
+            hr = this->d3d_device_->CreateInputLayout(input_desc, 4, this->vs_blob->GetBufferPointer(), this->vs_blob->GetBufferSize(), &this->layout);
             CHECK_ASSERT(hr == S_OK);
 
             this->d3d_imm_context_->IASetInputLayout(this->layout);
 
             // create a triangle using the VERTEX struct
-            VERTEX OurVertices[] = {{0.0f, 0.5f, 0.0f, {1.0f, 0.0f, 0.0f, 1.0f}}, {0.45f, -0.5, 0.0f, {0.0f, 1.0f, 0.0f, 1.0f}}, {-0.45f, -0.5f, 0.0f, {0.0f, 0.0f, 1.0f, 1.0f}}};
+            VERTEX OurVertices[] = {
+                {{0.0f, 0.5f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 1.0f}},
+                {{0.45f, -0.5f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 1.0f, 0.0f, 1.0f}},
+                {{-0.45f, -0.5f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f}}
+                // {{0.0f, 0.5f, 0.0f},  {1.0f, 0.0f, 0.0f, 1.0f}},
+                // {{0.45f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f, 1.0f}},
+                // {{-0.45f, -0.5f, 0.0f},  {0.0f, 0.0f, 1.0f, 1.0f}}
+                // {0.0f, 0.5f, 0.0f,  {1.0f, 0.0f, 0.0f, 1.0f}},
+                // {0.45f, -0.5f, 0.0f, {0.0f, 1.0f, 0.0f, 1.0f}},
+                // {-0.45f, -0.5f, 0.0f,  {0.0f, 0.0f, 1.0f, 1.0f}}
+                };
+
+            // auto vsize = VERTEX::byte_size();
+            // auto vsize = sizeof(VERTEX);
+            auto varr_size = sizeof(OurVertices);
+
+            // PRINT(sizeof(VERTEX));
+            // PRINT(sizeof(OurVertices));
+            // PRINT(float3::byte_size);
+            // PRINT(sizeof(float3));
+            // PRINT(sizeof(Test<float, 3>));
+            // PRINT(vsize);
+            // PRINT(varr_size);
+            //, {0.45f, -0.5, 0.0f, {0.0f, 1.0f, 0.0f, 1.0f}},
+        //     {
+        //         -0.45f, -0.5f, 0.0f,
+        //         {
+        //             0.0f, 0.0f, 1.0f, 1.0f
+        //         }
+        //     }
+        // };
 
             // create the vertex buffer
             D3D11_BUFFER_DESC bd;
             ZeroMemory(&bd, sizeof(bd));
 
             bd.Usage = D3D11_USAGE_DYNAMIC;              // write access access by CPU and GPU
-            bd.ByteWidth = sizeof(VERTEX) * 3;           // size is the VERTEX struct * 3
+            bd.ByteWidth = (UINT)varr_size;           // size is the VERTEX struct * 3
             bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;     // use as a vertex buffer
             bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;  // allow CPU to write in buffer
 
@@ -156,7 +225,7 @@ namespace vEngine
             // copy the vertices into the buffer
             D3D11_MAPPED_SUBRESOURCE ms;
             this->d3d_imm_context_->Map(this->vertex_buffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);  // map the buffer
-            memcpy(ms.pData, OurVertices, sizeof(OurVertices));                                          // copy the data
+            memcpy(ms.pData, OurVertices, varr_size);                                          // copy the data
             this->d3d_imm_context_->Unmap(this->vertex_buffer, NULL);                                    // unmap the buffer
         }
         void D3D11RenderEngine::TriangleDraw()
@@ -167,7 +236,7 @@ namespace vEngine
             this->d3d_imm_context_->IASetVertexBuffers(0, 1, &this->vertex_buffer, &stride, &offset);
 
             // select which primtive type we are using
-            this->d3d_imm_context_->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+            this->d3d_imm_context_->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
             // draw the vertex buffer to the back buffer
             this->d3d_imm_context_->Draw(3, 0);

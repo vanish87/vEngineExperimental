@@ -10,6 +10,7 @@ namespace vEngine
             DF_Undifiend,
             DF_RGBA32,
 
+            DF_RGFloat,
             DF_RGBFloat,
             DF_RGBAFloat,
             DF_R32Int,
