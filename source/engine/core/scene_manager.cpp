@@ -32,10 +32,10 @@ namespace vEngine
             auto mrc = std::make_shared<Rendering::MeshRendererComponent>();
             gn->AddComponent(mrc);
             auto mc = std::make_shared<Rendering::MeshComponent>();
-            // mc->game_object_->Load("MyMesh.obj");
-            ResourceLoader::GetInstance().LoadAsync(mc->game_object_, [&](IResourceSharedPtr c) {
-                PRINT("Resource loaded");
-            });
+            mc->game_object_->Load("bunny.obj");
+            // ResourceLoader::GetInstance().LoadAsync(mc->game_object_, [&](IResourceSharedPtr c) {
+            //     PRINT("Resource loaded");
+            // });
 
             gn->AddComponent(mc);
             // mp->game_object_ = std::make_shared<Rendering::MeshRenderer>();

@@ -49,7 +49,7 @@ namespace vEngine
         {
             static_assert(std::is_base_of<IElement, T>::value, "T must derived from IElement");
         };
-        class VENGINE_API Mesh : public GameObject, public IResource
+        class VENGINE_API Mesh : public GameObject, public IResource 
         {
             // static_assert(std::is_base_of<IElement, V>::value, "T must derived from IElement");
 

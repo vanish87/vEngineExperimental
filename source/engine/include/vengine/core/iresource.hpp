@@ -2,12 +2,14 @@
 #define _VENGINE_CORE_IRESOURCE_HPP
 
 #pragma once
+#include <functional>
+#include <VENGINE_API.h>
 
 namespace vEngine
 {
     namespace Core
     {
-        Interface IResource
+        Interface VENGINE_API IResource: public std::enable_shared_from_this<IResource>
         {
         public:
             virtual bool Load() = 0;

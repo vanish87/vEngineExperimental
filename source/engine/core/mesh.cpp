@@ -11,6 +11,8 @@
 #include <vengine/core/mesh.hpp>
 #include <vengine/rendering/render_engine.hpp>
 
+#include <vengine/core/resource_loader.hpp>
+
 /// A detailed namespace description, it
 /// should be 2 lines at least.
 namespace vEngine
@@ -37,43 +39,22 @@ namespace vEngine
         {
             // PRINT("Load mesh from file " + file_name);
             this->file_name_ = file_name;
+
+            ResourceLoader::GetInstance().LoadAsync(shared_from_this(), [&](IResourceSharedPtr c) 
+            {
+                PRINT(this->file_name_ << " Resource loaded");
+            });
         }
         bool Mesh::Load()
         {
-            this->file_name_ = "cube.obj";
-            PRINT("Load mesh from file " + this->file_name_);
+            // this->file_name_ = "bunny.obj";
+            // PRINT("Load mesh from file " + this->file_name_);
 
             Assimp::Importer importer;
 
             const aiScene* pScene = importer.ReadFile(this->file_name_, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
-            UNUSED_PARAMETER(pScene);
 
             this->HandleNode(pScene->mRootNode, pScene);
-
-            // Vertex v;
-            // v.pos = {0.0f, 0.5f, 0.0f};
-            // v.color = {1.0f, 0.0f, 0.0f, 1.0f};
-            // this->vertex_data_.push_back(v);
-
-            // v.pos = {0.45f, -0.5f, 0.0f};
-            // v.color = {0.0f, 1.0f, 0.0f, 1.0f};
-            // this->vertex_data_.push_back(v);
-
-            // v.pos = {-0.25f, -0.5f, 0.0f};
-            // v.color = {0.0f, 0.0f, 1.0f, 1.0f};
-            // this->vertex_data_.push_back(v);
-
-            // this->vertex_data_[0].pos = {0.5f, -0.5f, 0.0f};
-            // this->vertex_data_[1].pos = {0.45f, -0.5f, 0.0f};
-            // this->vertex_data_[2].pos = {-0.25f, -0.5f, 0.0f};
-
-            // this->index_data_.clear();
-            // this->index_data_.push_back(0);
-			// this->index_data_.push_back(1);
-            // this->index_data_.push_back(3);
-
-            // {{0.45f, -0.5f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 1.0f, 0.0f, 1.0f}},
-            // {{-0.45f, -0.5f, 0.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 1.0f}}
 
             this->loaded = true;
 
@@ -108,8 +89,8 @@ namespace vEngine
             {
                 Vertex v;
                 v.pos = hasPos ? float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z) : float3(0, 0, 0);
-                v.pos *= 0.2f;
-                v.pos.z() = 0;
+                // v.pos *= 0.2f;
+                // v.pos.z() = 0;
                 v.normal = hasNormal ? float3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z) : float3(0, 0, 0);
                 v.uv = hasUV ? float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y) : float2(0, 0);
                 v.color = float4(1,1,1,1);
