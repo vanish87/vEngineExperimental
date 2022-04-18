@@ -32,9 +32,12 @@ namespace vEngine
 
                 virtual void Update(GameNodeSharedPtr parent) override
                 {
-                    PRINT("MeshRendererComponent Update");
-                    auto meshComponent = parent->FirstOf<MeshComponent>();
-                    this->game_object_->renderable_ = meshComponent->game_object_;
+                    // PRINT("MeshRendererComponent Update");
+                    if(this->game_object_->renderable_ == nullptr)
+                    {
+                        auto meshComponent = parent->FirstOf<MeshComponent>();
+                        this->game_object_->renderable_ = meshComponent->game_object_;
+                    }
                 };
         };
     }  // namespace Core

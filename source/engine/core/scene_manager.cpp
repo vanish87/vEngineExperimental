@@ -28,21 +28,20 @@ namespace vEngine
         {
             this->root_ = std::make_shared<GameNode>();
 
+            this->AddTestNode();
+        }
+        void SceneManager::AddTestNode()
+        {
             auto gn = std::make_shared<GameNode>();
             auto mrc = std::make_shared<Rendering::MeshRendererComponent>();
             gn->AddComponent(mrc);
             auto mc = std::make_shared<Rendering::MeshComponent>();
             mc->game_object_->Load("bunny.obj");
-            // ResourceLoader::GetInstance().LoadAsync(mc->game_object_, [&](IResourceSharedPtr c) {
-            //     PRINT("Resource loaded");
-            // });
-
             gn->AddComponent(mc);
             // mp->game_object_ = std::make_shared<Rendering::MeshRenderer>();
             // auto mp = std::make_shared<MeshRendererComponent>();
             // auto mp = std::make_shared<MeshComponent>();
             SceneManager::GetInstance().AddToSceneNode(gn);
-
         }
         void SceneManager::Deinit() {}
         void SceneManager::Update()
@@ -57,7 +56,7 @@ namespace vEngine
             {
                 // find render component in root
                 n->ForEachChild<IComponent>([&](IComponentSharedPtr c) {
-                    PRINT("IComponent");
+                    // PRINT("IComponent");
                     //Render mesh
                     auto renderer = std::dynamic_pointer_cast<Rendering::MeshRendererComponent>(c);
                     if (renderer != nullptr)

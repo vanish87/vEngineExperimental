@@ -40,6 +40,7 @@ namespace vEngine
 
                 void AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node = nullptr);
 
+                void AddTestNode();
                 GameNodeSharedPtr root_;
 
                 std::queue<IRendererSharedPtr> render_queue_;

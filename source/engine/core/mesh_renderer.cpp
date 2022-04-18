@@ -34,7 +34,7 @@ namespace vEngine
             {
                 mesh->UpdateGPUBuffer();
 
-                PRINT("MeshRenderer Call re.Render(vertex, index)");
+                // PRINT("MeshRenderer Call re.Render(vertex, index)");
                 re.Render(mesh->vertex_buffer_, mesh->index_buffer_);
 
                 re.PrintInfo();
