@@ -55,17 +55,17 @@ namespace vEngine
             for (const auto& n : nodes)
             {
                 // find render component in root
-                n->ForEachChild<IComponent>([&](IComponentSharedPtr c) {
+                n->ForEachChild<Rendering::MeshRendererComponent>([&](Rendering::MeshRendererComponentSharedPtr c) {
                     // PRINT("IComponent");
                     //Render mesh
-                    auto renderer = std::dynamic_pointer_cast<Rendering::MeshRendererComponent>(c);
-                    if (renderer != nullptr)
+                    // auto renderer = std::dynamic_pointer_cast<Rendering::MeshRendererComponent>(c);
+                    // if (renderer != nullptr)
                     {
-                        renderer->Update(n);
-                        if(renderer->game_object_ != nullptr)
+                        c->Update(n);
+                        if(c->game_object_ != nullptr)
                         {
                             // add IRenderer to render queue
-                            this->render_queue_.push(renderer->game_object_);
+                            this->render_queue_.push(c->game_object_);
                         }
                     }
                     //Render other renderers(transparent, particle etc.) if possible
