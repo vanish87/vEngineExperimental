@@ -25,6 +25,7 @@ namespace vEngine
                 void PrintInfo() override;
 
                 void OnBind(const FrameBufferSharedPtr FrameBuffer) override;
+                PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) override;
                 void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) override;
 
                 TextureSharedPtr Create(const TextureDescriptor& desc) override;

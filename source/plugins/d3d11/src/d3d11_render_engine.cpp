@@ -8,6 +8,7 @@
 #include <vengine/rendering/d3d11_graphics_buffer.hpp>
 #include <vengine/rendering/d3d11_render_engine.hpp>
 #include <vengine/rendering/d3d11_texture.hpp>
+#include <vengine/rendering/d3d11_pipeline_state.hpp>
 
 namespace vEngine
 {
@@ -88,7 +89,7 @@ namespace vEngine
         }
         void D3D11RenderEngine::Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice)
         {
-            if(vertice == nullptr || indice == nullptr) return;
+            if (vertice == nullptr || indice == nullptr) return;
 
             const float bg[4] = {0.0f, 0.2f, 0.4f, 1.0f};
             auto color = std::dynamic_pointer_cast<D3D11Texture>(this->current_frame_buffer_->GetColor(0));
@@ -138,13 +139,13 @@ namespace vEngine
             }";
         struct VERTEX
         {
-            // static constexpr size_t byte_size()
-            // {
-            //     return float3::byte_size + float4::byte_size;
-            // }
-                float3 pos;   // position
-                float3 normal;// normal
-                float2 uv;    // uv
+                // static constexpr size_t byte_size()
+                // {
+                //     return float3::byte_size + float4::byte_size;
+                // }
+                float3 pos;     // position
+                float3 normal;  // normal
+                float2 uv;      // uv
                 float4 color;
                 // float3 pos;
                 // // float x, y, z;
@@ -188,7 +189,7 @@ namespace vEngine
                 // {0.0f, 0.5f, 0.0f,  {1.0f, 0.0f, 0.0f, 1.0f}},
                 // {0.45f, -0.5f, 0.0f, {0.0f, 1.0f, 0.0f, 1.0f}},
                 // {-0.45f, -0.5f, 0.0f,  {0.0f, 0.0f, 1.0f, 1.0f}}
-                };
+            };
 
             // auto vsize = VERTEX::byte_size();
             // auto vsize = sizeof(VERTEX);
@@ -202,20 +203,20 @@ namespace vEngine
             // PRINT(vsize);
             // PRINT(varr_size);
             //, {0.45f, -0.5, 0.0f, {0.0f, 1.0f, 0.0f, 1.0f}},
-        //     {
-        //         -0.45f, -0.5f, 0.0f,
-        //         {
-        //             0.0f, 0.0f, 1.0f, 1.0f
-        //         }
-        //     }
-        // };
+            //     {
+            //         -0.45f, -0.5f, 0.0f,
+            //         {
+            //             0.0f, 0.0f, 1.0f, 1.0f
+            //         }
+            //     }
+            // };
 
             // create the vertex buffer
             D3D11_BUFFER_DESC bd;
             ZeroMemory(&bd, sizeof(bd));
 
             bd.Usage = D3D11_USAGE_DYNAMIC;              // write access access by CPU and GPU
-            bd.ByteWidth = (UINT)varr_size;           // size is the VERTEX struct * 3
+            bd.ByteWidth = (UINT)varr_size;              // size is the VERTEX struct * 3
             bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;     // use as a vertex buffer
             bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;  // allow CPU to write in buffer
 
@@ -225,7 +226,7 @@ namespace vEngine
             // copy the vertices into the buffer
             D3D11_MAPPED_SUBRESOURCE ms;
             this->d3d_imm_context_->Map(this->vertex_buffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);  // map the buffer
-            memcpy(ms.pData, OurVertices, varr_size);                                          // copy the data
+            memcpy(ms.pData, OurVertices, varr_size);                                                    // copy the data
             this->d3d_imm_context_->Unmap(this->vertex_buffer, NULL);                                    // unmap the buffer
         }
         void D3D11RenderEngine::TriangleDraw()
@@ -257,6 +258,11 @@ namespace vEngine
             // auto depth = dynamic_cast<D3D11Texture*>(frameBuffer->GetDepthStencil().get());
             this->d3d_imm_context_->OMSetRenderTargets(1, color->AsRTV().GetAddressOf(), nullptr);
             // this->d3d_imm_context_->OMSetRenderTargets(1, color->AsRTV().GetAddressOf(), depth->AsDSV().Get());
+        }
+
+        PipelineStateSharedPtr D3D11RenderEngine::OnRegister(const PipelineStateDescriptor& pipeline_desc)
+        {
+            return std::make_shared<PipelineState>(pipeline_desc);
         }
         TextureSharedPtr D3D11RenderEngine::Create(const TextureDescriptor& desc)
         {

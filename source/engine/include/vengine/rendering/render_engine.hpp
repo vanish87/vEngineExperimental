@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <map>
 #include <VENGINE_API.h>
 
 #include <engine.hpp>
@@ -28,8 +29,16 @@ namespace vEngine
                     this->current_frame_buffer_ = frameBuffer;
                     this->OnBind(frameBuffer);
                 }
-
                 virtual void OnBind(const FrameBufferSharedPtr frameBuffer) = 0;
+
+
+                virtual PipelineStateSharedPtr Register(const PipelineStateDescriptor& pipeline_desc)
+                {
+                    // this->current_pipline_states = frameBuffer;
+                    return this->OnRegister(pipeline_desc);
+                }
+                virtual PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) = 0;
+
 
                 virtual void BeginRender(){};
                 virtual void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) = 0;
@@ -56,6 +65,8 @@ namespace vEngine
 
 
                 FrameBufferSharedPtr current_frame_buffer_;
+
+                std::map<std::string, PipelineStateSharedPtr> current_pipline_states;
                 
         };
     }  // namespace Rendering

@@ -10,6 +10,7 @@
 #ifndef _VENGINE_CORE_MATERIAL_HPP
 #define _VENGINE_CORE_MATERIAL_HPP
 
+#include <engine.hpp>
 #include <vengine/core/game_object.hpp>
 
 /// A brief namespace description.
@@ -17,6 +18,8 @@ namespace vEngine
 {
     namespace Core
     {
+        using namespace Rendering;
+        
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
@@ -25,31 +28,29 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                Material();
+                Material(const std::string& vs_name, const std::string& ps_name);
 
                 void Load();
 
-                //color
-                //parameter
-                //normal map
-                //etc.
+                // color
+                // parameter
+                // normal map
+                // etc.
 
-                //shader and shader input layout
-                // D3D11_INPUT_ELEMENT_DESC input_desc[] = { {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-                // {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
-                // };
+                // shader and shader input layout
+                //  D3D11_INPUT_ELEMENT_DESC input_desc[] = { {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+                //  {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+                //  };
 
                 std::string vs_name_;
                 std::string ps_name_;
 
-                //maybe layout like D3D11_INPUT_ELEMENT_DESC
+                PipelineStateSharedPtr pipeline_state_;
+
+                // maybe layout like D3D11_INPUT_ELEMENT_DESC
 
                 Rendering::GraphicsBufferSharedPtr constant_buffer_;
                 std::vector<Rendering::TextureSharedPtr> textures_;
-
-
-
-
         };
     }  // namespace Core
 }  // namespace vEngine

@@ -7,7 +7,10 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
+#include <fstream>
+#include <vengine/core/context.hpp>
 #include <vengine/core/material.hpp>
+#include <vengine/rendering/render_engine.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -18,10 +21,25 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Material::Material() {}
+        Material::Material(const std::string& vs_name, const std::string& ps_name) : vs_name_{vs_name}, ps_name_{ps_name} {}
 
         void Material::Load()
         {
+            std::ifstream fin(this->vs_name_ + ".cso", std::ios::binary);
+
+            if (!fin)
+            {
+                PRINT_AND_BREAK("Cannot open Fxo File ");
+                return;
+            }
+
+            fin.seekg(0, std::ios_base::end);
+            auto size = fin.tellg();
+            fin.seekg(0, std::ios_base::beg);
+            std::vector<char> compiledShader(size);
+
+            fin.read(compiledShader.data(), size);
+            fin.close();
             // this->d3d_imm_context_->VSSetShader(this->vs, 0, 0);
             // this->d3d_imm_context_->PSSetShader(this->ps, 0, 0);
 
@@ -34,6 +52,9 @@ namespace vEngine
             // CHECK_ASSERT(hr == S_OK);
 
             // this->d3d_imm_context_->IASetInputLayout(this->layout);
+
+            auto desc = PipelineStateDescriptor();
+            this->pipeline_state_ = Context::GetInstance().GetRenderEngine().Register(desc);
         }
     }  // namespace Core
 

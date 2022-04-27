@@ -78,6 +78,7 @@ namespace vEngine
     namespace Rendering
     {
         CLASS_AND_UNIQUE_POINTER(RenderEngine)
+        CLASS_AND_SHARED_POINTER(PipelineState)
         CLASS_AND_SHARED_POINTER(FrameBuffer)
         CLASS_AND_SHARED_POINTER(GraphicsBuffer)
         CLASS_AND_SHARED_POINTER(Texture)

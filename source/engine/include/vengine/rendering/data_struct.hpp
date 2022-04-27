@@ -91,6 +91,12 @@ namespace vEngine
                 // std::vector<std::pair<
         };
 
+        struct PipelineStateDescriptor
+        {
+                // similar design as https://docs.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_graphics_pipeline_state_desc
+                std::string vs_name;
+                std::string ps_name;
+        };
     }  // namespace Rendering
 
 }  // namespace vEngine

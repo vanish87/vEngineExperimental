@@ -11,6 +11,7 @@
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/context.hpp>
 #include <vengine/core/game_node.hpp>
+#include <vengine/core/material.hpp>
 #include <vengine/core/mesh_renderer_component.hpp>
 #include <vengine/core/resource_loader.hpp>
 #include <vengine/core/scene_manager.hpp>
@@ -34,8 +35,12 @@ namespace vEngine
         }
         void SceneManager::AddTestNode()
         {
+            auto mat = std::make_shared<Material>("vs", "ps");
+            mat->Load();
+
             auto gn = std::make_shared<GameNode>();
             auto mrc = std::make_shared<Rendering::MeshRendererComponent>();
+            mrc->game_object_->material_ = mat;
             gn->AddComponent(mrc);
             auto mc = std::make_shared<Rendering::MeshComponent>();
             mc->game_object_->Load("bunny.obj");
@@ -47,16 +52,22 @@ namespace vEngine
 
             auto camera = std::make_shared<CameraComponent>();
             SceneManager::GetInstance().AddToSceneNode(camera);
+
         }
         void SceneManager::Deinit() {}
         void SceneManager::Update()
         {
+            //get all cameras
+            //if camera has target texture
+            //render to target
+            //bind backbuffer
+            //render all none-target camera
             this->root_->Traverse<CameraComponent>([&](CameraComponentSharedPtr c) {
                 // auto frameBuffer = c->game_object_->target;
                 // auto& re = Context::GetInstance().GetRenderEngine();
                 // re.Bind(frameBuffer);
                 // render all game node
-                PRINT("Camera");
+                // PRINT("Camera");
 
                 return true;
             });
