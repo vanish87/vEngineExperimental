@@ -3,6 +3,5 @@ namespace vEngine
 {
     namespace Rendering
     {
-        void RenderEngine::CreateInternal() {}
     }  // namespace Rendering
 }  // namespace vEngine
