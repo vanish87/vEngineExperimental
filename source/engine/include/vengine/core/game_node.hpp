@@ -45,6 +45,11 @@ namespace vEngine
                 void AddComponent(const GameNodeSharedPtr component);
                 void RemoveComponent(const GameNodeSharedPtr component);
 
+                float4x4 Transform()
+                {
+                    return this->transform_;
+                }
+
                 template <typename T>
                 std::shared_ptr<T> FirstOf()
                 {
@@ -73,7 +78,8 @@ namespace vEngine
                 template <typename T>
                 void Traverse(std::function<bool(std::shared_ptr<T>)> const& func)
                 {
-                    if (func(shared_from_this()))
+                    auto gn = std::dynamic_pointer_cast<T>(shared_from_this());
+                    if (gn == nullptr ? true : func(gn))
                     {
                         for (const auto& c : this->children_)
                         {

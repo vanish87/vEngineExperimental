@@ -30,6 +30,11 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 CameraComponent();
+
+                float4x4 ViewMatrix()
+                {
+                    return this->Transform();
+                }
         };
     }  // namespace Core
 }  // namespace vEngine

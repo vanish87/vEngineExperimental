@@ -8,11 +8,13 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
+#include <vengine/core/camera_component.hpp>
+#include <vengine/core/context.hpp>
 #include <vengine/core/game_node.hpp>
 #include <vengine/core/mesh_renderer_component.hpp>
-#include <vengine/core/scene_manager.hpp>
-
 #include <vengine/core/resource_loader.hpp>
+#include <vengine/core/scene_manager.hpp>
+#include <vengine/rendering/render_engine.hpp>
 /// A detailed namespace description, it
 /// should be 2 lines at least.
 namespace vEngine
@@ -42,10 +44,22 @@ namespace vEngine
             // auto mp = std::make_shared<MeshRendererComponent>();
             // auto mp = std::make_shared<MeshComponent>();
             SceneManager::GetInstance().AddToSceneNode(gn);
+
+            auto camera = std::make_shared<CameraComponent>();
+            SceneManager::GetInstance().AddToSceneNode(camera);
         }
         void SceneManager::Deinit() {}
         void SceneManager::Update()
         {
+            this->root_->Traverse<CameraComponent>([&](CameraComponentSharedPtr c) {
+                // auto frameBuffer = c->game_object_->target;
+                // auto& re = Context::GetInstance().GetRenderEngine();
+                // re.Bind(frameBuffer);
+                // render all game node
+                PRINT("Camera");
+
+                return true;
+            });
             auto nodes = std::vector<GameNodeSharedPtr>();
             this->root_->Traverse<GameNode>([&](GameNodeSharedPtr n) {
                 nodes.push_back(n);
@@ -57,18 +71,18 @@ namespace vEngine
                 // find render component in root
                 n->ForEachChild<Rendering::MeshRendererComponent>([&](Rendering::MeshRendererComponentSharedPtr c) {
                     // PRINT("IComponent");
-                    //Render mesh
+                    // Render mesh
                     // auto renderer = std::dynamic_pointer_cast<Rendering::MeshRendererComponent>(c);
                     // if (renderer != nullptr)
                     {
                         c->Update(n);
-                        if(c->game_object_ != nullptr)
+                        if (c->game_object_ != nullptr)
                         {
                             // add IRenderer to render queue
                             this->render_queue_.push(c->game_object_);
                         }
                     }
-                    //Render other renderers(transparent, particle etc.) if possible
+                    // Render other renderers(transparent, particle etc.) if possible
                 });
 
                 // n->ForEachChild<IComponent>([&](IComponent* c) {
@@ -94,6 +108,12 @@ namespace vEngine
 
         void SceneManager::AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node)
         {
+            auto camera = std::dynamic_pointer_cast<CameraComponent>(new_node);
+            if (camera != nullptr)
+            {
+                this->scene_cameras_.emplace_back(camera);
+            }
+
             if (game_node == nullptr)
             {
                 this->root_->AddChild(new_node);

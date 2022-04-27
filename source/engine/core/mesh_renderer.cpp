@@ -34,6 +34,9 @@ namespace vEngine
             {
                 mesh->UpdateGPUBuffer();
 
+                // Set gpu variable for material here
+                //  this->material_->UpdateGPUBuffer();
+
                 // PRINT("MeshRenderer Call re.Render(vertex, index)");
                 re.Render(mesh->vertex_buffer_, mesh->index_buffer_);
 

@@ -51,7 +51,7 @@ namespace vEngine
                     return D3D11_USAGE_DYNAMIC;
                 case GraphicsBufferUsage::GBU_GPU_Read_Only:
                     return D3D11_USAGE_IMMUTABLE;
-                case GraphicsBufferUsage::GBU_GPU_ReadWrite:
+                case GraphicsBufferUsage::GBU_GPU_ReadWrite://but can be update by UpdateSubresource
                     return D3D11_USAGE_DEFAULT;
                 default: return D3D11_USAGE_DEFAULT;
             }
@@ -82,6 +82,17 @@ namespace vEngine
             {
                 PRINT_AND_BREAK("Cannot create buffer");
             }
+        }
+
+
+        void ConstantBuffer()
+        {
+            //create with usage and access
+            // D3D11_USAGE usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
+            // D3D11_CPU_ACCESS_FLAG access = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_WRITE;
+            //update with map/unmap
+            // D3D11_MAP map = D3D11_MAP::D3D11_MAP_WRITE_DISCARD;
+
         }
 
         /// A detailed function description, it

@@ -18,7 +18,10 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Camera::Camera() {}
+        Camera::Camera() : fovy_{1}, aspect_{1}, zn_{0.01f}, zf_{10}
+        {
+            this->proj_matrix = Math::PerspectiveFovLH(this->fovy_, this->aspect_, this->zn_, this->zf_);
+        }
     }  // namespace Core
 
 }  // namespace vEngine

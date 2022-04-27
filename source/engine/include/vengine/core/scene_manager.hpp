@@ -44,6 +44,8 @@ namespace vEngine
                 GameNodeSharedPtr root_;
 
                 std::queue<IRendererSharedPtr> render_queue_;
+
+                std::vector<CameraComponentSharedPtr> scene_cameras_;
         };
     }  // namespace Core
 }  // namespace vEngine

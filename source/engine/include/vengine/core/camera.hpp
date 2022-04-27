@@ -12,13 +12,17 @@
 
 #pragma once
 
+#include <engine.hpp>
 #include <vengine/core/game_object.hpp>
+#include <vengine/core/matrix.hpp>
 
 /// A brief namespace description.
 namespace vEngine
 {
     namespace Core
     {
+        using namespace Math;
+        using namespace Rendering;
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
@@ -29,9 +33,19 @@ namespace vEngine
                 /// \brief brief constructor description.
                 Camera();
 
+                FrameBufferSharedPtr target;
+
+            private:
+                float fovy_;
+                float aspect_;
+                float zn_;
+                float zf_;
+                float4x4 proj_matrix;
                 // aspect
                 // fov
                 // etc.
+
+                int4 view_port_;
         };
     }  // namespace Core
 }  // namespace vEngine

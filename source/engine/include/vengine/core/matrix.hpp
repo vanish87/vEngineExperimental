@@ -169,7 +169,8 @@ namespace vEngine
             public:
                 static const Matrix<T, M, N>& Zero()
                 {
-                    static const Matrix<T, M, N> zero(0);
+                    static const T z(0);
+                    static const Matrix<T, M, N> zero(z);
                     return zero;
                 }
 
