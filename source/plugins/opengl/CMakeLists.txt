@@ -16,6 +16,7 @@ add_library(engine::opengl_rendering_plugin ALIAS ${PROJECT_NAME})
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include
     PUBLIC ${vengine_SOURCE_DIR}/include
+    PUBLIC ${GLFW_INCLUDE_DIR}
 )
 
 # add_dependencies(${PROJECT_NAME} engine::rendering)

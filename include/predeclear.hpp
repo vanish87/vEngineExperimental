@@ -3,9 +3,20 @@
 
 #include <cstdint>
 #include <memory>
-
 namespace vEngine
 {
+    #define CLASS_AND_SHARED_POINTER(name) \
+	class name;\
+	typedef std::shared_ptr<name> name##SharedPtr;
+
+	#define CLASS_AND_UNIQUE_POINTER(name) \
+	class name;\
+	typedef std::unique_ptr<name> name##UniquePtr;
+
+	#define STRUCT_AND_SHARED_POINTER(name) \
+	struct name;\
+	typedef std::shared_ptr<name> name##SharedPtr;
+
     typedef std::int8_t int8_t;
     typedef std::int16_t int16_t;
     typedef std::int32_t int32_t;
@@ -44,13 +55,39 @@ namespace vEngine
     namespace Core
     {
         class Window;
-        typedef std::shared_ptr<Window> WindowPtr;
+        typedef std::shared_ptr<Window> vEngineWindowPtr;
         class Application;
+
+        CLASS_AND_SHARED_POINTER(GameObject)
+        CLASS_AND_SHARED_POINTER(Material)
+        CLASS_AND_SHARED_POINTER(Camera)
+        CLASS_AND_SHARED_POINTER(Light)
+        CLASS_AND_SHARED_POINTER(Mesh)
+
+        CLASS_AND_SHARED_POINTER(GameNode)
+        CLASS_AND_SHARED_POINTER(CameraComponent)
+        CLASS_AND_SHARED_POINTER(LightComponent)
+        CLASS_AND_SHARED_POINTER(MeshComponent)
+
+        CLASS_AND_SHARED_POINTER(IComponent)
+        CLASS_AND_SHARED_POINTER(IRenderer)
+        CLASS_AND_SHARED_POINTER(IResource)
+
+        CLASS_AND_SHARED_POINTER(ThreadJob)
     }  // namespace Core
     namespace Rendering
     {
-        class RenderEngine;
+        CLASS_AND_UNIQUE_POINTER(RenderEngine)
+        CLASS_AND_SHARED_POINTER(PipelineState)
+        CLASS_AND_SHARED_POINTER(FrameBuffer)
+        CLASS_AND_SHARED_POINTER(GraphicsBuffer)
+        CLASS_AND_SHARED_POINTER(Texture)
+        CLASS_AND_SHARED_POINTER(MeshRendererComponent)
     }
+
+	#undef CLASS_AND_SHARED_POINTER
+	#undef CLASS_AND_UNIQUE_POINTER
+	#undef STRUCT_AND_SHARED_POINTER
 }  // namespace vEngine
 
 #endif /* _INCLUDE_PREDECLEAR_HPP */
