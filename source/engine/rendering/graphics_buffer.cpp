@@ -26,6 +26,19 @@ namespace vEngine
 
         }
         GraphicsBuffer::~GraphicsBuffer() {}
+        GPUSubresource GraphicsBuffer::Map()
+        {
+            return this->DoMap();
+        }
+        void GraphicsBuffer::Unmap()
+        {
+            this->DoUnmap();
+        }
+        GPUSubresource GraphicsBuffer::DoMap()
+        {
+            return GPUSubresource();
+        }
+        void GraphicsBuffer::DoUnmap() {}
 
         /// A detailed function description, it
         /// should be 2 lines at least.

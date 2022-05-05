@@ -15,6 +15,7 @@
 #include <VENGINE_API.h>
 #include <vengine/core/component.hpp>
 #include <vengine/core/camera.hpp>
+#include <vengine/rendering/frame_buffer.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -30,6 +31,12 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 CameraComponent();
+
+                void Update(const GameNodeSharedPtr parent) override
+                {
+                    auto cam = this->game_object_;
+                    cam->target->UpdateGPU(this->Transform(), cam->ProjectionMatrix());
+                }
 
                 float4x4 ViewMatrix()
                 {

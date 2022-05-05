@@ -13,6 +13,7 @@ namespace vEngine
         {
             GBT_Index,
             GBT_Vertex,
+            GBT_CBuffer,
         };
 
         enum class GraphicsBufferUsage
@@ -82,6 +83,12 @@ namespace vEngine
                 uint64_t total_size;
                 void* data;
         };
+        //https://docs.microsoft.com/en-us/windows/win32/direct3d11/how-to--use-dynamic-resources
+        struct GPUSubresource
+        {
+            void* data;
+        };
+        
         struct FrameBufferDescriptor
         {
                 DataFormat colorFormat;
