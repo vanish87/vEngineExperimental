@@ -104,6 +104,13 @@ namespace vEngine
                 std::string vs_name;
                 std::string ps_name;
         };
+
+        struct Shader
+        {
+            std::string name;
+            std::vector<char> content;
+            Shader(const std::string name) : name{name} {};
+        };
     }  // namespace Rendering
 
 }  // namespace vEngine

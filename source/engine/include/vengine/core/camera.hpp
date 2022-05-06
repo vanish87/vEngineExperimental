@@ -35,6 +35,12 @@ namespace vEngine
 
                 FrameBufferSharedPtr target;
 
+                virtual void OnBeginCamera()
+                {
+                    //update per camera cbuffer
+                    //view/proj matrix
+                }
+
                 const float4x4 ProjectionMatrix() const
                 {
                     return this->proj_matrix_;

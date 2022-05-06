@@ -7,7 +7,6 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#include <fstream>
 #include <vengine/core/context.hpp>
 #include <vengine/core/material.hpp>
 #include <vengine/rendering/render_engine.hpp>
@@ -21,25 +20,10 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Material::Material(const std::string& vs_name, const std::string& ps_name) : vs_name_{vs_name}, ps_name_{ps_name} {}
+        Material::Material(const std::string vs_name, const std::string ps_name) : vs_name_{vs_name}, ps_name_{ps_name} {}
 
-        void Material::Load()
+        bool Material::Load()
         {
-            std::ifstream fin(this->vs_name_ + ".cso", std::ios::binary);
-
-            if (!fin)
-            {
-                PRINT_AND_BREAK("Cannot open Fxo File ");
-                return;
-            }
-
-            fin.seekg(0, std::ios_base::end);
-            auto size = fin.tellg();
-            fin.seekg(0, std::ios_base::beg);
-            std::vector<char> compiledShader(size);
-
-            fin.read(compiledShader.data(), size);
-            fin.close();
             // this->d3d_imm_context_->VSSetShader(this->vs, 0, 0);
             // this->d3d_imm_context_->PSSetShader(this->ps, 0, 0);
 
@@ -53,9 +37,16 @@ namespace vEngine
 
             // this->d3d_imm_context_->IASetInputLayout(this->layout);
 
-            auto desc = PipelineStateDescriptor();
+            // this->Load(this->vs_shader_);
+            // this->Load(this->ps_shader_);
+
+            PipelineStateDescriptor desc;
+            desc.vs_name = this->vs_name_;
+            desc.ps_name = this->ps_name_;
             this->pipeline_state_ = Context::GetInstance().GetRenderEngine().Register(desc);
+            return true;
         }
+
     }  // namespace Core
 
 }  // namespace vEngine

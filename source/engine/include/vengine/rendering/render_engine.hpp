@@ -39,6 +39,9 @@ namespace vEngine
                 }
                 virtual PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) = 0;
 
+                virtual void OnBeginFrame(){
+                    //update per frame cbuffer
+                }; 
 
                 virtual void BeginRender(){};
                 virtual void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) = 0;
@@ -65,6 +68,7 @@ namespace vEngine
 
 
                 FrameBufferSharedPtr current_frame_buffer_;
+                FrameBufferSharedPtr back_buffer_;
 
                 std::map<std::string, PipelineStateSharedPtr> current_pipline_states;
                 

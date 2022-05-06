@@ -55,8 +55,17 @@ namespace vEngine
 
         }
         void SceneManager::Deinit() {}
+        void SceneManager::Flush()
+        {
+
+        }
         void SceneManager::Update()
         {
+            //camera
+            //frame
+            //flush each scene object
+            //render each matrial pass for every object
+
             //get all cameras
             //if camera has target texture
             //render to target

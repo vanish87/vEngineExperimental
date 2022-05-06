@@ -63,6 +63,10 @@ namespace vEngine
                 TextureSharedPtr depthStencilTexture_;
 
                 // view matrix and projection matrix
+                //per frame cbuffer: lights
+                //per camera cbuffer: view proj, pos, rt demensions
+                //per object: world matrix, dynamic material properties
+                //per material: shadred properties
                 GraphicsBufferSharedPtr frame_constat_buffer_;
         };
     }  // namespace Rendering

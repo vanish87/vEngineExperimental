@@ -36,7 +36,12 @@ namespace vEngine
             public:
                 void Init() override;
                 void Deinit() override;
+
+                /// \brief traverse all camera and render them
                 void Update() override;
+
+                /// \brief only render all objects
+                void Flush();
 
                 void AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node = nullptr);
 
