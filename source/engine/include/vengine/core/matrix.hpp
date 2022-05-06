@@ -48,10 +48,12 @@ namespace vEngine
                 static constexpr size_type col = M;
 
             public:
-                // use init list {} to initialize data
                 constexpr Matrix() noexcept {}
-                constexpr Matrix(T m00, T m01, T m02, T m03, T m10, T m11,
-                                 T m12, T m13, T m20, T m21, T m22, T m23,
+
+                /// \brief Init constructor for matrix
+                constexpr Matrix(T m00, T m01, T m02, T m03, 
+                                 T m10, T m11, T m12, T m13, 
+                                 T m20, T m21, T m22, T m23,
                                  T m30, T m31, T m32, T m33) noexcept
                 {
                     static_assert(M == 4);
@@ -154,7 +156,6 @@ namespace vEngine
                     return *this;
                 }
 
-                // ambiguous/undefined actions
                 // constructor obj with pointer
                 explicit constexpr Matrix(const T* other) noexcept
                 {
@@ -164,21 +165,12 @@ namespace vEngine
                     }
                 }
 
-                // // copy from other matrix type
-                // template <typename U, int M>
-                // constexpr Matrix(Matrix<U, M> const& rhs) noexcept
-                // {
-                //     // vector_t<T, N>::do_copy(this->data(), rhs.data());
-                // }
-
-                // constexpr Matrix(const T& x, const T& y) noexcept : data_{x,
-                // y}
-                // {}
 
             public:
                 static const Matrix<T, M, N>& Zero()
                 {
-                    static const Matrix<T, M, N> zero(0);
+                    static const T z(0);
+                    static const Matrix<T, M, N> zero(z);
                     return zero;
                 }
 
@@ -240,19 +232,20 @@ namespace vEngine
                     }
                     return *this;
                 }
+                // ambiguous operator
                 template <typename U>
                 const Matrix& operator*=(const Matrix<U, N>& other) noexcept
                 {
                     UNUSED_PARAMETER(other);
-                    // ambiguous operator
-                    assert(false);
+                    // assert(false);
                     return *this;
                 }
+                // ambiguous operator
                 template <typename U>
                 const Matrix& operator/=(const Matrix<U, N>& other) noexcept
                 {
                     UNUSED_PARAMETER(other);
-                    assert(false);
+                    // assert(false);
                     return *this;
                 }
                 constexpr Matrix const& operator+() const noexcept
