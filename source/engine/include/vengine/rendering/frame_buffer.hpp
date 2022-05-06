@@ -14,11 +14,15 @@
 
 #include <engine.hpp>
 #include <vector>
+#include <vengine/rendering/data_cbuffer.hpp>
 
 namespace vEngine
 {
     namespace Rendering
     {
+        using namespace Core;
+        using namespace Math;
+
         /// \brief Unity-like Graphics buffer
         ///
         /// Graphics buffer could be index/vertex buffer or
@@ -42,6 +46,8 @@ namespace vEngine
                     return this->depthStencilTexture_;
                 };
 
+                void UpdateGPU(const float4x4 view_matrix, const float4x4 proj_matrix);
+
                 /// class variable description
                 // int public_variable_;
 
@@ -55,6 +61,13 @@ namespace vEngine
                 /// \return Description for return value.
                 std::vector<TextureSharedPtr> colorTextures_;
                 TextureSharedPtr depthStencilTexture_;
+
+                // view matrix and projection matrix
+                //per frame cbuffer: lights
+                //per camera cbuffer: view proj, pos, rt demensions
+                //per object: world matrix, dynamic material properties
+                //per material: shadred properties
+                GraphicsBufferSharedPtr frame_constat_buffer_;
         };
     }  // namespace Rendering
 

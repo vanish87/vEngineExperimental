@@ -34,6 +34,10 @@ namespace vEngine
                 /// class variable description
                 // int public_variable_;
 
+            protected:
+                GPUSubresource DoMap() override;
+                void DoUnmap() override;
+
             public:
                 ComPtr<ID3D11Buffer> buffer_;
             

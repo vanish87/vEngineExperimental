@@ -13,6 +13,7 @@ namespace vEngine
         {
             GBT_Index,
             GBT_Vertex,
+            GBT_CBuffer,
         };
 
         enum class GraphicsBufferUsage
@@ -82,6 +83,12 @@ namespace vEngine
                 uint64_t total_size;
                 void* data;
         };
+        //https://docs.microsoft.com/en-us/windows/win32/direct3d11/how-to--use-dynamic-resources
+        struct GPUSubresource
+        {
+            void* data;
+        };
+        
         struct FrameBufferDescriptor
         {
                 DataFormat colorFormat;
@@ -96,6 +103,13 @@ namespace vEngine
                 // similar design as https://docs.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_graphics_pipeline_state_desc
                 std::string vs_name;
                 std::string ps_name;
+        };
+
+        struct Shader
+        {
+            std::string name;
+            std::vector<char> content;
+            Shader(const std::string name) : name{name} {};
         };
     }  // namespace Rendering
 

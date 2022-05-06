@@ -30,6 +30,11 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 D3D11PipelineState(const PipelineStateDescriptor& desc);
+
+                ComPtr<ID3DBlob> vs_blob_;
+                ComPtr<ID3DBlob> ps_blob_;
+                ComPtr<ID3D11VertexShader> vs_;
+                ComPtr<ID3D11PixelShader> ps_;
         };
     }  // namespace Rendering
 }  // namespace vEngine

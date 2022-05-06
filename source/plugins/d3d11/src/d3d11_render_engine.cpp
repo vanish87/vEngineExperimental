@@ -262,7 +262,7 @@ namespace vEngine
 
         PipelineStateSharedPtr D3D11RenderEngine::OnRegister(const PipelineStateDescriptor& pipeline_desc)
         {
-            return std::make_shared<PipelineState>(pipeline_desc);
+            return std::make_shared<D3D11PipelineState>(pipeline_desc);
         }
         TextureSharedPtr D3D11RenderEngine::Create(const TextureDescriptor& desc)
         {

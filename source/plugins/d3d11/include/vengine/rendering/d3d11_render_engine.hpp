@@ -39,6 +39,10 @@ namespace vEngine
                 {
                     return this->d3d_device_;
                 }
+                ComPtr<ID3D11DeviceContext> DeviceContext()
+                {
+                    return this->d3d_imm_context_;
+                }
 
                 static DataFormat D3DFormatToDataFormat(DXGI_FORMAT formart)
                 {

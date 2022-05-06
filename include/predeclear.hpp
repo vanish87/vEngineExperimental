@@ -83,6 +83,8 @@ namespace vEngine
         CLASS_AND_SHARED_POINTER(GraphicsBuffer)
         CLASS_AND_SHARED_POINTER(Texture)
         CLASS_AND_SHARED_POINTER(MeshRendererComponent)
+        
+        STRUCT_AND_SHARED_POINTER(Shader)
     }
 
 	#undef CLASS_AND_SHARED_POINTER
