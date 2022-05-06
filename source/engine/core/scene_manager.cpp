@@ -95,13 +95,13 @@ namespace vEngine
                 //         this->render_queue_.push(renderer->game_object_.get());
                 //     }
                 // });
-                while (!this->render_queue_.empty())
-                {
-                    auto r = this->render_queue_.front();
-                    this->render_queue_.pop();
+            }
+            while (!this->render_queue_.empty())
+            {
+                auto r = this->render_queue_.front();
+                this->render_queue_.pop();
 
-                    r->Render();
-                }
+                r->Render();
             }
         }
         void SceneManager::Update()

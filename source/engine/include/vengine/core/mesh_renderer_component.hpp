@@ -32,6 +32,7 @@ namespace vEngine
 
                 virtual void Update(GameNodeSharedPtr parent) override
                 {
+                    //Update local to world matrix for current game node
                     // PRINT("MeshRendererComponent Update");
                     if(this->game_object_->renderable_ == nullptr)
                     {
