@@ -7,9 +7,9 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
 	set(ASSIMP_ARCHITECTURE "32")
 endif(CMAKE_SIZEOF_VOID_P EQUAL 8)
-	
+
+set(ASSIMP_ROOT_DIR ${EXTERNAL_BUILD_DIR})
 if(WIN32)
-	set(ASSIMP_ROOT_DIR ${EXTERNAL_BUILD_DIR})
 
 	# message(STATUS "ASSIMP_ROOT_DIR= ${ASSIMP_ROOT_DIR}")
 
@@ -61,30 +61,33 @@ if(WIN32)
 	
 else(WIN32)
 
-	find_path(
-	  assimp_INCLUDE_DIRS
-	  NAMES postprocess.h scene.h version.h config.h cimport.h
-	  PATHS /usr/local/include/
+	find_path(ASSIMP_INCLUDE_DIR
+		NAMES
+			assimp/anim.h
+		HINTS
+			${ASSIMP_ROOT_DIR}/include
 	)
 
 	find_library(
 	  assimp_LIBRARIES
-	  NAMES assimp
-	  PATHS /usr/local/lib/
+	  NAMES 
+	  		libassimp
+	  HINTS
+			${ASSIMP_ROOT_DIR}/lib
 	)
 
-	if (assimp_INCLUDE_DIRS AND assimp_LIBRARIES)
+	if (assimp_INCLUDE_DIR AND assimp_LIBRARIES)
 	  SET(assimp_FOUND TRUE)
-	ENDIF (assimp_INCLUDE_DIRS AND assimp_LIBRARIES)
+	ENDIF (assimp_INCLUDE_DIR AND assimp_LIBRARIES)
 
 	if (assimp_FOUND)
 	  if (NOT assimp_FIND_QUIETLY)
 		message(STATUS "Found asset importer library: ${assimp_LIBRARIES}")
 	  endif (NOT assimp_FIND_QUIETLY)
 	else (assimp_FOUND)
-	  if (assimp_FIND_REQUIRED)
-		message(FATAL_ERROR "Could not find asset importer library")
-	  endif (assimp_FIND_REQUIRED)
+	#   if (assimp_FIND_REQUIRED)
+	# 	message(FATAL_ERROR "Could not find asset importer library")
+	#   endif (assimp_FIND_REQUIRED)
 	endif (assimp_FOUND)
 	
 endif(WIN32)
