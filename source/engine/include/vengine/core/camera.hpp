@@ -35,12 +35,6 @@ namespace vEngine
 
                 FrameBufferSharedPtr target;
 
-                virtual void OnBeginCamera()
-                {
-                    //update per camera cbuffer
-                    //view/proj matrix
-                }
-
                 const float4x4 ProjectionMatrix() const
                 {
                     return this->proj_matrix_;
@@ -57,6 +51,7 @@ namespace vEngine
                 // etc.
 
                 int4 view_port_;
+
         };
     }  // namespace Core
 }  // namespace vEngine

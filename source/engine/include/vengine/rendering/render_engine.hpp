@@ -45,15 +45,6 @@ namespace vEngine
 
                 virtual void BeginRender(){};
                 virtual void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) = 0;
-                // {
-                //     auto v = vertice;
-                //     auto i = indice;
-                //     //very basic rendering of sth.
-                //     //IASetBuffer
-                //     //IASetTopology
-                //     //DrawIndexed
-
-                // };
                 virtual void EndRender(){};
 
                 virtual void Dispatch(){};

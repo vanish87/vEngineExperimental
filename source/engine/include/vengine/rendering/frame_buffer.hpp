@@ -46,8 +46,6 @@ namespace vEngine
                     return this->depthStencilTexture_;
                 };
 
-                void UpdateGPU(const float4x4 view_matrix, const float4x4 proj_matrix);
-
                 /// class variable description
                 // int public_variable_;
 
