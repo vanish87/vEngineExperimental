@@ -101,7 +101,7 @@ namespace vEngine
             auto hr = context->Map(this->buffer_.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &data);
             if (FAILED(hr))
             {
-                PRINT_AND_BREAK("Cannot create buffer");
+                PRINT_AND_BREAK("Cannot Map buffer");
             }
             sub.data = data.pData;
             return sub;

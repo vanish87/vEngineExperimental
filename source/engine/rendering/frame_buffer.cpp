@@ -32,7 +32,7 @@ namespace vEngine
             this->colorTextures_.push_back(backBuffer);
             // this->depthStencilTexture_ =
 
-            auto cbuffer_desc = GraphicsBufferDescriptor();
+            GraphicsBufferDescriptor cbuffer_desc;
             cbuffer_desc.type = GraphicsBufferType::GBT_CBuffer;
             cbuffer_desc.usage = GraphicsBufferUsage::GPU_CPU_Write_GPU_Read;
             cbuffer_desc.offset = 0;

@@ -65,6 +65,8 @@ namespace vEngine
                 //per camera cbuffer: view proj, pos, rt demensions
                 //per object: world matrix, dynamic material properties
                 //per material: shadred properties
+
+                //not used for now
                 GraphicsBufferSharedPtr frame_constat_buffer_;
         };
     }  // namespace Rendering
