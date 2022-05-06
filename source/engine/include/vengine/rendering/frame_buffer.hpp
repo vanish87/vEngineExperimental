@@ -14,14 +14,12 @@
 
 #include <engine.hpp>
 #include <vector>
-#include <vengine/rendering/data_cbuffer.hpp>
 
 namespace vEngine
 {
     namespace Rendering
     {
         using namespace Core;
-        using namespace Math;
 
         /// \brief Unity-like Graphics buffer
         ///
@@ -67,6 +65,7 @@ namespace vEngine
                 //per material: shadred properties
 
                 //not used for now
+                //maybe rt dimensions
                 GraphicsBufferSharedPtr frame_constat_buffer_;
         };
     }  // namespace Rendering
