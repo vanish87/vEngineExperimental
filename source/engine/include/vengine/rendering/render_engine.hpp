@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <map>
 #include <VENGINE_API.h>
 
 #include <engine.hpp>
@@ -22,6 +23,55 @@ namespace vEngine
                 virtual void Init() = 0;
                 virtual void Deinit() = 0;
                 virtual void Update() = 0;
+
+                virtual void Bind(const FrameBufferSharedPtr frameBuffer)
+                {
+                    this->current_frame_buffer_ = frameBuffer;
+                    this->OnBind(frameBuffer);
+                }
+                virtual void OnBind(const FrameBufferSharedPtr frameBuffer) = 0;
+
+
+                virtual PipelineStateSharedPtr Register(const PipelineStateDescriptor& pipeline_desc)
+                {
+                    // this->current_pipline_states = frameBuffer;
+                    return this->OnRegister(pipeline_desc);
+                }
+                virtual PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) = 0;
+
+                virtual void OnBeginFrame(){
+                    //update per frame cbuffer
+                }; 
+
+                virtual void BeginRender(){};
+                virtual void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) = 0;
+                // {
+                //     auto v = vertice;
+                //     auto i = indice;
+                //     //very basic rendering of sth.
+                //     //IASetBuffer
+                //     //IASetTopology
+                //     //DrawIndexed
+
+                // };
+                virtual void EndRender(){};
+
+                virtual void Dispatch(){};
+
+                // virutal void SetupFrameTextureToRender
+                //GPU Resource management
+                // virtual void 
+
+                virtual TextureSharedPtr Create(const TextureDescriptor& desc) = 0;
+                virtual FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) = 0;
+                virtual GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) = 0;
+
+
+                FrameBufferSharedPtr current_frame_buffer_;
+                FrameBufferSharedPtr back_buffer_;
+
+                std::map<std::string, PipelineStateSharedPtr> current_pipline_states;
+                
         };
     }  // namespace Rendering
 }  // namespace vEngine

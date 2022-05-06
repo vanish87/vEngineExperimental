@@ -1,5 +1,5 @@
 
-#ifdef VENGINE_PLATFORM_LINUX
+#ifdef VENGINE_PLATFORM_UNIX
     #include <vengine/core/window.hpp>
 	// #include <xcb/xcb.h>
 

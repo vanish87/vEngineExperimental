@@ -169,7 +169,8 @@ namespace vEngine
             public:
                 static const Matrix<T, M, N>& Zero()
                 {
-                    static const Matrix<T, M, N> zero(0);
+                    static const T z(0);
+                    static const Matrix<T, M, N> zero(z);
                     return zero;
                 }
 
@@ -236,7 +237,7 @@ namespace vEngine
                 const Matrix& operator*=(const Matrix<U, N>& other) noexcept
                 {
                     UNUSED_PARAMETER(other);
-                    assert(false);
+                    // assert(false);
                     return *this;
                 }
                 // ambiguous operator
@@ -244,7 +245,7 @@ namespace vEngine
                 const Matrix& operator/=(const Matrix<U, N>& other) noexcept
                 {
                     UNUSED_PARAMETER(other);
-                    assert(false);
+                    // assert(false);
                     return *this;
                 }
                 constexpr Matrix const& operator+() const noexcept

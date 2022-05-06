@@ -1,6 +1,12 @@
 # cmake minium version required
 cmake_minimum_required(VERSION 3.13)
 
+if(APPLE)
+    set(VENGINE_BUILD_STATIC ON)
+    set(VENGINE_BUILD_IOS OFF)
+    set(CMAKE_OSX_ARCHITECTURES arm64)
+endif()
+
 # cmake setting
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
@@ -29,18 +35,30 @@ set(META_CMAKE_INIT_SHA      "${GIT_REV}")
 # project setting
 project(vEngine)
 
+if(VENGINE_BUILD_IOS)
+    set(CMAKE_SYSTEM_NAME iOS)
+    set(CMAKE_OSX_SYSROOT iphoneos)
+endif()
+
 # c++ setting
 set(CMAKE_CXX_STANDARD 17)
 if (MSVC)
     # warning level 4 and all warnings as errors
     add_compile_options(/W4 /WX)
+elseif(APPLE)
+    # no warning as error for macos/metal build for now
 else()
     # lots of warnings and all warnings as errors
     add_compile_options(-Wall -Wextra -pedantic -Werror)
 endif()
 
 # lib setting
-option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+if(VENGINE_BUILD_STATIC)
+    option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
+else()
+    option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+endif()
+
 
 # include setting
 # set configure include path
@@ -62,9 +80,29 @@ set(PROJECT_PLATFORM_MARCO ${PROJECT_NAME}_PLATFORM)
 string(TOUPPER ${PROJECT_PLATFORM_MARCO} PROJECT_PLATFORM_MARCO)
 
 if(WIN32)
-add_compile_definitions(${PROJECT_PLATFORM_MARCO}_WINDOWS)
+    add_compile_definitions(${PROJECT_PLATFORM_MARCO}_WINDOWS)
 elseif(UNIX)
-add_compile_definitions(${PROJECT_PLATFORM_MARCO}_LINUX)
+    add_compile_definitions(${PROJECT_PLATFORM_MARCO}_UNIX)
+endif()
+
+if(APPLE)
+    add_compile_definitions(${PROJECT_PLATFORM_MARCO}_APPLE)
+endif()
+
+if(VENGINE_BUILD_STATIC)
+    add_compile_definitions(${PROJECT_PLATFORM_MARCO}_APPLE_STATIC)
 endif()
 
 add_subdirectory(source)
+
+# message(STATUS "CMAKE_SOURCE_DIR= ${CMAKE_SOURCE_DIR}")
+# add_custom_target(COPY_RESOURCE ALL
+#     COMMAND ${CMAKE_COMMAND} -E copy_directory
+#     ${CMAKE_SOURCE_DIR}/resources
+#     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+# )
+# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+#         COMMAND ${CMAKE_COMMAND} -E copy_directory
+#         ${CMAKE_SOURCE_DIR}/resources
+#         $<TARGET_FILE_DIR:${PROJECT_NAME}>/
+# )
