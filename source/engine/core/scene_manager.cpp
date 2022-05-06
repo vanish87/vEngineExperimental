@@ -51,41 +51,21 @@ namespace vEngine
             SceneManager::GetInstance().AddToSceneNode(gn);
 
             auto camera = std::make_shared<CameraComponent>();
+            camera->game_object_->target = Context::GetInstance().GetRenderEngine().back_buffer_;
             SceneManager::GetInstance().AddToSceneNode(camera);
-
         }
         void SceneManager::Deinit() {}
+        void SceneManager::BeginScene()
+        {
+            // Update lights constant buffer here
+        }
         void SceneManager::Flush()
         {
-
-        }
-        void SceneManager::Update()
-        {
-            //camera
-            //frame
-            //flush each scene object
-            //render each matrial pass for every object
-
-            //get all cameras
-            //if camera has target texture
-            //render to target
-            //bind backbuffer
-            //render all none-target camera
-            this->root_->Traverse<CameraComponent>([&](CameraComponentSharedPtr c) {
-                // auto frameBuffer = c->game_object_->target;
-                // auto& re = Context::GetInstance().GetRenderEngine();
-                // re.Bind(frameBuffer);
-                // render all game node
-                // PRINT("Camera");
-
-                return true;
-            });
             auto nodes = std::vector<GameNodeSharedPtr>();
             this->root_->Traverse<GameNode>([&](GameNodeSharedPtr n) {
                 nodes.push_back(n);
                 return true;
             });
-
             for (const auto& n : nodes)
             {
                 // find render component in root
@@ -116,7 +96,6 @@ namespace vEngine
                 //     }
                 // });
             }
-
             while (!this->render_queue_.empty())
             {
                 auto r = this->render_queue_.front();
@@ -124,6 +103,27 @@ namespace vEngine
 
                 r->Render();
             }
+        }
+        void SceneManager::Update()
+        {
+            // camera
+            // frame
+            // flush each scene object
+            // render each matrial pass for every object
+
+            this->root_->Traverse<CameraComponent>([&](CameraComponentSharedPtr c) {
+                c->OnBeginCamera();
+
+                auto cam = c->game_object_;
+                auto frameBuffer = cam->target;
+                auto& re = Context::GetInstance().GetRenderEngine();
+                re.Bind(frameBuffer);
+                this->Flush();
+                // render all game node
+                // PRINT("Camera");
+
+                return true;
+            });
         }
 
         void SceneManager::AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node)

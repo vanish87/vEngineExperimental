@@ -32,32 +32,32 @@ namespace vEngine
             this->colorTextures_.push_back(backBuffer);
             // this->depthStencilTexture_ =
 
-            auto cbuffer_desc = GraphicsBufferDescriptor();
+            GraphicsBufferDescriptor cbuffer_desc;
             cbuffer_desc.type = GraphicsBufferType::GBT_CBuffer;
             cbuffer_desc.usage = GraphicsBufferUsage::GPU_CPU_Write_GPU_Read;
             cbuffer_desc.offset = 0;
-            cbuffer_desc.stride = sizeof(vEngineFrameConstantBuffer);
+            cbuffer_desc.stride = sizeof(vEngineCameraConstantBuffer);
             cbuffer_desc.count = 1;
             cbuffer_desc.total_size = cbuffer_desc.count * cbuffer_desc.stride;
 
-            vEngineFrameConstantBuffer cb;
+            vEngineCameraConstantBuffer cb;
             cbuffer_desc.data = &cb;
 
             this->frame_constat_buffer_ = Context::GetInstance().GetRenderEngine().Create(cbuffer_desc);
         }
         FrameBuffer::~FrameBuffer() {}
-        void FrameBuffer::UpdateGPU(const float4x4 view_matrix, const float4x4 proj_matrix)
-        {
-            UNUSED_PARAMETER(view_matrix);
-            UNUSED_PARAMETER(proj_matrix);
+        // void FrameBuffer::UpdateGPU(const float4x4 view_matrix, const float4x4 proj_matrix)
+        // {
+        //     UNUSED_PARAMETER(view_matrix);
+        //     UNUSED_PARAMETER(proj_matrix);
 
-            vEngineFrameConstantBuffer cb;
-            cb.view_matrix = view_matrix;
-            cb.proj_matrix = proj_matrix;
-            auto data = this->frame_constat_buffer_->Map();
-            memcpy(data.data, &cb, sizeof(vEngineFrameConstantBuffer));
-            this->frame_constat_buffer_->Unmap();
-        }
+        //     vEngineCameraConstantBuffer cb;
+        //     cb.view_matrix = view_matrix;
+        //     cb.proj_matrix = proj_matrix;
+        //     auto data = this->frame_constat_buffer_->Map();
+        //     memcpy(data.data, &cb, sizeof(vEngineCameraConstantBuffer));
+        //     this->frame_constat_buffer_->Unmap();
+        // }
 
         /// A detailed function description, it
         /// should be 2 lines at least.

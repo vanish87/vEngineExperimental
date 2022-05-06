@@ -13,7 +13,7 @@ using namespace vEngine::Math;
 
 #endif
 
-struct vEngineFrameConstantBuffer
+struct vEngineCameraConstantBuffer
 {
 	float4x4 view_matrix;
 	float4x4 proj_matrix;

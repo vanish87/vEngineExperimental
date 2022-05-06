@@ -14,14 +14,12 @@
 
 #include <engine.hpp>
 #include <vector>
-#include <vengine/rendering/data_cbuffer.hpp>
 
 namespace vEngine
 {
     namespace Rendering
     {
         using namespace Core;
-        using namespace Math;
 
         /// \brief Unity-like Graphics buffer
         ///
@@ -46,8 +44,6 @@ namespace vEngine
                     return this->depthStencilTexture_;
                 };
 
-                void UpdateGPU(const float4x4 view_matrix, const float4x4 proj_matrix);
-
                 /// class variable description
                 // int public_variable_;
 
@@ -67,6 +63,9 @@ namespace vEngine
                 //per camera cbuffer: view proj, pos, rt demensions
                 //per object: world matrix, dynamic material properties
                 //per material: shadred properties
+
+                //not used for now
+                //maybe rt dimensions
                 GraphicsBufferSharedPtr frame_constat_buffer_;
         };
     }  // namespace Rendering

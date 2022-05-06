@@ -15,7 +15,7 @@
 #include <VENGINE_API.h>
 #include <vengine/core/component.hpp>
 #include <vengine/core/camera.hpp>
-#include <vengine/rendering/frame_buffer.hpp>
+#include <vengine/rendering/graphics_buffer.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -32,16 +32,27 @@ namespace vEngine
                 /// \brief brief constructor description.
                 CameraComponent();
 
-                void Update(const GameNodeSharedPtr parent) override
+                void OnBeginCamera()
                 {
                     auto cam = this->game_object_;
-                    cam->target->UpdateGPU(this->Transform(), cam->ProjectionMatrix());
+                    vEngineCameraConstantBuffer cb;
+                    cb.view_matrix = this->Transform();
+                    cb.proj_matrix = cam->ProjectionMatrix();
+                    auto data = this->camera_constant_buffer_->Map();
+                    memcpy(data.data, &cb, sizeof(vEngineCameraConstantBuffer));
+                    this->camera_constant_buffer_->Unmap();
+                }
+
+                void Update(const GameNodeSharedPtr parent) override
+                {
                 }
 
                 float4x4 ViewMatrix()
                 {
                     return this->Transform();
                 }
+
+                GraphicsBufferSharedPtr camera_constant_buffer_;
         };
     }  // namespace Core
 }  // namespace vEngine

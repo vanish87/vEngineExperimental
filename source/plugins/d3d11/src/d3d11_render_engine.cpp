@@ -55,8 +55,9 @@ namespace vEngine
 
             auto backbufferTexture = std::make_shared<D3D11Texture>(pBackBuffer);
             FrameBufferDescriptor desc;
-            auto frameBuffer = std::make_shared<D3D11FrameBuffer>(backbufferTexture, desc);
-            this->Bind(frameBuffer);
+            this->back_buffer_ = std::make_shared<D3D11FrameBuffer>(backbufferTexture, desc);
+            // this->Bind(frameBuffer);
+
 
             // Set the viewport
             D3D11_VIEWPORT viewport;
