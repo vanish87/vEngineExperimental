@@ -20,7 +20,7 @@ namespace vEngine
         /// \tparam M number of row elements
         /// \tparam N number of col elements
         template <typename T = float, int M = 4, int N = 4>
-        class Matrix
+        class Matrix final
         {
             private:
                 typedef Vector<Vector<T, M>, N> DataType;
@@ -128,7 +128,7 @@ namespace vEngine
                 }
                 // big five - 1: virtual destructor -> assure destructor of
                 // subclass called
-                virtual ~Matrix() noexcept {}
+                ~Matrix() noexcept {}
 
                 // big five - 4: move constructor
                 // const is not need: constexpr Vector(const Vector &&other)
