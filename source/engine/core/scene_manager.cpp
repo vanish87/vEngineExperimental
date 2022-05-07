@@ -65,6 +65,7 @@ namespace vEngine
                 [&](MeshRendererComponentSharedPtr n, const GameNodeSharedPtr parent)
                 {
                     n->Update(parent);
+                    n->OnBeginRender();
                     if (n->game_object_ != nullptr)
                     {
                         n->game_object_->Render();
