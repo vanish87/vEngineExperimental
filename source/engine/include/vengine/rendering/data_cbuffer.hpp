@@ -18,5 +18,9 @@ struct vEngineCameraConstantBuffer
 	float4x4 view_matrix;
 	float4x4 proj_matrix;
 };
+struct vEngineObjectConstantBuffer
+{
+	float4x4 local_to_world_matrix;
+};
 
 #endif /* _VENGINE_RENDERING_DATA_CBUFFER_HPP */

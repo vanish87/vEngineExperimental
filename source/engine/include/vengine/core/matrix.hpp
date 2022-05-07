@@ -173,6 +173,12 @@ namespace vEngine
                     static const Matrix<T, M, N> zero(z);
                     return zero;
                 }
+                static const Matrix<T, M, N>& Identity()
+                {
+                    static Matrix<T, M, N> identity;
+                    Math::Identity(identity);
+                    return identity;
+                }
 
             public:
                 iterator begin() noexcept
@@ -274,22 +280,22 @@ namespace vEngine
                 // Boost defined operator
             public:
                 template <typename U>
-                constexpr Matrix operator+(Matrix<U, M, N>& other) noexcept
+                constexpr Matrix operator+(const Matrix<U, M, N>& other) noexcept
                 {
                     return Matrix(*this) += other;
                 }
                 template <typename U>
-                constexpr Matrix operator-(Matrix<U, M, N>& other) noexcept
+                constexpr Matrix operator-(const Matrix<U, M, N>& other) noexcept
                 {
                     return Matrix(*this) -= other;
                 }
                 template <typename U>
-                constexpr Matrix operator*(Matrix<U, M, N>& other) noexcept
+                constexpr Matrix operator*(const Matrix<U, M, N>& other) noexcept
                 {
                     return Multiply(*this, other);
                 }
                 template <typename U>
-                constexpr Matrix operator/(Matrix<U, M, N>& other) noexcept
+                constexpr Matrix operator/(const Matrix<U, M, N>& other) noexcept
                 {
                     return Matrix(*this) /= other;
                 }

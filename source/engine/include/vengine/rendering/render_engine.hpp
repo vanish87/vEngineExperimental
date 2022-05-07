@@ -8,11 +8,14 @@
 #include <engine.hpp>
 #include <map>
 #include <vengine/core/iruntime_module.hpp>
+#include <vengine/core/transform.hpp>
 
 namespace vEngine
 {
     namespace Rendering
     {
+        using namespace Core;
+
         class VENGINE_API RenderEngine : public vEngine::Core::IRuntimeModule
         {
             public:

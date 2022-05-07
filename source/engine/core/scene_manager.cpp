@@ -61,48 +61,17 @@ namespace vEngine
         }
         void SceneManager::Flush()
         {
-            auto nodes = std::vector<GameNodeSharedPtr>();
-            this->root_->Traverse<GameNode>([&](GameNodeSharedPtr n) {
-                nodes.push_back(n);
-                return true;
-            });
-            for (const auto& n : nodes)
-            {
-                // find render component in root
-                n->ForEachChild<Rendering::MeshRendererComponent>([&](Rendering::MeshRendererComponentSharedPtr c) {
-                    // PRINT("IComponent");
-                    // Render mesh
-                    // auto renderer = std::dynamic_pointer_cast<Rendering::MeshRendererComponent>(c);
-                    // if (renderer != nullptr)
+            this->root_->Traverse<MeshRendererComponent>(
+                [&](MeshRendererComponentSharedPtr n, const GameNodeSharedPtr parent)
+                {
+                    n->Update(parent);
+                    if (n->game_object_ != nullptr)
                     {
-                        c->Update(n);
-                        if (c->game_object_ != nullptr)
-                        {
-                            // add IRenderer to render queue
-                            this->render_queue_.push(c->game_object_);
-                        }
+                        n->game_object_->Render();
                     }
                     // Render other renderers(transparent, particle etc.) if possible
+                    return true;
                 });
-
-                // n->ForEachChild<IComponent>([&](IComponent* c) {
-                //     PRINT("IComponent");
-                //     auto renderer = dynamic_cast<Rendering::MeshRendererComponent*>(c);
-                //     if (renderer != nullptr)
-                //     {
-                //         PRINT("MeshRendererComponent");
-                //         // add IRenderer to render queue
-                //         this->render_queue_.push(renderer->game_object_.get());
-                //     }
-                // });
-            }
-            while (!this->render_queue_.empty())
-            {
-                auto r = this->render_queue_.front();
-                this->render_queue_.pop();
-
-                r->Render();
-            }
         }
         void SceneManager::Update()
         {
@@ -111,19 +80,21 @@ namespace vEngine
             // flush each scene object
             // render each matrial pass for every object
 
-            this->root_->Traverse<CameraComponent>([&](CameraComponentSharedPtr c) {
-                c->OnBeginCamera();
+            this->root_->Traverse<CameraComponent>(
+                [&](CameraComponentSharedPtr c)
+                {
+                    c->OnBeginCamera();
 
-                auto cam = c->game_object_;
-                auto frameBuffer = cam->target;
-                auto& re = Context::GetInstance().GetRenderEngine();
-                re.Bind(frameBuffer);
-                this->Flush();
-                // render all game node
-                // PRINT("Camera");
+                    auto cam = c->game_object_;
+                    auto frameBuffer = cam->target;
+                    auto& re = Context::GetInstance().GetRenderEngine();
+                    re.Bind(frameBuffer);
+                    this->Flush();
+                    // render all game node
+                    // PRINT("Camera");
 
-                return true;
-            });
+                    return true;
+                });
         }
 
         void SceneManager::AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node)
@@ -140,14 +111,16 @@ namespace vEngine
             }
             else
             {
-                this->root_->Traverse<GameNode>([&](GameNodeSharedPtr n) {
-                    if (n == game_node)
+                this->root_->Traverse<GameNode>(
+                    [&](GameNodeSharedPtr n)
                     {
-                        n->AddChild(new_node);
-                        return false;
-                    }
-                    return true;
-                });
+                        if (n == game_node)
+                        {
+                            n->AddChild(new_node);
+                            return false;
+                        }
+                        return true;
+                    });
             }
         }
     }  // namespace Core

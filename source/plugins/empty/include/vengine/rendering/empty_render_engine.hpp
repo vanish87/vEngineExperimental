@@ -24,6 +24,36 @@ namespace vEngine
                 void Update() override;
                 void Deinit() override;
                 void PrintInfo() override;
+                void OnBind(const FrameBufferSharedPtr frameBuffer) override
+                {
+                    UNUSED_PARAMETER(frameBuffer);
+                }
+
+                PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) override
+                {
+                    UNUSED_PARAMETER(pipeline_desc);
+                    return nullptr;
+                }
+                void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) override
+                {
+                    UNUSED_PARAMETER(vertice);
+                    UNUSED_PARAMETER(indice);
+                }
+                TextureSharedPtr Create(const TextureDescriptor& desc) override
+                {
+                    UNUSED_PARAMETER(desc);
+                    return nullptr;
+                }
+                FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc)
+                {
+                    UNUSED_PARAMETER(desc);
+                    return nullptr;
+                }
+                GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc)
+                {
+                    UNUSED_PARAMETER(desc);
+                    return nullptr;
+                }
         };
     }  // namespace Rendering
 }  // namespace vEngine

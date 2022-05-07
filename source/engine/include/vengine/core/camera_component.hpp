@@ -36,7 +36,7 @@ namespace vEngine
                 {
                     auto cam = this->game_object_;
                     vEngineCameraConstantBuffer cb;
-                    cb.view_matrix = this->Transform();
+                    cb.view_matrix = this->LocalToWorldTransform();
                     cb.proj_matrix = cam->ProjectionMatrix();
                     auto data = this->camera_constant_buffer_->Map();
                     memcpy(data.data, &cb, sizeof(vEngineCameraConstantBuffer));
@@ -47,10 +47,6 @@ namespace vEngine
                 {
                 }
 
-                float4x4 ViewMatrix()
-                {
-                    return this->Transform();
-                }
 
                 GraphicsBufferSharedPtr camera_constant_buffer_;
         };

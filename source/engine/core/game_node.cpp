@@ -20,7 +20,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        GameNode::GameNode() {}
+        GameNode::GameNode() : parent_{nullptr} {}
         GameNode::~GameNode() {}
 
         void GameNode::AddComponent(const GameNodeSharedPtr component)
@@ -44,10 +44,12 @@ namespace vEngine
 
         void GameNode::AddChild(const GameNodeSharedPtr game_node)
         {
+            game_node->parent_ = shared_from_this();
             this->children_.push_back(game_node);
         }
         void GameNode::RemoveChild(const GameNodeSharedPtr game_node)
         {
+            game_node->parent_ = nullptr;
             this->children_.remove(game_node);
         }
     }  // namespace Core
