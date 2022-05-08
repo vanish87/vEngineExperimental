@@ -16,6 +16,9 @@
 #include <vengine/core/mesh_component.hpp>
 #include <vengine/rendering/graphics_buffer.hpp>
 
+#include <vengine/core/context.hpp>
+#include <vengine/rendering/render_engine.hpp>
+
 /// A brief namespace description.
 namespace vEngine
 {
@@ -39,6 +42,8 @@ namespace vEngine
                     auto data = this->mesh_constant_buffer_->Map();
                     std::memcpy(data.data, &cb, sizeof(vEngineObjectConstantBuffer));
                     this->mesh_constant_buffer_->Unmap();
+
+                    Context::GetInstance().GetRenderEngine().OnBind(this->mesh_constant_buffer_);
 
                 }
 

@@ -8,8 +8,6 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/core/mesh_renderer_component.hpp>
-#include <vengine/core/context.hpp>
-#include <vengine/rendering/render_engine.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.

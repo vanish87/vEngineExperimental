@@ -18,6 +18,9 @@
 #include <vengine/core/camera.hpp>
 #include <vengine/rendering/graphics_buffer.hpp>
 
+#include <vengine/core/context.hpp>
+#include <vengine/rendering/render_engine.hpp>
+
 /// A brief namespace description.
 namespace vEngine
 {
@@ -43,6 +46,8 @@ namespace vEngine
                     std::memcpy(data.data, &cb, sizeof(vEngineCameraConstantBuffer));
                     // std::copy(&cb, &cb + sizeof(vEngineCameraConstantBuffer), data.data);
                     this->camera_constant_buffer_->Unmap();
+
+                    // Context::GetInstance().GetRenderEngine().OnBind(this->camera_constant_buffer_);
                 }
 
                 void Update(const GameNodeSharedPtr parent) override

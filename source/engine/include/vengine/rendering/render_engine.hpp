@@ -33,6 +33,12 @@ namespace vEngine
                     this->OnBind(pipline_state);
                 }
                 virtual void OnBind(const PipelineStateSharedPtr pipeline_state) = 0;
+
+                virtual void Bind(const GraphicsBufferSharedPtr graphics_buffer)
+                {
+                    this->OnBind(graphics_buffer);
+                }
+                virtual void OnBind(const GraphicsBufferSharedPtr graphics_buffer) = 0;
                 
                 virtual void Bind(const FrameBufferSharedPtr frameBuffer)
                 {

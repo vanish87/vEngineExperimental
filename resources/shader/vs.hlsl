@@ -20,7 +20,7 @@ vs_out vs_main(vs_in input)
 	float4 pos = float4(input.position, 1);
 	// float4x4 scale = {0.5,0,0,0, 0,0.5,0,0, 0,0,0.5,0, 0,0,0,1};
 	// pos = mul(scale, pos);
-	// pos = mul(pos, local_to_world_matrix);
+	pos = mul(pos, local_to_world_matrix);
 	// pos = mul(pos, view_matrix);
 	// pos = mul(pos, proj_matrix);
 	output.position = pos;
