@@ -36,11 +36,11 @@ namespace vEngine
         {
             // std::ifstream fin(shader.name + ".hlsl", std::ios::binary);
             // std::ifstream fin(shader.name + ".hlsl");
-            std::ifstream fin("shader/" + shader->name + ".hlsl");
+            std::ifstream fin(shader->name);
 
             if (!fin)
             {
-                PRINT_AND_BREAK("Cannot open Fxo File ");
+                PRINT_AND_BREAK("Cannot open hlsl File ");
                 return false;
             }
 

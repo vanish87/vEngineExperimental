@@ -39,12 +39,13 @@ namespace vEngine
                     cb.view_matrix = this->LocalToWorldTransform();
                     cb.proj_matrix = cam->ProjectionMatrix();
                     auto data = this->camera_constant_buffer_->Map();
-                    memcpy(data.data, &cb, sizeof(vEngineCameraConstantBuffer));
+                    std::memcpy(data.data, &cb, sizeof(vEngineCameraConstantBuffer));
                     this->camera_constant_buffer_->Unmap();
                 }
 
                 void Update(const GameNodeSharedPtr parent) override
                 {
+                    UNUSED_PARAMETER(parent);
                 }
 
 

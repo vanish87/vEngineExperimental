@@ -36,7 +36,7 @@ namespace vEngine
                     vEngineObjectConstantBuffer cb;
                     cb.local_to_world_matrix = this->LocalToWorldTransform();
                     auto data = this->mesh_constant_buffer_->Map();
-                    memcpy(data.data, &cb, sizeof(vEngineObjectConstantBuffer));
+                    std::memcpy(data.data, &cb, sizeof(vEngineObjectConstantBuffer));
                     this->mesh_constant_buffer_->Unmap();
 
                 }

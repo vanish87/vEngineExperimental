@@ -5,7 +5,11 @@
 
 #if defined(VENGINE_HLSL)
 
+#define struct_def cbuffer
+
 #else
+
+#define struct_def struct
 
 #include <engine.hpp>
 #include <vengine/core/matrix.hpp>
@@ -13,12 +17,12 @@ using namespace vEngine::Math;
 
 #endif
 
-struct vEngineCameraConstantBuffer
+struct_def vEngineCameraConstantBuffer
 {
 	float4x4 view_matrix;
 	float4x4 proj_matrix;
 };
-struct vEngineObjectConstantBuffer
+struct_def vEngineObjectConstantBuffer
 {
 	float4x4 local_to_world_matrix;
 };

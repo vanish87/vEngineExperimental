@@ -1,3 +1,7 @@
+
+#define VENGINE_HLSL
+#include "data_cbuffer.hpp"
+
 struct vs_out 
 {
 	float4 position : SV_POSITION; 

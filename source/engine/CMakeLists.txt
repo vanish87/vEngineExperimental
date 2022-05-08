@@ -64,6 +64,15 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
 
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${PROJECT_SOURCE_DIR}/include/vengine/rendering/shared
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/shader
+)
+# INSTALL(TARGETS ${PROJECT_NAME} 
+#         PUBLIC_HEADER DESTINATION $<TARGET_FILE_DIR:${PROJECT_NAME}
+# )
+
 if(APPLE)
     # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     #     COMMAND ${CMAKE_COMMAND} -E copy_directory

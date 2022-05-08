@@ -12,7 +12,7 @@
 
 #include <vengine/rendering/data_format.hpp>
 #include <vengine/rendering/data_struct.hpp>
-#include <vengine/rendering/data_cbuffer.hpp>
+#include <vengine/rendering/shared/data_cbuffer.hpp>
 
 // Note math.h will include math.hpp
 // #include <vengine/core/math.h>

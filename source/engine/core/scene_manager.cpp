@@ -35,7 +35,9 @@ namespace vEngine
         }
         void SceneManager::AddTestNode()
         {
-            auto mat = std::make_shared<Material>("vs", "ps");
+            auto vs_file = "shader/vs.hlsl";
+            auto ps_file = "shader/ps.hlsl";
+            auto mat = std::make_shared<Material>(vs_file, ps_file);
             mat->Load();
 
             auto gn = std::make_shared<GameNode>();

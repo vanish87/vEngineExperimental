@@ -227,7 +227,7 @@ namespace vEngine
             // copy the vertices into the buffer
             D3D11_MAPPED_SUBRESOURCE ms;
             this->d3d_imm_context_->Map(this->vertex_buffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);  // map the buffer
-            memcpy(ms.pData, OurVertices, varr_size);                                                    // copy the data
+            std::memcpy(ms.pData, OurVertices, varr_size);                                                    // copy the data
             this->d3d_imm_context_->Unmap(this->vertex_buffer, NULL);                                    // unmap the buffer
         }
         void D3D11RenderEngine::TriangleDraw()
