@@ -30,8 +30,8 @@ namespace vEngine
                 /// \brief brief constructor description.
                 Transform()
                 {
-                    local_ = float4x4::Identity();
-                    local_to_world_ = float4x4::Identity();
+                    local_ = float4x4::IdentityMat();
+                    local_to_world_ = float4x4::IdentityMat();
                 };
 
                 /// class variable description

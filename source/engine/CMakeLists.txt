@@ -74,9 +74,10 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 # )
 
 if(APPLE)
-    # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    #     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    #     "${EXTERNAL_BUILD_DIR}/lib"
-    #     $<TARGET_FILE_DIR:${PROJECT_NAME}>/../lib
-    # )
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${EXTERNAL_BUILD_DIR}/lib
+        # $<TARGET_FILE_DIR:${PROJECT_NAME}>/lib
+        ${CMAKE_BINARY_DIR}/bin/lib
+    )
 endif(APPLE)
