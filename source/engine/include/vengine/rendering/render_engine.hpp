@@ -27,6 +27,13 @@ namespace vEngine
                 virtual void Deinit() = 0;
                 virtual void Update() = 0;
 
+                virtual void Bind(const PipelineStateSharedPtr pipline_state)
+                {
+                    this->current_pipline_state_ = pipline_state;
+                    this->OnBind(pipline_state);
+                }
+                virtual void OnBind(const PipelineStateSharedPtr pipeline_state) = 0;
+                
                 virtual void Bind(const FrameBufferSharedPtr frameBuffer)
                 {
                     this->current_frame_buffer_ = frameBuffer;
@@ -65,6 +72,7 @@ namespace vEngine
                 FrameBufferSharedPtr back_buffer_;
 
                 std::map<std::string, PipelineStateSharedPtr> current_pipline_states;
+                PipelineStateSharedPtr current_pipline_state_;
         };
     }  // namespace Rendering
 }  // namespace vEngine

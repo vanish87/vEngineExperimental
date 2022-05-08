@@ -34,6 +34,10 @@ namespace vEngine
                 {
                     UNUSED_PARAMETER(frameBuffer);
                 }
+                void OnBind(const PipelineStateSharedPtr pipeline_state) override
+                {
+                    UNUSED_PARAMETER(pipeline_state);
+                }
 
                 PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) override
                 {

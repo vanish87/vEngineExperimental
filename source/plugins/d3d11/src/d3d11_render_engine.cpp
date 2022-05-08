@@ -261,6 +261,11 @@ namespace vEngine
             this->d3d_imm_context_->OMSetRenderTargets(1, color->AsRTV().GetAddressOf(), nullptr);
             // this->d3d_imm_context_->OMSetRenderTargets(1, color->AsRTV().GetAddressOf(), depth->AsDSV().Get());
         }
+        void D3D11RenderEngine::OnBind(const PipelineStateSharedPtr pipeline_state)
+        {
+            auto d3d_state = std::dynamic_pointer_cast<D3D11PipelineState>(pipeline_state);
+
+        }
 
         PipelineStateSharedPtr D3D11RenderEngine::OnRegister(const PipelineStateDescriptor& pipeline_desc)
         {
