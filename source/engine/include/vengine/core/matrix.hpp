@@ -4,7 +4,7 @@
 #pragma once
 #include <vengine/core/math.h>
 
-#include <engine.hpp>
+// #include <engine.hpp>
 #include <vengine/core/vector.hpp>
 
 namespace vEngine
@@ -173,10 +173,10 @@ namespace vEngine
                     static const Matrix<T, M, N> zero(z);
                     return zero;
                 }
-                static const Matrix<T, M, N>& Identity()
+                static const Matrix<T, M, N>& IdentityMat()
                 {
                     static Matrix<T, M, N> identity;
-                    Math::Identity(identity);
+                    Identity(identity);
                     return identity;
                 }
 

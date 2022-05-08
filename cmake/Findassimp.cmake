@@ -58,34 +58,42 @@ if(WIN32)
 	
 else(WIN32)
 
-	find_path(ASSIMP_INCLUDE_DIR
-		NAMES
-			assimp/anim.h
-		HINTS
-			${ASSIMP_ROOT_DIR}/include
+	set(ASSIMP_LIB_EXT "lib")
+
+	if(APPLE)
+		set(ASSIMP_LIB_EXT "dylib")
+	endif(APPLE)
+
+	find_path(ASSIMP_LIBRARY_DIR
+	NAMES
+		libassimp.${ASSIMP_LIB_EXT}
+	HINTS
+		${ASSIMP_ROOT_DIR}/lib
 	)
 
-	find_library(
-	  assimp_LIBRARIES
-	  NAMES 
-	  		libassimp
-	  HINTS
-			${ASSIMP_ROOT_DIR}/lib
+	find_library(ASSIMP_LIBRARY_DEBUG				libassimpd.${ASSIMP_LIB_EXT}			PATHS ${ASSIMP_LIBRARY_DIR})
+	find_library(ASSIMP_LIBRARY_RELEASE				libassimp.${ASSIMP_LIB_EXT} 			PATHS ${ASSIMP_LIBRARY_DIR})
+
+	set(ASSIMP_LIBRARY 
+		optimized 	${ASSIMP_LIBRARY_RELEASE}
+		debug		${ASSIMP_LIBRARY_DEBUG}
 	)
 
-	if (assimp_INCLUDE_DIR AND assimp_LIBRARIES)
-	  SET(assimp_FOUND TRUE)
-	ENDIF (assimp_INCLUDE_DIR AND assimp_LIBRARIES)
+	set(ASSIMP_LIBRARIES ${ASSIMP_LIBRARY})
 
-	if (assimp_FOUND)
-	  if (NOT assimp_FIND_QUIETLY)
+	if (ASSIMP_INCLUDE_DIR AND ASSIMP_LIBRARIES)
+		SET(ASSIMP_FOUND TRUE)
+	ENDIF (ASSIMPNCLUDE_DIR AND ASSIMP_LIBRARIES)
+
+	if (ASSIMP_FOUND)
+	  if (NOT ASSIMPND_QUIETLY)
 		message(STATUS "Found asset importer library: ${assimp_LIBRARIES}")
-	  endif (NOT assimp_FIND_QUIETLY)
-	else (assimp_FOUND)
+	  endif (NOT ASSIMP_FIND_QUIETLY)
+	else (ASSIMP_FOUND)
 	#   if (assimp_FIND_REQUIRED)
 	# 	message(FATAL_ERROR "Could not find asset importer library")
 	#   endif (assimp_FIND_REQUIRED)
-	endif (assimp_FOUND)
+	endif (ASSIMP_FOUND)
 	
 endif(WIN32)
 
