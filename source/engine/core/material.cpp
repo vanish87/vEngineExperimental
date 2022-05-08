@@ -44,6 +44,8 @@ namespace vEngine
             desc.vs_name = this->vs_name_;
             desc.ps_name = this->ps_name_;
             this->pipeline_state_ = Context::GetInstance().GetRenderEngine().Register(desc);
+            Context::GetInstance().GetRenderEngine().Bind(this->pipeline_state_);
+
             return true;
         }
 
