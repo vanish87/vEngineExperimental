@@ -284,7 +284,8 @@ namespace vEngine
     }  // namespace Rendering
 }  // namespace vEngine
 
-extern "C" {
+extern "C"
+{
     void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
     {
         ptr = std::make_unique<vEngine::Rendering::D3D11RenderEngine>();
