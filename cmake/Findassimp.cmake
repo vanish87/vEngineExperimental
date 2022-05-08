@@ -58,7 +58,7 @@ if(WIN32)
 	
 else(WIN32)
 
-	set(ASSIMP_LIB_EXT "lib")
+	set(ASSIMP_LIB_EXT "so")
 
 	if(APPLE)
 		set(ASSIMP_LIB_EXT "dylib")
