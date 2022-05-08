@@ -71,7 +71,7 @@ namespace vEngine
 
             d3d_imm_context_->RSSetViewports(1, &viewport);
 
-            this->InitPipline();
+            // this->InitPipline();
         }
         void D3D11RenderEngine::Update()
         {
@@ -83,7 +83,7 @@ namespace vEngine
         }
         void D3D11RenderEngine::Deinit()
         {
-            this->DeinitPipline();
+            // this->DeinitPipline();
 
             this->d3d_device_->Release();
             this->d3d_swap_chain_->Release();
