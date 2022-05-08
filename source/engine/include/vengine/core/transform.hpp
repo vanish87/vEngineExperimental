@@ -28,7 +28,11 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                Transform(){};
+                Transform()
+                {
+                    local_ = float4x4::Identity();
+                    local_to_world_ = float4x4::Identity();
+                };
 
                 /// class variable description
                 // int public_variable_;
@@ -44,7 +48,7 @@ namespace vEngine
                 /// \return Description for return value.
                 // int GetVariable(int p1, float p2);
         };
-    }
+    }  // namespace Core
 
 }  // namespace vEngine
 

@@ -12,6 +12,7 @@
 
 #pragma once
 
+#include <cstring>
 #include <VENGINE_API.h>
 #include <vengine/core/component.hpp>
 #include <vengine/core/camera.hpp>
@@ -40,6 +41,7 @@ namespace vEngine
                     cb.proj_matrix = cam->ProjectionMatrix();
                     auto data = this->camera_constant_buffer_->Map();
                     std::memcpy(data.data, &cb, sizeof(vEngineCameraConstantBuffer));
+                    // std::copy(&cb, &cb + sizeof(vEngineCameraConstantBuffer), data.data);
                     this->camera_constant_buffer_->Unmap();
                 }
 

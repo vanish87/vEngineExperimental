@@ -41,12 +41,15 @@ namespace vEngine
             mat->Load();
 
             auto gn = std::make_shared<GameNode>();
+
             auto mrc = std::make_shared<Rendering::MeshRendererComponent>();
             mrc->game_object_->material_ = mat;
             gn->AddComponent(mrc);
             auto mc = std::make_shared<Rendering::MeshComponent>();
-            mc->game_object_->Load("bunny.obj");
+            mc->game_object_->Load("cube.obj");
             gn->AddComponent(mc);
+
+            gn->SetScale(float3(0.5f, 0.5f, 0.5f));
             // mp->game_object_ = std::make_shared<Rendering::MeshRenderer>();
             // auto mp = std::make_shared<MeshRendererComponent>();
             // auto mp = std::make_shared<MeshComponent>();

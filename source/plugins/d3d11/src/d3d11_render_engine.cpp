@@ -1,4 +1,5 @@
 #include <d3dcompiler.h>
+#include <cstring>
 
 #include <vengine/core/application.hpp>
 #include <vengine/core/context.hpp>

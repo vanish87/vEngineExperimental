@@ -10,6 +10,7 @@
 #ifndef _VENGINE_CORE_MESH_RENDERER_COMPONENT_HPP
 #define _VENGINE_CORE_MESH_RENDERER_COMPONENT_HPP
 
+#include <cstring>
 #include <vengine/core/component.hpp>
 #include <vengine/core/mesh_renderer.hpp>
 #include <vengine/core/mesh_component.hpp>

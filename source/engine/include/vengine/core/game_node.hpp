@@ -54,6 +54,12 @@ namespace vEngine
                 {
                     return this->transform_.local_to_world_;
                 }
+                void SetScale(float3 scale)
+                {
+                    this->transform_.local_[0][0] = scale.x();
+                    this->transform_.local_[1][1] = scale.y();
+                    this->transform_.local_[2][2] = scale.z();
+                }
 
                 void UpdateLocal(GameNodeSharedPtr parent)
                 {
