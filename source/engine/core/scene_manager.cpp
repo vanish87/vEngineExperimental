@@ -46,7 +46,7 @@ namespace vEngine
             mrc->game_object_->material_ = mat;
             gn->AddComponent(mrc);
             auto mc = std::make_shared<Rendering::MeshComponent>();
-            mc->game_object_->Load("cube.obj");
+            mc->game_object_->Load("bunny.obj");
             gn->AddComponent(mc);
 
             gn->SetScale(float3(0.5f, 0.5f, 0.5f));

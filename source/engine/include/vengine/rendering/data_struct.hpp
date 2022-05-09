@@ -24,6 +24,13 @@ namespace vEngine
             GBU_GPU_Read_Only,
             GBU_GPU_ReadWrite,
         };
+        enum class GraphicsBufferSlot : int16_t
+        {
+            Slot0 = 0,
+            Slot1,
+            Slot2,
+            Slot3,
+        };
         enum class ElementTopology
         {
             ET_Undefined,  // for compute buffer or other data buffers that have not topology relations
@@ -76,6 +83,8 @@ namespace vEngine
                 ElementLayout layout;
                 // DataFormat format;// undefined format for compute buffer
                 // std::vector<std::pair<
+
+                GraphicsBufferSlot slot;
 
                 uint32_t offset;
                 uint32_t stride;

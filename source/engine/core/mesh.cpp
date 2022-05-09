@@ -55,14 +55,15 @@ namespace vEngine
             auto pScene = importer.ReadFile(this->file_name_, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
             this->HandleNode(pScene->mRootNode, pScene);
 
+            // auto z = 20.0f;
             // Vertex v1;
-            // v1.pos = float3(-0.5f, 0.7f, 0);
+            // v1.pos = float3(-0.5f, 0.7f, z);
             // Vertex v2;
-            // v2.pos = float3(-0.5f, -0.5, 0);
+            // v2.pos = float3(-0.5f, -0.5, z);
             // Vertex v3;
-            // v3.pos = float3(0.5f, -0.5f, 0);
+            // v3.pos = float3(0.5f, -0.5f, z);
             // Vertex v4;
-            // v4.pos = float3(0.5f, 0.5f, 0);
+            // v4.pos = float3(0.5f, 0.5f, z);
 
             // v1.color = v2.color = v3.color = v4.color = float4::One();
 

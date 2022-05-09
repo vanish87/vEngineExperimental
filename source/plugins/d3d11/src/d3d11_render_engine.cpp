@@ -283,7 +283,8 @@ namespace vEngine
         void D3D11RenderEngine::OnBind(const GraphicsBufferSharedPtr graphics_buffer)
         {
             auto d3d_gb = std::dynamic_pointer_cast<D3D11GraphicsBuffer>(graphics_buffer);
-            this->d3d_imm_context_->VSSetConstantBuffers(0, 1, d3d_gb->buffer_.GetAddressOf());
+            auto desc = d3d_gb->descriptor_;
+            this->d3d_imm_context_->VSSetConstantBuffers(static_cast<uint32_t>(desc.slot), 1, d3d_gb->buffer_.GetAddressOf());
         }
 
         PipelineStateSharedPtr D3D11RenderEngine::OnRegister(const PipelineStateDescriptor& pipeline_desc)

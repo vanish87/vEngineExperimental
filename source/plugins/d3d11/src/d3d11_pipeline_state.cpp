@@ -26,8 +26,15 @@ namespace vEngine
         /// should be 2 lines
         D3D11PipelineState::D3D11PipelineState(const PipelineStateDescriptor& desc) : PipelineState(desc)
         {
+            ComPtr<ID3DBlob> error;
+
             auto vs = this->vs_shader_;
-            auto hr = D3DCompile(vs->content.data(), vs->content.size(), vs->name.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "vs_main", "vs_5_0", 0, 0, vs_blob_.GetAddressOf(), nullptr);
+            auto hr = D3DCompile(vs->content.data(), vs->content.size(), vs->name.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "vs_main", "vs_5_0", 0, 0, vs_blob_.GetAddressOf(), error.GetAddressOf());
+            if (error != nullptr)
+            {
+                std::string err(static_cast<char*>(error->GetBufferPointer()), error->GetBufferSize());
+                PRINT(err);
+            }
             CHECK_ASSERT(hr == S_OK);
 
             auto ps = this->ps_shader_;

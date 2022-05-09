@@ -39,9 +39,13 @@ namespace vEngine
                 {
                     vEngineObjectConstantBuffer cb;
                     cb.local_to_world_matrix = this->LocalToWorldTransform();
+                    Math::Translate(cb.local_to_world_matrix, 0, 0, 1);
+                    cb.local_to_world_matrix = Math::Transpose(cb.local_to_world_matrix);
                     auto data = this->mesh_constant_buffer_->Map();
                     std::memcpy(data.data, &cb, sizeof(vEngineObjectConstantBuffer));
                     this->mesh_constant_buffer_->Unmap();
+
+
 
                     Context::GetInstance().GetRenderEngine().OnBind(this->mesh_constant_buffer_);
 

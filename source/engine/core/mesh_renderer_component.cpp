@@ -27,6 +27,7 @@ namespace vEngine
             cbuffer_desc.stride = sizeof(vEngineObjectConstantBuffer);
             cbuffer_desc.count = 1;
             cbuffer_desc.total_size = cbuffer_desc.count * cbuffer_desc.stride;
+            cbuffer_desc.slot = static_cast<GraphicsBufferSlot>(vEngineConstantBufferPerObject);
 
             vEngineObjectConstantBuffer cb;
             cbuffer_desc.data = &cb;
