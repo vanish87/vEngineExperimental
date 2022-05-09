@@ -1,3 +1,11 @@
+/// \file vector.hpp
+/// \brief Head file for vector
+///
+/// Vector implentation
+///
+/// \author yuanli
+/// \version 0.0.1
+/// \date 2022-01-21
 
 #ifndef _VENGINE_CORE_VECTOR_HPP
 #define _VENGINE_CORE_VECTOR_HPP
@@ -11,11 +19,14 @@ namespace vEngine
 {
     namespace Math
     {
-        // basic data type will be static linked to main app
-        // so no CORE_API here
-        // plugin etc. will generate dll using CORE_API.h
+        /// \brief Basic vector data type
+        ///
+        /// Use std::array to store data,
+        /// Use template recrusion for compile time calculation
+        /// \tparam T Vector type
+        /// \tparam N Vector size
         template <typename T = float, int N = 4>
-        class Vector
+        class Vector final
         {
             private:
                 typedef std::array<T, N> DataType;
@@ -39,34 +50,36 @@ namespace vEngine
                 typedef typename DataType::difference_type difference_type;
 
                 static constexpr size_type size = N;
+                static constexpr size_type byte_size = N * sizeof(value_type);
 
             public:
-                // use init list {} to initialize data
+                /// \brief Constructor: use init list {} to initialize data
                 constexpr Vector() noexcept {}
 
-                // explicit one parameter constructor to avoid implicit
-                // conversion
+                /// \brief Explicit one parameter constructor to avoid implicit conversion
                 explicit constexpr Vector(const T& other) noexcept
                 // : data_{other} // this only assign first element
                 {
                     vector_t<T, N>::do_assign(this->data(), other);
                 }
 
-                // big five - 3: copy constructor
-                // called by
-                //  1. ClassA a = b;
-                //  2. Func(ClassA a) -> pass by value
-                //  3. return temp; -> return by value
+                /// \brief big five - 3: copy constructor
+                ///
+                /// copy constructor is called by \n
+                ///  1. ClassA a = b; -> declear and assignment \n
+                ///  2. Func(ClassA a) -> pass by value \n
+                ///  3. return temp; -> return by value \n
                 constexpr Vector(const Vector& other) noexcept
                 {
                     vector_t<T, N>::do_copy(this->data(), other.data());
                 }
 
-                // big five - 2: assignment operator
-                // with const formal paramter
-                // with constexpr TODO: to clarify usage of constexpr
-                // constexpr can not pass clang compiling => don't need it
-                // constexpr Vector& operator=(const Vector& other) noexcept
+                /// \brief big five - 2: assignment operator
+                ///
+                /// with const formal paramter \n
+                /// usage of constexpr: \n
+                /// constexpr can not pass clang compiling => don't need constexpr as following \n
+                /// constexpr Vector& operator=(const Vector& other) noexcept \n
                 Vector& operator=(const Vector& other) noexcept
                 {
                     // 1.check self assignment
@@ -78,24 +91,29 @@ namespace vEngine
                     }
                     return *this;
                 }
-                // big five - 1: virtual destructor -> assure destructor of
-                // subclass called
-                virtual ~Vector() noexcept {}
 
-                // big five - 4: move constructor
-                // const is not needed: constexpr Vector(const Vector &&other)
-                // The move constructor:
-                // - Takes an r-value reference as a parameter.
-                // - Discards the object’s current state.
-                // - Transfers ownership of the r-value object into the
-                // receiver
-                // - Puts the r-value object into an 'empty' state.
-                // - subclass must explicitly std::move the base class
-                constexpr Vector(Vector&& other) noexcept
-                    : data_(std::move(other.data_))
-                {}
-                // big five - 5 : move operator
-                // is used like unique_ptr
+                /// \brief big five - 1: virtual destructor
+                ///
+                /// to assure destructor of
+                /// subclass called
+                /// do not need for vector class
+                // virtual ~Vector() noexcept {}
+
+                /// \brief big five - 4: move constructor
+                ///
+                /// const is not needed: constexpr Vector(const Vector &&other) \n
+                /// The move constructor: \n
+                /// - Takes an r-value reference as a parameter. \n
+                /// - Discards the object’s current state. \n
+                /// - Transfers ownership of the r-value object into the receiver \n
+                /// - Puts the r-value object into an 'empty' state. \n
+                /// - subclass must explicitly std::move the base class \n
+                constexpr Vector(Vector&& other) noexcept : data_(std::move(other.data_)) {}
+
+                /// \brief big five - 5 : move operator
+                ///
+                /// move operator
+                /// is used like unique_ptr
                 constexpr Vector& operator=(const Vector&& other) noexcept
                 {
                     // 1.check self assignment
@@ -108,36 +126,43 @@ namespace vEngine
                     return *this;
                 }
 
-                // ambiguous/undefined actions
-                // constructor obj with pointer
+                /// \brief constructor vector with pointer
+                ///
+                /// Usually used to init vector with
+                /// a data array
                 explicit constexpr Vector(const T* other) noexcept
                 {
                     vector_t<T, N>::do_copy(this->data(), other);
                 }
 
-                // copy from other vector type
+                /// \brief copy from other vector type
+                ///
+                /// Will cast data type from U to T
+                /// the size M should equal to N
                 template <typename U, int M>
                 constexpr Vector(Vector<U, M> const& rhs) noexcept
                 {
+                    static_assert(M == N);
                     vector_t<T, N>::do_copy(this->data(), rhs.data());
                 }
 
-                constexpr Vector(const T& x, const T& y) noexcept : data_{x, y}
-                {}
-                constexpr Vector(const T& x, const T& y, const T& z) noexcept
-                    : data_{x, y, z}
-                {}
-                constexpr Vector(const T& x, const T& y, const T& z,
-                                 const T& w) noexcept
-                    : data_{x, y, z, w}
-                {}
+                /// \brief init constructor
+                ///
+                /// use {} to init data, \n
+                /// it will generate a compile error if
+                /// vector is initd with more parameter than it has
+                constexpr Vector(const T& x, const T& y) noexcept : data_{x, y} {}
+                constexpr Vector(const T& x, const T& y, const T& z) noexcept : data_{x, y, z} {}
+                constexpr Vector(const T& x, const T& y, const T& z, const T& w) noexcept : data_{x, y, z, w} {}
 
             public:
+                /// \brief static all 0 vector
                 static const Vector<T, N>& Zero()
                 {
                     static const Vector<T, N> zero(T(0));
                     return zero;
                 }
+                /// \brief static all 1 vector
                 static const Vector<T, N>& One()
                 {
                     static const Vector<T, N> one{1};
@@ -178,8 +203,7 @@ namespace vEngine
                     CHECK_ASSERT(index < N);
                     return this->data_[index];
                 }
-                constexpr const_reference operator[](
-                    size_type index) const noexcept
+                constexpr const_reference operator[](size_type index) const noexcept
                 {
                     CHECK_ASSERT(index < N);
                     return this->data_[index];
@@ -193,14 +217,17 @@ namespace vEngine
                 }
                 reference y() noexcept
                 {
+                    static_assert(size > 1);
                     return this->data_[1];
                 }
                 reference z() noexcept
                 {
+                    static_assert(size > 2);
                     return this->data_[2];
                 }
                 reference w() noexcept
                 {
+                    static_assert(size > 3);
                     return this->data_[3];
                 }
 
@@ -210,56 +237,62 @@ namespace vEngine
                 }
                 const_reference y() const noexcept
                 {
+                    static_assert(size > 1);
                     return this->data_[1];
                 }
                 const_reference z() const noexcept
                 {
+                    static_assert(size > 2);
                     return this->data_[2];
                 }
                 const_reference w() const noexcept
                 {
+                    static_assert(size > 3);
                     return this->data_[3];
                 }
 
             public:
+                /// \brief add each element of vector
                 template <typename U>
                 const Vector& operator+=(const Vector<U, N>& other) noexcept
                 {
-                    vector_t<T, N>::do_add(this->data(), this->data(),
-                                           other.data());
+                    vector_t<T, N>::do_add(this->data(), this->data(), other.data());
                     return *this;
                 }
+                /// \brief substract each element of vector
                 template <typename U>
                 const Vector& operator-=(const Vector<U, N>& other) noexcept
                 {
-                    vector_t<T, N>::do_sub(this->data(), this->data(),
-                                           other.data());
+                    vector_t<T, N>::do_sub(this->data(), this->data(), other.data());
                     return *this;
                 }
+                /// \brief multiply each element of vector
                 template <typename U>
                 const Vector& operator*=(const Vector<U, N>& other) noexcept
                 {
-                    vector_t<T, N>::do_mul(this->data(), this->data(),
-                                           other.data());
+                    vector_t<T, N>::do_mul(this->data(), this->data(), other.data());
                     return *this;
                 }
+                /// \brief scale each element of vector
                 template <typename U>
                 const Vector& operator*=(const U& other) noexcept
                 {
                     vector_t<T, N>::do_mul(this->data(), this->data(), other);
                     return *this;
                 }
+                /// \brief divide each element of vector
                 template <typename U>
                 const Vector& operator/=(const Vector<U, N>& other) noexcept
                 {
-                    vector_t<T, N>::do_div(this->data(), this->data(),
-                                           other.data());
+                    vector_t<T, N>::do_div(this->data(), this->data(), other.data());
                     return *this;
                 }
+                /// \brief take it self positive
                 constexpr Vector const& operator+() const noexcept
                 {
                     return *this;
                 }
+                /// \brief nagenate vector
                 Vector const operator-() const noexcept
                 {
                     Vector ret;
@@ -267,48 +300,46 @@ namespace vEngine
                     return ret;
                 }
 
+                /// \brief conpare all element of vector
                 bool operator==(const Vector& other) const noexcept
                 {
                     return vector_t<T, N>::do_equal(this->data(), other.data());
                 }
+                /// \brief conpare all element of vector
                 bool operator!=(const Vector& other) const noexcept
                 {
                     return !(*this == other);
                 }
 
-                // Boost defined operator
             public:
+                // Boost defined operator
                 template <typename U>
-                constexpr Vector operator+(
-                    const Vector<U, N>& other) const noexcept
+                constexpr Vector operator+(const Vector<U, N>& other) const noexcept
                 {
                     return Vector(*this) += other;
                 }
                 template <typename U>
-                constexpr Vector operator-(
-                    const Vector<U, N>& other) const noexcept
+                constexpr Vector operator-(const Vector<U, N>& other) const noexcept
                 {
                     return Vector(*this) -= other;
                 }
                 template <typename U>
-                constexpr Vector operator*(
-                    const Vector<U, N>& other) const noexcept
+                constexpr Vector operator*(const Vector<U, N>& other) const noexcept
                 {
                     return Vector(*this) *= other;
                 }
-                // TODO: ambiguous multiply function, use scale
                 template <typename U>
                 constexpr Vector operator*(const U& other) const noexcept
                 {
                     return Vector(*this) *= other;
                 }
                 template <typename U>
-                constexpr Vector operator/(
-                    const Vector<U, N>& other) const noexcept
+                constexpr Vector operator/(const Vector<U, N>& other) const noexcept
                 {
                     return Vector(*this) /= other;
                 }
         };
+        /// \brief swap two vectors
         template <typename T, int N>
         inline void swap(Vector<T, N>& lhs, Vector<T, N>& rhs) noexcept
         {

@@ -4,7 +4,7 @@
 #pragma once
 #include <vengine/core/math.h>
 
-#include <engine.hpp>
+// #include <engine.hpp>
 #include <vengine/core/vector.hpp>
 
 namespace vEngine
@@ -20,7 +20,7 @@ namespace vEngine
         /// \tparam M number of row elements
         /// \tparam N number of col elements
         template <typename T = float, int M = 4, int N = 4>
-        class Matrix
+        class Matrix final
         {
             private:
                 typedef Vector<Vector<T, M>, N> DataType;
@@ -48,10 +48,12 @@ namespace vEngine
                 static constexpr size_type col = M;
 
             public:
-                // use init list {} to initialize data
                 constexpr Matrix() noexcept {}
-                constexpr Matrix(T m00, T m01, T m02, T m03, T m10, T m11,
-                                 T m12, T m13, T m20, T m21, T m22, T m23,
+
+                /// \brief Init constructor for matrix
+                constexpr Matrix(T m00, T m01, T m02, T m03, 
+                                 T m10, T m11, T m12, T m13, 
+                                 T m20, T m21, T m22, T m23,
                                  T m30, T m31, T m32, T m33) noexcept
                 {
                     static_assert(M == 4);
@@ -126,7 +128,7 @@ namespace vEngine
                 }
                 // big five - 1: virtual destructor -> assure destructor of
                 // subclass called
-                virtual ~Matrix() noexcept {}
+                ~Matrix() noexcept {}
 
                 // big five - 4: move constructor
                 // const is not need: constexpr Vector(const Vector &&other)
@@ -154,7 +156,6 @@ namespace vEngine
                     return *this;
                 }
 
-                // ambiguous/undefined actions
                 // constructor obj with pointer
                 explicit constexpr Matrix(const T* other) noexcept
                 {
@@ -164,22 +165,19 @@ namespace vEngine
                     }
                 }
 
-                // // copy from other matrix type
-                // template <typename U, int M>
-                // constexpr Matrix(Matrix<U, M> const& rhs) noexcept
-                // {
-                //     // vector_t<T, N>::do_copy(this->data(), rhs.data());
-                // }
-
-                // constexpr Matrix(const T& x, const T& y) noexcept : data_{x,
-                // y}
-                // {}
 
             public:
                 static const Matrix<T, M, N>& Zero()
                 {
-                    static const Matrix<T, M, N> zero(0);
+                    static const T z(0);
+                    static const Matrix<T, M, N> zero(z);
                     return zero;
+                }
+                static const Matrix<T, M, N>& IdentityMat()
+                {
+                    static Matrix<T, M, N> identity;
+                    Identity(identity);
+                    return identity;
                 }
 
             public:
@@ -240,19 +238,20 @@ namespace vEngine
                     }
                     return *this;
                 }
+                // ambiguous operator
                 template <typename U>
                 const Matrix& operator*=(const Matrix<U, N>& other) noexcept
                 {
                     UNUSED_PARAMETER(other);
-                    // ambiguous operator
-                    assert(false);
+                    // assert(false);
                     return *this;
                 }
+                // ambiguous operator
                 template <typename U>
                 const Matrix& operator/=(const Matrix<U, N>& other) noexcept
                 {
                     UNUSED_PARAMETER(other);
-                    assert(false);
+                    // assert(false);
                     return *this;
                 }
                 constexpr Matrix const& operator+() const noexcept
@@ -281,22 +280,22 @@ namespace vEngine
                 // Boost defined operator
             public:
                 template <typename U>
-                constexpr Matrix operator+(Matrix<U, M, N>& other) noexcept
+                constexpr Matrix operator+(const Matrix<U, M, N>& other) noexcept
                 {
                     return Matrix(*this) += other;
                 }
                 template <typename U>
-                constexpr Matrix operator-(Matrix<U, M, N>& other) noexcept
+                constexpr Matrix operator-(const Matrix<U, M, N>& other) noexcept
                 {
                     return Matrix(*this) -= other;
                 }
                 template <typename U>
-                constexpr Matrix operator*(Matrix<U, M, N>& other) noexcept
+                constexpr Matrix operator*(const Matrix<U, M, N>& other) noexcept
                 {
                     return Multiply(*this, other);
                 }
                 template <typename U>
-                constexpr Matrix operator/(Matrix<U, M, N>& other) noexcept
+                constexpr Matrix operator/(const Matrix<U, M, N>& other) noexcept
                 {
                     return Matrix(*this) /= other;
                 }
