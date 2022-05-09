@@ -23,4 +23,4 @@ add_subdirectory(test)
 
 if(VENGINE_BUILD_DOC)
 	add_subdirectory(document)
-endif((VENGINE_BUILD_DOC))
+endif(VENGINE_BUILD_DOC)
