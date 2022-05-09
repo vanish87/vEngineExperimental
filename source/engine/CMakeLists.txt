@@ -54,14 +54,30 @@ endif()
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${EXTERNAL_BUILD_DIR}/bin"
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>/
+    ${EXTERNAL_BUILD_DIR}/bin
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
 
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/resources
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>
+)
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${PROJECT_SOURCE_DIR}/include/vengine/rendering/shared
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/shader
+)
+# INSTALL(TARGETS ${PROJECT_NAME} 
+#         PUBLIC_HEADER DESTINATION $<TARGET_FILE_DIR:${PROJECT_NAME}
+# )
+
 if(APPLE)
-    # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    #     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    #     "${EXTERNAL_BUILD_DIR}/lib"
-    #     $<TARGET_FILE_DIR:${PROJECT_NAME}>/../lib
-    # )
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${EXTERNAL_BUILD_DIR}/lib
+        # $<TARGET_FILE_DIR:${PROJECT_NAME}>/lib
+        ${CMAKE_BINARY_DIR}/bin/lib
+    )
 endif(APPLE)

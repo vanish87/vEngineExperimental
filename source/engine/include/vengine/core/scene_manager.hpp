@@ -36,7 +36,14 @@ namespace vEngine
             public:
                 void Init() override;
                 void Deinit() override;
+
+                /// \brief traverse all camera and render them
                 void Update() override;
+
+                /// \brief only render all objects
+                void Flush();
+
+                void BeginScene();
 
                 void AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node = nullptr);
 
@@ -46,6 +53,7 @@ namespace vEngine
                 std::queue<IRendererSharedPtr> render_queue_;
 
                 std::vector<CameraComponentSharedPtr> scene_cameras_;
+                std::vector<LightComponentSharedPtr> scene_lights_;
         };
     }  // namespace Core
 }  // namespace vEngine

@@ -97,7 +97,7 @@ namespace vEngine
                 }
 
                 // call here or PAINT event in Winodw Class
-                Context::GetInstance().GetRenderEngine().Update();
+                // Context::GetInstance().GetRenderEngine().Update();
             }
 
             this->Deinit();

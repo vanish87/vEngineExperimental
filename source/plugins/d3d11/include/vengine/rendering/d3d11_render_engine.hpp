@@ -25,6 +25,8 @@ namespace vEngine
                 void PrintInfo() override;
 
                 void OnBind(const FrameBufferSharedPtr FrameBuffer) override;
+                void OnBind(const PipelineStateSharedPtr pipeline_state) override;
+                void OnBind(const GraphicsBufferSharedPtr graphics_buffer) override;
                 PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) override;
                 void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) override;
 
@@ -38,6 +40,10 @@ namespace vEngine
                 ComPtr<ID3D11Device> Device()
                 {
                     return this->d3d_device_;
+                }
+                ComPtr<ID3D11DeviceContext> DeviceContext()
+                {
+                    return this->d3d_imm_context_;
                 }
 
                 static DataFormat D3DFormatToDataFormat(DXGI_FORMAT formart)

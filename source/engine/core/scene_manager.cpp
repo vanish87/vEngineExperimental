@@ -35,86 +35,72 @@ namespace vEngine
         }
         void SceneManager::AddTestNode()
         {
-            auto mat = std::make_shared<Material>("vs", "ps");
+            auto vs_file = "shader/vs.hlsl";
+            auto ps_file = "shader/ps.hlsl";
+            auto mat = std::make_shared<Material>(vs_file, ps_file);
             mat->Load();
 
             auto gn = std::make_shared<GameNode>();
+
             auto mrc = std::make_shared<Rendering::MeshRendererComponent>();
             mrc->game_object_->material_ = mat;
             gn->AddComponent(mrc);
             auto mc = std::make_shared<Rendering::MeshComponent>();
             mc->game_object_->Load("bunny.obj");
             gn->AddComponent(mc);
+
+            gn->SetScale(float3(0.5f, 0.5f, 0.5f));
             // mp->game_object_ = std::make_shared<Rendering::MeshRenderer>();
             // auto mp = std::make_shared<MeshRendererComponent>();
             // auto mp = std::make_shared<MeshComponent>();
             SceneManager::GetInstance().AddToSceneNode(gn);
 
             auto camera = std::make_shared<CameraComponent>();
+            camera->game_object_->target = Context::GetInstance().GetRenderEngine().back_buffer_;
             SceneManager::GetInstance().AddToSceneNode(camera);
-
         }
         void SceneManager::Deinit() {}
-        void SceneManager::Update()
+        void SceneManager::BeginScene()
         {
-            //get all cameras
-            //if camera has target texture
-            //render to target
-            //bind backbuffer
-            //render all none-target camera
-            this->root_->Traverse<CameraComponent>([&](CameraComponentSharedPtr c) {
-                // auto frameBuffer = c->game_object_->target;
-                // auto& re = Context::GetInstance().GetRenderEngine();
-                // re.Bind(frameBuffer);
-                // render all game node
-                // PRINT("Camera");
-
-                return true;
-            });
-            auto nodes = std::vector<GameNodeSharedPtr>();
-            this->root_->Traverse<GameNode>([&](GameNodeSharedPtr n) {
-                nodes.push_back(n);
-                return true;
-            });
-
-            for (const auto& n : nodes)
-            {
-                // find render component in root
-                n->ForEachChild<Rendering::MeshRendererComponent>([&](Rendering::MeshRendererComponentSharedPtr c) {
-                    // PRINT("IComponent");
-                    // Render mesh
-                    // auto renderer = std::dynamic_pointer_cast<Rendering::MeshRendererComponent>(c);
-                    // if (renderer != nullptr)
+            // Update lights constant buffer here
+        }
+        void SceneManager::Flush()
+        {
+            this->root_->Traverse<MeshRendererComponent>(
+                [&](MeshRendererComponentSharedPtr n, const GameNodeSharedPtr parent)
+                {
+                    n->Update(parent);
+                    n->OnBeginRender();
+                    if (n->game_object_ != nullptr)
                     {
-                        c->Update(n);
-                        if (c->game_object_ != nullptr)
-                        {
-                            // add IRenderer to render queue
-                            this->render_queue_.push(c->game_object_);
-                        }
+                        n->game_object_->Render();
                     }
                     // Render other renderers(transparent, particle etc.) if possible
+                    return true;
                 });
+        }
+        void SceneManager::Update()
+        {
+            // camera
+            // frame
+            // flush each scene object
+            // render each matrial pass for every object
 
-                // n->ForEachChild<IComponent>([&](IComponent* c) {
-                //     PRINT("IComponent");
-                //     auto renderer = dynamic_cast<Rendering::MeshRendererComponent*>(c);
-                //     if (renderer != nullptr)
-                //     {
-                //         PRINT("MeshRendererComponent");
-                //         // add IRenderer to render queue
-                //         this->render_queue_.push(renderer->game_object_.get());
-                //     }
-                // });
-            }
+            this->root_->Traverse<CameraComponent>(
+                [&](CameraComponentSharedPtr c)
+                {
+                    c->OnBeginCamera();
 
-            while (!this->render_queue_.empty())
-            {
-                auto r = this->render_queue_.front();
-                this->render_queue_.pop();
+                    auto cam = c->game_object_;
+                    auto frameBuffer = cam->target;
+                    auto& re = Context::GetInstance().GetRenderEngine();
+                    re.Bind(frameBuffer);
+                    this->Flush();
+                    // render all game node
+                    // PRINT("Camera");
 
-                r->Render();
-            }
+                    return true;
+                });
         }
 
         void SceneManager::AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node)
@@ -131,14 +117,16 @@ namespace vEngine
             }
             else
             {
-                this->root_->Traverse<GameNode>([&](GameNodeSharedPtr n) {
-                    if (n == game_node)
+                this->root_->Traverse<GameNode>(
+                    [&](GameNodeSharedPtr n)
                     {
-                        n->AddChild(new_node);
-                        return false;
-                    }
-                    return true;
-                });
+                        if (n == game_node)
+                        {
+                            n->AddChild(new_node);
+                            return false;
+                        }
+                        return true;
+                    });
             }
         }
     }  // namespace Core

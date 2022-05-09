@@ -26,7 +26,10 @@ namespace vEngine
                     return D3D11_BIND_INDEX_BUFFER;
                 case GraphicsBufferType::GBT_Vertex:
                     return D3D11_BIND_VERTEX_BUFFER;
-                default: return D3D11_BIND_UNORDERED_ACCESS;
+                case GraphicsBufferType::GBT_CBuffer:
+                    return D3D11_BIND_CONSTANT_BUFFER;
+                default:
+                    return D3D11_BIND_UNORDERED_ACCESS;
             }
         }
         static uint32_t ToD3DAccessFlag(GraphicsBufferUsage usage)
@@ -37,7 +40,8 @@ namespace vEngine
                     return D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
                 case GraphicsBufferUsage::GPU_CPU_Write_GPU_Read:
                     return D3D11_CPU_ACCESS_WRITE;
-                default: return 0;
+                default:
+                    return 0;
             }
         }
 
@@ -51,9 +55,10 @@ namespace vEngine
                     return D3D11_USAGE_DYNAMIC;
                 case GraphicsBufferUsage::GBU_GPU_Read_Only:
                     return D3D11_USAGE_IMMUTABLE;
-                case GraphicsBufferUsage::GBU_GPU_ReadWrite://but can be update by UpdateSubresource
+                case GraphicsBufferUsage::GBU_GPU_ReadWrite:  // but can be update by UpdateSubresource
                     return D3D11_USAGE_DEFAULT;
-                default: return D3D11_USAGE_DEFAULT;
+                default:
+                    return D3D11_USAGE_DEFAULT;
             }
         }
         /// constructor detailed defintion,
@@ -78,21 +83,44 @@ namespace vEngine
             sub.SysMemSlicePitch = 0;
 
             auto hr = device->CreateBuffer(&d3d_desc, &sub, this->buffer_.GetAddressOf());
-            if(FAILED(hr))
+            if (FAILED(hr))
             {
                 PRINT_AND_BREAK("Cannot create buffer");
             }
         }
 
+        GPUSubresource D3D11GraphicsBuffer::DoMap()
+        {
+            auto re = &Core::Context::GetInstance().GetRenderEngine();
+            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
+            auto context = d3d_re->DeviceContext();
+
+            GPUSubresource sub;
+            D3D11_MAPPED_SUBRESOURCE data;
+
+            auto hr = context->Map(this->buffer_.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &data);
+            if (FAILED(hr))
+            {
+                PRINT_AND_BREAK("Cannot Map buffer");
+            }
+            sub.data = data.pData;
+            return sub;
+        }
+        void D3D11GraphicsBuffer::DoUnmap()
+        {
+            auto re = &Core::Context::GetInstance().GetRenderEngine();
+            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
+            auto context = d3d_re->DeviceContext();
+            context->Unmap(this->buffer_.Get(), 0);
+        }
 
         void ConstantBuffer()
         {
-            //create with usage and access
-            // D3D11_USAGE usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
-            // D3D11_CPU_ACCESS_FLAG access = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_WRITE;
-            //update with map/unmap
-            // D3D11_MAP map = D3D11_MAP::D3D11_MAP_WRITE_DISCARD;
-
+            // create with usage and access
+            //  D3D11_USAGE usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
+            //  D3D11_CPU_ACCESS_FLAG access = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_WRITE;
+            // update with map/unmap
+            //  D3D11_MAP map = D3D11_MAP::D3D11_MAP_WRITE_DISCARD;
         }
 
         /// A detailed function description, it

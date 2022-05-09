@@ -35,6 +35,13 @@ namespace vEngine
 
 				GraphicsBufferDescriptor descriptor_;
 
+                GPUSubresource Map();
+                void Unmap();
+
+            protected:
+                virtual GPUSubresource DoMap();
+                virtual void DoUnmap();
+
             public:
                 /// \brief A brief function description.
                 ///

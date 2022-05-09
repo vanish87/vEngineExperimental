@@ -12,9 +12,14 @@
 
 #pragma once
 
+#include <cstring>
 #include <VENGINE_API.h>
 #include <vengine/core/component.hpp>
 #include <vengine/core/camera.hpp>
+#include <vengine/rendering/graphics_buffer.hpp>
+
+#include <vengine/core/context.hpp>
+#include <vengine/rendering/render_engine.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -31,10 +36,29 @@ namespace vEngine
                 /// \brief brief constructor description.
                 CameraComponent();
 
-                float4x4 ViewMatrix()
+                void OnBeginCamera()
                 {
-                    return this->Transform();
+                    auto cam = this->game_object_;
+                    vEngineCameraConstantBuffer cb;
+                    cb.view_matrix = this->LocalToWorldTransform();
+                    cb.view_matrix = Math::Transpose(cb.view_matrix);
+                    cb.proj_matrix = cam->ProjectionMatrix();
+                    cb.proj_matrix = Math::Transpose(cb.proj_matrix);
+                    auto data = this->camera_constant_buffer_->Map();
+                    std::memcpy(data.data, &cb, sizeof(vEngineCameraConstantBuffer));
+                    // std::copy(&cb, &cb + sizeof(vEngineCameraConstantBuffer), data.data);
+                    this->camera_constant_buffer_->Unmap();
+
+                    Context::GetInstance().GetRenderEngine().OnBind(this->camera_constant_buffer_);
                 }
+
+                void Update(const GameNodeSharedPtr parent) override
+                {
+                    UNUSED_PARAMETER(parent);
+                }
+
+
+                GraphicsBufferSharedPtr camera_constant_buffer_;
         };
     }  // namespace Core
 }  // namespace vEngine

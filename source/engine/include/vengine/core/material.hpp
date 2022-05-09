@@ -12,6 +12,7 @@
 
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
+#include <vengine/core/iresource.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -24,13 +25,13 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Material : public GameObject
+        class Material : public GameObject, IResource
         {
             public:
                 /// \brief brief constructor description.
-                Material(const std::string& vs_name, const std::string& ps_name);
+                Material(const std::string vs_name, const std::string ps_name);
 
-                void Load();
+                bool Load() override;
 
                 // color
                 // parameter
@@ -42,14 +43,14 @@ namespace vEngine
                 //  {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
                 //  };
 
+                //all vs/ps related data is stored in PipelineState
                 std::string vs_name_;
                 std::string ps_name_;
-
                 PipelineStateSharedPtr pipeline_state_;
 
                 // maybe layout like D3D11_INPUT_ELEMENT_DESC
 
-                Rendering::GraphicsBufferSharedPtr constant_buffer_;
+                GraphicsBufferSharedPtr constant_buffer_;
                 std::vector<Rendering::TextureSharedPtr> textures_;
         };
     }  // namespace Core

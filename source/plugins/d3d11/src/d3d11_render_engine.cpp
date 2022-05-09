@@ -1,4 +1,5 @@
 #include <d3dcompiler.h>
+#include <cstring>
 
 #include <vengine/core/application.hpp>
 #include <vengine/core/context.hpp>
@@ -55,8 +56,9 @@ namespace vEngine
 
             auto backbufferTexture = std::make_shared<D3D11Texture>(pBackBuffer);
             FrameBufferDescriptor desc;
-            auto frameBuffer = std::make_shared<D3D11FrameBuffer>(backbufferTexture, desc);
-            this->Bind(frameBuffer);
+            this->back_buffer_ = std::make_shared<D3D11FrameBuffer>(backbufferTexture, desc);
+            // this->Bind(frameBuffer);
+
 
             // Set the viewport
             D3D11_VIEWPORT viewport;
@@ -69,7 +71,7 @@ namespace vEngine
 
             d3d_imm_context_->RSSetViewports(1, &viewport);
 
-            this->InitPipline();
+            // this->InitPipline();
         }
         void D3D11RenderEngine::Update()
         {
@@ -81,7 +83,7 @@ namespace vEngine
         }
         void D3D11RenderEngine::Deinit()
         {
-            this->DeinitPipline();
+            // this->DeinitPipline();
 
             this->d3d_device_->Release();
             this->d3d_swap_chain_->Release();
@@ -163,8 +165,8 @@ namespace vEngine
             hr = this->d3d_device_->CreatePixelShader(this->ps_blob->GetBufferPointer(), this->ps_blob->GetBufferSize(), nullptr, &this->ps);
             CHECK_ASSERT(hr == S_OK);
 
-            this->d3d_imm_context_->VSSetShader(this->vs, 0, 0);
-            this->d3d_imm_context_->PSSetShader(this->ps, 0, 0);
+            // this->d3d_imm_context_->VSSetShader(this->vs, 0, 0);
+            // this->d3d_imm_context_->PSSetShader(this->ps, 0, 0);
 
             D3D11_INPUT_ELEMENT_DESC input_desc[] = {
                 {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
@@ -176,7 +178,7 @@ namespace vEngine
             hr = this->d3d_device_->CreateInputLayout(input_desc, 4, this->vs_blob->GetBufferPointer(), this->vs_blob->GetBufferSize(), &this->layout);
             CHECK_ASSERT(hr == S_OK);
 
-            this->d3d_imm_context_->IASetInputLayout(this->layout);
+            // this->d3d_imm_context_->IASetInputLayout(this->layout);
 
             // create a triangle using the VERTEX struct
             VERTEX OurVertices[] = {
@@ -226,7 +228,7 @@ namespace vEngine
             // copy the vertices into the buffer
             D3D11_MAPPED_SUBRESOURCE ms;
             this->d3d_imm_context_->Map(this->vertex_buffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);  // map the buffer
-            memcpy(ms.pData, OurVertices, varr_size);                                                    // copy the data
+            std::memcpy(ms.pData, OurVertices, varr_size);                                                    // copy the data
             this->d3d_imm_context_->Unmap(this->vertex_buffer, NULL);                                    // unmap the buffer
         }
         void D3D11RenderEngine::TriangleDraw()
@@ -259,10 +261,35 @@ namespace vEngine
             this->d3d_imm_context_->OMSetRenderTargets(1, color->AsRTV().GetAddressOf(), nullptr);
             // this->d3d_imm_context_->OMSetRenderTargets(1, color->AsRTV().GetAddressOf(), depth->AsDSV().Get());
         }
+        void D3D11RenderEngine::OnBind(const PipelineStateSharedPtr pipeline_state)
+        {
+            auto d3d_state = std::dynamic_pointer_cast<D3D11PipelineState>(pipeline_state);
+
+            this->d3d_imm_context_->VSSetShader(d3d_state->vs_.Get(), 0, 0);
+            this->d3d_imm_context_->PSSetShader(d3d_state->ps_.Get(), 0, 0);
+
+            D3D11_INPUT_ELEMENT_DESC input_desc[] = {
+                {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+            };
+
+            auto hr = this->d3d_device_->CreateInputLayout(input_desc, 4, d3d_state->vs_blob_->GetBufferPointer(), d3d_state->vs_blob_->GetBufferSize(), &this->layout);
+            CHECK_ASSERT(hr == S_OK);
+
+            this->d3d_imm_context_->IASetInputLayout(this->layout);
+        }
+        void D3D11RenderEngine::OnBind(const GraphicsBufferSharedPtr graphics_buffer)
+        {
+            auto d3d_gb = std::dynamic_pointer_cast<D3D11GraphicsBuffer>(graphics_buffer);
+            auto desc = d3d_gb->descriptor_;
+            this->d3d_imm_context_->VSSetConstantBuffers(static_cast<uint32_t>(desc.slot), 1, d3d_gb->buffer_.GetAddressOf());
+        }
 
         PipelineStateSharedPtr D3D11RenderEngine::OnRegister(const PipelineStateDescriptor& pipeline_desc)
         {
-            return std::make_shared<PipelineState>(pipeline_desc);
+            return std::make_shared<D3D11PipelineState>(pipeline_desc);
         }
         TextureSharedPtr D3D11RenderEngine::Create(const TextureDescriptor& desc)
         {
@@ -282,7 +309,8 @@ namespace vEngine
     }  // namespace Rendering
 }  // namespace vEngine
 
-extern "C" {
+extern "C"
+{
     void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
     {
         ptr = std::make_unique<vEngine::Rendering::D3D11RenderEngine>();

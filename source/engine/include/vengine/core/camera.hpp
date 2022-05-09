@@ -35,17 +35,23 @@ namespace vEngine
 
                 FrameBufferSharedPtr target;
 
+                const float4x4 ProjectionMatrix() const
+                {
+                    return this->proj_matrix_;
+                }
+
             private:
                 float fovy_;
                 float aspect_;
                 float zn_;
                 float zf_;
-                float4x4 proj_matrix;
+                float4x4 proj_matrix_;
                 // aspect
                 // fov
                 // etc.
 
                 int4 view_port_;
+
         };
     }  // namespace Core
 }  // namespace vEngine

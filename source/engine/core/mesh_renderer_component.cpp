@@ -18,8 +18,23 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        MeshRendererComponent::MeshRendererComponent() {}
+        MeshRendererComponent::MeshRendererComponent()
+        {
+            auto cbuffer_desc = GraphicsBufferDescriptor();
+            cbuffer_desc.type = GraphicsBufferType::GBT_CBuffer;
+            cbuffer_desc.usage = GraphicsBufferUsage::GPU_CPU_Write_GPU_Read;
+            cbuffer_desc.offset = 0;
+            cbuffer_desc.stride = sizeof(vEngineObjectConstantBuffer);
+            cbuffer_desc.count = 1;
+            cbuffer_desc.total_size = cbuffer_desc.count * cbuffer_desc.stride;
+            cbuffer_desc.slot = static_cast<GraphicsBufferSlot>(vEngineConstantBufferPerObject);
 
-    }  // namespace Core
+            vEngineObjectConstantBuffer cb;
+            cbuffer_desc.data = &cb;
+
+            this->mesh_constant_buffer_ = Context::GetInstance().GetRenderEngine().Create(cbuffer_desc);
+        }
+
+    }  // namespace Rendering
 
 }  // namespace vEngine

@@ -19,6 +19,8 @@ namespace vEngine
 {
     namespace Rendering
     {
+        using namespace Core;
+
         /// \brief Unity-like Graphics buffer
         ///
         /// Graphics buffer could be index/vertex buffer or
@@ -55,6 +57,16 @@ namespace vEngine
                 /// \return Description for return value.
                 std::vector<TextureSharedPtr> colorTextures_;
                 TextureSharedPtr depthStencilTexture_;
+
+                // view matrix and projection matrix
+                //per frame cbuffer: lights
+                //per camera cbuffer: view proj, pos, rt demensions
+                //per object: world matrix, dynamic material properties
+                //per material: shadred properties
+
+                //not used for now
+                //maybe rt dimensions
+                GraphicsBufferSharedPtr frame_constat_buffer_;
         };
     }  // namespace Rendering
 

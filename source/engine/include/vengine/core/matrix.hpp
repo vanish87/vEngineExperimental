@@ -4,7 +4,7 @@
 #pragma once
 #include <vengine/core/math.h>
 
-#include <engine.hpp>
+// #include <engine.hpp>
 #include <vengine/core/vector.hpp>
 
 namespace vEngine
@@ -20,7 +20,7 @@ namespace vEngine
         /// \tparam M number of row elements
         /// \tparam N number of col elements
         template <typename T = float, int M = 4, int N = 4>
-        class Matrix
+        class Matrix final
         {
             private:
                 typedef Vector<Vector<T, M>, N> DataType;
@@ -128,7 +128,7 @@ namespace vEngine
                 }
                 // big five - 1: virtual destructor -> assure destructor of
                 // subclass called
-                virtual ~Matrix() noexcept {}
+                ~Matrix() noexcept {}
 
                 // big five - 4: move constructor
                 // const is not need: constexpr Vector(const Vector &&other)
@@ -172,6 +172,12 @@ namespace vEngine
                     static const T z(0);
                     static const Matrix<T, M, N> zero(z);
                     return zero;
+                }
+                static const Matrix<T, M, N>& IdentityMat()
+                {
+                    static Matrix<T, M, N> identity;
+                    Identity(identity);
+                    return identity;
                 }
 
             public:
@@ -274,22 +280,22 @@ namespace vEngine
                 // Boost defined operator
             public:
                 template <typename U>
-                constexpr Matrix operator+(Matrix<U, M, N>& other) noexcept
+                constexpr Matrix operator+(const Matrix<U, M, N>& other) noexcept
                 {
                     return Matrix(*this) += other;
                 }
                 template <typename U>
-                constexpr Matrix operator-(Matrix<U, M, N>& other) noexcept
+                constexpr Matrix operator-(const Matrix<U, M, N>& other) noexcept
                 {
                     return Matrix(*this) -= other;
                 }
                 template <typename U>
-                constexpr Matrix operator*(Matrix<U, M, N>& other) noexcept
+                constexpr Matrix operator*(const Matrix<U, M, N>& other) noexcept
                 {
                     return Multiply(*this, other);
                 }
                 template <typename U>
-                constexpr Matrix operator/(Matrix<U, M, N>& other) noexcept
+                constexpr Matrix operator/(const Matrix<U, M, N>& other) noexcept
                 {
                     return Matrix(*this) /= other;
                 }

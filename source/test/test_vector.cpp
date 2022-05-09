@@ -30,7 +30,7 @@ TEST(Vector, IntAdd)
     ASSERT_EQ(v4.z(), 7);
     ASSERT_EQ(v4.w(), 7);
 
-    int4 v5 = {1, 2, 3};
+    // int4 v5 = {1, 2, 3};
 }
 
 TEST(Vector, IntCompare)

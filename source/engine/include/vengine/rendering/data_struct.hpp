@@ -13,6 +13,7 @@ namespace vEngine
         {
             GBT_Index,
             GBT_Vertex,
+            GBT_CBuffer,
         };
 
         enum class GraphicsBufferUsage
@@ -22,6 +23,13 @@ namespace vEngine
             GPU_CPU_Write_GPU_Read,
             GBU_GPU_Read_Only,
             GBU_GPU_ReadWrite,
+        };
+        enum class GraphicsBufferSlot : int16_t
+        {
+            Slot0 = 0,
+            Slot1,
+            Slot2,
+            Slot3,
         };
         enum class ElementTopology
         {
@@ -76,12 +84,20 @@ namespace vEngine
                 // DataFormat format;// undefined format for compute buffer
                 // std::vector<std::pair<
 
+                GraphicsBufferSlot slot;
+
                 uint32_t offset;
                 uint32_t stride;
                 uint64_t count;
                 uint64_t total_size;
                 void* data;
         };
+        //https://docs.microsoft.com/en-us/windows/win32/direct3d11/how-to--use-dynamic-resources
+        struct GPUSubresource
+        {
+            void* data;
+        };
+        
         struct FrameBufferDescriptor
         {
                 DataFormat colorFormat;
@@ -96,6 +112,13 @@ namespace vEngine
                 // similar design as https://docs.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_graphics_pipeline_state_desc
                 std::string vs_name;
                 std::string ps_name;
+        };
+
+        struct Shader
+        {
+            std::string name;
+            std::vector<char> content;
+            Shader(const std::string name) : name{name} {};
         };
     }  // namespace Rendering
 

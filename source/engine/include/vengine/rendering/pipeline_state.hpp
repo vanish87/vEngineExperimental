@@ -31,11 +31,14 @@ namespace vEngine
                 /// \brief brief constructor description.
                 PipelineState(const PipelineStateDescriptor& desc);
                 virtual ~PipelineState();
+                bool Load(ShaderSharedPtr shader);
 
                 /// class variable description
                 // int public_variable_;
 
 				PipelineStateDescriptor descriptor_;
+                ShaderSharedPtr vs_shader_;
+                ShaderSharedPtr ps_shader_;
 
             public:
                 /// \brief A brief function description.

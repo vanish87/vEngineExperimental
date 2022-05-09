@@ -7,9 +7,9 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
 	set(ASSIMP_ARCHITECTURE "32")
 endif(CMAKE_SIZEOF_VOID_P EQUAL 8)
-	
+
+set(ASSIMP_ROOT_DIR ${EXTERNAL_BUILD_DIR})
 if(WIN32)
-	set(ASSIMP_ROOT_DIR ${EXTERNAL_BUILD_DIR})
 
 	# message(STATUS "ASSIMP_ROOT_DIR= ${ASSIMP_ROOT_DIR}")
 
@@ -58,31 +58,49 @@ if(WIN32)
 	
 else(WIN32)
 
-	find_path(
-	  assimp_INCLUDE_DIRS
-	  NAMES postprocess.h scene.h version.h config.h cimport.h
-	  PATHS /usr/local/include/
+	find_path(ASSIMP_INCLUDE_DIR
+		NAMES
+			assimp/anim.h
+		HINTS
+			${ASSIMP_ROOT_DIR}/include
 	)
 
-	find_library(
-	  assimp_LIBRARIES
-	  NAMES assimp
-	  PATHS /usr/local/lib/
+	set(ASSIMP_LIB_EXT "so")
+
+	if(APPLE)
+		set(ASSIMP_LIB_EXT "dylib")
+	endif(APPLE)
+
+	find_path(ASSIMP_LIBRARY_DIR
+		NAMES
+			libassimp.${ASSIMP_LIB_EXT}
+		HINTS
+			${ASSIMP_ROOT_DIR}/lib
 	)
 
-	if (assimp_INCLUDE_DIRS AND assimp_LIBRARIES)
-	  SET(assimp_FOUND TRUE)
-	ENDIF (assimp_INCLUDE_DIRS AND assimp_LIBRARIES)
+	find_library(ASSIMP_LIBRARY_DEBUG				libassimpd.${ASSIMP_LIB_EXT}			PATHS ${ASSIMP_LIBRARY_DIR})
+	find_library(ASSIMP_LIBRARY_RELEASE				libassimp.${ASSIMP_LIB_EXT} 			PATHS ${ASSIMP_LIBRARY_DIR})
 
-	if (assimp_FOUND)
-	  if (NOT assimp_FIND_QUIETLY)
+	set(ASSIMP_LIBRARY 
+		optimized 	${ASSIMP_LIBRARY_RELEASE}
+		debug		${ASSIMP_LIBRARY_DEBUG}
+	)
+
+	set(ASSIMP_LIBRARIES ${ASSIMP_LIBRARY})
+
+	if (ASSIMP_INCLUDE_DIR AND ASSIMP_LIBRARIES)
+		SET(ASSIMP_FOUND TRUE)
+	ENDIF (ASSIMP_INCLUDE_DIR AND ASSIMP_LIBRARIES)
+
+	if (ASSIMP_FOUND)
+	  if (NOT ASSIMPND_QUIETLY)
 		message(STATUS "Found asset importer library: ${assimp_LIBRARIES}")
-	  endif (NOT assimp_FIND_QUIETLY)
-	else (assimp_FOUND)
-	  if (assimp_FIND_REQUIRED)
-		message(FATAL_ERROR "Could not find asset importer library")
-	  endif (assimp_FIND_REQUIRED)
-	endif (assimp_FOUND)
+	  endif (NOT ASSIMP_FIND_QUIETLY)
+	else (ASSIMP_FOUND)
+	#   if (assimp_FIND_REQUIRED)
+	# 	message(FATAL_ERROR "Could not find asset importer library")
+	#   endif (assimp_FIND_REQUIRED)
+	endif (ASSIMP_FOUND)
 	
 endif(WIN32)
 
