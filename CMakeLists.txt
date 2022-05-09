@@ -7,6 +7,8 @@ if(APPLE)
     set(CMAKE_OSX_ARCHITECTURES arm64)
 endif()
 
+set(VENGINE_BUILD_DOC ON)
+
 # cmake setting
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
