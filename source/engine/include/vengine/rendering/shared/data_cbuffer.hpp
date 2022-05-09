@@ -1,7 +1,6 @@
 #ifndef _VENGINE_RENDERING_DATA_CBUFFER_HPP
 #define _VENGINE_RENDERING_DATA_CBUFFER_HPP
 
-#pragma once
 
 #if defined(VENGINE_HLSL)
 
@@ -10,6 +9,7 @@
 
 #else
 
+#pragma once
 #define struct_def struct
 #define register_def(r) 
 
