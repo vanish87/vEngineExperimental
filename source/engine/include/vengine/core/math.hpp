@@ -354,7 +354,7 @@ namespace vEngine
             lhs[2][2] = scale;
         }
         template <typename T>
-        void Scale(Matrix<T, 4, 4>& lhs, const float3 scale)
+        void Scale(Matrix<T, 4, 4>& lhs, const Vector<T, 3> scale)
         {
             Identity(lhs);
 
