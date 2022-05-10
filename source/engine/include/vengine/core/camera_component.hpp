@@ -55,7 +55,7 @@ namespace vEngine
                     Context::GetInstance().GetRenderEngine().OnBind(this->camera_constant_buffer_);
                 }
 
-                void Update(const GameNodeSharedPtr parent) override
+                void UpdateComponent(const GameNodeSharedPtr parent) override
                 {
                     UNUSED_PARAMETER(parent);
                 }

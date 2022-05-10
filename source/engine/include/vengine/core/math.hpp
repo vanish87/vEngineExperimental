@@ -343,6 +343,15 @@ namespace vEngine
             lhs[3][1] = y;
             lhs[3][2] = z;
         }
+        template <typename T>
+        void Translate(Matrix<T, 4, 4>& lhs, const Vector<T,3> pos)
+        {
+            Identity(lhs);
+            // left hand coordinate system
+            lhs[3][0] = pos.x();
+            lhs[3][1] = pos.y();
+            lhs[3][2] = pos.z();
+        }
 
         template <typename T>
         void Scale(Matrix<T, 4, 4>& lhs, const float scale)

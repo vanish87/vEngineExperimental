@@ -46,22 +46,27 @@ namespace vEngine
                 void AddComponent(const GameNodeSharedPtr component);
                 void RemoveComponent(const GameNodeSharedPtr component);
 
-                float4x4 LocalTransform()
+                const float4x4 LocalTransform()
                 {
-                    return this->transform_.local_;
+                    return this->transform_.GetLocal();
                 }
-                float4x4 LocalToWorldTransform()
+                const float4x4 LocalToWorldTransform()
                 {
                     return this->transform_.local_to_world_;
                 }
                 void SetScale(float3 scale)
                 {
-                    Math::Scale(this->transform_.local_, scale);
+                    this->transform_.local_scale_ = scale;
+                }
+                void SetPos(float3 pos)
+                {
+                    this->transform_.local_pos_ = pos;
                 }
 
                 void UpdateLocal(GameNodeSharedPtr parent)
                 {
-                    this->transform_.local_to_world_ = this->transform_.local_ * parent->LocalToWorldTransform();
+                    this->transform_.local_to_world_ = Math::Multiply(this->LocalTransform(), parent->LocalToWorldTransform());
+                    // this->transform_.local_to_world_ = this->LocalTransform();
                 }
 
                 template <typename T>

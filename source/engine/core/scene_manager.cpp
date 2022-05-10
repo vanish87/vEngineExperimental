@@ -49,7 +49,9 @@ namespace vEngine
             mc->game_object_->Load("bunny.obj");
             gn->AddComponent(mc);
 
-            // gn->SetScale(float3(0.1f, 0.1f, 0.1f));
+            auto s = 1.5f;
+            gn->SetScale(float3(s,s,s));
+            gn->SetPos(float3(0.1f,0,1));
             // mp->game_object_ = std::make_shared<Rendering::MeshRenderer>();
             // auto mp = std::make_shared<MeshRendererComponent>();
             // auto mp = std::make_shared<MeshComponent>();
@@ -69,7 +71,7 @@ namespace vEngine
             this->root_->Traverse<MeshRendererComponent>(
                 [&](MeshRendererComponentSharedPtr n, const GameNodeSharedPtr parent)
                 {
-                    n->Update(parent);
+                    n->UpdateComponent(parent);
                     n->OnBeginRender();
                     if (n->game_object_ != nullptr)
                     {
@@ -85,6 +87,12 @@ namespace vEngine
             // frame
             // flush each scene object
             // render each matrial pass for every object
+            this->root_->Traverse<GameNode>(
+                [&](GameNodeSharedPtr node, const GameNodeSharedPtr parent)
+                {
+                    node->UpdateLocal(parent);
+                    return true;
+                });
 
             this->root_->Traverse<CameraComponent>(
                 [&](CameraComponentSharedPtr c)
@@ -102,6 +110,7 @@ namespace vEngine
                     return true;
                 });
         }
+
 
         void SceneManager::AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node)
         {

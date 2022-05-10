@@ -3,6 +3,7 @@
 
 #pragma once
 #include <VENGINE_API.h>
+
 #include <engine.hpp>
 
 namespace vEngine
@@ -78,8 +79,7 @@ namespace vEngine
         /// \param epsilon
         /// \return true
         /// \return false
-        bool VENGINE_API IsFloatEqual(const float& lhs, const float& rhs,
-                                   const float epsilon);
+        bool VENGINE_API IsFloatEqual(const float& lhs, const float& rhs, const float epsilon);
 
         /// \brief return absolute of a number
         ///
@@ -143,24 +143,20 @@ namespace vEngine
         T Normalize(const T& rhs);
 
         template <typename T, int N = 4>
-        Vector<T, N> TransformPoint(const Vector<T, N>& lhs,
-                                    const Matrix<T, N, N>& rhs);
+        Vector<T, N> TransformPoint(const Vector<T, N>& lhs, const Matrix<T, N, N>& rhs);
 
         template <typename T, int N = 4>
-        Vector<T, N> TransformVector(const Vector<T, N>& lhs,
-                                     const Matrix<T, N, N>& rhs);
+        Vector<T, N> TransformVector(const Vector<T, N>& lhs, const Matrix<T, N, N>& rhs);
 
         template <typename T, int M = 4, int N = 4>
-        Matrix<T, M, N> OuterProduct(const Vector<T, M>& lhs,
-                                     const Vector<T, N>& rhs);
+        Matrix<T, M, N> OuterProduct(const Vector<T, M>& lhs, const Vector<T, N>& rhs);
 
         // template <typename T, int M = 4, int N = 4>
         // Vector<T, M> Multiply(const Vector<T, M>& lhs,
         //                       const Matrix<T, M, N>& rhs);
 
         template <typename T, int M = 4, int S = 4, int N = 4>
-        Matrix<T, M, N> Multiply(const Matrix<T, S, N>& lhs,
-                                 const Matrix<T, M, S>& rhs);
+        Matrix<T, M, N> Multiply(const Matrix<T, S, N>& lhs, const Matrix<T, M, S>& rhs);
 
         template <typename T>
         T Determinant(const Matrix<T, 4, 4>& matrix);
@@ -172,13 +168,10 @@ namespace vEngine
         // View/Projection related functions
 
         template <typename T>
-        Matrix<T, 4, 4> LookAtLH(const Vector<T, 3>& eye,
-                                 const Vector<T, 3>& at,
-                                 const Vector<T, 3>& up);
+        Matrix<T, 4, 4> LookAtLH(const Vector<T, 3>& eye, const Vector<T, 3>& at, const Vector<T, 3>& up);
 
         template <typename T>
-        Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect,
-                                         const T zn, const T zf);
+        Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect, const T zn, const T zf);
 
         template <typename T>
         void XRotation(Matrix<T, 4, 4>& matrix, const float theta);
@@ -190,15 +183,17 @@ namespace vEngine
         void ZRotation(Matrix<T, 4, 4>& lhs, const float theta);
 
         template <typename T>
-        void RotationAxis(Matrix<T, 4, 4>& lhs, const Vector<T, 3>& axis,
-                          const float theta);
+        void RotationAxis(Matrix<T, 4, 4>& lhs, const Vector<T, 3>& axis, const float theta);
 
         template <typename T>
-        void Translate(Matrix<T, 4, 4>& lhs, const float x, const float y,
-                       const float z);
+        void Translate(Matrix<T, 4, 4>& lhs, const Vector<T, 3> xyz);
+        template <typename T>
+        void Translate(Matrix<T, 4, 4>& lhs, const float x, const float y, const float z);
 
         template <typename T>
         void Scale(Matrix<T, 4, 4>& lhs, const float scale);
+        template <typename T>
+        void Scale(Matrix<T, 4, 4>& lhs, const Vector<T, 3> scale);
 
     }  // namespace Math
 }  // namespace vEngine
