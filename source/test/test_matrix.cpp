@@ -46,13 +46,13 @@ TEST(Matrix, Compare)
 
     m3 = m1 * m2;
 
-    Matrix<float, 200, 80> mb1(50);
-    Matrix<float, 50, 200> mb2(80);
+    Matrix<float, 80, 200> mb1(50);
+    Matrix<float, 200, 50> mb2(80);
 
     auto mb3 = Multiply(mb1, mb2);
 
-    Matrix<int, 3, 2> m4;
-    Matrix<int, 2, 3> m5;
+    Matrix<int, 2, 3> m4;
+    Matrix<int, 3, 2> m5;
 
     m4[0][0] = 4; m4[0][1] = 5; m4[0][2] = 7;
     m4[1][0] = 2; m4[1][1] = 1; m4[1][2] = 0;

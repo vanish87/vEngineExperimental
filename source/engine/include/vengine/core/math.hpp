@@ -130,7 +130,7 @@ namespace vEngine
             {
                 for (size_t m = 0; m < M; ++m)
                 {
-                    ret[n][m] = lhs[m] * rhs[n];
+                    ret[m][n] = lhs[m] * rhs[n];
                 }
             }
 
@@ -138,7 +138,7 @@ namespace vEngine
         }
 
         template <typename T, int M, int S, int N>
-        Matrix<T, M, N> Multiply(const Matrix<T, S, N>& lhs, const Matrix<T, M, S>& rhs)
+        Matrix<T, M, N> Multiply(const Matrix<T, M, S>& lhs, const Matrix<T, S, N>& rhs)
         {
             // CHECK_ASSERT(lhs.row == rhs.col);
             Matrix<T, M, N> ret;
@@ -339,18 +339,18 @@ namespace vEngine
         {
             Identity(lhs);
             // left hand coordinate system
-            lhs[3][0] = x;
-            lhs[3][1] = y;
-            lhs[3][2] = z;
+            lhs[0][3] = x;
+            lhs[1][3] = y;
+            lhs[2][3] = z;
         }
         template <typename T>
         void Translate(Matrix<T, 4, 4>& lhs, const Vector<T,3> pos)
         {
             Identity(lhs);
             // left hand coordinate system
-            lhs[3][0] = pos.x();
-            lhs[3][1] = pos.y();
-            lhs[3][2] = pos.z();
+            lhs[0][3] = pos.x();
+            lhs[1][3] = pos.y();
+            lhs[2][3] = pos.z();
         }
 
         template <typename T>
