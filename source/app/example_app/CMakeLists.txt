@@ -11,16 +11,9 @@ target_link_libraries(${PROJECT_NAME}
     engine::core
 )
 
-if(UNIX)
-# static link opengl rendering for linux
-target_link_libraries(${PROJECT_NAME}
-    engine::opengl_rendering_plugin
-)
-endif()
-
-
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${EXTERNAL_BUILD_DIR}/bin"
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>
-)
+# copy dll files to runtime directory
+# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+#     COMMAND ${CMAKE_COMMAND} -E copy_directory
+#     "${EXTERNAL_BUILD_DIR}/bin"
+#     $<TARGET_FILE_DIR:${PROJECT_NAME}>
+# )

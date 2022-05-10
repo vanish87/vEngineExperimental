@@ -21,4 +21,5 @@ BraceWrapping:
   AfterUnion: true
   AfterExternBlock: true
   BeforeElse: true
+  BeforeLambdaBody: true
   SplitEmptyFunction: false
