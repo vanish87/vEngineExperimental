@@ -56,9 +56,7 @@ namespace vEngine
                 }
                 void SetScale(float3 scale)
                 {
-                    this->transform_.local_[0][0] = scale.x();
-                    this->transform_.local_[1][1] = scale.y();
-                    this->transform_.local_[2][2] = scale.z();
+                    Math::Scale(this->transform_.local_, scale);
                 }
 
                 void UpdateLocal(GameNodeSharedPtr parent)

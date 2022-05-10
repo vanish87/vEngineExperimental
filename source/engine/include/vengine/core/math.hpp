@@ -353,6 +353,15 @@ namespace vEngine
             lhs[1][1] = scale;
             lhs[2][2] = scale;
         }
+        template <typename T>
+        void Scale(Matrix<T, 4, 4>& lhs, const float3 scale)
+        {
+            Identity(lhs);
+
+            lhs[0][0] = scale.x();
+            lhs[1][1] = scale.y();
+            lhs[2][2] = scale.z();
+        }
 
     }  // namespace Math
 }  // namespace vEngine

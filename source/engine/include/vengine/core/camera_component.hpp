@@ -40,7 +40,10 @@ namespace vEngine
                 {
                     auto cam = this->game_object_;
                     vEngineCameraConstantBuffer cb;
+                    cb.camera_pos = float4(0, 0, 100, 1);
+
                     cb.view_matrix = this->LocalToWorldTransform();
+                    // Math::Translate(cb.view_matrix, 0, 0, 100);
                     cb.view_matrix = Math::Transpose(cb.view_matrix);
                     cb.proj_matrix = cam->ProjectionMatrix();
                     cb.proj_matrix = Math::Transpose(cb.proj_matrix);

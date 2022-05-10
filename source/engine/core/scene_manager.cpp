@@ -49,7 +49,7 @@ namespace vEngine
             mc->game_object_->Load("bunny.obj");
             gn->AddComponent(mc);
 
-            gn->SetScale(float3(0.5f, 0.5f, 0.5f));
+            // gn->SetScale(float3(0.1f, 0.1f, 0.1f));
             // mp->game_object_ = std::make_shared<Rendering::MeshRenderer>();
             // auto mp = std::make_shared<MeshRendererComponent>();
             // auto mp = std::make_shared<MeshComponent>();

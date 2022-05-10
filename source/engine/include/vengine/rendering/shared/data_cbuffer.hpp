@@ -24,6 +24,7 @@ static const int vEngineConstantBufferPerObject = 1;
 
 struct_def vEngineCameraConstantBuffer register_def(b0)
 {
+	float4 camera_pos;
 	float4x4 view_matrix;
 	float4x4 proj_matrix;
 };
