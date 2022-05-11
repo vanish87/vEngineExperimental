@@ -228,17 +228,20 @@ namespace vEngine
         }
 
         template <typename T>
-        Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect, const T zn, const T zf)
+        Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect, const T n, const T f)
         {
             float y_scale = Cot(fovy / 2);
             float x_scale = y_scale / aspect;
-            float m33 = zf / (zf - zn);
+            // float m33 = f / (f - n);
+
+            float m22 = f / (f - n);
+            float m32 = -(f*n) / (f - n);
 
             return Matrix<T, 4, 4>(
                 x_scale, 0, 0, 0, 
                 0, y_scale, 0, 0,
-                0, 0, m33, -zn * m33, 
-                0, 0, 1, 0);
+                0, 0, m22, 1,
+                0, 0, m32, 0);
         }
 
         template <typename T>
