@@ -29,9 +29,11 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                Scene();
+                Scene(const std::string file_name);
 
                 bool Load() override;
+				void Update();
+				void Flush();
 
                 /// class variable description
                 // int public_variable_;
@@ -43,8 +45,19 @@ namespace vEngine
                 /// \param p2 Description for p2.
                 /// \return Description for return value.
                 // int GetVariable(int p1, float p2);
+                void AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node = nullptr);
+                void AddTestNode();
+
+                bool HandleNode(const aiNode* node, const aiScene* scene, const GameNodeSharedPtr parent);
+                MeshSharedPtr HandleMeshNode(const aiMesh* mesh, const aiScene* scene);
 
             private:
+				GameNodeSharedPtr root_;
+				std::string file_name_;
+
+                std::vector<CameraComponentSharedPtr> scene_cameras_;
+                std::vector<LightComponentSharedPtr> scene_lights_;
+				
         };
 
     }  // namespace Core

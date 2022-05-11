@@ -25,6 +25,16 @@ namespace vEngine
         {
             PRINT("mesh object created");
         }
+        Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices) 
+        {
+            this->vertex_data_.clear();
+            this->index_data_.clear();
+
+            this->vertex_data_.insert(this->vertex_data_.end(), vertices.begin(), vertices.end());
+            this->index_data_.insert(this->index_data_.end(), indices.begin(), indices.end());
+
+            this->loaded = true;
+        }
 
         Mesh::~Mesh()
         {
