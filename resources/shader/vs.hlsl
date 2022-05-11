@@ -7,7 +7,6 @@ vs_out vs_main(vs_in input)
 {
 	vs_out output = (vs_out)0; 
 	float4x4 m = local_to_world_matrix;
-	// m[0][0] = m[1][1] = m[2][2] = 5;
 	float4x4 mv = mul(m, view_matrix);
 	float4x4 mvp = mul(mv, proj_matrix);
 

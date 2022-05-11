@@ -234,7 +234,11 @@ namespace vEngine
             float x_scale = y_scale / aspect;
             float m33 = zf / (zf - zn);
 
-            return Matrix<T, 4, 4>(x_scale, 0, 0, 0, 0, y_scale, 0, 0, 0, 0, m33, 1, 0, 0, -zn * m33, 0);
+            return Matrix<T, 4, 4>(
+                x_scale, 0, 0, 0, 
+                0, y_scale, 0, 0,
+                0, 0, m33, -zn * m33, 
+                0, 0, 1, 0);
         }
 
         template <typename T>
