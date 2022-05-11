@@ -16,6 +16,7 @@
 #include <vengine/core/resource_loader.hpp>
 #include <vengine/core/scene_manager.hpp>
 #include <vengine/rendering/render_engine.hpp>
+#include <vengine/core/scene.hpp>
 /// A detailed namespace description, it
 /// should be 2 lines at least.
 namespace vEngine
@@ -32,6 +33,8 @@ namespace vEngine
             this->root_ = std::make_shared<GameNode>();
 
             this->AddTestNode();
+            this->scene_ = std::make_shared<Scene>();
+            this->scene_->Load();
         }
         void SceneManager::AddTestNode()
         {

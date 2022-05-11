@@ -54,6 +54,10 @@ namespace vEngine
 
                 std::vector<CameraComponentSharedPtr> scene_cameras_;
                 std::vector<LightComponentSharedPtr> scene_lights_;
+
+                SceneSharedPtr scene_;
+
+
         };
     }  // namespace Core
 }  // namespace vEngine
