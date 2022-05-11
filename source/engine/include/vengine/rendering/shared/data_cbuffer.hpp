@@ -7,6 +7,7 @@
 #define struct_def cbuffer
 #define register_def(r)  :register(r)
 #define semantics_def(s) :s
+// #pragma pack_matrix(row_major)
 
 #else
 

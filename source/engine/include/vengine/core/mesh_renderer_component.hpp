@@ -44,7 +44,7 @@ namespace vEngine
                     // cb.local_to_world_matrix[1][1] = 0.1f;
                     // cb.local_to_world_matrix[2][2] = 0.1f;
                     // cb.local_to_world_matrix[3][2] = 1;
-                    // cb.local_to_world_matrix = Math::Transpose(cb.local_to_world_matrix);
+                    cb.local_to_world_matrix = Math::Transpose(cb.local_to_world_matrix);
                     // PRINT(cb.local_to_world_matrix[0][0]);
                     // PRINT(cb.local_to_world_matrix[1][1]);
                     // PRINT(cb.local_to_world_matrix[2][2]);

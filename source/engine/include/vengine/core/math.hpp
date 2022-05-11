@@ -73,9 +73,7 @@ namespace vEngine
         template <typename T>
         Vector<T, 3> Cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)
         {
-            return Vector<T, 3>(lhs.y() * rhs.z() - lhs.z() * rhs.y(),
-                                lhs.z() * rhs.x() - lhs.x() * rhs.z(),
-                                lhs.x() * rhs.y() - lhs.y() * rhs.x());
+            return Vector<T, 3>(lhs.y() * rhs.z() - lhs.z() * rhs.y(), lhs.z() * rhs.x() - lhs.x() * rhs.z(), lhs.x() * rhs.y() - lhs.y() * rhs.x());
         }
 
         template <typename T>
@@ -87,8 +85,7 @@ namespace vEngine
         }
 
         template <typename T, int N>
-        Vector<T, N> TransformPoint(const Vector<T, N>& lhs,
-                                    const Matrix<T, N, N>& rhs)
+        Vector<T, N> TransformPoint(const Vector<T, N>& lhs, const Matrix<T, N, N>& rhs)
         {
             // the last element of position will be 1
             CHECK_ASSERT(IsFloatEqual(lhs[N - 1], 1));
@@ -105,8 +102,7 @@ namespace vEngine
             return ret;
         }
         template <typename T, int N>
-        Vector<T, N> TransformVector(const Vector<T, N>& lhs,
-                                     const Matrix<T, N, N>& rhs)
+        Vector<T, N> TransformVector(const Vector<T, N>& lhs, const Matrix<T, N, N>& rhs)
         {
             // the last element of vector will be 0
             CHECK_ASSERT(IsFloatEqual(lhs[N - 1], 0));
@@ -130,7 +126,7 @@ namespace vEngine
             {
                 for (size_t m = 0; m < M; ++m)
                 {
-                    ret[m][n] = lhs[m] * rhs[n];
+                    ret[n][m] = lhs[m] * rhs[n];
                 }
             }
 
@@ -138,7 +134,7 @@ namespace vEngine
         }
 
         template <typename T, int M, int S, int N>
-        Matrix<T, M, N> Multiply(const Matrix<T, M, S>& lhs, const Matrix<T, S, N>& rhs)
+        Matrix<T, M, N> Multiply(const Matrix<T, S, N>& lhs, const Matrix<T, M, S>& rhs)
         {
             // CHECK_ASSERT(lhs.row == rhs.col);
             Matrix<T, M, N> ret;
@@ -161,31 +157,17 @@ namespace vEngine
         T Determinant(const Matrix<T, 4, 4>& matrix)
         {
             // from KlayGE
-            T const _3142_3241(matrix[2][0] * matrix[3][1] -
-                               matrix[2][1] * matrix[3][0]);
-            T const _3143_3341(matrix[2][0] * matrix[3][2] -
-                               matrix[2][2] * matrix[3][0]);
-            T const _3144_3441(matrix[2][0] * matrix[3][3] -
-                               matrix[2][3] * matrix[3][0]);
-            T const _3243_3342(matrix[2][1] * matrix[3][2] -
-                               matrix[2][2] * matrix[3][1]);
-            T const _3244_3442(matrix[2][1] * matrix[3][3] -
-                               matrix[2][3] * matrix[3][1]);
-            T const _3344_3443(matrix[2][2] * matrix[3][3] -
-                               matrix[2][3] * matrix[3][2]);
+            T const _3142_3241(matrix[2][0] * matrix[3][1] - matrix[2][1] * matrix[3][0]);
+            T const _3143_3341(matrix[2][0] * matrix[3][2] - matrix[2][2] * matrix[3][0]);
+            T const _3144_3441(matrix[2][0] * matrix[3][3] - matrix[2][3] * matrix[3][0]);
+            T const _3243_3342(matrix[2][1] * matrix[3][2] - matrix[2][2] * matrix[3][1]);
+            T const _3244_3442(matrix[2][1] * matrix[3][3] - matrix[2][3] * matrix[3][1]);
+            T const _3344_3443(matrix[2][2] * matrix[3][3] - matrix[2][3] * matrix[3][2]);
 
-            return matrix[0][0] *
-                       (matrix[1][1] * _3344_3443 - matrix[1][2] * _3244_3442 +
-                        matrix[1][3] * _3243_3342) -
-                   matrix[0][1] *
-                       (matrix[1][0] * _3344_3443 - matrix[1][2] * _3144_3441 +
-                        matrix[1][3] * _3143_3341) +
-                   matrix[0][2] *
-                       (matrix[1][0] * _3244_3442 - matrix[1][1] * _3144_3441 +
-                        matrix[1][3] * _3142_3241) -
-                   matrix[0][3] *
-                       (matrix[1][0] * _3243_3342 - matrix[1][1] * _3143_3341 +
-                        matrix[1][2] * _3142_3241);
+            return matrix[0][0] * (matrix[1][1] * _3344_3443 - matrix[1][2] * _3244_3442 + matrix[1][3] * _3243_3342) -
+                   matrix[0][1] * (matrix[1][0] * _3344_3443 - matrix[1][2] * _3144_3441 + matrix[1][3] * _3143_3341) +
+                   matrix[0][2] * (matrix[1][0] * _3244_3442 - matrix[1][1] * _3144_3441 + matrix[1][3] * _3142_3241) -
+                   matrix[0][3] * (matrix[1][0] * _3243_3342 - matrix[1][1] * _3143_3341 + matrix[1][2] * _3142_3241);
         }
 
         template <typename T>
@@ -217,41 +199,17 @@ namespace vEngine
                 T invDet(T(1) / det);
 
                 return Matrix<T, 4, 4>(
-                    +invDet * (rhs[1][1] * _3344_3443 - rhs[1][2] * _3244_3442 +
-                               rhs[1][3] * _3243_3342),
-                    -invDet * (rhs[0][1] * _3344_3443 - rhs[0][2] * _3244_3442 +
-                               rhs[0][3] * _3243_3342),
-                    +invDet * (rhs[0][1] * _2344_2443 - rhs[0][2] * _2244_2442 +
-                               rhs[0][3] * _2243_2342),
-                    -invDet * (rhs[0][1] * _2334_2433 - rhs[0][2] * _2234_2432 +
-                               rhs[0][3] * _2233_2332),
+                    +invDet * (rhs[1][1] * _3344_3443 - rhs[1][2] * _3244_3442 + rhs[1][3] * _3243_3342), -invDet * (rhs[0][1] * _3344_3443 - rhs[0][2] * _3244_3442 + rhs[0][3] * _3243_3342),
+                    +invDet * (rhs[0][1] * _2344_2443 - rhs[0][2] * _2244_2442 + rhs[0][3] * _2243_2342), -invDet * (rhs[0][1] * _2334_2433 - rhs[0][2] * _2234_2432 + rhs[0][3] * _2233_2332),
 
-                    -invDet * (rhs[1][0] * _3344_3443 - rhs[1][2] * _3144_3441 +
-                               rhs[1][3] * _3143_3341),
-                    +invDet * (rhs[0][0] * _3344_3443 - rhs[0][2] * _3144_3441 +
-                               rhs[0][3] * _3143_3341),
-                    -invDet * (rhs[0][0] * _2344_2443 - rhs[0][2] * _2144_2441 +
-                               rhs[0][3] * _2143_2341),
-                    +invDet * (rhs[0][0] * _2334_2433 - rhs[0][2] * _2134_2431 +
-                               rhs[0][3] * _2133_2331),
+                    -invDet * (rhs[1][0] * _3344_3443 - rhs[1][2] * _3144_3441 + rhs[1][3] * _3143_3341), +invDet * (rhs[0][0] * _3344_3443 - rhs[0][2] * _3144_3441 + rhs[0][3] * _3143_3341),
+                    -invDet * (rhs[0][0] * _2344_2443 - rhs[0][2] * _2144_2441 + rhs[0][3] * _2143_2341), +invDet * (rhs[0][0] * _2334_2433 - rhs[0][2] * _2134_2431 + rhs[0][3] * _2133_2331),
 
-                    +invDet * (rhs[1][0] * _3244_3442 - rhs[1][1] * _3144_3441 +
-                               rhs[1][3] * _3142_3241),
-                    -invDet * (rhs[0][0] * _3244_3442 - rhs[0][1] * _3144_3441 +
-                               rhs[0][3] * _3142_3241),
-                    +invDet * (rhs[0][0] * _2244_2442 - rhs[0][1] * _2144_2441 +
-                               rhs[0][3] * _2142_2241),
-                    -invDet * (rhs[0][0] * _2234_2432 - rhs[0][1] * _2134_2431 +
-                               rhs[0][3] * _2132_2231),
+                    +invDet * (rhs[1][0] * _3244_3442 - rhs[1][1] * _3144_3441 + rhs[1][3] * _3142_3241), -invDet * (rhs[0][0] * _3244_3442 - rhs[0][1] * _3144_3441 + rhs[0][3] * _3142_3241),
+                    +invDet * (rhs[0][0] * _2244_2442 - rhs[0][1] * _2144_2441 + rhs[0][3] * _2142_2241), -invDet * (rhs[0][0] * _2234_2432 - rhs[0][1] * _2134_2431 + rhs[0][3] * _2132_2231),
 
-                    -invDet * (rhs[1][0] * _3243_3342 - rhs[1][1] * _3143_3341 +
-                               rhs[1][2] * _3142_3241),
-                    +invDet * (rhs[0][0] * _3243_3342 - rhs[0][1] * _3143_3341 +
-                               rhs[0][2] * _3142_3241),
-                    -invDet * (rhs[0][0] * _2243_2342 - rhs[0][1] * _2143_2341 +
-                               rhs[0][2] * _2142_2241),
-                    +invDet * (rhs[0][0] * _2233_2332 - rhs[0][1] * _2133_2331 +
-                               rhs[0][2] * _2132_2231));
+                    -invDet * (rhs[1][0] * _3243_3342 - rhs[1][1] * _3143_3341 + rhs[1][2] * _3142_3241), +invDet * (rhs[0][0] * _3243_3342 - rhs[0][1] * _3143_3341 + rhs[0][2] * _3142_3241),
+                    -invDet * (rhs[0][0] * _2243_2342 - rhs[0][1] * _2143_2341 + rhs[0][2] * _2142_2241), +invDet * (rhs[0][0] * _2233_2332 - rhs[0][1] * _2133_2331 + rhs[0][2] * _2132_2231));
             }
             else
             {
@@ -266,11 +224,7 @@ namespace vEngine
             auto xaxis = Normalize(Cross(up, zaxis));
             auto yaxis = Cross(zaxis, xaxis);
 
-            return Matrix<T, 4, 4>(
-                xaxis.x(), yaxis.x(), zaxis.x(), 0,
-                xaxis.y(), yaxis.y(), zaxis.y(), 0,
-                xaxis.z(), yaxis.z(), zaxis.z(), 0,
-                -Dot(xaxis, eye), -Dot(yaxis, eye), -Dot(zaxis, eye), 1);
+            return Matrix<T, 4, 4>(xaxis.x(), yaxis.x(), zaxis.x(), 0, xaxis.y(), yaxis.y(), zaxis.y(), 0, xaxis.z(), yaxis.z(), zaxis.z(), 0, -Dot(xaxis, eye), -Dot(yaxis, eye), -Dot(zaxis, eye), 1);
         }
 
         template <typename T>
@@ -280,11 +234,7 @@ namespace vEngine
             float x_scale = y_scale / aspect;
             float m33 = zf / (zf - zn);
 
-            return Matrix<T, 4, 4>(
-                x_scale,    0, 0,         0,
-                0,    y_scale, 0,         0,
-                0,          0, m33,       1, 
-                0,          0, -zn * m33, 0);
+            return Matrix<T, 4, 4>(x_scale, 0, 0, 0, 0, y_scale, 0, 0, 0, 0, m33, 1, 0, 0, -zn * m33, 0);
         }
 
         template <typename T>
@@ -335,24 +285,32 @@ namespace vEngine
         }
 
         template <typename T>
+        void Translate(Matrix<T, 4, 4>& lhs, const Vector<T, 3> xyz)
+        {
+            Identity(lhs);
+            // left hand coordinate system
+            lhs[3][0] = xyz.x();
+            lhs[3][1] = xyz.y();
+            lhs[3][2] = xyz.z();
+        }
+        template <typename T>
         void Translate(Matrix<T, 4, 4>& lhs, const float x, const float y, const float z)
         {
             Identity(lhs);
             // left hand coordinate system
-            lhs[0][3] = x;
-            lhs[1][3] = y;
-            lhs[2][3] = z;
-        }
-        template <typename T>
-        void Translate(Matrix<T, 4, 4>& lhs, const Vector<T,3> pos)
-        {
-            Identity(lhs);
-            // left hand coordinate system
-            lhs[0][3] = pos.x();
-            lhs[1][3] = pos.y();
-            lhs[2][3] = pos.z();
+            lhs[3][0] = x;
+            lhs[3][1] = y;
+            lhs[3][2] = z;
         }
 
+        template <typename T>
+        void Scale(Matrix<T, 4, 4>& lhs, const Vector<T, 3> scale)
+        {
+            Identity(lhs);
+            lhs[0][0] = scale.x();
+            lhs[1][1] = scale.y();
+            lhs[2][2] = scale.z();
+        }
         template <typename T>
         void Scale(Matrix<T, 4, 4>& lhs, const float scale)
         {
@@ -361,15 +319,6 @@ namespace vEngine
             lhs[0][0] = scale;
             lhs[1][1] = scale;
             lhs[2][2] = scale;
-        }
-        template <typename T>
-        void Scale(Matrix<T, 4, 4>& lhs, const Vector<T, 3> scale)
-        {
-            Identity(lhs);
-
-            lhs[0][0] = scale.x();
-            lhs[1][1] = scale.y();
-            lhs[2][2] = scale.z();
         }
 
     }  // namespace Math

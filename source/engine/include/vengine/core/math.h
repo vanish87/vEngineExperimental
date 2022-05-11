@@ -14,20 +14,19 @@ namespace vEngine
     /// This implementation of Math/Engine libraries basically follows
     /// conventions of DirectX/HLSL/Windows.
     ///
-    /// System data pack
+    /// Row major system
     /// ========================
     /// - Vector is row major [x,y,z,w]
-    /// - Matrix is colum major(as default hlsl pack) \n
-    /// https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-appendix-pre-pragma-pack-matrix
+    /// - Matrix is row major \n
     /// \code
-    /// [e0,  e4,  e8,  e12]
-    /// [e1,  e5,  e8,  e13]
-    /// [e2,  e6,  e10, e15]
-    /// [e3,  e7,  e11, e15]
+    /// [e0,  e1,  e2,  e3 ]
+    /// [e4,  e5,  e6,  e7 ]
+    /// [e8,  e9,  e10, e11]
+    /// [e12, e13, e14, e15]
     /// \endcode
-    /// - Matrix<T, M, N> will define a N x M matrix with N elements in each
-    /// row, and M rows. \n So the row variable will be M, the col variable will
-    /// be N
+    /// - Matrix<T, M, N> will define a M x N matrix with M elements in each
+    /// row, and N rows. \n So the row variable will be N, the col variable will
+    /// be M
     ///
     /// Left-hand system
     /// ========================
@@ -39,10 +38,10 @@ namespace vEngine
     /// ========================
     /// - Vector left multiply Matrix \n
     /// \code
-    /// v[x,y,z,w]*[m00,m10,m20,m30]
-    ///            [m01,m11,m21,m31]
-    ///            [m02,m12,m22,m22]
-    ///            [m03,m13,m23,m33]
+    /// v[x,y,z,w]*[m00,m01,m02,m03]
+    ///            [m10,m11,m12,m13]
+    ///            [m20,m21,m22,m23]
+    ///            [m30,m31,m32,m33]
     /// \endcode
     ///
     /// Matrix/Projection conversion
@@ -157,7 +156,7 @@ namespace vEngine
         //                       const Matrix<T, M, N>& rhs);
 
         template <typename T, int M = 4, int S = 4, int N = 4>
-        Matrix<T, M, N> Multiply(const Matrix<T, M, S>& lhs, const Matrix<T, S, N>& rhs);
+        Matrix<T, M, N> Multiply(const Matrix<T, S, N>& lhs, const Matrix<T, M, S>& rhs);
 
         template <typename T>
         T Determinant(const Matrix<T, 4, 4>& matrix);
@@ -187,14 +186,10 @@ namespace vEngine
         void RotationAxis(Matrix<T, 4, 4>& lhs, const Vector<T, 3>& axis, const float theta);
 
         template <typename T>
-        void Translate(Matrix<T, 4, 4>& lhs, const Vector<T, 3> xyz);
-        template <typename T>
         void Translate(Matrix<T, 4, 4>& lhs, const float x, const float y, const float z);
 
         template <typename T>
         void Scale(Matrix<T, 4, 4>& lhs, const float scale);
-        template <typename T>
-        void Scale(Matrix<T, 4, 4>& lhs, const Vector<T, 3> scale);
 
     }  // namespace Math
 }  // namespace vEngine

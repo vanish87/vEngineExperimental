@@ -16,24 +16,21 @@ namespace vEngine
             ColumnMajor, //default
             RowMajor
         };
-
         /// \brief Define a MxN matrix with data type T
         ///
         /// Note M is number of row elements, N is number of col elements. \n
         /// use matrix[row][col] to assess data. \n
-        /// the data layout is row major, see Math for details.
+        /// the data layout is colum major, see Math for details.
         /// \tparam T
-        /// \tparam N number of row elements
-        /// \tparam M number of col elements
+        /// \tparam M number of row elements
+        /// \tparam N number of col elements
         template <typename T = float, int M = 4, int N = 4>
         class Matrix final
         {
             private:
-                typedef Vector<Vector<T, N>, M> DataType;
+                typedef Vector<Vector<T, M>, N> DataType;
 
                 DataType data_;
-
-                static const MatrixPackType PackType = MatrixPackType::ColumnMajor;
 
             public:
                 // define types like std did
@@ -52,8 +49,10 @@ namespace vEngine
                 typedef typename DataType::difference_type difference_type;
 
                 static constexpr size_type size = M * N;
-                static constexpr size_type row = M;
-                static constexpr size_type col = N;
+                static constexpr size_type row = N;
+                static constexpr size_type col = M;
+
+                static const MatrixPackType PackType = MatrixPackType::RowMajor;
 
             public:
                 constexpr Matrix() noexcept {}
