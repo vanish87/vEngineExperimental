@@ -49,6 +49,8 @@ namespace vEngine
         {
             this->OnDestory();
 
+            SceneManager::GetInstance().Deinit();
+
             // Destory RenderEngine etc;
             Context::GetInstance().GetRenderEngine().Deinit();
 

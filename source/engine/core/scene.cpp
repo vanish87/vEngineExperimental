@@ -10,10 +10,6 @@
 
 #include <vengine/core/scene.hpp>
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/material.hpp>
 #include <vengine/core/mesh_renderer_component.hpp>
@@ -35,64 +31,121 @@ namespace vEngine
 		}
         bool Scene::Load()
         {
-			this->AddTestNode();
+			// this->AddTestNode();
 
-            Assimp::Importer importer;
-            auto pScene = importer.ReadFile(this->file_name_, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
-            this->HandleNode(pScene->mRootNode, pScene, this->root_);
-            return true;
+			Assimp::Importer importer;
+			auto scene = importer.ReadFile(this->file_name_, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
+			this->CreateMeshes(scene);
+			this->CreateMaterials(scene);
+			this->CreateCameras(scene);
+			this->HandleNode(scene->mRootNode, scene, this->root_);
+
+            // auto s = 2.0f;
+            // this->root_->SetScale(float3(s, s, s));
+            // this->root_->SetPos(float3(0, 0, 1));
+			return true;
         }
-        MeshSharedPtr Scene::HandleMeshNode(const aiMesh* mesh, const aiScene* scene)
+        void Scene::CreateCameras(const aiScene* scene)
         {
             UNUSED_PARAMETER(scene);
+            auto camera = std::make_shared<CameraComponent>();
+            camera->game_object_->target = Context::GetInstance().GetRenderEngine().back_buffer_;
+            this->AddToSceneNode(camera);
 
-            auto hasPos = mesh->HasPositions();
-            auto hasUV = mesh->HasTextureCoords(0);
-            auto hasNormal = mesh->HasNormals();
-
-			std::vector<Vertex> vd;
-			std::vector<uint32_t> id;
-
-            for (uint32_t i = 0; i < mesh->mNumVertices; ++i)
-            {
-                Vertex v;
-                v.pos = hasPos ? float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z) : float3(0, 0, 0);
-                // v.pos *= 0.2f;
-                // v.pos.z() = 0;
-                v.normal = hasNormal ? float3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z) : float3(0, 0, 0);
-                v.uv = hasUV ? float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y) : float2(0, 0);
-                v.color = float4(1, 1, 1, 1);
-
-                vd.emplace_back(v);
-            }
-
-            for (uint32_t i = 0; i < mesh->mNumFaces; ++i)
-            {
-                auto f = mesh->mFaces[i];
-                for (uint32_t fi = 0; fi < f.mNumIndices; ++fi)
-                {
-                    id.emplace_back(f.mIndices[fi]);
-                }
-            }
-
-			return std::make_shared<Mesh>(vd, id);
+            PRINT("num of cameras: " << this->scene_cameras_.size());
         }
-        bool Scene::HandleNode(const aiNode* node, const aiScene* scene, const GameNodeSharedPtr parent)
+        void Scene::CreateMaterials(const aiScene* scene)
         {
-            if (node->mNumMeshes > 0)
+            for (uint32_t mid = 0; mid < scene->mNumMaterials; ++mid)
             {
-                auto mesh = scene->mMeshes[node->mMeshes[0]];
-                this->HandleMeshNode(mesh, scene);
-                return true;
+				// auto mat = scene->mMaterials[mid];
+                auto vs_file = "shader/vs.hlsl";
+                auto ps_file = "shader/ps.hlsl";
+                auto mat = std::make_shared<Material>(vs_file, ps_file);
+                mat->Load();
+                this->scene_materials_.emplace_back(mat);
+            }
+            if(this->scene_materials_.size() == 0)
+            {
+                PRINT("no materials for scene, add a default material");
+                auto vs_file = "shader/vs.hlsl";
+                auto ps_file = "shader/ps.hlsl";
+                auto mat = std::make_shared<Material>(vs_file, ps_file);
+                mat->Load();
+                this->scene_materials_.emplace_back(mat);
+            }
+            PRINT("num of materials: " << this->scene_materials_.size());
+        }
+        void Scene::CreateMeshes(const aiScene* scene)
+        {
+            for (uint32_t mid = 0; mid < scene->mNumMeshes; ++mid)
+            {
+				auto mesh = scene->mMeshes[mid];
+
+				auto hasPos = mesh->HasPositions();
+				auto hasUV = mesh->HasTextureCoords(0);
+				auto hasNormal = mesh->HasNormals();
+
+				std::vector<Vertex> vd;
+				std::vector<uint32_t> id;
+
+				for (uint32_t i = 0; i < mesh->mNumVertices; ++i)
+				{
+					Vertex v;
+					v.pos = hasPos ? float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z) : float3(0, 0, 0);
+					// v.pos *= 0.2f;
+					// v.pos.z() = 0;
+					v.normal = hasNormal ? float3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z) : float3(0, 0, 0);
+					v.uv = hasUV ? float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y) : float2(0, 0);
+					v.color = float4(1, 1, 1, 1);
+
+					vd.emplace_back(v);
+				}
+
+				for (uint32_t i = 0; i < mesh->mNumFaces; ++i)
+				{
+					auto f = mesh->mFaces[i];
+					for (uint32_t fi = 0; fi < f.mNumIndices; ++fi)
+					{
+						id.emplace_back(f.mIndices[fi]);
+					}
+				}
+                this->scene_meshes_.emplace_back(std::make_shared<Mesh>(vd, id));
             }
 
+            PRINT("num of meshes: " << this->scene_meshes_.size());
+        }
+        void Scene::HandleNode(const aiNode* node, const aiScene* scene, const GameNodeSharedPtr parent)
+        {
+            auto game_node = std::make_shared<GameNode>();
+            parent->AddChild(game_node);
+
+            for (uint32_t mid = 0; mid < node->mNumMeshes; ++mid)
+            {
+                auto mesh_node = std::make_shared<GameNode>();
+                // scene_meshes_ contains same mesh data as they are in aiScene
+                auto ai_mesh = scene->mMeshes[mid];
+
+                auto mesh = this->scene_meshes_[mid];
+                auto mesh_component = std::make_shared<MeshComponent>(mesh);
+                mesh_node->AddComponent(mesh_component);
+                auto mesh_renderer = std::make_shared<MeshRendererComponent>();
+                mesh_node->AddComponent(mesh_renderer);
+
+                auto mat = this->scene_materials_[ai_mesh->mMaterialIndex];
+                mesh_renderer->game_object_->material_ = mat;
+
+                auto s = 2.0f;
+                mesh_node->SetScale(float3(s, s, s));
+                mesh_node->SetPos(float3(0, 0, 1));
+
+                game_node->AddChild(mesh_node);
+            }
 
             for (uint32_t c = 0; c < node->mNumChildren; ++c)
             {
-                if (this->HandleNode(node->mChildren[c], scene)) return true;
+                this->HandleNode(node->mChildren[c], scene, game_node);
             }
-
-            return false;
         }
 		void Scene::Update()
 		{

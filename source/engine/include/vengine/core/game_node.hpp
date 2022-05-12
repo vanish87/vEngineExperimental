@@ -147,7 +147,7 @@ namespace vEngine
                 Transform transform_;
                 // children also used as list of gameobject/components
                 std::list<GameNodeSharedPtr> children_;
-                GameNodeSharedPtr parent_;
+                // GameNodeSharedPtr parent_;
         };
     }  // namespace Core
 }  // namespace vEngine

@@ -24,10 +24,15 @@ namespace vEngine
         void SceneManager::Init()
         {
             // this->root_ = std::make_shared<GameNode>();
+            // this->scene_ = std::make_shared<Scene>("cornell-box.obj");
             this->scene_ = std::make_shared<Scene>("bunny.obj");
             this->scene_->Load();
+
         }
-        void SceneManager::Deinit() {}
+        void SceneManager::Deinit() 
+        {
+            this->scene_.reset();
+        }
         void SceneManager::BeginScene()
         {
             // Update lights constant buffer here

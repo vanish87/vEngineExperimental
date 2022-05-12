@@ -12,6 +12,12 @@
 
 #pragma once
 
+#include <unordered_map>
+
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 #include <engine.hpp>
 #include <vengine/core/game_node.hpp>
 #include <vengine/core/iresource.hpp>
@@ -48,8 +54,10 @@ namespace vEngine
                 void AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node = nullptr);
                 void AddTestNode();
 
-                bool HandleNode(const aiNode* node, const aiScene* scene, const GameNodeSharedPtr parent);
-                MeshSharedPtr HandleMeshNode(const aiMesh* mesh, const aiScene* scene);
+                void HandleNode(const aiNode* node, const aiScene* scene, const GameNodeSharedPtr parent);
+                void CreateMeshes(const aiScene* scene);
+                void CreateMaterials(const aiScene* scene);
+                void CreateCameras(const aiScene* scene);
 
             private:
 				GameNodeSharedPtr root_;
@@ -57,6 +65,8 @@ namespace vEngine
 
                 std::vector<CameraComponentSharedPtr> scene_cameras_;
                 std::vector<LightComponentSharedPtr> scene_lights_;
+                std::vector<MeshSharedPtr> scene_meshes_;
+                std::vector<MaterialSharedPtr> scene_materials_;
 				
         };
 

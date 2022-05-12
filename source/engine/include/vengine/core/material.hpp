@@ -30,6 +30,10 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 Material(const std::string vs_name, const std::string ps_name);
+                ~Material()
+                {
+                    // PRINT("Destory material");
+                }
 
                 bool Load() override;
 

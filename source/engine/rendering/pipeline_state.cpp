@@ -31,7 +31,10 @@ namespace vEngine
             this->Load(this->vs_shader_);
             this->Load(this->ps_shader_);
         }
-        PipelineState::~PipelineState() {}
+        PipelineState::~PipelineState() 
+        {
+            // PRINT("Destory Pipeline state");
+        }
         bool PipelineState::Load(ShaderSharedPtr shader)
         {
             // std::ifstream fin(shader.name + ".hlsl", std::ios::binary);

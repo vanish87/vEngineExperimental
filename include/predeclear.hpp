@@ -9,6 +9,11 @@ namespace vEngine
 	class name;\
 	typedef std::shared_ptr<name> name##SharedPtr;
 
+    #define CLASS_AND_SHARED_WEAK_POINTER(name) \
+	class name;\
+	typedef std::shared_ptr<name> name##SharedPtr;\
+	typedef std::weak_ptr<name> name##WeakPtr;
+
 	#define CLASS_AND_UNIQUE_POINTER(name) \
 	class name;\
 	typedef std::unique_ptr<name> name##UniquePtr;
@@ -64,7 +69,7 @@ namespace vEngine
         CLASS_AND_SHARED_POINTER(Light)
         CLASS_AND_SHARED_POINTER(Mesh)
 
-        CLASS_AND_SHARED_POINTER(GameNode)
+        CLASS_AND_SHARED_WEAK_POINTER(GameNode)
         CLASS_AND_SHARED_POINTER(CameraComponent)
         CLASS_AND_SHARED_POINTER(LightComponent)
         CLASS_AND_SHARED_POINTER(MeshComponent)
