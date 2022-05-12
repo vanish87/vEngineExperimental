@@ -65,7 +65,8 @@ namespace vEngine
 
                 void UpdateLocal(GameNodeSharedPtr parent)
                 {
-                    this->transform_.local_to_world_ = Math::Multiply(this->LocalTransform(), parent->LocalToWorldTransform());
+                    auto mat = parent==nullptr?float4x4::IdentityMat():parent->LocalToWorldTransform();
+                    this->transform_.local_to_world_ = Math::Multiply(this->LocalTransform(), mat);
                     // this->transform_.local_to_world_ = this->LocalTransform();
                 }
 

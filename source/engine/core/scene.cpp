@@ -40,9 +40,9 @@ namespace vEngine
 			this->CreateCameras(scene);
 			this->HandleNode(scene->mRootNode, scene, this->root_);
 
-            // auto s = 2.0f;
-            // this->root_->SetScale(float3(s, s, s));
-            // this->root_->SetPos(float3(0, 0, 1));
+            auto s = 2.0f;
+            this->root_->SetScale(float3(s, s, s));
+            this->root_->SetPos(float3(0, 0, 1));
 			return true;
         }
         void Scene::CreateCameras(const aiScene* scene)
@@ -135,9 +135,9 @@ namespace vEngine
                 auto mat = this->scene_materials_[ai_mesh->mMaterialIndex];
                 mesh_renderer->game_object_->material_ = mat;
 
-                auto s = 2.0f;
-                mesh_node->SetScale(float3(s, s, s));
-                mesh_node->SetPos(float3(0, 0, 1));
+                // auto s = 2.0f;
+                // mesh_node->SetScale(float3(s, s, s));
+                // mesh_node->SetPos(float3(0, 0, 1));
 
                 game_node->AddChild(mesh_node);
             }
@@ -153,6 +153,7 @@ namespace vEngine
             // frame
             // flush each scene object
             // render each matrial pass for every object
+            this->root_->UpdateLocal(nullptr);
             this->root_->Traverse<GameNode>(
                 [&](GameNodeSharedPtr node, const GameNodeSharedPtr parent)
                 {
