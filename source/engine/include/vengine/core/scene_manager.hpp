@@ -16,7 +16,7 @@
 #include <VENGINE_API.h>
 
 #include <vengine/core/iruntime_module.hpp>
-#include <vengine/core/renderer.hpp>
+// #include <vengine/core/renderer.hpp>
 #include <vengine/core/game_node.hpp>
 
 /// A brief namespace description.
@@ -45,15 +45,14 @@ namespace vEngine
 
                 void BeginScene();
 
-                void AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node = nullptr);
-
-                void AddTestNode();
-                GameNodeSharedPtr root_;
+                // GameNodeSharedPtr root_;
 
                 std::queue<IRendererSharedPtr> render_queue_;
 
-                std::vector<CameraComponentSharedPtr> scene_cameras_;
-                std::vector<LightComponentSharedPtr> scene_lights_;
+
+                SceneSharedPtr scene_;
+
+
         };
     }  // namespace Core
 }  // namespace vEngine

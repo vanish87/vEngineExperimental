@@ -46,24 +46,28 @@ namespace vEngine
                 void AddComponent(const GameNodeSharedPtr component);
                 void RemoveComponent(const GameNodeSharedPtr component);
 
-                float4x4 LocalTransform()
+                const float4x4 LocalTransform()
                 {
-                    return this->transform_.local_;
+                    return this->transform_.GetLocal();
                 }
-                float4x4 LocalToWorldTransform()
+                const float4x4 LocalToWorldTransform()
                 {
                     return this->transform_.local_to_world_;
                 }
                 void SetScale(float3 scale)
                 {
-                    this->transform_.local_[0][0] = scale.x();
-                    this->transform_.local_[1][1] = scale.y();
-                    this->transform_.local_[2][2] = scale.z();
+                    this->transform_.local_scale_ = scale;
+                }
+                void SetPos(float3 pos)
+                {
+                    this->transform_.local_pos_ = pos;
                 }
 
                 void UpdateLocal(GameNodeSharedPtr parent)
                 {
-                    this->transform_.local_to_world_ = this->transform_.local_ * parent->LocalToWorldTransform();
+                    auto mat = parent==nullptr?float4x4::IdentityMat():parent->LocalToWorldTransform();
+                    this->transform_.local_to_world_ = Math::Multiply(this->LocalTransform(), mat);
+                    // this->transform_.local_to_world_ = this->LocalTransform();
                 }
 
                 template <typename T>
@@ -144,7 +148,7 @@ namespace vEngine
                 Transform transform_;
                 // children also used as list of gameobject/components
                 std::list<GameNodeSharedPtr> children_;
-                GameNodeSharedPtr parent_;
+                // GameNodeSharedPtr parent_;
         };
     }  // namespace Core
 }  // namespace vEngine

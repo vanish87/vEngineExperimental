@@ -63,6 +63,8 @@ namespace vEngine
                 void HandleMeshNode(const aiMesh* mesh, const aiScene* scene);
                 void UpdateGPUBuffer();
 
+                Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
+
 
                 GraphicsBufferSharedPtr vertex_buffer_;
                 GraphicsBufferSharedPtr index_buffer_;

@@ -40,10 +40,13 @@ namespace vEngine
                 {
                     auto cam = this->game_object_;
                     vEngineCameraConstantBuffer cb;
+                    cb.camera_pos = float4(0, 0, 100, 1);
+
                     cb.view_matrix = this->LocalToWorldTransform();
-                    cb.view_matrix = Math::Transpose(cb.view_matrix);
+                    // Math::Translate(cb.view_matrix, 0, 0, 100);
+                    // cb.view_matrix = Math::Transpose(cb.view_matrix);
                     cb.proj_matrix = cam->ProjectionMatrix();
-                    cb.proj_matrix = Math::Transpose(cb.proj_matrix);
+                    // cb.proj_matrix = Math::Transpose(cb.proj_matrix);
                     auto data = this->camera_constant_buffer_->Map();
                     std::memcpy(data.data, &cb, sizeof(vEngineCameraConstantBuffer));
                     // std::copy(&cb, &cb + sizeof(vEngineCameraConstantBuffer), data.data);
@@ -52,7 +55,7 @@ namespace vEngine
                     Context::GetInstance().GetRenderEngine().OnBind(this->camera_constant_buffer_);
                 }
 
-                void Update(const GameNodeSharedPtr parent) override
+                void UpdateComponent(const GameNodeSharedPtr parent) override
                 {
                     UNUSED_PARAMETER(parent);
                 }

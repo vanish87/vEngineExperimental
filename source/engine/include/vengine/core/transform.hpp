@@ -30,14 +30,34 @@ namespace vEngine
                 /// \brief brief constructor description.
                 Transform()
                 {
-                    local_ = float4x4::IdentityMat();
+                    // local_ = float4x4::IdentityMat();
                     local_to_world_ = float4x4::IdentityMat();
+                    local_rotation_ = float4x4::IdentityMat();
+                    local_scale_ = float3::One();
+                    local_pos_ = float3::Zero();
                 };
 
                 /// class variable description
                 // int public_variable_;
 
-                float4x4 local_;
+                float3 local_pos_;
+                float4x4 local_rotation_;
+                float3 local_scale_;
+
+                // float4x4 local_;
+
+                const float4x4 GetLocal()
+                {
+                    float4x4 t;
+                    float4x4 r = float4x4::IdentityMat();
+                    float4x4 s;
+                    Math::Translate(t, this->local_pos_);
+                    // Math::RotationAxis(r, this->local_rotation_);
+                    Math::Scale(s, this->local_scale_);
+                    // return t * r * s;
+                    return s * r * t;
+                }
+
                 float4x4 local_to_world_;
 
             public:

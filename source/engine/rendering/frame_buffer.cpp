@@ -43,7 +43,7 @@ namespace vEngine
             vEngineCameraConstantBuffer cb;
             cbuffer_desc.data = &cb;
 
-            this->frame_constat_buffer_ = Context::GetInstance().GetRenderEngine().Create(cbuffer_desc);
+            // this->frame_constat_buffer_ = Context::GetInstance().GetRenderEngine().Create(cbuffer_desc);
         }
         FrameBuffer::~FrameBuffer() {}
         // void FrameBuffer::UpdateGPU(const float4x4 view_matrix, const float4x4 proj_matrix)

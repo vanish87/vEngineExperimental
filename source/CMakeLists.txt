@@ -20,4 +20,7 @@ add_subdirectory(plugins)
 add_subdirectory(app)
 add_subdirectory(editor)
 add_subdirectory(test)
-add_subdirectory(document)
+
+if(VENGINE_BUILD_DOC)
+	add_subdirectory(document)
+endif(VENGINE_BUILD_DOC)

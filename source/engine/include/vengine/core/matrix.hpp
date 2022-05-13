@@ -11,6 +11,11 @@ namespace vEngine
 {
     namespace Math
     {
+        enum class MatrixPackType
+        {
+            ColumnMajor, //default
+            RowMajor
+        };
         /// \brief Define a MxN matrix with data type T
         ///
         /// Note M is number of row elements, N is number of col elements. \n
@@ -46,6 +51,8 @@ namespace vEngine
                 static constexpr size_type size = M * N;
                 static constexpr size_type row = N;
                 static constexpr size_type col = M;
+
+                static const MatrixPackType PackType = MatrixPackType::RowMajor;
 
             public:
                 constexpr Matrix() noexcept {}

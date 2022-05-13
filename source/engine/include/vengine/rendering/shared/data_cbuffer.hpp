@@ -1,17 +1,20 @@
 #ifndef _VENGINE_RENDERING_DATA_CBUFFER_HPP
 #define _VENGINE_RENDERING_DATA_CBUFFER_HPP
 
-#pragma once
 
 #if defined(VENGINE_HLSL)
 
 #define struct_def cbuffer
-#define register_def(r) :register(r)
+#define register_def(r)  :register(r)
+#define semantics_def(s) :s
+#pragma pack_matrix(row_major)
 
 #else
 
+#pragma once
 #define struct_def struct
 #define register_def(r) 
+#define semantics_def(s) 
 
 #include <engine.hpp>
 #include <vengine/core/matrix.hpp>
@@ -22,8 +25,28 @@ using namespace vEngine::Math;
 static const int vEngineConstantBufferPerCamera = 0;
 static const int vEngineConstantBufferPerObject = 1;
 
+struct vs_in 
+{
+	float3 position semantics_def(POSITION);
+	float3 normal semantics_def(NORMAL);
+	float2 texcoord semantics_def(TEXCOORD0);
+	float4 color semantics_def(COLOR);
+};
+struct vs_out 
+{
+	float4 position semantics_def(SV_POSITION); 
+	float3 pos_w semantics_def(POSITION); 
+	float3 normal semantics_def(NORMAL);
+	float4 color semantics_def(COLOR);
+};
+struct ps_out
+{
+	float4 color0 semantics_def(SV_TARGET0);
+};
+
 struct_def vEngineCameraConstantBuffer register_def(b0)
 {
+	float4 camera_pos;
 	float4x4 view_matrix;
 	float4x4 proj_matrix;
 };

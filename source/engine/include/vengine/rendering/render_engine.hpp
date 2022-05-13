@@ -19,17 +19,23 @@ namespace vEngine
         class VENGINE_API RenderEngine : public vEngine::Core::IRuntimeModule
         {
             public:
-                virtual ~RenderEngine(){};
+                virtual ~RenderEngine()
+                {
+                };
 
                 virtual void PrintInfo() = 0;
 
                 virtual void Init() = 0;
-                virtual void Deinit() = 0;
+                virtual void Deinit()
+                {
+                    // this->current_pipline_state_ = nullptr;
+                    this->current_frame_buffer_ = nullptr;
+                }
                 virtual void Update() = 0;
 
                 virtual void Bind(const PipelineStateSharedPtr pipline_state)
                 {
-                    this->current_pipline_state_ = pipline_state;
+                    // this->current_pipline_state_ = pipline_state;
                     this->OnBind(pipline_state);
                 }
                 virtual void OnBind(const PipelineStateSharedPtr pipeline_state) = 0;
@@ -77,8 +83,8 @@ namespace vEngine
                 FrameBufferSharedPtr current_frame_buffer_;
                 FrameBufferSharedPtr back_buffer_;
 
-                std::map<std::string, PipelineStateSharedPtr> current_pipline_states;
-                PipelineStateSharedPtr current_pipline_state_;
+                // std::map<std::string, PipelineStateSharedPtr> current_pipline_states;
+                // PipelineStateSharedPtr current_pipline_state_;
         };
     }  // namespace Rendering
 }  // namespace vEngine

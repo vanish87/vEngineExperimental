@@ -9,7 +9,7 @@ namespace vEngine
         Interface VENGINE_API IComponent
         {
         public:
-            virtual void Update(GameNodeSharedPtr parent)
+            virtual void UpdateComponent(GameNodeSharedPtr parent)
             {
                 UNUSED_PARAMETER(parent);
             };
