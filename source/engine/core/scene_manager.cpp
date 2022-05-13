@@ -10,6 +10,7 @@
 
 #include <vengine/core/scene_manager.hpp>
 #include <vengine/core/scene.hpp>
+#include <vengine/core/resource_loader.hpp>
 /// A detailed namespace description, it
 /// should be 2 lines at least.
 namespace vEngine
@@ -26,7 +27,13 @@ namespace vEngine
             // this->root_ = std::make_shared<GameNode>();
             // this->scene_ = std::make_shared<Scene>("cornell-box.obj");
             this->scene_ = std::make_shared<Scene>("bunny.obj");
-            this->scene_->Load();
+            ResourceLoader::GetInstance().LoadAsync(this->scene_,
+            [&](IResourceSharedPtr c)
+            {
+                UNUSED_PARAMETER(c);
+                PRINT("Resource loaded");
+            });
+            // this->scene_->Load();
 
         }
         void SceneManager::Deinit() 

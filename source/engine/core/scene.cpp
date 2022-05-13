@@ -42,7 +42,7 @@ namespace vEngine
 
             auto s = 2.0f;
             this->root_->SetScale(float3(s, s, s));
-            this->root_->SetPos(float3(0, 0, 1));
+            this->root_->SetPos(float3(0.2f, 0, 1));
 			return true;
         }
         void Scene::CreateCameras(const aiScene* scene)

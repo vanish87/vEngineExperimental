@@ -56,6 +56,23 @@ namespace vEngine
 
                 GraphicsBufferSharedPtr constant_buffer_;
                 std::vector<Rendering::TextureSharedPtr> textures_;
+
+                //paramter example
+                // template <typename T>
+                // struct ParameterMap
+                // {
+                //         bool bUsingSingleValue = true;
+
+                //         union _ParameterMap
+                //         {
+                //                 T Value;
+                //                 std::shared_ptr<Image> Map;
+                //         };
+                // };
+
+                // typedef ParameterMap<Vector4f> Color;
+                // typedef ParameterMap<Vector3f> Normal;
+                // typedef ParameterMap<float> Parameter;
         };
     }  // namespace Core
 }  // namespace vEngine
