@@ -13,7 +13,7 @@
 
 #endif
 
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 
 namespace vEngine
 {

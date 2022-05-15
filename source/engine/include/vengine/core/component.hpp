@@ -11,7 +11,7 @@
 #define _VENGINE_CORE_COMPONENT_HPP
 
 #pragma once
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 
 #include <memory>
 #include <vengine/core/game_node.hpp>

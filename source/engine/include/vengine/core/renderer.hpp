@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 
 #include <vengine/core/game_object.hpp>
 #include <vengine/core/irenderer.hpp>

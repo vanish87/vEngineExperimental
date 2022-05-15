@@ -13,7 +13,7 @@
 #pragma once
 
 #include <cstring>
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 #include <vengine/core/component.hpp>
 #include <vengine/core/camera.hpp>
 #include <vengine/rendering/graphics_buffer.hpp>
