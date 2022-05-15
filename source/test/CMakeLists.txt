@@ -5,6 +5,10 @@ project(test_example)
 # 	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 # endif(MSVC)
 
+if(NOT BUILD_SHARED_LIBS)
+	set(gtest_force_shared_crt on)
+endif()
+
 add_subdirectory(external/googletest)
 enable_testing()
 
