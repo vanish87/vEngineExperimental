@@ -83,7 +83,7 @@ namespace vEngine
 
         CLASS_AND_SHARED_POINTER(ThreadJob)
 
-        class Transform;
+        CLASS_AND_SHARED_POINTER(Transform)
     }  // namespace Core
     namespace Rendering
     {

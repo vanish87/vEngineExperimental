@@ -38,7 +38,7 @@ namespace vEngine
                 void OnBeginRender()
                 {
                     vEngineObjectConstantBuffer cb;
-                    cb.local_to_world_matrix = this->LocalToWorldTransform();
+                    cb.local_to_world_matrix = this->Transform()->LocalToWorldTransform();
                     // Math::Translate(cb.local_to_world_matrix, 0, 0, 1);
                     // cb.local_to_world_matrix[0][0] = 0.1f;
                     // cb.local_to_world_matrix[1][1] = 0.1f;

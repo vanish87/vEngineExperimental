@@ -14,6 +14,7 @@
 
 #include <VENGINE_API.hpp>
 #include <vengine/core/component.hpp>
+#include <vengine/core/transform.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -28,7 +29,9 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                TransformComponent(){};
+                TransformComponent()
+                {
+                };
         };
     }  // namespace Core
 }  // namespace vEngine

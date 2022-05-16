@@ -48,13 +48,14 @@ namespace vEngine
         {
             // PRINT("Load mesh from file " + file_name);
             this->file_name_ = file_name;
+            PRINT_AND_BREAK("Not implemented");
 
-            ResourceLoader::GetInstance().LoadAsync(shared_from_this(),
-            [&](IResourceSharedPtr c)
-            {
-                UNUSED_PARAMETER(c);
-                PRINT(this->file_name_ << " Resource loaded");
-            });
+            // ResourceLoader::GetInstance().LoadAsync(shared_from_this(),
+            // [&](IResourceSharedPtr c)
+            // {
+            //     UNUSED_PARAMETER(c);
+            //     PRINT(this->file_name_ << " Resource loaded");
+            // });
         }
         bool Mesh::Load()
         {

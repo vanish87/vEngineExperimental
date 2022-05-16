@@ -9,7 +9,7 @@ namespace vEngine
 {
     namespace Core
     {
-        Interface VENGINE_API IResource: public std::enable_shared_from_this<IResource>
+        Interface VENGINE_API IResource
         {
         public:
             virtual bool Load() = 0;
