@@ -13,13 +13,12 @@
 #pragma once
 
 #include <VENGINE_API.hpp>
-
 #include <engine.hpp>
 #include <functional>
 #include <list>
 #include <vengine/core/matrix.hpp>
-#include <vengine/core/uuid.hpp>
 #include <vengine/core/transform.hpp>
+#include <vengine/core/uuid.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -42,7 +41,7 @@ namespace vEngine
 
                 void AddChild(const GameNodeSharedPtr game_node);
                 void RemoveChild(const GameNodeSharedPtr game_node);
-                
+
                 void AddComponent(const GameNodeSharedPtr component);
                 void RemoveComponent(const GameNodeSharedPtr component);
 

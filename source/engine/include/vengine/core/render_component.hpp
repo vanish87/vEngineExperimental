@@ -1,5 +1,5 @@
-/// \file renderer.hpp
-/// \brief Head file for Renderer
+/// \file renderer_component.hpp
+/// \brief Head file for Renderer Component
 ///
 /// A detailed file description.
 ///
