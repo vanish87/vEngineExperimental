@@ -24,7 +24,6 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        template <typename T>
         class VENGINE_API TransformComponent : public Component<Transform>
         {
             public:

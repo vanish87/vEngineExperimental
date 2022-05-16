@@ -70,6 +70,11 @@ namespace vEngine
                     // this->transform_.local_to_world_ = this->LocalTransform();
                 }
 
+                TransformComponentSharedPtr& TransformPtr()
+                {
+                    return this->transform_com_;
+                }
+
                 template <typename T>
                 std::shared_ptr<T> FirstOf()
                 {
@@ -146,6 +151,7 @@ namespace vEngine
             private:
                 // transform
                 Transform transform_;
+                TransformComponentSharedPtr transform_com_;
                 // children also used as list of gameobject/components
                 std::list<GameNodeSharedPtr> children_;
                 // GameNodeSharedPtr parent_;

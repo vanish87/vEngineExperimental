@@ -15,6 +15,7 @@
 #include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <vengine/core/matrix.hpp>
+#include <vengine/core/game_object.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -25,7 +26,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class VENGINE_API Transform final
+        class VENGINE_API Transform final : public GameObject
         {
             public:
                 /// \brief Constructor: use init list {} to initialize data
