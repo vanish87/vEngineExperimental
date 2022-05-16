@@ -220,7 +220,7 @@ namespace vEngine
             camera->game_object_->target = Context::GetInstance().GetRenderEngine().back_buffer_;
             this->AddToSceneNode(camera);
         }
-        void Scene::AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node)
+        void Scene::AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node /*= nullptr*/)
         {
             auto camera = std::dynamic_pointer_cast<CameraComponent>(new_node);
             if (camera != nullptr)
