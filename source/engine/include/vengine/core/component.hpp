@@ -11,7 +11,7 @@
 #define _VENGINE_CORE_COMPONENT_HPP
 
 #pragma once
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 
 #include <memory>
 #include <vengine/core/game_node.hpp>
@@ -29,11 +29,14 @@ namespace vEngine
         template <typename T>
         class VENGINE_API Component : public GameNode, public IComponent
         {
+            // static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
+
             public:
                 /// \brief brief constructor description.
                 Component()
                 {
-                    PRINT("Created "<< typeid(T).name() << " from component");
+                    // PRINT("Created "<< typeid(T).name() << " from component");
+                    this->name_ = typeid(T).name();
                     this->game_object_ = std::make_shared<T>();
                 };
                 virtual ~Component(){};

@@ -13,7 +13,7 @@
 #pragma once
 
 #include <cstring>
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 #include <vengine/core/component.hpp>
 #include <vengine/core/camera.hpp>
 #include <vengine/rendering/graphics_buffer.hpp>
@@ -42,7 +42,7 @@ namespace vEngine
                     vEngineCameraConstantBuffer cb;
                     cb.camera_pos = float4(0, 0, 100, 1);
 
-                    cb.view_matrix = this->LocalToWorldTransform();
+                    cb.view_matrix = this->Transform()->LocalToWorldTransform();
                     // Math::Translate(cb.view_matrix, 0, 0, 100);
                     // cb.view_matrix = Math::Transpose(cb.view_matrix);
                     cb.proj_matrix = cam->ProjectionMatrix();

@@ -1,5 +1,5 @@
-/// \file renderer.hpp
-/// \brief Head file for Renderer
+/// \file renderer_component.hpp
+/// \brief Head file for Renderer Component
 ///
 /// A detailed file description.
 ///
@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 #include <vengine/core/component.hpp>
 
 

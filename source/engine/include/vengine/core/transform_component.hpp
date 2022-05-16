@@ -1,5 +1,5 @@
-/// \file game_object.hpp
-/// \brief Head file for Game Object
+/// \file transform_component.hpp
+/// \brief Head file for Transform Component
 ///
 /// A detailed file description.
 ///
@@ -7,14 +7,14 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#ifndef _VENGINE_CORE_GAME_OBJECT_HPP
-#define _VENGINE_CORE_GAME_OBJECT_HPP
+#ifndef _VENGINE_CORE_TRANSFORM_COMPONENT_HPP
+#define _VENGINE_CORE_TRANSFORM_COMPONENT_HPP
 
 #pragma once
 
 #include <VENGINE_API.hpp>
-
-#include <vengine/core/uuid.hpp>
+#include <vengine/core/component.hpp>
+#include <vengine/core/transform.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -25,18 +25,15 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class VENGINE_API GameObject
+        class VENGINE_API TransformComponent : public Component<Transform>
         {
             public:
                 /// \brief brief constructor description.
-                GameObject();
-                virtual ~GameObject();
-
-                // uuid
-                UUID uuid_;
-                // type?
+                TransformComponent()
+                {
+                };
         };
     }  // namespace Core
 }  // namespace vEngine
 
-#endif /* _VENGINE_CORE_GAME_OBJECT_HPP */
+#endif /* _VENGINE_CORE_TRANSFORM_COMPONENT_HPP */

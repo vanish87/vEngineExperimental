@@ -16,7 +16,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
 #include <vengine/core/iresource.hpp>

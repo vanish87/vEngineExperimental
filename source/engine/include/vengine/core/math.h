@@ -2,7 +2,7 @@
 #define _VENGINE_CORE_MATH_H
 
 #pragma once
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 
 #include <engine.hpp>
 

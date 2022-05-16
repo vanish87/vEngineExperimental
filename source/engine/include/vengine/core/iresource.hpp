@@ -3,13 +3,13 @@
 
 #pragma once
 #include <functional>
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 
 namespace vEngine
 {
     namespace Core
     {
-        Interface VENGINE_API IResource: public std::enable_shared_from_this<IResource>
+        Interface VENGINE_API IResource
         {
         public:
             virtual bool Load() = 0;

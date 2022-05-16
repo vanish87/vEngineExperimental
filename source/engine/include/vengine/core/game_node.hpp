@@ -12,21 +12,20 @@
 
 #pragma once
 
-#include <VENGINE_API.h>
-
+#include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <functional>
 #include <list>
-#include <vengine/core/matrix.hpp>
-#include <vengine/core/uuid.hpp>
-#include <vengine/core/transform.hpp>
+// #include <vengine/core/matrix.hpp>
+// #include <vengine/core/transform_component.hpp>
+// #include <vengine/core/uuid.hpp>
 
 /// A brief namespace description.
 namespace vEngine
 {
     namespace Core
     {
-        using namespace vEngine::Math;
+        // using namespace vEngine::Math;
         /// \brief Game Node is basic game scene object
         ///
         /// It contains a tranfrom and a list of children nodes
@@ -36,39 +35,48 @@ namespace vEngine
         class VENGINE_API GameNode : public std::enable_shared_from_this<GameNode>
         {
             public:
+                std::string name_;
                 /// \brief brief constructor description.
                 GameNode();
                 virtual ~GameNode();
 
                 void AddChild(const GameNodeSharedPtr game_node);
                 void RemoveChild(const GameNodeSharedPtr game_node);
-                
+
                 void AddComponent(const GameNodeSharedPtr component);
                 void RemoveComponent(const GameNodeSharedPtr component);
 
-                const float4x4 LocalTransform()
-                {
-                    return this->transform_.GetLocal();
-                }
-                const float4x4 LocalToWorldTransform()
-                {
-                    return this->transform_.local_to_world_;
-                }
-                void SetScale(float3 scale)
-                {
-                    this->transform_.local_scale_ = scale;
-                }
-                void SetPos(float3 pos)
-                {
-                    this->transform_.local_pos_ = pos;
-                }
+                // const float4x4 LocalTransform()
+                // {
+                //     return this->transform_.GetLocal();
+                // }
 
-                void UpdateLocal(GameNodeSharedPtr parent)
-                {
-                    auto mat = parent==nullptr?float4x4::IdentityMat():parent->LocalToWorldTransform();
-                    this->transform_.local_to_world_ = Math::Multiply(this->LocalTransform(), mat);
-                    // this->transform_.local_to_world_ = this->LocalTransform();
-                }
+                TransformSharedPtr Transform();
+                // float4x4 LocalToWorldTransform()
+                // {
+                //     return this->transform_.LocalToWorldTransform();
+                // }
+                // void SetScale(float3 scale)
+                // {
+                //     this->transform_.Scale() = scale;
+                // }
+                // void SetPos(float3 pos)
+                // {
+                //     this->transform_.Translate() = pos;
+                // }
+
+                // void UpdateLocal(GameNodeSharedPtr parent)
+                // {
+                //     auto transform = parent == nullptr ? Transform::Identity() : parent->transform_;
+                //     this->transform_.UpdateLocalToWorld(transform);
+                //     // this->transform_.local_to_world_ = Math::Multiply(this->LocalTransform(), mat);
+                //     // this->transform_.local_to_world_ = this->LocalTransform();
+                // }
+
+                // TransformComponentSharedPtr& TransformPtr()
+                // {
+                //     return this->transform_com_;
+                // }
 
                 template <typename T>
                 std::shared_ptr<T> FirstOf()
@@ -96,29 +104,41 @@ namespace vEngine
                     }
                 }
                 template <typename T>
-                void Traverse(std::function<bool(std::shared_ptr<T>)> const& func)
-                {
-                    auto gn = std::dynamic_pointer_cast<T>(shared_from_this());
-                    if (gn == nullptr ? true : func(gn))
-                    {
-                        for (const auto& c : this->children_)
-                        {
-                            c->Traverse(func);
-                        }
-                    }
-                }
-                template <typename T>
-                void Traverse(std::function<bool(std::shared_ptr<T>, const GameNodeSharedPtr)> const& func)
+                void TraverseAllChildren(std::function<bool(std::shared_ptr<T>)> const& func)
                 {
                     for (const auto& c : this->children_)
                     {
                         auto gn = std::dynamic_pointer_cast<T>(c);
-                        if (gn == nullptr ? true : func(gn, shared_from_this()))
+                        if (gn == nullptr ? true : func(gn))
                         {
-                            c->Traverse(func);
+                            c->TraverseAllChildren(func);
                         }
                     }
                 }
+                // template <typename T>
+                // void Traverse(std::function<bool(std::shared_ptr<T>)> const& func)
+                // {
+                //     auto gn = std::dynamic_pointer_cast<T>(shared_from_this());
+                //     if (gn == nullptr ? true : func(gn))
+                //     {
+                //         for (const auto& c : this->children_)
+                //         {
+                //             c->Traverse(func);
+                //         }
+                //     }
+                // }
+                // template <typename T>
+                // void Traverse(std::function<bool(std::shared_ptr<T>, const GameNodeSharedPtr)> const& func)
+                // {
+                //     for (const auto& c : this->children_)
+                //     {
+                //         auto gn = std::dynamic_pointer_cast<T>(c);
+                //         if (gn == nullptr ? true : func(gn, shared_from_this()))
+                //         {
+                //             c->Traverse(func);
+                //         }
+                //     }
+                // }
                 // template <typename T>
                 // void ForEachChild(std::function<void(T*)> const& iter)
                 // {
@@ -145,7 +165,12 @@ namespace vEngine
 
             private:
                 // transform
-                Transform transform_;
+                // Transform transform_;
+
+                // cached transform node
+                TransformComponentSharedPtr transform_;
+                // parent node
+                GameNodeWeakPtr parent_;
                 // children also used as list of gameobject/components
                 std::list<GameNodeSharedPtr> children_;
                 // GameNodeSharedPtr parent_;
