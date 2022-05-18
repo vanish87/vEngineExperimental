@@ -14,6 +14,8 @@
 #include <vengine/core/component.hpp>
 #include <vengine/core/mesh_renderer.hpp>
 #include <vengine/core/mesh_component.hpp>
+#include <vengine/core/transform_node.hpp>
+#include <vengine/core/transform_component.hpp>
 #include <vengine/rendering/graphics_buffer.hpp>
 
 #include <vengine/core/context.hpp>
@@ -38,7 +40,9 @@ namespace vEngine
                 void OnBeginRender()
                 {
                     vEngineObjectConstantBuffer cb;
-                    cb.local_to_world_matrix = this->Transform()->LocalToWorldTransform();
+                    auto trans = std::dynamic_pointer_cast<TransformNode>(this->Owner());
+                    cb.local_to_world_matrix = trans->transform_->game_object_->LocalToWorldTransform();
+                    // cb.local_to_world_matrix = this->Transform()->LocalToWorldTransform();
                     // Math::Translate(cb.local_to_world_matrix, 0, 0, 1);
                     // cb.local_to_world_matrix[0][0] = 0.1f;
                     // cb.local_to_world_matrix[1][1] = 0.1f;
@@ -58,7 +62,7 @@ namespace vEngine
 
                 }
 
-                virtual void UpdateComponent(GameNodeSharedPtr parent) override
+                virtual void OnUpdate(GameNodeSharedPtr parent) override
                 {
                     //Update local to world matrix for current game node
                     // PRINT("MeshRendererComponent Update");

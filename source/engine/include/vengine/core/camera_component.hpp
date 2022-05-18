@@ -15,6 +15,8 @@
 #include <cstring>
 #include <VENGINE_API.hpp>
 #include <vengine/core/component.hpp>
+#include <vengine/core/transform_node.hpp>
+#include <vengine/core/transform_component.hpp>
 #include <vengine/core/camera.hpp>
 #include <vengine/rendering/graphics_buffer.hpp>
 
@@ -42,7 +44,8 @@ namespace vEngine
                     vEngineCameraConstantBuffer cb;
                     cb.camera_pos = float4(0, 0, 100, 1);
 
-                    cb.view_matrix = this->Transform()->LocalToWorldTransform();
+                    auto trans = std::dynamic_pointer_cast<TransformNode>(this->Owner());
+                    cb.view_matrix = trans->transform_->game_object_->LocalToWorldTransform();
                     // Math::Translate(cb.view_matrix, 0, 0, 100);
                     // cb.view_matrix = Math::Transpose(cb.view_matrix);
                     cb.proj_matrix = cam->ProjectionMatrix();
@@ -55,7 +58,7 @@ namespace vEngine
                     Context::GetInstance().GetRenderEngine().OnBind(this->camera_constant_buffer_);
                 }
 
-                void UpdateComponent(const GameNodeSharedPtr parent) override
+                void OnUpdate(const GameNodeSharedPtr parent) override
                 {
                     UNUSED_PARAMETER(parent);
                 }

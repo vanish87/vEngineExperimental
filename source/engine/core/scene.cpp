@@ -34,7 +34,7 @@ namespace vEngine
         {
             auto gn = std::make_shared<GameNode>();
             auto transform = std::make_shared<TransformComponent>();
-            gn->AddComponent(transform);
+            gn->AttachComponent(transform);
             return gn;
         }
 
@@ -58,7 +58,7 @@ namespace vEngine
 
             // auto trans = std::make_shared<TransformComponent>();
             // trans->game_object_->Translate() = float3(0, 0, 0);
-            // this->AddComponent(trans);
+            // this->AttachComponent(trans);
 
             // auto s = 2.0f;
             // this->root_->Transform()->Scale() = float3(s, s, s);
@@ -150,9 +150,9 @@ namespace vEngine
 
                 auto mesh = this->scene_meshes_[mid];
                 auto mesh_component = std::make_shared<MeshComponent>(mesh);
-                mesh_node->AddComponent(mesh_component);
+                mesh_node->AttachComponent(mesh_component);
                 auto mesh_renderer = std::make_shared<MeshRendererComponent>();
-                mesh_node->AddComponent(mesh_renderer);
+                mesh_node->AttachComponent(mesh_renderer);
 
                 auto mat = this->scene_materials_[ai_mesh->mMaterialIndex];
                 mesh_renderer->game_object_->material_ = mat;
@@ -212,7 +212,7 @@ namespace vEngine
             // this->Traverse<MeshRendererComponent>(
             //     [&](MeshRendererComponentSharedPtr n, const GameNodeSharedPtr parent)
             //     {
-            //         n->UpdateComponent(parent);
+            //         n->OnUpdate(parent);
             //         n->OnBeginRender();
             //         if (n->game_object_ != nullptr)
             //         {
@@ -233,10 +233,10 @@ namespace vEngine
 
             auto mrc = std::make_shared<Rendering::MeshRendererComponent>();
             mrc->game_object_->material_ = mat;
-            gn->AddComponent(mrc);
+            gn->AttachComponent(mrc);
             auto mc = std::make_shared<Rendering::MeshComponent>();
             mc->game_object_->Load("bunny.obj");
-            gn->AddComponent(mc);
+            gn->AttachComponent(mc);
 
             // auto s = 2.0f;
             // gn->SetScale(float3(s,s,s));
