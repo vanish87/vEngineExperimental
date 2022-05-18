@@ -43,15 +43,15 @@ namespace vEngine
                 void AddChild(const GameNodeSharedPtr game_node);
                 void RemoveChild(const GameNodeSharedPtr game_node);
 
-                void AddComponent(const GameNodeSharedPtr component);
-                void RemoveComponent(const GameNodeSharedPtr component);
+                void AttachComponent(const GameNodeSharedPtr component);
+                void DetachComponent(const GameNodeSharedPtr component);
 
                 // const float4x4 LocalTransform()
                 // {
                 //     return this->transform_.GetLocal();
                 // }
 
-                TransformSharedPtr Transform();
+                // TransformSharedPtr Transform();
                 // float4x4 LocalToWorldTransform()
                 // {
                 //     return this->transform_.LocalToWorldTransform();
@@ -163,12 +163,18 @@ namespace vEngine
                 //     }
                 // }
 
+            public:
+                GameNodeWeakPtr Parent()
+                {
+                    return this->parent_;
+                }
+
             private:
                 // transform
                 // Transform transform_;
 
                 // cached transform node
-                TransformComponentSharedPtr transform_;
+                // TransformComponentSharedPtr transform_;
                 // parent node
                 GameNodeWeakPtr parent_;
                 // children also used as list of gameobject/components

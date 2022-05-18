@@ -10,7 +10,7 @@
 
 #include <vengine/core/game_node.hpp>
 #include <vengine/core/icomponent.hpp>
-#include <vengine/core/transform_component.hpp>
+// #include <vengine/core/transform_component.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -28,21 +28,22 @@ namespace vEngine
         }
         GameNode::~GameNode() {}
 
-        TransformSharedPtr GameNode::Transform()
-        {
-            return this->transform_->game_object_;
-        }
+        // TransformSharedPtr GameNode::Transform()
+        // {
+        //     return this->transform_->game_object_;
+        // }
 
-        void GameNode::AddComponent(const GameNodeSharedPtr component)
+        void GameNode::AttachComponent(const GameNodeSharedPtr component)
         {
             auto com = std::dynamic_pointer_cast<IComponent>(component);
             CHECK_ASSERT_NOT_NULL(com);
+
             if (com != nullptr)
             {
                 this->AddChild(component);
             }
         }
-        void GameNode::RemoveComponent(const GameNodeSharedPtr component)
+        void GameNode::DetachComponent(const GameNodeSharedPtr component)
         {
             auto com = std::dynamic_pointer_cast<IComponent>(component);
             CHECK_ASSERT_NOT_NULL(com);
@@ -58,8 +59,8 @@ namespace vEngine
             game_node->parent_ = weak_from_this();
             this->children_.push_back(game_node);
 
-            auto transform = std::dynamic_pointer_cast<TransformComponent>(game_node);
-            if(transform != nullptr) this->transform_ = transform;
+            // auto transform = std::dynamic_pointer_cast<TransformComponent>(game_node);
+            // if(transform != nullptr) this->transform_ = transform;
         }
         void GameNode::RemoveChild(const GameNodeSharedPtr game_node)
         {

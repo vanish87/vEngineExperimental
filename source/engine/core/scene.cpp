@@ -15,6 +15,7 @@
 #include <vengine/core/resource_loader.hpp>
 #include <vengine/core/scene.hpp>
 #include <vengine/core/transform_component.hpp>
+#include <vengine/core/component_factory.hpp>
 // #include <vengine/rendering/render_engine.hpp>
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -30,13 +31,6 @@ namespace vEngine
             this->name_ = file_name;
             // this->root_ = std::make_shared<GameNode>();
         }
-        GameNodeSharedPtr Scene::MakeTransformNode()
-        {
-            auto gn = std::make_shared<GameNode>();
-            auto transform = std::make_shared<TransformComponent>();
-            gn->AddComponent(transform);
-            return gn;
-        }
 
         bool Scene::Load()
         {
@@ -48,31 +42,35 @@ namespace vEngine
             this->CreateMaterials(scene);
             this->CreateCameras(scene);
 
-            // auto root = this->HandleNode(scene->mRootNode, scene);
-            // this->AddChild(root);
-
-            auto root = this->MakeTransformNode();
-            root->name_ = "SceneRoot";
+            auto root = this->HandleNode(scene->mRootNode, scene);
+            root->name_ = "Assimp Root";
             this->AddChild(root);
+
+            // auto root = ComponentFactory::Create<TransformComponent>();
+            // root->name_ = "SceneRoot";
+            // this->AddChild(root);
 
 
             // auto trans = std::make_shared<TransformComponent>();
             // trans->game_object_->Translate() = float3(0, 0, 0);
-            // this->AddComponent(trans);
+            // this->AttachComponent(trans);
 
-            // auto s = 2.0f;
-            // this->root_->Transform()->Scale() = float3(s, s, s);
-            // this->root_->Transform()->Translate() = float3(0.2f, 0, 1);
+            auto s = 2.0f;
+            auto root_transform = std::dynamic_pointer_cast<TransformNode>(root);
+            root_transform->Transform()->Scale() = float3(s, s, s);
+            root_transform->Transform()->Translate() = float3(0.2f, 0, 1);
             return true;
         }
         void Scene::CreateCameras(const aiScene* scene)
         {
             UNUSED_PARAMETER(scene);
-            auto camera = std::make_shared<CameraComponent>();
+            auto camera = ComponentFactory::Create<CameraComponent>();
             camera->game_object_->target = Context::GetInstance().GetRenderEngine().back_buffer_;
             this->scene_cameras_.emplace_back(camera);
 
-            this->AddChild(camera);
+            auto gn = TransformNode::Create();
+            gn->AttachComponent(camera);
+            this->AddChild(gn);
 
             PRINT("num of cameras: " << this->scene_cameras_.size());
         }
@@ -139,27 +137,27 @@ namespace vEngine
         }
         GameNodeSharedPtr Scene::HandleNode(const aiNode* node, const aiScene* scene)
         {
-            auto game_node = std::make_shared<GameNode>();
+            auto game_node = TransformNode::Create();
             // parent->AddChild(game_node);
 
             for (uint32_t mid = 0; mid < node->mNumMeshes; ++mid)
             {
-                auto mesh_node = std::make_shared<GameNode>();
+                auto mesh_node = TransformNode::Create();
                 // scene_meshes_ contains same mesh data as they are in aiScene
                 auto ai_mesh = scene->mMeshes[mid];
 
                 auto mesh = this->scene_meshes_[mid];
                 auto mesh_component = std::make_shared<MeshComponent>(mesh);
-                mesh_node->AddComponent(mesh_component);
+                mesh_node->AttachComponent(mesh_component);
                 auto mesh_renderer = std::make_shared<MeshRendererComponent>();
-                mesh_node->AddComponent(mesh_renderer);
+                mesh_node->AttachComponent(mesh_renderer);
 
                 auto mat = this->scene_materials_[ai_mesh->mMaterialIndex];
                 mesh_renderer->game_object_->material_ = mat;
 
                 // auto s = 2.0f;
-                // mesh_node->SetScale(float3(s, s, s));
-                // mesh_node->SetPos(float3(0, 0, 1));
+                // mesh_node->Transform()->Scale() = float3(s, s, s);
+                // mesh_node->Transform()->Translate() = float3(0, 0, 1);
 
                 game_node->AddChild(mesh_node);
             }
@@ -174,12 +172,15 @@ namespace vEngine
         }
         void Scene::Update()
         {
-            this->TraverseAllChildren<GameNode>(
-                [&](GameNodeSharedPtr node)
+            this->TraverseAllChildren<TransformComponent>(
+                [&](TransformComponentSharedPtr node)
                 {
                     // node->UpdateLocal(parent);
+                    node->OnUpdate();
 
-                    PRINT(node->name_);
+                    // auto pos = node->game_object_->Translate();
+                    // PRINT(pos.x() << " " << pos.y());
+                    // PRINT(node->name_);
                     return true;
                 });
             // camera
@@ -194,33 +195,34 @@ namespace vEngine
             //         return true;
             //     });
 
-            // for (auto& c : this->scene_cameras_)
-            // {
-            //     c->OnBeginCamera();
+            for (auto& c : this->scene_cameras_)
+            {
+                c->OnBeginCamera();
 
-            //     auto cam = c->game_object_;
-            //     auto frameBuffer = cam->target;
-            //     auto& re = Context::GetInstance().GetRenderEngine();
-            //     re.Bind(frameBuffer);
-            //     this->Flush();
-            //     // render all game node
-            //     // PRINT("Camera");
-            // }
+                auto cam = c->game_object_;
+                auto frameBuffer = cam->target;
+                auto& re = Context::GetInstance().GetRenderEngine();
+                re.Bind(frameBuffer);
+                this->Flush();
+                // render all game node
+                // PRINT("Camera");
+            }
         }
         void Scene::Flush()
         {
-            // this->Traverse<MeshRendererComponent>(
-            //     [&](MeshRendererComponentSharedPtr n, const GameNodeSharedPtr parent)
-            //     {
-            //         n->UpdateComponent(parent);
-            //         n->OnBeginRender();
-            //         if (n->game_object_ != nullptr)
-            //         {
-            //             n->game_object_->Render();
-            //         }
-            //         // Render other renderers(transparent, particle etc.) if possible
-            //         return true;
-            //     });
+            this->TraverseAllChildren<MeshRendererComponent>(
+                [&](MeshRendererComponentSharedPtr n)
+                {
+                    n->OnUpdate();
+
+                    n->OnBeginRender();
+                    if (n->game_object_ != nullptr)
+                    {
+                        n->game_object_->Render();
+                    }
+                    // Render other renderers(transparent, particle etc.) if possible
+                    return true;
+                });
         }
         void Scene::AddTestNode()
         {
@@ -233,10 +235,10 @@ namespace vEngine
 
             auto mrc = std::make_shared<Rendering::MeshRendererComponent>();
             mrc->game_object_->material_ = mat;
-            gn->AddComponent(mrc);
+            gn->AttachComponent(mrc);
             auto mc = std::make_shared<Rendering::MeshComponent>();
             mc->game_object_->Load("bunny.obj");
-            gn->AddComponent(mc);
+            gn->AttachComponent(mc);
 
             // auto s = 2.0f;
             // gn->SetScale(float3(s,s,s));
