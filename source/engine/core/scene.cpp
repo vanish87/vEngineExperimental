@@ -178,9 +178,8 @@ namespace vEngine
                     // node->UpdateLocal(parent);
                     node->OnUpdate();
 
-                    auto pos = node->game_object_->Translate();
-                    PRINT(pos.x() << " " << pos.y());
-
+                    // auto pos = node->game_object_->Translate();
+                    // PRINT(pos.x() << " " << pos.y());
                     // PRINT(node->name_);
                     return true;
                 });
