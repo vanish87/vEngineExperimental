@@ -4,13 +4,18 @@
 #pragma once
 #include <vengine/core/math.h>
 
-#include <engine.hpp>
+// #include <engine.hpp>
 #include <vengine/core/vector.hpp>
 
 namespace vEngine
 {
     namespace Math
     {
+        enum class MatrixPackType
+        {
+            ColumnMajor, //default
+            RowMajor
+        };
         /// \brief Define a MxN matrix with data type T
         ///
         /// Note M is number of row elements, N is number of col elements. \n
@@ -20,7 +25,7 @@ namespace vEngine
         /// \tparam M number of row elements
         /// \tparam N number of col elements
         template <typename T = float, int M = 4, int N = 4>
-        class Matrix
+        class Matrix final
         {
             private:
                 typedef Vector<Vector<T, M>, N> DataType;
@@ -46,6 +51,8 @@ namespace vEngine
                 static constexpr size_type size = M * N;
                 static constexpr size_type row = N;
                 static constexpr size_type col = M;
+
+                static const MatrixPackType PackType = MatrixPackType::RowMajor;
 
             public:
                 constexpr Matrix() noexcept {}
@@ -128,7 +135,7 @@ namespace vEngine
                 }
                 // big five - 1: virtual destructor -> assure destructor of
                 // subclass called
-                virtual ~Matrix() noexcept {}
+                ~Matrix() noexcept {}
 
                 // big five - 4: move constructor
                 // const is not need: constexpr Vector(const Vector &&other)
@@ -169,8 +176,15 @@ namespace vEngine
             public:
                 static const Matrix<T, M, N>& Zero()
                 {
-                    static const Matrix<T, M, N> zero(0);
+                    static const T z(0);
+                    static const Matrix<T, M, N> zero(z);
                     return zero;
+                }
+                static const Matrix<T, M, N>& IdentityMat()
+                {
+                    static Matrix<T, M, N> identity;
+                    Identity(identity);
+                    return identity;
                 }
 
             public:
@@ -236,7 +250,7 @@ namespace vEngine
                 const Matrix& operator*=(const Matrix<U, N>& other) noexcept
                 {
                     UNUSED_PARAMETER(other);
-                    assert(false);
+                    // assert(false);
                     return *this;
                 }
                 // ambiguous operator
@@ -244,7 +258,7 @@ namespace vEngine
                 const Matrix& operator/=(const Matrix<U, N>& other) noexcept
                 {
                     UNUSED_PARAMETER(other);
-                    assert(false);
+                    // assert(false);
                     return *this;
                 }
                 constexpr Matrix const& operator+() const noexcept
@@ -273,22 +287,22 @@ namespace vEngine
                 // Boost defined operator
             public:
                 template <typename U>
-                constexpr Matrix operator+(Matrix<U, M, N>& other) noexcept
+                constexpr Matrix operator+(const Matrix<U, M, N>& other) noexcept
                 {
                     return Matrix(*this) += other;
                 }
                 template <typename U>
-                constexpr Matrix operator-(Matrix<U, M, N>& other) noexcept
+                constexpr Matrix operator-(const Matrix<U, M, N>& other) noexcept
                 {
                     return Matrix(*this) -= other;
                 }
                 template <typename U>
-                constexpr Matrix operator*(Matrix<U, M, N>& other) noexcept
+                constexpr Matrix operator*(const Matrix<U, M, N>& other) noexcept
                 {
                     return Multiply(*this, other);
                 }
                 template <typename U>
-                constexpr Matrix operator/(Matrix<U, M, N>& other) noexcept
+                constexpr Matrix operator/(const Matrix<U, M, N>& other) noexcept
                 {
                     return Matrix(*this) /= other;
                 }

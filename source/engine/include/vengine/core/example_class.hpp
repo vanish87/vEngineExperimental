@@ -7,8 +7,8 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#ifndef _VENGINE_CORE_EXAMPLE_CLASS_HEADER_H
-#define _VENGINE_CORE_EXAMPLE_CLASS_HEADER_H
+#ifndef _VENGINE_CORE_EXAMPLE_CLASS_HPP
+#define _VENGINE_CORE_EXAMPLE_CLASS_HPP
 
 #pragma once
 
@@ -45,4 +45,4 @@ namespace MyNamespace
     
 }  // namespace MyNamespace
 
-#endif /* _VENGINE_CORE_EXAMPLE_CLASS_HEADER_H */
+#endif /* _VENGINE_CORE_EXAMPLE_CLASS_HPP */

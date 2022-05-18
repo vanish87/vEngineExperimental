@@ -21,6 +21,7 @@ namespace vEngine
         class Timer
         {
             public:
+                /// \brief brief constructor description.
                 Timer();
                 virtual ~Timer();
 

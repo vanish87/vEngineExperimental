@@ -1,12 +1,19 @@
 
 project(opengl_app)
 
+
 # Create the executable
 add_executable(${PROJECT_NAME} main.cpp)
 
 target_link_libraries(${PROJECT_NAME}
     engine::core
 )
+
+if(UNIX)
+    target_link_libraries(${PROJECT_NAME} pthread)
+endif(UNIX)
+
+# add_compile_options(-pthread)
 
 # copy dll files to runtime directory
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

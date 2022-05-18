@@ -5,6 +5,7 @@
 #include <vengine/core/configure.hpp>
 #include <vengine/core/constants.hpp>
 #include <vengine/core/context.hpp>
+#include <vengine/core/scene_manager.hpp>
 #include <vengine/core/timer.hpp>
 #include <vengine/rendering/render_engine.hpp>
 
@@ -12,7 +13,7 @@ namespace vEngine
 {
     namespace Core
     {
-        WindowPtr Application::CurrentWindow()
+        vEngineWindowPtr Application::CurrentWindow()
         {
             return this->window_;
         }
@@ -39,12 +40,16 @@ namespace vEngine
             this->window_->Init(wnd);
 
             Context::GetInstance().GetRenderEngine().Init();
+            
+            SceneManager::GetInstance().Init();
 
             this->OnCreate();
         }
         void Application::Deinit()
         {
             this->OnDestory();
+
+            SceneManager::GetInstance().Deinit();
 
             // Destory RenderEngine etc;
             Context::GetInstance().GetRenderEngine().Deinit();
@@ -68,6 +73,7 @@ namespace vEngine
 
             // update other context module
             //  Context::Update();
+            SceneManager::GetInstance().Update();
         }
         void Application::Run()
         {
@@ -93,7 +99,7 @@ namespace vEngine
                 }
 
                 // call here or PAINT event in Winodw Class
-                Context::GetInstance().GetRenderEngine().Update();
+                // Context::GetInstance().GetRenderEngine().Update();
             }
 
             this->Deinit();
