@@ -36,7 +36,7 @@ namespace vEngine
                 Component()
                 {
                     // PRINT("Created "<< typeid(T).name() << " from component");
-                    this->name_ = typeid(T).name();
+                    this->name_ = std::string("Component ") + typeid(T).name();
                     this->game_object_ = std::make_shared<T>();
                 };
                 virtual ~Component(){};

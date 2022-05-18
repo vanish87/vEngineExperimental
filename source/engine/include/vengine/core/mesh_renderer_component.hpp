@@ -62,13 +62,13 @@ namespace vEngine
 
                 }
 
-                virtual void OnUpdate(GameNodeSharedPtr parent) override
+                virtual void OnUpdate() override
                 {
                     //Update local to world matrix for current game node
                     // PRINT("MeshRendererComponent Update");
                     if(this->game_object_->renderable_ == nullptr)
                     {
-                        auto meshComponent = parent->FirstOf<MeshComponent>();
+                        auto meshComponent = this->Owner()->FirstOf<MeshComponent>();
                         this->game_object_->renderable_ = meshComponent->game_object_;
                     }
                 };

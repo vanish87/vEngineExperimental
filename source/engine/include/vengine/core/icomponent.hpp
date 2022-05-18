@@ -15,10 +15,7 @@ namespace vEngine
             virtual void OnDeinit(){};
             virtual void OnEnable(){};
             virtual void OnDisable(){};
-            virtual void OnUpdate(GameNodeSharedPtr parent)
-            {
-                UNUSED_PARAMETER(parent);
-            };
+            virtual void OnUpdate(){};
 
         protected:
             virtual ~IComponent(){};

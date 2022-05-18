@@ -163,11 +163,11 @@ namespace vEngine
                 //     }
                 // }
 
-            protected:
-            GameNodeWeakPtr Parent()
-            {
-                return this->parent_;
-            }
+            public:
+                GameNodeWeakPtr Parent()
+                {
+                    return this->parent_;
+                }
 
             private:
                 // transform

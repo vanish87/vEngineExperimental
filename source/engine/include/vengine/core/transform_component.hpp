@@ -29,9 +29,9 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                TransformComponent()
-                {
-                };
+                TransformComponent(){};
+
+                virtual void OnUpdate() override;
         };
     }  // namespace Core
 }  // namespace vEngine

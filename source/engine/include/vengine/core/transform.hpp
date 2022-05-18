@@ -146,9 +146,13 @@ namespace vEngine
                 {
                     return const_cast<float3&>(static_cast<const Transform*>(this)->Scale());
                 }
-                void UpdateLocalToWorld(const Transform& parent)
+                void UpdateLocalToWorld(const TransformSharedPtr parent)
                 {
-                    this->local_to_world_ = this->LocalTransform() * parent.LocalToWorldTransform();
+                    this->local_to_world_ = this->LocalTransform() * parent->LocalToWorldTransform();
+                }
+                void UpdateLocalToWorld()
+                {
+                    this->local_to_world_ = this->LocalTransform();
                 }
 
 

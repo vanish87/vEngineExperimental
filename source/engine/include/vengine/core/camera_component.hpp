@@ -58,10 +58,6 @@ namespace vEngine
                     Context::GetInstance().GetRenderEngine().OnBind(this->camera_constant_buffer_);
                 }
 
-                void OnUpdate(const GameNodeSharedPtr parent) override
-                {
-                    UNUSED_PARAMETER(parent);
-                }
 
 
                 GraphicsBufferSharedPtr camera_constant_buffer_;
