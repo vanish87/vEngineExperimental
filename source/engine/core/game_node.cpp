@@ -10,7 +10,7 @@
 
 #include <vengine/core/game_node.hpp>
 #include <vengine/core/icomponent.hpp>
-#include <vengine/core/transform_component.hpp>
+// #include <vengine/core/transform_component.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.

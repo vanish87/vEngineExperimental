@@ -13,6 +13,7 @@
 #pragma once
 #include "engine.hpp"
 #include "game_node.hpp"
+#include "transform_component.hpp"
 
 /// A brief namespace description.
 namespace vEngine
