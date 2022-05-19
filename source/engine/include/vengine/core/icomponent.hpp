@@ -9,6 +9,16 @@ namespace vEngine
         Interface VENGINE_API IComponent
         {
         public:
+            IComponent()
+            {
+                this->OnInit();
+            };
+            virtual ~IComponent()
+            {
+                this->OnDeinit();
+            };
+
+        public:
             virtual GameNodeSharedPtr Owner() = 0;
 
             virtual void OnInit(){};
@@ -16,9 +26,6 @@ namespace vEngine
             virtual void OnEnable(){};
             virtual void OnDisable(){};
             virtual void OnUpdate(){};
-
-        protected:
-            virtual ~IComponent(){};
         };
     }  // namespace Core
 }  // namespace vEngine
