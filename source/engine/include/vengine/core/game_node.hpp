@@ -35,10 +35,12 @@ namespace vEngine
         class VENGINE_API GameNode : public std::enable_shared_from_this<GameNode>
         {
             public:
-                std::string name_;
                 /// \brief brief constructor description.
                 GameNode();
                 virtual ~GameNode();
+
+            public:
+                std::string name_;
 
                 void AddChild(const GameNodeSharedPtr game_node);
                 void RemoveChild(const GameNodeSharedPtr game_node);

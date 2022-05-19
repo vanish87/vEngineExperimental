@@ -12,7 +12,6 @@
 
 #pragma once
 #include <VENGINE_API.hpp>
-
 #include <memory>
 #include <vengine/core/game_node.hpp>
 #include <vengine/core/icomponent.hpp>
@@ -30,7 +29,6 @@ namespace vEngine
         class VENGINE_API Component : public GameNode, public IComponent
         {
             static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
-
             public:
                 /// \brief brief constructor description.
                 Component()
@@ -41,11 +39,12 @@ namespace vEngine
                 };
                 virtual ~Component(){};
 
+            public:
                 std::shared_ptr<T> game_object_;
-				virtual GameNodeSharedPtr Owner() override
-				{
-					return this->Parent().lock();
-				}
+                virtual GameNodeSharedPtr Owner() override
+                {
+                    return this->Parent().lock();
+                }
         };
     }  // namespace Core
 }  // namespace vEngine

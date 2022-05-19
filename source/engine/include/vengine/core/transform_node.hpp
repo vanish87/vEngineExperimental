@@ -11,7 +11,7 @@
 #define _VENGINE_CORE_TRANSFORM_NODE_HPP
 
 #pragma once
-#include "component_factory.hpp"
+#include "game_node_factory.hpp"
 #include "engine.hpp"
 #include "game_node.hpp"
 #include "transform_component.hpp"
@@ -32,13 +32,6 @@ namespace vEngine
                 /// \brief brief constructor description.
                 TransformNode(){};
 
-                static TransformNodeSharedPtr Create()
-                {
-                    auto gn = std::make_shared<TransformNode>();
-                    gn->transform_ = ComponentFactory::Create<TransformComponent>();
-                    gn->AttachComponent(gn->transform_);
-                    return gn;
-                }
 
                 TransformSharedPtr Transform()
                 {

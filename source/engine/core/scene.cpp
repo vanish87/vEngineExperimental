@@ -15,7 +15,7 @@
 #include <vengine/core/resource_loader.hpp>
 #include <vengine/core/scene.hpp>
 #include <vengine/core/transform_component.hpp>
-#include <vengine/core/component_factory.hpp>
+#include <vengine/core/game_node_factory.hpp>
 // #include <vengine/rendering/render_engine.hpp>
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -64,11 +64,14 @@ namespace vEngine
         void Scene::CreateCameras(const aiScene* scene)
         {
             UNUSED_PARAMETER(scene);
-            auto camera = ComponentFactory::Create<CameraComponent>();
+            ComponentDescription desc;
+            auto camera = GameNodeFactory::Create<CameraComponent>(desc);
             camera->game_object_->target = Context::GetInstance().GetRenderEngine().back_buffer_;
             this->scene_cameras_.emplace_back(camera);
 
-            auto gn = TransformNode::Create();
+            GameNodeDescription gndesc;
+            gndesc.type = GameNodeType::Transform;
+            auto gn = GameNodeFactory::Create(gndesc);
             gn->AttachComponent(camera);
             this->AddChild(gn);
 
@@ -137,12 +140,14 @@ namespace vEngine
         }
         GameNodeSharedPtr Scene::HandleNode(const aiNode* node, const aiScene* scene)
         {
-            auto game_node = TransformNode::Create();
+            GameNodeDescription desc;
+            desc.type = GameNodeType::Transform;
+            auto game_node = GameNodeFactory::Create(desc);
             // parent->AddChild(game_node);
 
             for (uint32_t mid = 0; mid < node->mNumMeshes; ++mid)
             {
-                auto mesh_node = TransformNode::Create();
+                auto mesh_node = GameNodeFactory::Create(desc);
                 // scene_meshes_ contains same mesh data as they are in aiScene
                 auto ai_mesh = scene->mMeshes[mid];
 
