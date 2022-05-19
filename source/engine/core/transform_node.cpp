@@ -23,5 +23,10 @@ namespace vEngine
             auto t = std::dynamic_pointer_cast<TransformComponent>(component);
             if (t != nullptr) this->transform_ = t;
         }
+        void TransformNode::DetachComponent(const GameNodeSharedPtr component)
+        {
+            GameNode::DetachComponent(component);
+            this->transform_ = nullptr;
+        }
     }  // namespace Core
 }  // namespace vEngine

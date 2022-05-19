@@ -39,6 +39,7 @@ namespace vEngine
                 }
                 
                 virtual void AttachComponent(const GameNodeSharedPtr component) override;
+                virtual void DetachComponent(const GameNodeSharedPtr component) override;
 
             protected:
                 TransformComponentSharedPtr transform_;
