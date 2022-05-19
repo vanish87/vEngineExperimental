@@ -14,6 +14,7 @@
 #include <VENGINE_API.hpp>
 #include <memory>
 #include <vengine/core/game_node.hpp>
+#include <vengine/core/game_object_factory.hpp>
 #include <vengine/core/icomponent.hpp>
 
 /// A brief namespace description.
@@ -45,13 +46,14 @@ namespace vEngine
             public:
                 std::shared_ptr<T> GameObject()
                 {
-                    if (this->game_object_ == nullptr) this->game_object_ = std::make_shared<T>();
+                    GameObjectDescription desc;
+                    if (this->game_object_ == nullptr) this->game_object_ = GameObjectFactory::Create<T>(desc);
                     return this->game_object_;
                 }
 
                 void Reset(std::shared_ptr<T> new_go)
                 {
-                    if (this->game_object_ != nullptr) this->game_object_.reset();
+                    // if (this->game_object_ != nullptr) this->game_object_.reset();
                     this->game_object_ = new_go;
                 }
 
