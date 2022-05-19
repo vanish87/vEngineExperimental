@@ -52,13 +52,13 @@ namespace vEngine
         class GameNodeFactory
         {
             public:
-                template <typename T>
-                static std::shared_ptr<T> Create(const ComponentDescription& desc)
+                template <typename T, class... Args>
+                static std::shared_ptr<T> Create(const ComponentDescription& desc, Args&&... args)
                 {
                     UNUSED_PARAMETER(desc);
 
                     static_assert(std::is_base_of<IComponent, T>::value, "T must derived from GameObject");
-                    auto gn = std::make_shared<T>();
+                    auto gn = std::make_shared<T>(std::forward<Args>(args)...);
                     auto com = std::dynamic_pointer_cast<IComponent>(gn);
                     com->OnInit();
                     return gn;

@@ -151,11 +151,11 @@ namespace vEngine
                 // scene_meshes_ contains same mesh data as they are in aiScene
                 auto ai_mesh = scene->mMeshes[mid];
 
+                ComponentDescription cdesc;
                 auto mesh = this->scene_meshes_[mid];
-                auto mesh_component = std::make_shared<MeshComponent>(mesh);
+                auto mesh_component = GameNodeFactory::Create<MeshComponent>(cdesc, mesh);
                 mesh_node->AttachComponent(mesh_component);
 
-                ComponentDescription cdesc;
                 auto mesh_renderer = GameNodeFactory::Create<MeshRendererComponent>(cdesc);
                 mesh_node->AttachComponent(mesh_renderer);
 
