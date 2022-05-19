@@ -66,7 +66,7 @@ namespace vEngine
             UNUSED_PARAMETER(scene);
             ComponentDescription desc;
             auto camera = GameNodeFactory::Create<CameraComponent>(desc);
-            camera->game_object_->target = Context::GetInstance().GetRenderEngine().back_buffer_;
+            camera->GameObject()->target = Context::GetInstance().GetRenderEngine().back_buffer_;
             this->scene_cameras_.emplace_back(camera);
 
             GameNodeDescription gndesc;
@@ -154,11 +154,13 @@ namespace vEngine
                 auto mesh = this->scene_meshes_[mid];
                 auto mesh_component = std::make_shared<MeshComponent>(mesh);
                 mesh_node->AttachComponent(mesh_component);
-                auto mesh_renderer = std::make_shared<MeshRendererComponent>();
+
+                ComponentDescription cdesc;
+                auto mesh_renderer = GameNodeFactory::Create<MeshRendererComponent>(cdesc);
                 mesh_node->AttachComponent(mesh_renderer);
 
                 auto mat = this->scene_materials_[ai_mesh->mMaterialIndex];
-                mesh_renderer->game_object_->material_ = mat;
+                mesh_renderer->GameObject()->material_ = mat;
 
                 // auto s = 2.0f;
                 // mesh_node->Transform()->Scale() = float3(s, s, s);
@@ -204,7 +206,7 @@ namespace vEngine
             {
                 c->OnBeginCamera();
 
-                auto cam = c->game_object_;
+                auto cam = c->GameObject();
                 auto frameBuffer = cam->target;
                 auto& re = Context::GetInstance().GetRenderEngine();
                 re.Bind(frameBuffer);
@@ -221,9 +223,9 @@ namespace vEngine
                     n->OnUpdate();
 
                     n->OnBeginRender();
-                    if (n->game_object_ != nullptr)
+                    if (n->GameObject() != nullptr)
                     {
-                        n->game_object_->Render();
+                        n->GameObject()->Render();
                     }
                     // Render other renderers(transparent, particle etc.) if possible
                     return true;
@@ -239,10 +241,10 @@ namespace vEngine
             auto gn = std::make_shared<GameNode>();
 
             auto mrc = std::make_shared<Rendering::MeshRendererComponent>();
-            mrc->game_object_->material_ = mat;
+            mrc->GameObject()->material_ = mat;
             gn->AttachComponent(mrc);
             auto mc = std::make_shared<Rendering::MeshComponent>();
-            mc->game_object_->Load("bunny.obj");
+            mc->GameObject()->Load("bunny.obj");
             gn->AttachComponent(mc);
 
             // auto s = 2.0f;
@@ -254,7 +256,7 @@ namespace vEngine
             this->AddToSceneNode(gn);
 
             auto camera = std::make_shared<CameraComponent>();
-            camera->game_object_->target = Context::GetInstance().GetRenderEngine().back_buffer_;
+            camera->GameObject()->target = Context::GetInstance().GetRenderEngine().back_buffer_;
             this->AddToSceneNode(camera);
         }
         void Scene::AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node /*= nullptr*/)

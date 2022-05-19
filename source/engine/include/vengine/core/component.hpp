@@ -28,19 +28,37 @@ namespace vEngine
         template <typename T>
         class VENGINE_API Component : public GameNode, public IComponent
         {
-            static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
+                static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
+
             public:
                 /// \brief brief constructor description.
-                Component()
+                Component(){};
+                virtual ~Component(){};
+
+                virtual void OnInit() override
                 {
                     // PRINT("Created "<< typeid(T).name() << " from component");
                     this->name_ = std::string("Component ") + typeid(T).name();
-                    this->game_object_ = std::make_shared<T>();
-                };
-                virtual ~Component(){};
+                    // this->game_object_ = std::make_shared<T>();
+                }
 
             public:
+                std::shared_ptr<T> GameObject()
+                {
+                    if (this->game_object_ == nullptr) this->game_object_ = std::make_shared<T>();
+                    return this->game_object_;
+                }
+
+                void Reset(std::shared_ptr<T> new_go)
+                {
+                    if (this->game_object_ != nullptr) this->game_object_.reset();
+                    this->game_object_ = new_go;
+                }
+
+            private:
                 std::shared_ptr<T> game_object_;
+
+            public:
                 virtual GameNodeSharedPtr Owner() override
                 {
                     return this->Parent().lock();

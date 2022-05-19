@@ -37,8 +37,8 @@ namespace vEngine
                 {
                     auto tgn = std::make_shared<TransformNode>();
                     ComponentDescription cdesc;
-                    tgn->transform_ = Create<TransformComponent>(cdesc);
-                    tgn->AttachComponent(tgn->transform_);
+                    auto t = Create<TransformComponent>(cdesc);
+                    tgn->AttachComponent(t);
                     return tgn;
                 }
                 break;

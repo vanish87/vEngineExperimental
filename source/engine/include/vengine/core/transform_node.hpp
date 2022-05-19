@@ -35,10 +35,12 @@ namespace vEngine
 
                 TransformSharedPtr Transform()
                 {
-                    return this->transform_->game_object_;
+                    return this->transform_->GameObject();
                 }
+                
+                virtual void AttachComponent(const GameNodeSharedPtr component) override;
 
-            public:
+            protected:
                 TransformComponentSharedPtr transform_;
         };
     }  // namespace Core

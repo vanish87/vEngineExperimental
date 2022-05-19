@@ -41,7 +41,7 @@ namespace vEngine
                 {
                     vEngineObjectConstantBuffer cb;
                     auto trans = std::dynamic_pointer_cast<TransformNode>(this->Owner());
-                    cb.local_to_world_matrix = trans->transform_->game_object_->LocalToWorldTransform();
+                    cb.local_to_world_matrix = trans->Transform()->LocalToWorldTransform();
                     // cb.local_to_world_matrix = this->Transform()->LocalToWorldTransform();
                     // Math::Translate(cb.local_to_world_matrix, 0, 0, 1);
                     // cb.local_to_world_matrix[0][0] = 0.1f;
@@ -66,10 +66,10 @@ namespace vEngine
                 {
                     //Update local to world matrix for current game node
                     // PRINT("MeshRendererComponent Update");
-                    if(this->game_object_->renderable_ == nullptr)
+                    if(this->GameObject()->renderable_ == nullptr)
                     {
                         auto meshComponent = this->Owner()->FirstOf<MeshComponent>();
-                        this->game_object_->renderable_ = meshComponent->game_object_;
+                        this->GameObject()->renderable_ = meshComponent->GameObject();
                     }
                 };
 

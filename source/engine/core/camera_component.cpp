@@ -42,12 +42,12 @@ namespace vEngine
         }
         void CameraComponent::OnBeginCamera()
         {
-            auto cam = this->game_object_;
+            auto cam = this->GameObject();
             vEngineCameraConstantBuffer cb;
             cb.camera_pos = float4(0, 0, 100, 1);
 
             auto trans = std::dynamic_pointer_cast<TransformNode>(this->Owner());
-            cb.view_matrix = trans->transform_->game_object_->LocalToWorldTransform();
+            cb.view_matrix = trans->Transform()->LocalToWorldTransform();
             // Math::Translate(cb.view_matrix, 0, 0, 100);
             // cb.view_matrix = Math::Transpose(cb.view_matrix);
             cb.proj_matrix = cam->ProjectionMatrix();

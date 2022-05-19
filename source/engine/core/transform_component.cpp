@@ -29,11 +29,11 @@ namespace vEngine
                 auto parent_transform = std::dynamic_pointer_cast<TransformNode>(parent);
                 if (parent_transform != nullptr)
                 {
-                    this->game_object_->UpdateLocalToWorld(parent_transform->Transform());
+                    this->GameObject()->UpdateLocalToWorld(parent_transform->Transform());
                 }
                 else
                 {
-                    this->game_object_->UpdateLocalToWorld();
+                    this->GameObject()->UpdateLocalToWorld();
                     // PRINT_AND_BREAK("parent is not a transform node");
                 }
             }

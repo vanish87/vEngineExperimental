@@ -42,11 +42,11 @@ namespace vEngine
             public:
                 std::string name_;
 
-                void AddChild(const GameNodeSharedPtr game_node);
-                void RemoveChild(const GameNodeSharedPtr game_node);
+                virtual void AddChild(const GameNodeSharedPtr game_node);
+                virtual void RemoveChild(const GameNodeSharedPtr game_node);
 
-                void AttachComponent(const GameNodeSharedPtr component);
-                void DetachComponent(const GameNodeSharedPtr component);
+                virtual void AttachComponent(const GameNodeSharedPtr component);
+                virtual void DetachComponent(const GameNodeSharedPtr component);
 
                 // const float4x4 LocalTransform()
                 // {
