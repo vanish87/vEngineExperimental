@@ -62,7 +62,7 @@ namespace vEngine
             // trans->game_object_->Translate() = float3(0, 0, 0);
             // this->AttachComponent(trans);
 
-            auto s = 2.0f;
+            auto s = 1.5f;
             auto root_transform = std::dynamic_pointer_cast<TransformNode>(root);
             root_transform->Transform()->Scale() = float3(s, s, s);
             root_transform->Transform()->Translate() = float3(0.2f, 0, 1);
