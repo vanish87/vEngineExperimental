@@ -31,6 +31,7 @@ namespace vEngine
                 D3D11Texture(ComPtr<ID3D11Texture2D> backBuffer);
 
                 ComPtr<ID3D11RenderTargetView> AsRTV();
+                ComPtr<ID3D11ShaderResourceView> AsSRV();
                 ComPtr<ID3D11DepthStencilView> AsDSV();
 
                 /// class variable description
@@ -45,6 +46,7 @@ namespace vEngine
             private:
                 ComPtr<ID3D11Texture2D> tex2D_;
                 ComPtr<ID3D11RenderTargetView> rt_view_;
+                ComPtr<ID3D11ShaderResourceView> sr_view_;
                 ComPtr<ID3D11DepthStencilView> ds_view_;
         };
     }  // namespace Rendering
