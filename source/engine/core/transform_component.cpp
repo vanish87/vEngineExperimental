@@ -23,23 +23,15 @@ namespace vEngine
         void TransformComponent::OnUpdate()
         {
             auto current = this->Owner();
-            auto parent = current->Parent().lock();
+            auto parent = std::dynamic_pointer_cast<TransformNode>(current->Parent().lock());
             if (parent != nullptr)
             {
-                auto parent_transform = std::dynamic_pointer_cast<TransformNode>(parent);
-                if (parent_transform != nullptr)
-                {
-                    this->GameObject()->UpdateLocalToWorld(parent_transform->Transform());
-                }
-                else
-                {
-                    this->GameObject()->UpdateLocalToWorld();
-                    // PRINT_AND_BREAK("parent is not a transform node");
-                }
+                this->GameObject()->UpdateLocalToWorld(parent->Transform());
             }
             else
             {
-                PRINT_AND_BREAK("parent is null");
+                // PRINT_AND_BREAK("parent is null");
+                this->GameObject()->UpdateLocalToWorld();
             }
         }
     }  // namespace Core
