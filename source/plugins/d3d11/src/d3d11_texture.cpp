@@ -26,7 +26,7 @@ namespace vEngine
             auto re = &Core::Context::GetInstance().GetRenderEngine();
             auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
             auto device = d3d_re->Device();
-            D3D11_TEXTURE2D_DESC desc;
+            // D3D11_TEXTURE2D_DESC desc;
             // desc.format =D3D11RenderEngine::D3DFormatToDataFormat()
             // device->CreateTexture2D();
         }
@@ -50,7 +50,7 @@ namespace vEngine
                 auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
                 auto device = d3d_re->Device();
 
-                D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+                // D3D11_SHADER_RESOURCE_VIEW_DESC desc;
                 // desc.Format = this->descriptor_.format;
                 // desc.ViewDimension = this->descriptor_.dimension;
 
