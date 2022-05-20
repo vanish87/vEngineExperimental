@@ -58,6 +58,7 @@ namespace vEngine
                 Mesh();
                 virtual ~Mesh();
                 virtual bool Load() override;
+                virtual ResourceState CurrentState() override;
                 void Load(const std::string file_name);
                 bool HandleNode(const aiNode* node, const aiScene* scene);
                 void HandleMeshNode(const aiMesh* mesh, const aiScene* scene);

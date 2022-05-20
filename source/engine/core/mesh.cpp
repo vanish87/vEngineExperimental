@@ -25,7 +25,7 @@ namespace vEngine
         {
             PRINT("mesh object created");
         }
-        Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices) 
+        Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices)
         {
             this->vertex_data_.clear();
             this->index_data_.clear();
@@ -56,6 +56,10 @@ namespace vEngine
             //     UNUSED_PARAMETER(c);
             //     PRINT(this->file_name_ << " Resource loaded");
             // });
+        }
+        ResourceState Mesh::CurrentState()
+        {
+            return ResourceState::Unknown;
         }
         bool Mesh::Load()
         {

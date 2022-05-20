@@ -30,12 +30,19 @@ namespace vEngine
         {
             this->file_name_ = file_name;
             this->name_ = file_name;
+            this->state_ = ResourceState::Unknown;
             // this->root_ = std::make_shared<GameNode>();
+        }
+
+        ResourceState Scene::CurrentState()
+        {
+            return this->state_;
         }
 
         bool Scene::Load()
         {
             // this->AddTestNode();
+            this->state_ = ResourceState::Loading;
 
             Assimp::Importer importer;
             auto scene = importer.ReadFile(this->file_name_, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
@@ -66,6 +73,8 @@ namespace vEngine
                     comp->SetEnable(true);
                     return true;
                 });
+
+            this->state_ = ResourceState::Loaded;
             return true;
         }
         void Scene::CreateCameras(const aiScene* scene)

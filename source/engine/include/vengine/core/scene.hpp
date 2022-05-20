@@ -31,14 +31,15 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Scene : public GameNode//, public IResource
+        class Scene : public GameNode, public IResource
         {
             public:
                 /// \brief brief constructor description.
                 Scene(const std::string file_name);
 
-                // bool Load() override;
-                bool Load();
+                bool Load() override;
+                ResourceState CurrentState() override;
+
 				void Update();
 				void Flush();
 
@@ -63,8 +64,8 @@ namespace vEngine
                 GameNodeSharedPtr MakeTransformNode();
 
             private:
-				// GameNodeSharedPtr root_;
-				std::string file_name_;
+                ResourceState state_;
+                std::string file_name_;
 
                 std::vector<CameraComponentSharedPtr> scene_cameras_;
                 std::vector<LightComponentSharedPtr> scene_lights_;
