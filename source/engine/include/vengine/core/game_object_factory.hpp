@@ -48,8 +48,6 @@ namespace vEngine
 
                     static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
                     auto gn = std::make_shared<T>(std::forward<Args>(args)...);
-                    // auto com = std::dynamic_pointer_cast<IComponent>(gn);
-                    // com->OnInit();
                     return gn;
                 }
 

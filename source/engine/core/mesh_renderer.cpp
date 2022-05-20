@@ -40,7 +40,7 @@ namespace vEngine
                 // PRINT("MeshRenderer Call re.Render(vertex, index)");
                 re.Render(mesh->vertex_buffer_, mesh->index_buffer_);
 
-                re.PrintInfo();
+                // re.PrintInfo();
             }
             else
             {
