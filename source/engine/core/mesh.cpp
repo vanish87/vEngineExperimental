@@ -25,7 +25,7 @@ namespace vEngine
         {
             PRINT("mesh object created");
         }
-        Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices) 
+        Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices)
         {
             this->vertex_data_.clear();
             this->index_data_.clear();
@@ -48,13 +48,18 @@ namespace vEngine
         {
             // PRINT("Load mesh from file " + file_name);
             this->file_name_ = file_name;
+            PRINT_AND_BREAK("Not implemented");
 
-            ResourceLoader::GetInstance().LoadAsync(shared_from_this(),
-            [&](IResourceSharedPtr c)
-            {
-                UNUSED_PARAMETER(c);
-                PRINT(this->file_name_ << " Resource loaded");
-            });
+            // ResourceLoader::GetInstance().LoadAsync(shared_from_this(),
+            // [&](IResourceSharedPtr c)
+            // {
+            //     UNUSED_PARAMETER(c);
+            //     PRINT(this->file_name_ << " Resource loaded");
+            // });
+        }
+        ResourceState Mesh::CurrentState()
+        {
+            return ResourceState::Unknown;
         }
         bool Mesh::Load()
         {
@@ -152,11 +157,11 @@ namespace vEngine
                 GraphicsBufferDescriptor desc;
                 desc.type = GraphicsBufferType::GBT_Vertex;
                 desc.usage = GraphicsBufferUsage::GBU_GPU_Read_Only;
-                desc.offset = 0;
-                desc.stride = sizeof(Vertex);
-                desc.count = this->vertex_data_.size();
-                desc.total_size = desc.count * desc.stride;
-                desc.data = this->vertex_data_.data();
+                desc.resource.offset = 0;
+                desc.resource.stride = sizeof(Vertex);
+                desc.resource.count = this->vertex_data_.size();
+                desc.resource.total_size = desc.resource.count * desc.resource.stride;
+                desc.resource.data = this->vertex_data_.data();
 
                 desc.layout.elements_.push_back(ElementLayout::Element("POSITION", DataFormat::DF_RGBFloat));
                 desc.layout.elements_.push_back(ElementLayout::Element("NORMAL", DataFormat::DF_RGBFloat));
@@ -173,11 +178,11 @@ namespace vEngine
                 GraphicsBufferDescriptor desc;
                 desc.type = GraphicsBufferType::GBT_Index;
                 desc.usage = GraphicsBufferUsage::GBU_GPU_Read_Only;
-                desc.offset = 0;
-                desc.stride = sizeof(uint32_t);
-                desc.count = this->index_data_.size();
-                desc.total_size = desc.count * desc.stride;
-                desc.data = this->index_data_.data();
+                desc.resource.offset = 0;
+                desc.resource.stride = sizeof(uint32_t);
+                desc.resource.count = this->index_data_.size();
+                desc.resource.total_size = desc.resource.count * desc.resource.stride;
+                desc.resource.data = this->index_data_.data();
                 this->index_buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
             }
         }

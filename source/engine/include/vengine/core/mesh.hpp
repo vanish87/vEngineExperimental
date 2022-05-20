@@ -16,7 +16,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
 #include <vengine/core/iresource.hpp>
@@ -58,6 +58,7 @@ namespace vEngine
                 Mesh();
                 virtual ~Mesh();
                 virtual bool Load() override;
+                virtual ResourceState CurrentState() override;
                 void Load(const std::string file_name);
                 bool HandleNode(const aiNode* node, const aiScene* scene);
                 void HandleMeshNode(const aiMesh* mesh, const aiScene* scene);

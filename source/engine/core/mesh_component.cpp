@@ -21,8 +21,7 @@ namespace vEngine
         MeshComponent::MeshComponent() {}
         MeshComponent::MeshComponent(const MeshSharedPtr mesh)
         {
-            this->game_object_.reset();
-            this->game_object_ = mesh;
+            this->Reset(mesh);
         }
     }  // namespace Core
 

@@ -26,6 +26,8 @@ namespace vEngine
             auto re = &Core::Context::GetInstance().GetRenderEngine();
             auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
             auto device = d3d_re->Device();
+            D3D11_TEXTURE2D_DESC desc;
+            // desc.format =D3D11RenderEngine::D3DFormatToDataFormat()
             // device->CreateTexture2D();
         }
         D3D11Texture::D3D11Texture(ComPtr<ID3D11Texture2D> backBuffer) : Texture(TextureDescriptor::Default())
@@ -40,6 +42,22 @@ namespace vEngine
             this->tex2D_ = backBuffer;
         }
 
+        ComPtr<ID3D11ShaderResourceView> D3D11Texture::AsSRV()
+        {
+            if (this->sr_view_ == nullptr)
+            {
+                auto re = &Core::Context::GetInstance().GetRenderEngine();
+                auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
+                auto device = d3d_re->Device();
+
+                D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+                // desc.Format = this->descriptor_.format;
+                // desc.ViewDimension = this->descriptor_.dimension;
+
+                device->CreateShaderResourceView(this->tex2D_.Get(), nullptr, this->sr_view_.GetAddressOf());
+            }
+            return this->sr_view_;
+        }
         ComPtr<ID3D11RenderTargetView> D3D11Texture::AsRTV()
         {
             if (this->rt_view_ == nullptr)

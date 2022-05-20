@@ -38,6 +38,8 @@ namespace vEngine
                 Scene(const std::string file_name);
 
                 bool Load() override;
+                ResourceState CurrentState() override;
+
 				void Update();
 				void Flush();
 
@@ -54,14 +56,16 @@ namespace vEngine
                 void AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node = nullptr);
                 void AddTestNode();
 
-                void HandleNode(const aiNode* node, const aiScene* scene, const GameNodeSharedPtr parent);
+                GameNodeSharedPtr HandleNode(const aiNode* node, const aiScene* scene);
                 void CreateMeshes(const aiScene* scene);
                 void CreateMaterials(const aiScene* scene);
                 void CreateCameras(const aiScene* scene);
 
+                GameNodeSharedPtr MakeTransformNode();
+
             private:
-				GameNodeSharedPtr root_;
-				std::string file_name_;
+                ResourceState state_;
+                std::string file_name_;
 
                 std::vector<CameraComponentSharedPtr> scene_cameras_;
                 std::vector<LightComponentSharedPtr> scene_lights_;
