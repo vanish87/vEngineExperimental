@@ -9,13 +9,14 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/core/camera_component.hpp>
+#include <vengine/core/game_node_factory.hpp>
 #include <vengine/core/material.hpp>
 #include <vengine/core/mesh.hpp>
 #include <vengine/core/mesh_renderer_component.hpp>
 #include <vengine/core/resource_loader.hpp>
 #include <vengine/core/scene.hpp>
 #include <vengine/core/transform_component.hpp>
-#include <vengine/core/game_node_factory.hpp>
+
 // #include <vengine/rendering/render_engine.hpp>
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -50,7 +51,6 @@ namespace vEngine
             // root->name_ = "SceneRoot";
             // this->AddChild(root);
 
-
             // auto trans = std::make_shared<TransformComponent>();
             // trans->game_object_->Translate() = float3(0, 0, 0);
             // this->AttachComponent(trans);
@@ -59,6 +59,13 @@ namespace vEngine
             auto root_transform = std::dynamic_pointer_cast<TransformNode>(root);
             root_transform->Transform()->Scale() = float3(s, s, s);
             root_transform->Transform()->Translate() = float3(0.2f, 0, 1);
+
+            this->TraverseAllChildren<IComponent>(
+                [&](IComponentSharedPtr comp)
+                {
+                    comp->SetEnable(true);
+                    return true;
+                });
             return true;
         }
         void Scene::CreateCameras(const aiScene* scene)

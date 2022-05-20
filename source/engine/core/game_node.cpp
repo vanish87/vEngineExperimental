@@ -21,10 +21,9 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        GameNode::GameNode() //:   parent_{nullptr}
+        GameNode::GameNode()  //:   parent_{nullptr}
         {
             this->name_ = "Raw GameNode";
-
         }
         GameNode::~GameNode() {}
 

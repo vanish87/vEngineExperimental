@@ -59,8 +59,6 @@ namespace vEngine
 
                     static_assert(std::is_base_of<IComponent, T>::value, "T must derived from IComponent");
                     auto gn = std::make_shared<T>(std::forward<Args>(args)...);
-                    // auto com = std::dynamic_pointer_cast<IComponent>(gn);
-                    // com->OnInit();
                     return gn;
                 }
 

@@ -20,6 +20,8 @@ namespace vEngine
 
         public:
             virtual GameNodeSharedPtr Owner() = 0;
+            virtual bool Enabled() const = 0;
+            virtual void SetEnable(const bool enable) = 0;
 
             virtual void OnInit(){};
             virtual void OnDeinit(){};

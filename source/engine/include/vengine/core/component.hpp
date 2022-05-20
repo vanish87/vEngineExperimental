@@ -33,7 +33,7 @@ namespace vEngine
 
             public:
                 /// \brief brief constructor description.
-                Component(){};
+                Component() : enabled_{false} {};
                 virtual ~Component(){};
 
                 virtual void OnInit() override
@@ -41,6 +41,16 @@ namespace vEngine
                     // PRINT("Created "<< typeid(T).name() << " from component");
                     this->name_ = std::string("Component ") + typeid(T).name();
                     // this->game_object_ = std::make_shared<T>();
+                }
+                virtual bool Enabled() const override
+                {
+                    return this->enabled_;
+                }
+                virtual void SetEnable(const bool enable) override
+                {
+                    if(enable && !this->enabled_) this->OnEnable();
+                    if(!enable && this->enabled_) this->OnDisable();
+                    this->enabled_ = enable;
                 }
 
             public:
@@ -59,6 +69,7 @@ namespace vEngine
 
             private:
                 std::shared_ptr<T> game_object_;
+                bool enabled_;
 
             public:
                 virtual GameNodeSharedPtr Owner() override

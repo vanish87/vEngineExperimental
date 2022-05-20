@@ -31,24 +31,28 @@ namespace vEngine
         // }
         GameNodeSharedPtr GameNodeFactory::Create(const GameNodeDescription& desc)
         {
+			GameNodeSharedPtr ret = nullptr;
             switch (desc.type)
             {
                 case GameNodeType::Transform:
                 {
-                    auto tgn = std::make_shared<TransformNode>();
+                    ret = std::make_shared<TransformNode>();
                     ComponentDescription cdesc;
                     auto t = Create<TransformComponent>(cdesc);
-                    tgn->AttachComponent(t);
-                    return tgn;
+                    ret->AttachComponent(t);
                 }
                 break;
 
                 default:
                     break;
             }
-            auto gn = std::make_shared<GameNode>();
+            if (ret == nullptr)
+            {
+                PRINT("Raw GameNode Created");
+                ret = std::make_shared<GameNode>();
+            }
 
-            return gn;
+            return ret;
         }
 
     }  // namespace Core
