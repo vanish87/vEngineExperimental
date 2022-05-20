@@ -10,6 +10,8 @@ project (vengine)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core core_source)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/rendering rendering_source)
 
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/external external_source)
+
 # if(APPLE)
 #     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core/apple apple_sources)
 # endif()
@@ -17,6 +19,7 @@ aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/rendering rendering_source)
 add_library(${PROJECT_NAME} 
     ${core_source}
     ${rendering_source}
+    ${external_source}
     # ${apple_sources}
 )
 add_library(engine::core ALIAS ${PROJECT_NAME})
