@@ -157,11 +157,11 @@ namespace vEngine
                 GraphicsBufferDescriptor desc;
                 desc.type = GraphicsBufferType::GBT_Vertex;
                 desc.usage = GraphicsBufferUsage::GBU_GPU_Read_Only;
-                desc.offset = 0;
-                desc.stride = sizeof(Vertex);
-                desc.count = this->vertex_data_.size();
-                desc.total_size = desc.count * desc.stride;
-                desc.data = this->vertex_data_.data();
+                desc.resource.offset = 0;
+                desc.resource.stride = sizeof(Vertex);
+                desc.resource.count = this->vertex_data_.size();
+                desc.resource.total_size = desc.resource.count * desc.resource.stride;
+                desc.resource.data = this->vertex_data_.data();
 
                 desc.layout.elements_.push_back(ElementLayout::Element("POSITION", DataFormat::DF_RGBFloat));
                 desc.layout.elements_.push_back(ElementLayout::Element("NORMAL", DataFormat::DF_RGBFloat));
@@ -178,11 +178,11 @@ namespace vEngine
                 GraphicsBufferDescriptor desc;
                 desc.type = GraphicsBufferType::GBT_Index;
                 desc.usage = GraphicsBufferUsage::GBU_GPU_Read_Only;
-                desc.offset = 0;
-                desc.stride = sizeof(uint32_t);
-                desc.count = this->index_data_.size();
-                desc.total_size = desc.count * desc.stride;
-                desc.data = this->index_data_.data();
+                desc.resource.offset = 0;
+                desc.resource.stride = sizeof(uint32_t);
+                desc.resource.count = this->index_data_.size();
+                desc.resource.total_size = desc.resource.count * desc.resource.stride;
+                desc.resource.data = this->index_data_.data();
                 this->index_buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
             }
         }

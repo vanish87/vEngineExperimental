@@ -26,7 +26,7 @@ namespace vEngine
 
         }
         GraphicsBuffer::~GraphicsBuffer() {}
-        GPUSubresource GraphicsBuffer::Map()
+        GPUSubResource GraphicsBuffer::Map()
         {
             return this->DoMap();
         }
@@ -34,9 +34,9 @@ namespace vEngine
         {
             this->DoUnmap();
         }
-        GPUSubresource GraphicsBuffer::DoMap()
+        GPUSubResource GraphicsBuffer::DoMap()
         {
-            return GPUSubresource();
+            return GPUSubResource();
         }
         void GraphicsBuffer::DoUnmap() {}
 

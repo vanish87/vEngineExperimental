@@ -54,6 +54,7 @@ namespace vEngine
         struct TextureDescriptor
         {
                 TextureDimension dimension;
+                // int3 size;
                 DataFormat format;
                 TextureUsage usage;
                 // std::vector<std::pair<
@@ -76,6 +77,15 @@ namespace vEngine
                 std::vector<Element> elements_;
                 ElementTopology topology;
         };
+        //https://docs.microsoft.com/en-us/windows/win32/direct3d11/how-to--use-dynamic-resources
+        struct GPUSubResource
+        {
+                uint32_t offset;
+                uint32_t stride;
+                uint64_t count;
+                uint64_t total_size;
+                void* data;
+        };
         struct GraphicsBufferDescriptor
         {
                 GraphicsBufferType type;
@@ -84,18 +94,9 @@ namespace vEngine
                 // DataFormat format;// undefined format for compute buffer
                 // std::vector<std::pair<
 
+                GPUSubResource resource;
                 GraphicsBufferSlot slot;
 
-                uint32_t offset;
-                uint32_t stride;
-                uint64_t count;
-                uint64_t total_size;
-                void* data;
-        };
-        //https://docs.microsoft.com/en-us/windows/win32/direct3d11/how-to--use-dynamic-resources
-        struct GPUSubresource
-        {
-            void* data;
         };
         
         struct FrameBufferDescriptor

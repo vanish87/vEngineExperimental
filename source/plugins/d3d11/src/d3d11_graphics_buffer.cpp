@@ -70,15 +70,15 @@ namespace vEngine
             auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
             auto device = d3d_re->Device();
             D3D11_BUFFER_DESC d3d_desc;
-            d3d_desc.ByteWidth = static_cast<uint32_t>(desc.total_size);
-            d3d_desc.StructureByteStride = desc.stride;
+            d3d_desc.ByteWidth = static_cast<uint32_t>(desc.resource.total_size);
+            d3d_desc.StructureByteStride = desc.resource.stride;
             d3d_desc.Usage = ToD3DUsage(desc.usage);
             d3d_desc.BindFlags = ToD3DBindFlag(desc.type);
             d3d_desc.CPUAccessFlags = ToD3DAccessFlag(desc.usage);
             d3d_desc.MiscFlags = 0;
 
             D3D11_SUBRESOURCE_DATA sub;
-            sub.pSysMem = desc.data;
+            sub.pSysMem = desc.resource.data;
             sub.SysMemPitch = 0;
             sub.SysMemSlicePitch = 0;
 
@@ -89,13 +89,13 @@ namespace vEngine
             }
         }
 
-        GPUSubresource D3D11GraphicsBuffer::DoMap()
+        GPUSubResource D3D11GraphicsBuffer::DoMap()
         {
             auto re = &Core::Context::GetInstance().GetRenderEngine();
             auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
             auto context = d3d_re->DeviceContext();
 
-            GPUSubresource sub;
+            GPUSubResource sub;
             D3D11_MAPPED_SUBRESOURCE data;
 
             auto hr = context->Map(this->buffer_.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &data);
