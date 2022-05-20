@@ -27,13 +27,13 @@ namespace vEngine
             // this->root_ = std::make_shared<GameNode>();
             // this->scene_ = std::make_shared<Scene>("cornell-box.obj");
             this->scene_ = std::make_shared<Scene>("bunny.obj");
-            ResourceLoader::GetInstance().LoadAsync(this->scene_,
-            [&](IResourceSharedPtr c)
-            {
-                UNUSED_PARAMETER(c);
-                PRINT("Resource loaded");
-            });
-            // this->scene_->Load();
+            // ResourceLoader::GetInstance().LoadAsync(this->scene_,
+            // [&](IResourceSharedPtr c)
+            // {
+            //     UNUSED_PARAMETER(c);
+            //     PRINT("Resource loaded");
+            // });
+            this->scene_->Load();
 
         }
         void SceneManager::Deinit() 

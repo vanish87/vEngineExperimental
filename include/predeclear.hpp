@@ -70,9 +70,11 @@ namespace vEngine
         CLASS_AND_SHARED_POINTER(Mesh)
 
         CLASS_AND_SHARED_WEAK_POINTER(GameNode)
+        CLASS_AND_SHARED_POINTER(TransformNode)
         CLASS_AND_SHARED_POINTER(CameraComponent)
         CLASS_AND_SHARED_POINTER(LightComponent)
         CLASS_AND_SHARED_POINTER(MeshComponent)
+        CLASS_AND_SHARED_POINTER(TransformComponent)
 
         CLASS_AND_SHARED_POINTER(Scene)
 
@@ -82,7 +84,7 @@ namespace vEngine
 
         CLASS_AND_SHARED_POINTER(ThreadJob)
 
-        class Transform;
+        CLASS_AND_SHARED_POINTER(Transform)
     }  // namespace Core
     namespace Rendering
     {

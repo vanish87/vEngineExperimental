@@ -13,7 +13,7 @@
 #pragma once
 
 #include <queue>
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 
 #include <vengine/core/iruntime_module.hpp>
 // #include <vengine/core/renderer.hpp>
