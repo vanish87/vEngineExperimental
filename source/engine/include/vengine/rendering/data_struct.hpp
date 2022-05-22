@@ -9,20 +9,21 @@ namespace vEngine
 {
     namespace Rendering
     {
-        enum class GraphicsBufferType
+        enum class GraphicsResourceType
         {
-            GBT_Index,
-            GBT_Vertex,
-            GBT_CBuffer,
+            Index,
+            Vertex,
+            CBuffer,
+            Texture,
         };
 
-        enum class GraphicsBufferUsage
+        enum class GraphicsResourceUsage
         {
             // similar design https://docs.microsoft.com/en-us/windows/win32/api/d3d11/ne-d3d11-d3d11_usage
-            GBU_CPU_GPU_ReadWrite,
-            GPU_CPU_Write_GPU_Read,
-            GBU_GPU_Read_Only,
-            GBU_GPU_ReadWrite,
+            CPU_GPU_ReadWrite,
+            CPU_Write_GPU_Read,
+            GPU_Read_Only,
+            GPU_ReadWrite,
         };
         enum class GraphicsBufferSlot : int16_t
         {
@@ -33,30 +34,23 @@ namespace vEngine
         };
         enum class ElementTopology
         {
-            ET_Undefined,  // for compute buffer or other data buffers that have not topology relations
-            ET_PointList,
-            ET_LineList,
-            ET_TriangleList,
+            Undefined,  // for compute buffer or other data buffers that have not topology relations
+            PointList,
+            LineList,
+            TriangleList,
         };
         enum class TextureDimension
         {
             TD_1D,
             TD_2D,
             TD_3D,
-            TD_Cure,
-
-        };
-        enum class TextureUsage
-        {
-            TU_CPU = 1 << 0,
-            TU_GPU = 1 << 1,
+            TD_Cube,
         };
         struct TextureDescriptor
         {
                 TextureDimension dimension;
                 // int3 size;
                 DataFormat format;
-                TextureUsage usage;
                 // std::vector<std::pair<
 
                 static const TextureDescriptor& Default()
@@ -88,8 +82,8 @@ namespace vEngine
         };
         struct GraphicsBufferDescriptor
         {
-                GraphicsBufferType type;
-                GraphicsBufferUsage usage;
+                GraphicsResourceType type;
+                GraphicsResourceUsage usage;
                 ElementLayout layout;
                 // DataFormat format;// undefined format for compute buffer
                 // std::vector<std::pair<
@@ -103,7 +97,7 @@ namespace vEngine
         {
                 DataFormat colorFormat;
                 DataFormat depthStencilFormat;
-                TextureUsage usage;
+                GraphicsResourceUsage usage;
                 // TextureUsage usage;
                 // std::vector<std::pair<
         };

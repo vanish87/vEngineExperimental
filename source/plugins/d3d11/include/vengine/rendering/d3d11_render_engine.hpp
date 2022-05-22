@@ -34,6 +34,11 @@ namespace vEngine
                 FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override;
                 GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override;
 
+
+                static D3D11_BIND_FLAG ToD3DBindFlag(GraphicsResourceType type);
+                static uint32_t ToD3DAccessFlag(GraphicsResourceUsage usage);
+                static D3D11_USAGE ToD3DUsage(GraphicsResourceUsage usage);
+
                 /// \brief mainly used to create Resource Views(ie. RenderTargetView)
                 /// 
                 /// \return ComPtr<ID3D11Device> 

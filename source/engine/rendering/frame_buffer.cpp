@@ -33,8 +33,8 @@ namespace vEngine
             // this->depthStencilTexture_ =
 
             GraphicsBufferDescriptor cbuffer_desc;
-            cbuffer_desc.type = GraphicsBufferType::GBT_CBuffer;
-            cbuffer_desc.usage = GraphicsBufferUsage::GPU_CPU_Write_GPU_Read;
+            cbuffer_desc.type = GraphicsResourceType::CBuffer;
+            cbuffer_desc.usage = GraphicsResourceUsage::CPU_Write_GPU_Read;
             cbuffer_desc.resource.offset = 0;
             cbuffer_desc.resource.stride = sizeof(vEngineCameraConstantBuffer);
             cbuffer_desc.resource.count = 1;

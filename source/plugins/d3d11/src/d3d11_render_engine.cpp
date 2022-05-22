@@ -18,6 +18,49 @@ namespace vEngine
         using namespace vEngine::Core;
         using namespace vEngine::Math;
 
+        D3D11_BIND_FLAG D3D11RenderEngine::ToD3DBindFlag(GraphicsResourceType type)
+        {
+            switch (type)
+            {
+                case GraphicsResourceType::Index:
+                    return D3D11_BIND_INDEX_BUFFER;
+                case GraphicsResourceType::Vertex:
+                    return D3D11_BIND_VERTEX_BUFFER;
+                case GraphicsResourceType::CBuffer:
+                    return D3D11_BIND_CONSTANT_BUFFER;
+                default:
+                    return D3D11_BIND_UNORDERED_ACCESS;
+            }
+        }
+        uint32_t D3D11RenderEngine::ToD3DAccessFlag(GraphicsResourceUsage usage)
+        {
+            switch (usage)
+            {
+                case GraphicsResourceUsage::CPU_GPU_ReadWrite:
+                    return D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
+                case GraphicsResourceUsage::CPU_Write_GPU_Read:
+                    return D3D11_CPU_ACCESS_WRITE;
+                default:
+                    return 0;
+            }
+        }
+        D3D11_USAGE D3D11RenderEngine::ToD3DUsage(GraphicsResourceUsage usage)
+        {
+            switch (usage)
+            {
+                case GraphicsResourceUsage::CPU_GPU_ReadWrite:
+                    return D3D11_USAGE_STAGING;
+                case GraphicsResourceUsage::CPU_Write_GPU_Read:
+                    return D3D11_USAGE_DYNAMIC;
+                case GraphicsResourceUsage::GPU_Read_Only:
+                    return D3D11_USAGE_IMMUTABLE;
+                case GraphicsResourceUsage::GPU_ReadWrite:  // but can be update by UpdateSubresource
+                    return D3D11_USAGE_DEFAULT;
+                default:
+                    return D3D11_USAGE_DEFAULT;
+            }
+        }
+
         void D3D11RenderEngine::Init()
         {
             // TODO Use IDXGIFactory to check adapters

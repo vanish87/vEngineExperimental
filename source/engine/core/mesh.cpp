@@ -155,8 +155,8 @@ namespace vEngine
             {
                 PRINT("Create mesh vertex Buffer");
                 GraphicsBufferDescriptor desc;
-                desc.type = GraphicsBufferType::GBT_Vertex;
-                desc.usage = GraphicsBufferUsage::GBU_GPU_Read_Only;
+                desc.type = GraphicsResourceType::Vertex;
+                desc.usage = GraphicsResourceUsage::GPU_Read_Only;
                 desc.resource.offset = 0;
                 desc.resource.stride = sizeof(Vertex);
                 desc.resource.count = this->vertex_data_.size();
@@ -167,7 +167,7 @@ namespace vEngine
                 desc.layout.elements_.push_back(ElementLayout::Element("NORMAL", DataFormat::DF_RGBFloat));
                 desc.layout.elements_.push_back(ElementLayout::Element("UV", DataFormat::DF_RGFloat));
                 desc.layout.elements_.push_back(ElementLayout::Element("COLOR", DataFormat::DF_RGBA32));
-                desc.layout.topology = ElementTopology::ET_TriangleList;
+                desc.layout.topology = ElementTopology::TriangleList;
 
                 this->vertex_buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
             }
@@ -176,8 +176,8 @@ namespace vEngine
             {
                 PRINT("Create mesh index Buffer");
                 GraphicsBufferDescriptor desc;
-                desc.type = GraphicsBufferType::GBT_Index;
-                desc.usage = GraphicsBufferUsage::GBU_GPU_Read_Only;
+                desc.type = GraphicsResourceType::Index;
+                desc.usage = GraphicsResourceUsage::GPU_Read_Only;
                 desc.resource.offset = 0;
                 desc.resource.stride = sizeof(uint32_t);
                 desc.resource.count = this->index_data_.size();

@@ -21,8 +21,8 @@ namespace vEngine
         MeshRendererComponent::MeshRendererComponent()
         {
             auto cbuffer_desc = GraphicsBufferDescriptor();
-            cbuffer_desc.type = GraphicsBufferType::GBT_CBuffer;
-            cbuffer_desc.usage = GraphicsBufferUsage::GPU_CPU_Write_GPU_Read;
+            cbuffer_desc.type = GraphicsResourceType::CBuffer;
+            cbuffer_desc.usage = GraphicsResourceUsage::CPU_Write_GPU_Read;
             cbuffer_desc.resource.offset = 0;
             cbuffer_desc.resource.stride = sizeof(vEngineObjectConstantBuffer);
             cbuffer_desc.resource.count = 1;
