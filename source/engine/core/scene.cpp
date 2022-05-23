@@ -127,10 +127,10 @@ namespace vEngine
                         tdesc.depth = 1;
                         tdesc.format = DataFormat::RGBA32;
                         tdesc.dimension = TextureDimension::TD_2D;
-                        tdesc.type = GraphicsResourceType::Texture;
+                        tdesc.type = GraphicsResourceType::TextureR;
                         tdesc.usage = GraphicsResourceUsage::GPU_Read_Only;
                         tdesc.resource.data = out.data();
-                        tdesc.resource.pitch = sizeof(byte) * width;
+                        tdesc.resource.pitch = sizeof(byte) * 4 * width;
                         auto tex = Context::GetInstance().GetRenderEngine().Create(tdesc);
                         this->scene_textures_[file_name] = tex;
                     }

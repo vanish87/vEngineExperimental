@@ -28,9 +28,11 @@ namespace vEngine
                     return D3D11_BIND_VERTEX_BUFFER;
                 case GraphicsResourceType::CBuffer:
                     return D3D11_BIND_CONSTANT_BUFFER;
-                case GraphicsResourceType::Texture:
+                case GraphicsResourceType::TextureR:
+                    return D3D11_BIND_SHADER_RESOURCE;
+                case GraphicsResourceType::TextureRW:
                     return D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
-                case GraphicsResourceType::RenderTarget:
+                case GraphicsResourceType::TextureW:
                     return D3D11_BIND_RENDER_TARGET;
                 default:
                     return D3D11_BIND_UNORDERED_ACCESS;
@@ -44,6 +46,10 @@ namespace vEngine
                     return D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
                 case GraphicsResourceUsage::CPU_Write_GPU_Read:
                     return D3D11_CPU_ACCESS_WRITE;
+                case GraphicsResourceUsage::GPU_Read_Only:
+                    return 0;
+                case GraphicsResourceUsage::GPU_ReadWrite:
+                    return 0;
                 default:
                     return 0;
             }
@@ -180,7 +186,6 @@ namespace vEngine
 
             // draw the vertex buffer to the back buffer
             this->d3d_imm_context_->DrawIndexed((UINT)(i->descriptor_.resource.count), 0, 0);
-
         }
         void D3D11RenderEngine::PrintInfo()
         {

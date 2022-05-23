@@ -46,10 +46,6 @@ namespace vEngine
                     d3d_desc.SampleDesc.Count = 1;
                     d3d_desc.SampleDesc.Quality = 0;
 
-                    d3d_desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-                    d3d_desc.CPUAccessFlags = 0;
-                    d3d_desc.Usage = D3D11_USAGE_DEFAULT;
-
                     D3D11_SUBRESOURCE_DATA init_data;
                     init_data.pSysMem = desc.resource.data;
                     init_data.SysMemPitch = desc.resource.pitch;

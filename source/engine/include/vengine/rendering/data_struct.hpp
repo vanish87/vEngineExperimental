@@ -14,8 +14,9 @@ namespace vEngine
             Index,
             Vertex,
             CBuffer,
-            Texture,// Default set as Shader Resource and Render Target
-            RenderTarget,
+            TextureR,   // Read only texture
+            TextureRW,  // as Shader Resource and Render Target
+            TextureW,   // as Render Target only
         };
 
         enum class GraphicsResourceUsage
@@ -47,12 +48,12 @@ namespace vEngine
             TD_3D,
             TD_Cube,
         };
-        //https://docs.microsoft.com/en-us/windows/win32/direct3d11/how-to--use-dynamic-resources
+        // https://docs.microsoft.com/en-us/windows/win32/direct3d11/how-to--use-dynamic-resources
         struct GPUSubResource
         {
                 uint32_t offset;
                 uint32_t stride;
-                uint32_t pitch;// use for texture, which is the size of one row in texture
+                uint32_t pitch;  // use for texture, which is the size of one row in texture
                 uint64_t count;
                 uint64_t total_size;
                 void* data;
@@ -97,9 +98,8 @@ namespace vEngine
 
                 GPUSubResource resource;
                 GraphicsBufferSlot slot;
-
         };
-        
+
         struct FrameBufferDescriptor
         {
                 DataFormat colorFormat;
@@ -118,9 +118,9 @@ namespace vEngine
 
         struct Shader
         {
-            std::string name;
-            std::vector<char> content;
-            Shader(const std::string name) : name{name} {};
+                std::string name;
+                std::vector<char> content;
+                Shader(const std::string name) : name{name} {};
         };
     }  // namespace Rendering
 
