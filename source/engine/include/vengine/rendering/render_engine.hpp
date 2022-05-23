@@ -60,8 +60,14 @@ namespace vEngine
                 }
                 virtual PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) = 0;
 
-                virtual void OnBeginFrame(){
+                virtual void OnBeginFrame()
+                {
                     // update per frame cbuffer
+                    this->Clear(this->current_frame_buffer_);
+                };
+                virtual void OnEndFrame()
+                {
+
                 };
 
                 virtual void BeginRender(){
@@ -79,6 +85,8 @@ namespace vEngine
                 virtual TextureSharedPtr Create(const TextureDescriptor& desc) = 0;
                 virtual FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) = 0;
                 virtual GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) = 0;
+
+                virtual void Clear(const FrameBufferSharedPtr frame_buffer, const color color = float4(0.0f, 0.2f, 0.4f, 1.0f)) = 0;
 
                 FrameBufferSharedPtr current_frame_buffer_;
                 FrameBufferSharedPtr back_buffer_;

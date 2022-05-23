@@ -1,15 +1,15 @@
 #include <d3dcompiler.h>
-#include <cstring>
 
+#include <cstring>
 #include <vengine/core/application.hpp>
 #include <vengine/core/context.hpp>
 #include <vengine/core/vector.hpp>
 #include <vengine/core/window.hpp>
 #include <vengine/rendering/d3d11_frame_buffer.hpp>
 #include <vengine/rendering/d3d11_graphics_buffer.hpp>
+#include <vengine/rendering/d3d11_pipeline_state.hpp>
 #include <vengine/rendering/d3d11_render_engine.hpp>
 #include <vengine/rendering/d3d11_texture.hpp>
-#include <vengine/rendering/d3d11_pipeline_state.hpp>
 
 namespace vEngine
 {
@@ -18,7 +18,7 @@ namespace vEngine
         using namespace vEngine::Core;
         using namespace vEngine::Math;
 
-        D3D11_BIND_FLAG D3D11RenderEngine::ToD3DBindFlag(GraphicsResourceType type)
+        uint32_t D3D11RenderEngine::ToD3DBindFlag(GraphicsResourceType type)
         {
             switch (type)
             {
@@ -28,6 +28,10 @@ namespace vEngine
                     return D3D11_BIND_VERTEX_BUFFER;
                 case GraphicsResourceType::CBuffer:
                     return D3D11_BIND_CONSTANT_BUFFER;
+                case GraphicsResourceType::Texture:
+                    return D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
+                case GraphicsResourceType::RenderTarget:
+                    return D3D11_BIND_RENDER_TARGET;
                 default:
                     return D3D11_BIND_UNORDERED_ACCESS;
             }
@@ -54,11 +58,34 @@ namespace vEngine
                     return D3D11_USAGE_DYNAMIC;
                 case GraphicsResourceUsage::GPU_Read_Only:
                     return D3D11_USAGE_IMMUTABLE;
-                case GraphicsResourceUsage::GPU_ReadWrite:  // but can be update by UpdateSubresource
+                case GraphicsResourceUsage::GPU_ReadWrite:  // but can be update by UpdateSubResource
                     return D3D11_USAGE_DEFAULT;
                 default:
                     return D3D11_USAGE_DEFAULT;
             }
+        }
+        DXGI_FORMAT D3D11RenderEngine::ToD3DFormat(DataFormat format)
+        {
+            switch (format)
+            {
+                case DataFormat::RGBA32:
+                    return DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
+                default:
+                    break;
+            }
+            return DXGI_FORMAT::DXGI_FORMAT_UNKNOWN;
+        }
+        DataFormat D3D11RenderEngine::D3DFormatToDataFormat(DXGI_FORMAT format)
+        {
+            switch (format)
+            {
+                case DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM:
+                    return DataFormat::RGBA32;
+                default:
+                    break;
+            }
+
+            return DataFormat::Undefined;
         }
 
         void D3D11RenderEngine::Init()
@@ -102,7 +129,6 @@ namespace vEngine
             this->back_buffer_ = std::make_shared<D3D11FrameBuffer>(backbufferTexture, desc);
             // this->Bind(frameBuffer);
 
-
             // Set the viewport
             D3D11_VIEWPORT viewport;
             ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
@@ -114,7 +140,7 @@ namespace vEngine
 
             d3d_imm_context_->RSSetViewports(1, &viewport);
 
-            // this->InitPipline();
+            // this->InitPipeline();
         }
         void D3D11RenderEngine::Update()
         {
@@ -126,7 +152,7 @@ namespace vEngine
         }
         void D3D11RenderEngine::Deinit()
         {
-            // this->DeinitPipline();
+            // this->DeinitPipeline();
 
             this->d3d_device_->Release();
             this->d3d_swap_chain_->Release();
@@ -136,9 +162,9 @@ namespace vEngine
         {
             if (vertice == nullptr || indice == nullptr) return;
 
-            const float bg[4] = {0.0f, 0.2f, 0.4f, 1.0f};
-            auto color = std::dynamic_pointer_cast<D3D11Texture>(this->current_frame_buffer_->GetColor(0));
-            this->d3d_imm_context_->ClearRenderTargetView(color->AsRTV().Get(), bg);
+            // const float bg[4] = {0.0f, 0.2f, 0.4f, 1.0f};
+            // auto color = std::dynamic_pointer_cast<D3D11Texture>(this->current_frame_buffer_->GetColor(0));
+            // this->d3d_imm_context_->ClearRenderTargetView(color->AsRTV().Get(), bg);
             // this->TriangleDraw();
 
             auto v = std::dynamic_pointer_cast<D3D11GraphicsBuffer>(vertice);
@@ -155,7 +181,6 @@ namespace vEngine
             // draw the vertex buffer to the back buffer
             this->d3d_imm_context_->DrawIndexed((UINT)(i->descriptor_.resource.count), 0, 0);
 
-            this->d3d_swap_chain_->Present(0, 0);
         }
         void D3D11RenderEngine::PrintInfo()
         {
@@ -196,7 +221,7 @@ namespace vEngine
                 // // float x, y, z;
                 // float4 color;
         };
-        void D3D11RenderEngine::InitPipline()
+        void D3D11RenderEngine::InitPipeline()
         {
             auto hr = D3DCompile(shader.c_str(), shader.length(), nullptr, nullptr, nullptr, "vs_main", "vs_5_0", 0, 0, &vs_blob, nullptr);
             CHECK_ASSERT(hr == S_OK);
@@ -271,7 +296,7 @@ namespace vEngine
             // copy the vertices into the buffer
             D3D11_MAPPED_SUBRESOURCE ms;
             this->d3d_imm_context_->Map(this->vertex_buffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);  // map the buffer
-            std::memcpy(ms.pData, OurVertices, varr_size);                                                    // copy the data
+            std::memcpy(ms.pData, OurVertices, varr_size);                                               // copy the data
             this->d3d_imm_context_->Unmap(this->vertex_buffer, NULL);                                    // unmap the buffer
         }
         void D3D11RenderEngine::TriangleDraw()
@@ -287,7 +312,7 @@ namespace vEngine
             // draw the vertex buffer to the back buffer
             this->d3d_imm_context_->Draw(3, 0);
         }
-        void D3D11RenderEngine::DeinitPipline()
+        void D3D11RenderEngine::DeinitPipeline()
         {
             this->vs_blob->Release();
             this->ps_blob->Release();
@@ -328,6 +353,17 @@ namespace vEngine
             auto d3d_gb = std::dynamic_pointer_cast<D3D11GraphicsBuffer>(graphics_buffer);
             auto desc = d3d_gb->descriptor_;
             this->d3d_imm_context_->VSSetConstantBuffers(static_cast<uint32_t>(desc.slot), 1, d3d_gb->buffer_.GetAddressOf());
+        }
+        void D3D11RenderEngine::Clear(const FrameBufferSharedPtr frame_buffer, const color color /*= float4(0.0f, 0.2f, 0.4f, 1.0f)*/)
+        {
+            // const float bg[4] = {0.0f, 0.2f, 0.4f, 1.0f};
+            auto color_buffer = std::dynamic_pointer_cast<D3D11Texture>(this->current_frame_buffer_->GetColor(0));
+            this->d3d_imm_context_->ClearRenderTargetView(color_buffer->AsRTV().Get(), color.data());
+        }
+
+        void D3D11RenderEngine::OnEndFrame()
+        {
+            this->d3d_swap_chain_->Present(0, 0);
         }
 
         PipelineStateSharedPtr D3D11RenderEngine::OnRegister(const PipelineStateDescriptor& pipeline_desc)

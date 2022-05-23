@@ -52,15 +52,20 @@ namespace vEngine
                     UNUSED_PARAMETER(desc);
                     return nullptr;
                 }
-                FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc)
+                FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override
                 {
                     UNUSED_PARAMETER(desc);
                     return nullptr;
                 }
-                GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc)
+                GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override
                 {
                     UNUSED_PARAMETER(desc);
                     return nullptr;
+                }
+                void Clear(const FrameBufferSharedPtr frame_buffer, const color color) override
+                {
+                    UNUSED_PARAMETER(frame_buffer);
+                    UNUSED_PARAMETER(color);
                 }
         };
     }  // namespace Rendering
