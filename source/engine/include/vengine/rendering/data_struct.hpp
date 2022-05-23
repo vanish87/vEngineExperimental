@@ -60,9 +60,9 @@ namespace vEngine
         struct TextureDescriptor
         {
                 TextureDimension dimension;
-                uint16_t width;
-                uint16_t height;
-                uint16_t depth;
+                uint32_t width;
+                uint32_t height;
+                uint32_t depth;
                 DataFormat format;
                 GraphicsResourceType type;
                 GraphicsResourceUsage usage;

@@ -8,7 +8,6 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#include <external/lodepng.h>
 
 #include <vengine/core/resource_loader.hpp>
 #include <vengine/core/scene.hpp>

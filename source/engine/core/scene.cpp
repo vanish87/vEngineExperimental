@@ -7,6 +7,7 @@
 /// \author author_name
 /// \version version_number
 /// \date xxxx-xx-xxx
+#include <external/lodepng.h>
 
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/game_node_factory.hpp>
@@ -48,6 +49,7 @@ namespace vEngine
             auto scene = importer.ReadFile(this->file_name_, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
             this->CreateMeshes(scene);
             this->CreateMaterials(scene);
+            this->CreateTextures(scene);
             this->CreateCameras(scene);
 
             auto root = this->HandleNode(scene->mRootNode, scene);
@@ -99,12 +101,40 @@ namespace vEngine
         {
             for (uint32_t mid = 0; mid < scene->mNumMaterials; ++mid)
             {
-                // auto mat = scene->mMaterials[mid];
+                auto ai_mat = scene->mMaterials[mid];
                 auto vs_file = "shader/vs.hlsl";
                 auto ps_file = "shader/ps.hlsl";
                 auto mat = std::make_shared<Material>(vs_file, ps_file);
                 mat->Load();
                 this->scene_materials_.emplace_back(mat);
+                aiString szPath;
+                if (AI_SUCCESS == ai_mat->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), szPath))
+                {
+
+                    auto file_name = "sponza/" + std::string(szPath.C_Str());
+                    if(this->scene_textures_.find(file_name) == this->scene_textures_.end())
+                    {
+                        std::vector<byte> out;
+
+                        uint32_t width;
+                        uint32_t height;
+                        auto error = lodepng::decode(out, width, height, file_name);
+                        CHECK_ASSERT(error == 0);
+
+                        TextureDescriptor tdesc;
+                        tdesc.width = width;
+                        tdesc.height = height;
+                        tdesc.depth = 1;
+                        tdesc.format = DataFormat::RGBA32;
+                        tdesc.dimension = TextureDimension::TD_2D;
+                        tdesc.type = GraphicsResourceType::Texture;
+                        tdesc.usage = GraphicsResourceUsage::GPU_Read_Only;
+                        tdesc.resource.data = out.data();
+                        tdesc.resource.pitch = sizeof(byte) * width;
+                        auto tex = Context::GetInstance().GetRenderEngine().Create(tdesc);
+                        this->scene_textures_[file_name] = tex;
+                    }
+                }
             }
             if (this->scene_materials_.size() == 0)
             {
@@ -116,6 +146,22 @@ namespace vEngine
                 this->scene_materials_.emplace_back(mat);
             }
             PRINT("num of materials: " << this->scene_materials_.size());
+        }
+        void Scene::CreateTextures(const aiScene* scene)
+        {
+            for (uint32_t tid = 0; tid < scene->mNumTextures; ++tid)
+            {
+                auto ai_texture = scene->mTextures[tid];
+                UNUSED_PARAMETER(ai_texture);
+                // std::vector<byte> out;
+                // uint32_t width;
+                // uint32_t height;
+                // auto error = lodepng::decode(out, width, height, "sponza/textures/background.png");
+                // CHECK_ASSERT(errno == 0);
+
+                // this->scene_materials_.emplace_back(mat);
+            }
+            PRINT("num of textures: " << this->scene_textures_.size());
         }
         void Scene::CreateMeshes(const aiScene* scene)
         {
