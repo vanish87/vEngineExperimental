@@ -7,13 +7,13 @@ namespace vEngine
     {
         enum class DataFormat
         {
-            DF_Undifiend,
-            DF_RGBA32,
+            Undefined,
+            RGBA32,
 
-            DF_RGFloat,
-            DF_RGBFloat,
-            DF_RGBAFloat,
-            DF_R32Int,
+            RGFloat,
+            RGBFloat,
+            RGBAFloat,
+            R32Int,
         };
     }
 }  // namespace vEngine

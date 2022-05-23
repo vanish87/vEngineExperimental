@@ -14,7 +14,8 @@ namespace vEngine
             Index,
             Vertex,
             CBuffer,
-            Texture,
+            Texture,// Default set as Shader Resource and Render Target
+            RenderTarget,
         };
 
         enum class GraphicsResourceUsage
@@ -46,12 +47,27 @@ namespace vEngine
             TD_3D,
             TD_Cube,
         };
+        //https://docs.microsoft.com/en-us/windows/win32/direct3d11/how-to--use-dynamic-resources
+        struct GPUSubResource
+        {
+                uint32_t offset;
+                uint32_t stride;
+                uint32_t pitch;// use for texture, which is the size of one row in texture
+                uint64_t count;
+                uint64_t total_size;
+                void* data;
+        };
         struct TextureDescriptor
         {
                 TextureDimension dimension;
-                // int3 size;
+                uint16_t width;
+                uint16_t height;
+                uint16_t depth;
                 DataFormat format;
-                // std::vector<std::pair<
+                GraphicsResourceType type;
+                GraphicsResourceUsage usage;
+
+                GPUSubResource resource;
 
                 static const TextureDescriptor& Default()
                 {
@@ -70,15 +86,6 @@ namespace vEngine
 
                 std::vector<Element> elements_;
                 ElementTopology topology;
-        };
-        //https://docs.microsoft.com/en-us/windows/win32/direct3d11/how-to--use-dynamic-resources
-        struct GPUSubResource
-        {
-                uint32_t offset;
-                uint32_t stride;
-                uint64_t count;
-                uint64_t total_size;
-                void* data;
         };
         struct GraphicsBufferDescriptor
         {
