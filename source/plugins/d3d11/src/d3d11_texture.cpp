@@ -26,9 +26,41 @@ namespace vEngine
             auto re = &Core::Context::GetInstance().GetRenderEngine();
             auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
             auto device = d3d_re->Device();
-            // D3D11_TEXTURE2D_DESC desc;
-            // desc.format =D3D11RenderEngine::D3DFormatToDataFormat()
-            // device->CreateTexture2D();
+            switch (desc.dimension)
+            {
+            case TextureDimension::TD_1D: break;
+            case TextureDimension::TD_2D:
+            {
+
+            }
+            break;
+            case TextureDimension::TD_3D:
+            {
+                D3D11_TEXTURE2D_DESC d3d_desc;
+                d3d_desc.Width = desc.width;
+                d3d_desc.Height = desc.height;
+                d3d_desc.Format = D3D11RenderEngine::ToD3DFormat(desc.format);
+                d3d_desc.Usage = D3D11RenderEngine::ToD3DUsage(desc.usage);
+                d3d_desc.CPUAccessFlags = D3D11RenderEngine::ToD3DAccessFlag(desc.usage);
+                d3d_desc.BindFlags = D3D11RenderEngine::ToD3DBindFlag(desc.type);
+
+                D3D11_SUBRESOURCE_DATA init_data;
+                init_data.pSysMem = desc.resource.data;
+                init_data.SysMemPitch = desc.resource.pitch;
+                init_data.SysMemSlicePitch =  0;
+
+                auto hr = device->CreateTexture2D(&d3d_desc, &init_data, this->tex2D_.GetAddressOf());
+                if (FAILED(hr))
+                {
+                    PRINT_AND_BREAK("Cannot create Texture2D");
+                }
+            }
+            break;
+                break;
+            
+            default:
+                break;
+            }
         }
         D3D11Texture::D3D11Texture(ComPtr<ID3D11Texture2D> backBuffer) : Texture(TextureDescriptor::Default())
         {
