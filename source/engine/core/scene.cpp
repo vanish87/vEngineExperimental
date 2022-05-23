@@ -27,10 +27,10 @@ namespace vEngine
     {
         /// constructor detailed defintion,
         /// should be 2 lines
-        Scene::Scene(const std::string file_name) : GameNode()
+        Scene::Scene(const std::string file_path) : GameNode()
         {
-            this->file_name_ = file_name;
-            this->name_ = file_name;
+            this->file_path_ = file_path;
+            this->name_ = file_path;
             this->state_ = ResourceState::Unknown;
             // this->root_ = std::make_shared<GameNode>();
         }
@@ -46,7 +46,7 @@ namespace vEngine
             this->state_ = ResourceState::Loading;
 
             Assimp::Importer importer;
-            auto scene = importer.ReadFile(this->file_name_, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
+            auto scene = importer.ReadFile(this->file_path_, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
             this->CreateMeshes(scene);
             this->CreateMaterials(scene);
             this->CreateTextures(scene);
@@ -110,15 +110,16 @@ namespace vEngine
                 aiString szPath;
                 if (AI_SUCCESS == ai_mat->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), szPath))
                 {
-
-                    auto file_name = "sponza/" + std::string(szPath.C_Str());
-                    if(this->scene_textures_.find(file_name) == this->scene_textures_.end())
+                    std::filesystem::path p = this->file_path_;
+                    auto dir = p.parent_path();
+                    auto texture_path = dir / std::string(szPath.C_Str());
+                    if(this->scene_textures_.find(texture_path.string()) == this->scene_textures_.end())
                     {
                         std::vector<byte> out;
 
                         uint32_t width;
                         uint32_t height;
-                        auto error = lodepng::decode(out, width, height, file_name);
+                        auto error = lodepng::decode(out, width, height, texture_path.string());
                         CHECK_ASSERT(error == 0);
 
                         TextureDescriptor tdesc;
@@ -132,7 +133,7 @@ namespace vEngine
                         tdesc.resource.data = out.data();
                         tdesc.resource.pitch = sizeof(byte) * 4 * width;
                         auto tex = Context::GetInstance().GetRenderEngine().Create(tdesc);
-                        this->scene_textures_[file_name] = tex;
+                        this->scene_textures_[texture_path.string()] = tex;
                     }
                 }
             }

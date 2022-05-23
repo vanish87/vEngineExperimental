@@ -37,7 +37,7 @@ namespace vEngine
 
             public:
                 /// \brief brief constructor description.
-                Scene(const std::string file_name);
+                Scene(const std::string file_path);
 
                 bool Load() override;
                 ResourceState CurrentState() override;
@@ -68,7 +68,7 @@ namespace vEngine
 
             private:
                 ResourceState state_;
-                std::string file_name_;
+                std::string file_path_;
 
                 std::vector<CameraComponentSharedPtr> scene_cameras_;
                 std::vector<LightComponentSharedPtr> scene_lights_;

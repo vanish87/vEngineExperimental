@@ -25,10 +25,14 @@ namespace vEngine
         SceneManager::~SceneManager() {}
         void SceneManager::Init()
         {
+            ResourceLoader::GetInstance().AddSearchPath("resource");
+            ResourceLoader::GetInstance().AddSearchPath("sponza");
+
+            auto file = ResourceLoader::GetInstance().GetFilePath("sponza.obj");
             // this->root_ = std::make_shared<GameNode>();
             // this->scene_ = std::make_shared<Scene>("cornell-box.obj");
             // this->scene_ = std::make_shared<Scene>("bunny.obj");
-            this->scene_ = std::make_shared<Scene>("sponza/sponza.obj");
+            this->scene_ = std::make_shared<Scene>(file);
             ResourceLoader::GetInstance().LoadAsync(this->scene_,
             [&](IResourceSharedPtr c)
             {

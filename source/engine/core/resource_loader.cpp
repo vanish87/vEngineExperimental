@@ -1,5 +1,8 @@
 #include <vengine/core/resource_loader.hpp>
+
 #include <vengine/core/iresource.hpp>
+
+
 
 namespace vEngine
 {
@@ -60,6 +63,26 @@ namespace vEngine
         void ResourceLoader::LoadAsync(IResourceSharedPtr resource, std::function<void(IResourceSharedPtr user_data)> const& complete_callback /*= nullptr*/)
         {
             this->loading_thread_.AddToQueue(std::make_shared<ResourceLoadingJob>(resource, complete_callback));
+        }
+
+        void ResourceLoader::AddSearchPath(const std::string path) 
+        {
+            std::filesystem::path p = path;
+            if(std::filesystem::exists(p) == false) return;
+
+            if(p.is_relative()) p = std::filesystem::absolute(p);
+
+            this->search_paths_[p.string()] = p;
+        }
+        std::string ResourceLoader::GetFilePath(const std::string file_name)
+        {
+            for(auto p = this->search_paths_.begin(); p != this->search_paths_.end(); ++p)
+            {
+                const auto path = p->second / file_name;
+                if(std::filesystem::exists(path)) return path.string();
+            }
+
+            return nullptr;
         }
 
         ResourceLoadingJob::ResourceLoadingJob(IResourceSharedPtr resource, std::function<void(IResourceSharedPtr user_data)> const& complete_callback /*= nullptr*/)
