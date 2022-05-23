@@ -28,8 +28,8 @@ namespace vEngine
         {
             // this->root_ = std::make_shared<GameNode>();
             // this->scene_ = std::make_shared<Scene>("cornell-box.obj");
-            this->scene_ = std::make_shared<Scene>("bunny.obj");
-            // this->scene_ = std::make_shared<Scene>("sponza/sponza.obj");
+            // this->scene_ = std::make_shared<Scene>("bunny.obj");
+            this->scene_ = std::make_shared<Scene>("sponza/sponza.obj");
             ResourceLoader::GetInstance().LoadAsync(this->scene_,
             [&](IResourceSharedPtr c)
             {
