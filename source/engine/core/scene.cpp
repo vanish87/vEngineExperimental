@@ -62,10 +62,12 @@ namespace vEngine
             // trans->game_object_->Translate() = float3(0, 0, 0);
             // this->AttachComponent(trans);
 
-            auto s = 1.5f;
+            // auto s = 1.5f;
+            // auto s = 0.01f;
             auto root_transform = std::dynamic_pointer_cast<TransformNode>(root);
-            root_transform->Transform()->Scale() = float3(s, s, s);
-            root_transform->Transform()->Translate() = float3(0.2f, 0, 1);
+            // root_transform->Transform()->Scale() = float3(s, s, s);
+            root_transform->Transform()->Translate() = float3(0.0f, -100, 100);
+            // root_transform->Transform()->Translate() = float3(0.0f, 0, 1);
 
             this->TraverseAllChildren<IComponent>(
                 [&](IComponentSharedPtr comp)
@@ -161,14 +163,16 @@ namespace vEngine
             auto game_node = GameNodeFactory::Create(desc);
             // parent->AddChild(game_node);
 
-            for (uint32_t mid = 0; mid < node->mNumMeshes; ++mid)
+            for (uint32_t i = 0; i < node->mNumMeshes; ++i)
             {
                 auto mesh_node = GameNodeFactory::Create(desc);
                 // scene_meshes_ contains same mesh data as they are in aiScene
-                auto ai_mesh = scene->mMeshes[mid];
+                auto scene_mesh_id = node->mMeshes[i];
+
+                auto ai_mesh = scene->mMeshes[scene_mesh_id];
+                auto mesh = this->scene_meshes_[scene_mesh_id];
 
                 ComponentDescription cdesc;
-                auto mesh = this->scene_meshes_[mid];
                 auto mesh_component = GameNodeFactory::Create<MeshComponent>(cdesc, mesh);
                 mesh_node->AttachComponent(mesh_component);
 
@@ -226,7 +230,9 @@ namespace vEngine
                 auto frameBuffer = cam->target;
                 auto& re = Context::GetInstance().GetRenderEngine();
                 re.Bind(frameBuffer);
+                re.OnBeginFrame();
                 this->Flush();
+                re.OnEndFrame();
                 // render all game node
                 // PRINT("Camera");
             }
