@@ -33,6 +33,8 @@ namespace vEngine
             this->vertex_data_.insert(this->vertex_data_.end(), vertices.begin(), vertices.end());
             this->index_data_.insert(this->index_data_.end(), indices.begin(), indices.end());
 
+            PRINT("Vertices count "<< this->vertex_data_.size()<<" indices count " << this->index_data_.size());
+
             this->loaded = true;
         }
 
@@ -153,7 +155,7 @@ namespace vEngine
         {
             if (this->vertex_buffer_ == nullptr && this->loaded)
             {
-                PRINT("Create mesh vertex Buffer");
+                // PRINT("Create mesh vertex Buffer");
                 GraphicsBufferDescriptor desc;
                 desc.type = GraphicsResourceType::Vertex;
                 desc.usage = GraphicsResourceUsage::GPU_Read_Only;
@@ -163,10 +165,10 @@ namespace vEngine
                 desc.resource.total_size = desc.resource.count * desc.resource.stride;
                 desc.resource.data = this->vertex_data_.data();
 
-                desc.layout.elements_.push_back(ElementLayout::Element("POSITION", DataFormat::DF_RGBFloat));
-                desc.layout.elements_.push_back(ElementLayout::Element("NORMAL", DataFormat::DF_RGBFloat));
-                desc.layout.elements_.push_back(ElementLayout::Element("UV", DataFormat::DF_RGFloat));
-                desc.layout.elements_.push_back(ElementLayout::Element("COLOR", DataFormat::DF_RGBA32));
+                desc.layout.elements_.push_back(ElementLayout::Element("POSITION", DataFormat::RGBFloat));
+                desc.layout.elements_.push_back(ElementLayout::Element("NORMAL", DataFormat::RGBFloat));
+                desc.layout.elements_.push_back(ElementLayout::Element("UV", DataFormat::RGFloat));
+                desc.layout.elements_.push_back(ElementLayout::Element("COLOR", DataFormat::RGBA32));
                 desc.layout.topology = ElementTopology::TriangleList;
 
                 this->vertex_buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
@@ -174,7 +176,7 @@ namespace vEngine
 
             if (this->index_buffer_ == nullptr && this->loaded)
             {
-                PRINT("Create mesh index Buffer");
+                // PRINT("Create mesh index Buffer");
                 GraphicsBufferDescriptor desc;
                 desc.type = GraphicsResourceType::Index;
                 desc.usage = GraphicsResourceUsage::GPU_Read_Only;
