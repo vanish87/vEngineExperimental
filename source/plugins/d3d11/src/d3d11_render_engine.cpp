@@ -130,9 +130,9 @@ namespace vEngine
             hr = this->d3d_swap_chain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
             CHECK_ASSERT(hr == S_OK);
 
-            auto backbufferTexture = std::make_shared<D3D11Texture>(pBackBuffer);
+            auto backBufferTexture = std::make_shared<D3D11Texture>(pBackBuffer);
             FrameBufferDescriptor desc;
-            this->back_buffer_ = std::make_shared<D3D11FrameBuffer>(backbufferTexture, desc);
+            this->back_buffer_ = std::make_shared<D3D11FrameBuffer>(backBufferTexture, desc);
             // this->Bind(frameBuffer);
 
             // Set the viewport
