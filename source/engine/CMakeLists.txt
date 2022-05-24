@@ -44,6 +44,7 @@ target_include_directories( ${PROJECT_NAME}
 
 target_link_libraries( ${PROJECT_NAME}
 	${ASSIMP_LIBRARIES}
+	${ZLIB_LIBRARIES}
 	# ${LUA_LIBRARIES}
 	# ${FREETYPE_LIBRARIES}
 )

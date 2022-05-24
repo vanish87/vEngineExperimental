@@ -7,6 +7,7 @@ ENDIF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 set(CMAKE_DEBUG_POSTFIX d)
 
 add_subdirectory(assimp)
+# add_subdirectory(zlib)
 add_subdirectory(freetype2)
 add_subdirectory(lua)
 
