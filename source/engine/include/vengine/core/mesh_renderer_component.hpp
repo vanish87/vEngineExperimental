@@ -66,10 +66,10 @@ namespace vEngine
                 {
                     //Update local to world matrix for current game node
                     // PRINT("MeshRendererComponent Update");
-                    if(this->GameObject()->renderable_ == nullptr)
+                    if(this->GO()->renderable_ == nullptr)
                     {
                         auto meshComponent = this->Owner()->FirstOf<MeshComponent>();
-                        this->GameObject()->renderable_ = meshComponent->GameObject();
+                        this->GO()->renderable_ = meshComponent->GO();
                     }
                 };
 

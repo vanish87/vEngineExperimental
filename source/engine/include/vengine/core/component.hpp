@@ -54,7 +54,7 @@ namespace vEngine
                 }
 
             public:
-                std::shared_ptr<T> GameObject()
+                std::shared_ptr<T> GO()
                 {
                     GameObjectDescription desc;
                     if (this->game_object_ == nullptr) this->game_object_ = GameObjectFactory::Create<T>(desc);

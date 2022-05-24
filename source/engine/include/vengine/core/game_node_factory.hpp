@@ -40,7 +40,7 @@ namespace vEngine
         // template<typename T>
         struct ComponentDescription
         {
-                // ComponentType type;
+                ComponentType type;
         };
         struct GameNodeDescription
         {
@@ -55,7 +55,14 @@ namespace vEngine
                 template <typename T, class... Args>
                 static std::shared_ptr<T> Create(const ComponentDescription& desc, Args&&... args)
                 {
-                    UNUSED_PARAMETER(desc);
+                    switch (desc.type)
+                    {
+                        case ComponentType::Transform:
+                            break;
+
+                        default:
+                            break;
+                    }
 
                     static_assert(std::is_base_of<IComponent, T>::value, "T must derived from IComponent");
                     auto gn = std::make_shared<T>(std::forward<Args>(args)...);

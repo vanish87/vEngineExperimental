@@ -44,7 +44,13 @@ namespace vEngine
                 template <typename T, class... Args>
                 static std::shared_ptr<T> Create(const GameObjectDescription& desc, Args&&... args)
                 {
-                    UNUSED_PARAMETER(desc);
+                    switch (desc.type)
+                    {
+                    case GameObjectType::Raw:
+                        break;
+                    default:
+                        break;
+                    }
 
                     static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
                     auto gn = std::make_shared<T>(std::forward<Args>(args)...);

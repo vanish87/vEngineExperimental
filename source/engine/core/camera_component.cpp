@@ -42,7 +42,7 @@ namespace vEngine
         }
         void CameraComponent::OnBeginCamera()
         {
-            auto cam = this->GameObject();
+            auto cam = this->GO();
             vEngineCameraConstantBuffer cb;
             cb.camera_pos = float4(0, 0, 100, 1);
 

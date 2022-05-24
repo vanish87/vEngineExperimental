@@ -26,12 +26,12 @@ namespace vEngine
             auto parent = std::dynamic_pointer_cast<TransformNode>(current->Parent().lock());
             if (parent != nullptr)
             {
-                this->GameObject()->UpdateLocalToWorld(parent->Transform());
+                this->GO()->UpdateLocalToWorld(parent->Transform());
             }
             else
             {
                 // PRINT_AND_BREAK("parent is null");
-                this->GameObject()->UpdateLocalToWorld();
+                this->GO()->UpdateLocalToWorld();
             }
         }
     }  // namespace Core

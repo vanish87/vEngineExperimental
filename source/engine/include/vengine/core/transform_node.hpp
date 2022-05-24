@@ -35,7 +35,7 @@ namespace vEngine
 
                 TransformSharedPtr Transform()
                 {
-                    return this->transform_->GameObject();
+                    return this->transform_->GO();
                 }
                 
                 virtual void AttachComponent(const GameNodeSharedPtr component) override;
