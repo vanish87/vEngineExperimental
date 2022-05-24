@@ -20,7 +20,7 @@ namespace vEngine
     namespace Core
     {
         using namespace Rendering;
-        
+
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
@@ -36,6 +36,12 @@ namespace vEngine
                 }
 
                 bool Load() override;
+                ResourceState CurrentState() override
+                {
+                    return ResourceState::Unknown;
+                }
+
+                void UpdateGPUResource();
 
                 // color
                 // parameter
@@ -47,7 +53,7 @@ namespace vEngine
                 //  {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
                 //  };
 
-                //all vs/ps related data is stored in PipelineState
+                // all vs/ps related data is stored in PipelineState
                 std::string vs_name_;
                 std::string ps_name_;
                 PipelineStateSharedPtr pipeline_state_;
@@ -57,7 +63,7 @@ namespace vEngine
                 GraphicsBufferSharedPtr constant_buffer_;
                 std::vector<Rendering::TextureSharedPtr> textures_;
 
-                //paramter example
+                // parameter example
                 // template <typename T>
                 // struct ParameterMap
                 // {
@@ -66,12 +72,12 @@ namespace vEngine
                 //         union _ParameterMap
                 //         {
                 //                 T Value;
-                //                 std::shared_ptr<Image> Map;
+                //                 std::shared_ptr<image> Map;
                 //         };
                 // };
 
-                // typedef ParameterMap<Vector4f> Color;
-                // typedef ParameterMap<Vector3f> Normal;
+                // typedef ParameterMap<float4> Color;
+                // typedef ParameterMap<float3> Normal;
                 // typedef ParameterMap<float> Parameter;
         };
     }  // namespace Core

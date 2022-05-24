@@ -2,12 +2,24 @@
 #define VENGINE_HLSL
 #include "data_cbuffer.hpp"
 
+Texture2D diffuse_tex : register(t0);
+// SamplerState diffuse : register(s0)
+
+SamplerState MeshTextureSampler
+{
+    Filter = MIN_MAG_MIP_LINEAR;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
 ps_out ps_main(vs_out input)
 {
 	// float3 light_pos = float3(1000, 1000, 0);
-	float4 ambient_col = 0.4f;
+	float4 ambient_col = 0.1f;
 	float4 diffuse_col = float4(1, 1, 1, 1);
-	float4 specular_col = 1;
+	float4 specular_col = float4(0.5f, 0.5f, 0.5f, 1);
+
+	diffuse_col = diffuse_tex.Sample(MeshTextureSampler, input.texcoord);
 
 	float3 pos = input.pos_w;
 	float3 normal = normalize(input.normal);

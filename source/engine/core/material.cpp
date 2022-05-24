@@ -49,6 +49,16 @@ namespace vEngine
             return true;
         }
 
+        void Material::UpdateGPUResource()
+        {
+            if(this->textures_.size() > 0)
+            {
+                auto tex = this->textures_[0];
+                Context::GetInstance().GetRenderEngine().Bind(tex);
+            }
+
+        }
+
     }  // namespace Core
 
 }  // namespace vEngine

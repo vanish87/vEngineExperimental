@@ -8,9 +8,10 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#include <vengine/core/scene_manager.hpp>
-#include <vengine/core/scene.hpp>
+
 #include <vengine/core/resource_loader.hpp>
+#include <vengine/core/scene.hpp>
+#include <vengine/core/scene_manager.hpp>
 /// A detailed namespace description, it
 /// should be 2 lines at least.
 namespace vEngine
@@ -24,9 +25,14 @@ namespace vEngine
         SceneManager::~SceneManager() {}
         void SceneManager::Init()
         {
+            ResourceLoader::GetInstance().AddSearchPath("resource");
+            ResourceLoader::GetInstance().AddSearchPath("sponza");
+
+            auto file = ResourceLoader::GetInstance().GetFilePath("sponza.obj");
             // this->root_ = std::make_shared<GameNode>();
             // this->scene_ = std::make_shared<Scene>("cornell-box.obj");
-            this->scene_ = std::make_shared<Scene>("bunny.obj");
+            // this->scene_ = std::make_shared<Scene>("bunny.obj");
+            this->scene_ = std::make_shared<Scene>(file);
             ResourceLoader::GetInstance().LoadAsync(this->scene_,
             [&](IResourceSharedPtr c)
             {
@@ -35,8 +41,15 @@ namespace vEngine
             });
             // this->scene_->Load();
 
+            // std::vector<byte> out;
+            // uint32_t width;
+            // uint32_t height;
+
+            // auto error = lodepng::decode(out, width, height, "sponza/textures/background.png");
+
+            // PRINT(error);
         }
-        void SceneManager::Deinit() 
+        void SceneManager::Deinit()
         {
             this->scene_.reset();
         }
@@ -50,9 +63,11 @@ namespace vEngine
         }
         void SceneManager::Update()
         {
-            this->scene_->Update();
+            if (this->scene_->CurrentState() == ResourceState::Loaded)
+            {
+                this->scene_->Update();
+            }
         }
-
 
     }  // namespace Core
 

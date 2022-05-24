@@ -9,12 +9,14 @@ if not os.path.exists(buildPath):
 
 
 #build debug
-# subprocess.run(["cmake", "-S" + sourcePath, "-B" + buildPath, "-DCMAKE_BUILD_TYPE=Debug", "-DBUILD_SHARED_LIBS=OFF"])
-subprocess.run(["cmake", "-S" + sourcePath, "-B" + buildPath, "-DCMAKE_BUILD_TYPE=Debug"])
+subprocess.run(["cmake", "-S" + sourcePath, "-B" + buildPath, "-DCMAKE_BUILD_TYPE=Debug", "-DBUILD_SHARED_LIBS=OFF"])
+# subprocess.run(["cmake", "-S" + sourcePath, "-B" + buildPath, "-DCMAKE_BUILD_TYPE=Debug", "-DBUILD_SHARED_LIBS=OFF", "-DASSIMP_BUILD_ZLIB=OFF"])
+# subprocess.run(["cmake", "-S" + sourcePath, "-B" + buildPath, "-DCMAKE_BUILD_TYPE=Debug"])
 subprocess.run(["cmake", "--build", buildPath, "--target", "install", "--config", "Debug"])
 #build release
-# subprocess.run(["cmake", "-S" + sourcePath, "-B" + buildPath, "-DCMAKE_BUILD_TYPE=Release", "-DBUILD_SHARED_LIBS=OFF"])
-subprocess.run(["cmake", "-S" + sourcePath, "-B" + buildPath, "-DCMAKE_BUILD_TYPE=Release"])
+subprocess.run(["cmake", "-S" + sourcePath, "-B" + buildPath, "-DCMAKE_BUILD_TYPE=Release", "-DBUILD_SHARED_LIBS=OFF"])
+# subprocess.run(["cmake", "-S" + sourcePath, "-B" + buildPath, "-DCMAKE_BUILD_TYPE=Release", "-DBUILD_SHARED_LIBS=OFF", "-DASSIMP_BUILD_ZLIB=OFF"])
+# subprocess.run(["cmake", "-S" + sourcePath, "-B" + buildPath, "-DCMAKE_BUILD_TYPE=Release"])
 subprocess.run(["cmake", "--build", buildPath, "--target", "install", "--config", "Release"])
 
 # os.system("pause")

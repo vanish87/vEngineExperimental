@@ -16,7 +16,10 @@
 #include <queue>
 #include <functional>
 
-#include <VENGINE_API.h>
+#include <filesystem>
+#include <unordered_map>
+
+#include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <vengine/core/thread.hpp>
 
@@ -65,8 +68,14 @@ namespace vEngine
 
                 void LoadAsync(IResourceSharedPtr resource, std::function<void(IResourceSharedPtr user_data)> const& complete_callback = nullptr);
                 // void AddSync();
+
+                std::string GetFilePath(const std::string file_name);
+                void AddSearchPath(const std::string path);
             private:
                 ResourceLoadingThread loading_thread_;
+
+                std::unordered_map<std::string, std::filesystem::path> search_paths_;
+                // std::unordered_set<std::filesystem::path> search_paths_;
         };
 
     }  // namespace Core

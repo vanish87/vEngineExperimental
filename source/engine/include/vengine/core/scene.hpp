@@ -27,17 +27,21 @@ namespace vEngine
 {
     namespace Core
     {
+        using namespace Rendering;
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
         class Scene : public GameNode, public IResource
         {
+
             public:
                 /// \brief brief constructor description.
-                Scene(const std::string file_name);
+                Scene(const std::string file_path);
 
                 bool Load() override;
+                ResourceState CurrentState() override;
+
 				void Update();
 				void Flush();
 
@@ -54,18 +58,22 @@ namespace vEngine
                 void AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node = nullptr);
                 void AddTestNode();
 
-                void HandleNode(const aiNode* node, const aiScene* scene, const GameNodeSharedPtr parent);
+                GameNodeSharedPtr HandleNode(const aiNode* node, const aiScene* scene);
                 void CreateMeshes(const aiScene* scene);
                 void CreateMaterials(const aiScene* scene);
+                void CreateTextures(const aiScene* scene);
                 void CreateCameras(const aiScene* scene);
 
+                GameNodeSharedPtr MakeTransformNode();
+
             private:
-				GameNodeSharedPtr root_;
-				std::string file_name_;
+                ResourceState state_;
+                std::string file_path_;
 
                 std::vector<CameraComponentSharedPtr> scene_cameras_;
                 std::vector<LightComponentSharedPtr> scene_lights_;
                 std::vector<MeshSharedPtr> scene_meshes_;
+                std::unordered_map<std::string, TextureSharedPtr> scene_textures_;
                 std::vector<MaterialSharedPtr> scene_materials_;
 				
         };

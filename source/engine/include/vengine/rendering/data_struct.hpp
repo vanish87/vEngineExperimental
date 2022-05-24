@@ -9,20 +9,23 @@ namespace vEngine
 {
     namespace Rendering
     {
-        enum class GraphicsBufferType
+        enum class GraphicsResourceType
         {
-            GBT_Index,
-            GBT_Vertex,
-            GBT_CBuffer,
+            Index,
+            Vertex,
+            CBuffer,
+            TextureR,   // Read only texture
+            TextureRW,  // as Shader Resource and Render Target
+            TextureW,   // as Render Target only
         };
 
-        enum class GraphicsBufferUsage
+        enum class GraphicsResourceUsage
         {
             // similar design https://docs.microsoft.com/en-us/windows/win32/api/d3d11/ne-d3d11-d3d11_usage
-            GBU_CPU_GPU_ReadWrite,
-            GPU_CPU_Write_GPU_Read,
-            GBU_GPU_Read_Only,
-            GBU_GPU_ReadWrite,
+            CPU_GPU_ReadWrite,
+            CPU_Write_GPU_Read,
+            GPU_Read_Only,
+            GPU_ReadWrite,
         };
         enum class GraphicsBufferSlot : int16_t
         {
@@ -33,30 +36,41 @@ namespace vEngine
         };
         enum class ElementTopology
         {
-            ET_Undefined,  // for compute buffer or other data buffers that have not topology relations
-            ET_PointList,
-            ET_LineList,
-            ET_TriangleList,
+            Undefined,  // for compute buffer or other data buffers that have not topology relations
+            PointList,
+            LineList,
+            TriangleList,
         };
         enum class TextureDimension
         {
             TD_1D,
             TD_2D,
             TD_3D,
-            TD_Cure,
-
+            TD_Cube,
         };
-        enum class TextureUsage
+        // https://docs.microsoft.com/en-us/windows/win32/direct3d11/how-to--use-dynamic-resources
+        struct GPUSubResource
         {
-            TU_CPU = 1 << 0,
-            TU_GPU = 1 << 1,
+                uint32_t offset;
+                uint32_t stride;
+                uint32_t pitch;  // use for texture, which is the size of one row in texture
+                uint64_t count;
+                uint64_t total_size;
+                void* data;
         };
         struct TextureDescriptor
         {
                 TextureDimension dimension;
+                uint32_t width;
+                uint32_t height;
+                uint32_t depth;
                 DataFormat format;
-                TextureUsage usage;
-                // std::vector<std::pair<
+                GraphicsResourceType type;
+                GraphicsResourceUsage usage;
+
+                GPUSubResource resource;
+                GraphicsBufferSlot slot;
+
 
                 static const TextureDescriptor& Default()
                 {
@@ -78,31 +92,21 @@ namespace vEngine
         };
         struct GraphicsBufferDescriptor
         {
-                GraphicsBufferType type;
-                GraphicsBufferUsage usage;
+                GraphicsResourceType type;
+                GraphicsResourceUsage usage;
                 ElementLayout layout;
                 // DataFormat format;// undefined format for compute buffer
                 // std::vector<std::pair<
 
+                GPUSubResource resource;
                 GraphicsBufferSlot slot;
+        };
 
-                uint32_t offset;
-                uint32_t stride;
-                uint64_t count;
-                uint64_t total_size;
-                void* data;
-        };
-        //https://docs.microsoft.com/en-us/windows/win32/direct3d11/how-to--use-dynamic-resources
-        struct GPUSubresource
-        {
-            void* data;
-        };
-        
         struct FrameBufferDescriptor
         {
                 DataFormat colorFormat;
                 DataFormat depthStencilFormat;
-                TextureUsage usage;
+                GraphicsResourceUsage usage;
                 // TextureUsage usage;
                 // std::vector<std::pair<
         };
@@ -116,9 +120,9 @@ namespace vEngine
 
         struct Shader
         {
-            std::string name;
-            std::vector<char> content;
-            Shader(const std::string name) : name{name} {};
+                std::string name;
+                std::vector<char> content;
+                Shader(const std::string name) : name{name} {};
         };
     }  // namespace Rendering
 

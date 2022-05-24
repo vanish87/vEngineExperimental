@@ -20,7 +20,7 @@ namespace vEngine
         /// should be 2 lines
         Texture::Texture(const TextureDescriptor& desc)
         {
-            UNUSED_PARAMETER(desc);
+            this->descriptor_ = desc;
         }
         Texture::~Texture() {}
 

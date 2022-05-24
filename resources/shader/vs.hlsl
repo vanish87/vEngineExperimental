@@ -14,6 +14,7 @@ vs_out vs_main(vs_in input)
 	float3 normal = input.normal;
 
 	output.position = mul(pos, mvp);
+	output.texcoord = input.texcoord;
 	output.pos_w = mul(pos, m).xyz;
 	output.normal = mul(normal, (float3x3)m);
 	output.color = input.color;

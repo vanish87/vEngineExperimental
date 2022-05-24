@@ -33,15 +33,15 @@ namespace vEngine
             // this->depthStencilTexture_ =
 
             GraphicsBufferDescriptor cbuffer_desc;
-            cbuffer_desc.type = GraphicsBufferType::GBT_CBuffer;
-            cbuffer_desc.usage = GraphicsBufferUsage::GPU_CPU_Write_GPU_Read;
-            cbuffer_desc.offset = 0;
-            cbuffer_desc.stride = sizeof(vEngineCameraConstantBuffer);
-            cbuffer_desc.count = 1;
-            cbuffer_desc.total_size = cbuffer_desc.count * cbuffer_desc.stride;
+            cbuffer_desc.type = GraphicsResourceType::CBuffer;
+            cbuffer_desc.usage = GraphicsResourceUsage::CPU_Write_GPU_Read;
+            cbuffer_desc.resource.offset = 0;
+            cbuffer_desc.resource.stride = sizeof(vEngineCameraConstantBuffer);
+            cbuffer_desc.resource.count = 1;
+            cbuffer_desc.resource.total_size = cbuffer_desc.resource.count * cbuffer_desc.resource.stride;
 
             vEngineCameraConstantBuffer cb;
-            cbuffer_desc.data = &cb;
+            cbuffer_desc.resource.data = &cb;
 
             // this->frame_constat_buffer_ = Context::GetInstance().GetRenderEngine().Create(cbuffer_desc);
         }

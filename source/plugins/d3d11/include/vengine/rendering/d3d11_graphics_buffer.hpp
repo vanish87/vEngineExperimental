@@ -35,7 +35,7 @@ namespace vEngine
                 // int public_variable_;
 
             protected:
-                GPUSubresource DoMap() override;
+                GPUSubResource DoMap() override;
                 void DoUnmap() override;
 
             public:

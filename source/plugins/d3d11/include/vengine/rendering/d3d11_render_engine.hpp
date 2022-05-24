@@ -27,12 +27,22 @@ namespace vEngine
                 void OnBind(const FrameBufferSharedPtr FrameBuffer) override;
                 void OnBind(const PipelineStateSharedPtr pipeline_state) override;
                 void OnBind(const GraphicsBufferSharedPtr graphics_buffer) override;
+                void OnBind(const TextureSharedPtr texture) override;
                 PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) override;
                 void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) override;
+                void OnEndFrame() override;
 
                 TextureSharedPtr Create(const TextureDescriptor& desc) override;
                 FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override;
                 GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override;
+
+                void Clear(const FrameBufferSharedPtr frame_buffer, const color color) override;
+
+                static uint32_t ToD3DBindFlag(GraphicsResourceType type);
+                static uint32_t ToD3DAccessFlag(GraphicsResourceUsage usage);
+                static D3D11_USAGE ToD3DUsage(GraphicsResourceUsage usage);
+                static DXGI_FORMAT ToD3DFormat(DataFormat formart);
+                static DataFormat D3DFormatToDataFormat(DXGI_FORMAT formart);
 
                 /// \brief mainly used to create Resource Views(ie. RenderTargetView)
                 /// 
@@ -46,18 +56,6 @@ namespace vEngine
                     return this->d3d_imm_context_;
                 }
 
-                static DataFormat D3DFormatToDataFormat(DXGI_FORMAT formart)
-                {
-                    switch (formart)
-                    {
-                        case DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM:
-                            return DataFormat::DF_RGBA32;
-                        default:
-                            break;
-                    }
-
-                    return DataFormat::DF_Undifiend;
-                }
 
             private:
                 ID3D11InputLayout* layout;
@@ -67,8 +65,8 @@ namespace vEngine
                 ID3D11PixelShader* ps;
                 ID3D11Buffer* vertex_buffer;
 
-                void InitPipline();
-                void DeinitPipline();
+                void InitPipeline();
+                void DeinitPipeline();
                 void TriangleDraw();
 
             private:
