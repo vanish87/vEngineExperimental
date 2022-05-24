@@ -69,6 +69,8 @@ namespace vEngine
                 GraphicsResourceUsage usage;
 
                 GPUSubResource resource;
+                GraphicsBufferSlot slot;
+
 
                 static const TextureDescriptor& Default()
                 {

@@ -88,11 +88,14 @@ namespace vEngine
                 auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
                 auto device = d3d_re->Device();
 
-                // D3D11_SHADER_RESOURCE_VIEW_DESC desc;
-                // desc.Format = this->descriptor_.format;
-                // desc.ViewDimension = this->descriptor_.dimension;
+                D3D11_SHADER_RESOURCE_VIEW_DESC desc;
+                desc.Format = D3D11RenderEngine::ToD3DFormat(this->descriptor_.format);
+                desc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D;
+                desc.Texture2D.MipLevels = 0;
+                desc.Texture2D.MostDetailedMip = 0;
 
-                device->CreateShaderResourceView(this->tex2D_.Get(), nullptr, this->sr_view_.GetAddressOf());
+                auto hr = device->CreateShaderResourceView(this->tex2D_.Get(), nullptr, this->sr_view_.GetAddressOf());
+                CHECK_ASSERT(hr == S_OK);
             }
             return this->sr_view_;
         }

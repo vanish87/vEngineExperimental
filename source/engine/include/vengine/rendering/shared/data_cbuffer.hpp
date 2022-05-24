@@ -35,6 +35,7 @@ struct vs_in
 struct vs_out 
 {
 	float4 position semantics_def(SV_POSITION); 
+	float2 texcoord semantics_def(TEXCOORD0); 
 	float3 pos_w semantics_def(POSITION); 
 	float3 normal semantics_def(NORMAL);
 	float4 color semantics_def(COLOR);

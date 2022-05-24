@@ -12,6 +12,7 @@
 #include <vengine/core/mesh_renderer.hpp>
 #include <vengine/core/mesh_renderer_component.hpp>
 #include <vengine/rendering/render_engine.hpp>
+#include <vengine/core/material.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -35,7 +36,7 @@ namespace vEngine
                 mesh->UpdateGPUBuffer();
 
                 // Set gpu variable for material here
-                //  this->material_->UpdateGPUBuffer();
+                 this->material_->UpdateGPUResource();
 
                 // PRINT("MeshRenderer Call re.Render(vertex, index)");
                 re.Render(mesh->vertex_buffer_, mesh->index_buffer_);

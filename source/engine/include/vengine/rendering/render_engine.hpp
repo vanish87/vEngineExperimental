@@ -46,6 +46,12 @@ namespace vEngine
                 }
                 virtual void OnBind(const GraphicsBufferSharedPtr graphics_buffer) = 0;
                 
+                virtual void Bind(const TextureSharedPtr texture)
+                {
+                    this->OnBind(texture);
+                }
+                virtual void OnBind(const TextureSharedPtr texture) = 0;
+
                 virtual void Bind(const FrameBufferSharedPtr frameBuffer)
                 {
                     this->current_frame_buffer_ = frameBuffer;

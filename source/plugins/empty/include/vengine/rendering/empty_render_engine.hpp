@@ -36,6 +36,10 @@ namespace vEngine
                 {
                     UNUSED_PARAMETER(graphics_buffer);
                 }
+                void OnBind(const TextureSharedPtr texture) override
+                {
+                    UNUSED_PARAMETER(texture);
+                }
 
                 PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) override
                 {

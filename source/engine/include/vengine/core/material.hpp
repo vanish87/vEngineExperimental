@@ -41,6 +41,8 @@ namespace vEngine
                     return ResourceState::Unknown;
                 }
 
+                void UpdateGPUResource();
+
                 // color
                 // parameter
                 // normal map

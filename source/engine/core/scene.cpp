@@ -132,9 +132,14 @@ namespace vEngine
                         tdesc.usage = GraphicsResourceUsage::GPU_Read_Only;
                         tdesc.resource.data = out.data();
                         tdesc.resource.pitch = sizeof(byte) * 4 * width;
+                        tdesc.slot = GraphicsBufferSlot::Slot0;
+
                         auto tex = Context::GetInstance().GetRenderEngine().Create(tdesc);
                         this->scene_textures_[texture_path.string()] = tex;
+                        PRINT(texture_path.relative_path().string() << " Loaded");
                     }
+
+                    mat->textures_.push_back(this->scene_textures_[texture_path.string()]);
                 }
             }
             if (this->scene_materials_.size() == 0)

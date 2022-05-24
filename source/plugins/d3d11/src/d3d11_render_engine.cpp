@@ -359,6 +359,12 @@ namespace vEngine
             auto desc = d3d_gb->descriptor_;
             this->d3d_imm_context_->VSSetConstantBuffers(static_cast<uint32_t>(desc.slot), 1, d3d_gb->buffer_.GetAddressOf());
         }
+        void D3D11RenderEngine::OnBind(const TextureSharedPtr texture)
+        {
+            auto d3d_tex = std::dynamic_pointer_cast<D3D11Texture>(texture);
+            auto desc = d3d_tex->descriptor_;
+            this->d3d_imm_context_->PSSetShaderResources(static_cast<uint32_t>(desc.slot), 1, d3d_tex->AsSRV().GetAddressOf());
+        }
         void D3D11RenderEngine::Clear(const FrameBufferSharedPtr frame_buffer, const color color /*= float4(0.0f, 0.2f, 0.4f, 1.0f)*/)
         {
             // const float bg[4] = {0.0f, 0.2f, 0.4f, 1.0f};
