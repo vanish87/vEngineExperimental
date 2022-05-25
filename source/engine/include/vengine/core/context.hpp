@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 
 #include <engine.hpp>
 #include <vengine/core/configure.hpp>
@@ -13,8 +13,6 @@ namespace vEngine
 {
     namespace Core
     {
-        using namespace vEngine::Rendering;
-
         class VENGINE_API Context : public IRuntimeModule
         {
                 SINGLETON_CLASS(Context)
@@ -30,7 +28,7 @@ namespace vEngine
                 // RenderFactory& RenderFactoty();
 
             public:
-                RenderEngine& GetRenderEngine();
+                Rendering::RenderEngine & GetRenderEngine();
 
             public:
                 void Init() override;
@@ -46,7 +44,7 @@ namespace vEngine
                 Application* app_instance_;
 
                 void* render_plugin_dll_handle_;
-                std::unique_ptr<RenderEngine> render_engine_ptr_;
+                Rendering::RenderEngineUniquePtr render_engine_ptr_;
         };
 
         void* LoadLibrary(const std::string lib_name);

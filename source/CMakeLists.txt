@@ -4,11 +4,16 @@ set(EXTERNAL_BUILD_DIR "${CMAKE_BINARY_DIR}/external/build")
 
 message(STATUS "EXTERNAL_BUILD_DIR= ${EXTERNAL_BUILD_DIR}")
 
-find_package(lua REQUIRED)
-find_package(freetype REQUIRED)
+find_package(assimp REQUIRED)
+# assimp needs zlib
+set(ZLIB_ROOT ${EXTERNAL_BUILD_DIR})
+find_package(zlib REQUIRED)
 
-include_directories(${LUA_INCLUDE_DIR})
-include_directories(${FREETYPE_INCLUDE_DIR})
+# find_package(lua REQUIRED)
+# find_package(freetype REQUIRED)
+
+# include_directories(${LUA_INCLUDE_DIR})
+# include_directories(${FREETYPE_INCLUDE_DIR})
 
 # add all files in source folder to SRC
 # aux_source_directory(source SRC)
@@ -19,4 +24,7 @@ add_subdirectory(plugins)
 add_subdirectory(app)
 add_subdirectory(editor)
 add_subdirectory(test)
-add_subdirectory(document)
+
+if(VENGINE_BUILD_DOC)
+	add_subdirectory(document)
+endif(VENGINE_BUILD_DOC)

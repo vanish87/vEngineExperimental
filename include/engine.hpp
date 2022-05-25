@@ -10,6 +10,10 @@
 #include <interface.hpp>
 #include <predeclear.hpp>
 
+#include <vengine/rendering/data_format.hpp>
+#include <vengine/rendering/data_struct.hpp>
+#include <vengine/rendering/shared/data_cbuffer.hpp>
+
 // Note math.h will include math.hpp
 // #include <vengine/core/math.h>
 

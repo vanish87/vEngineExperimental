@@ -17,7 +17,7 @@
 
 namespace vEngine
 {
-    namespace Math
+    namespace Core
     {
         /// \brief Basic vector data type
         ///
@@ -26,7 +26,7 @@ namespace vEngine
         /// \tparam T Vector type
         /// \tparam N Vector size
         template <typename T = float, int N = 4>
-        class Vector
+        class Vector final
         {
             private:
                 typedef std::array<T, N> DataType;
@@ -50,6 +50,7 @@ namespace vEngine
                 typedef typename DataType::difference_type difference_type;
 
                 static constexpr size_type size = N;
+                static constexpr size_type byte_size = N * sizeof(value_type);
 
             public:
                 /// \brief Constructor: use init list {} to initialize data
@@ -95,7 +96,8 @@ namespace vEngine
                 ///
                 /// to assure destructor of
                 /// subclass called
-                virtual ~Vector() noexcept {}
+                /// do not need for vector class
+                // virtual ~Vector() noexcept {}
 
                 /// \brief big five - 4: move constructor
                 ///

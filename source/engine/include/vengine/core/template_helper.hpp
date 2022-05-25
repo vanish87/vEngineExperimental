@@ -13,7 +13,7 @@
 #pragma once
 namespace vEngine
 {
-    namespace Math
+    namespace Core
     {
         /// \brief helper function to expand template
         ///

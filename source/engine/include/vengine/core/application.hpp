@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 
 #include <vengine/core/iruntime_module.hpp>
 
@@ -27,10 +27,10 @@ namespace vEngine
                 virtual void Quit(bool quit);
 
             public:
-                WindowPtr CurrentWindow();
+                vEngineWindowPtr CurrentWindow();
 
             protected:
-                WindowPtr window_;
+                vEngineWindowPtr window_;
 
             private:
                 virtual void OnCreate();

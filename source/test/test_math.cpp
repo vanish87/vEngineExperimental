@@ -30,8 +30,10 @@ TEST(Math, Matrix)
     auto v4 = Cross(v1, v2);
 
     UNUSED_PARAMETER(v3);
+    UNUSED_PARAMETER(v4);
 
     auto v5 = Normalize(v1);
+    UNUSED_PARAMETER(v5);
 
     float4x4 mpv = PerspectiveFovLH(0.5f, 1.2f, 2.0f, 200.0f);
     float4 point(3,1,2,1);

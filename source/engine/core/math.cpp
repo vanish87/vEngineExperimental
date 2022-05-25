@@ -44,8 +44,7 @@ namespace vEngine
             return CompareFloat(lhs, rhs);
         }
         /// Another way to compare float with epsilon
-        bool IsFloatEqual(const float& lhs, const float& rhs,
-                          const float epsilon)
+        bool IsFloatEqual(const float& lhs, const float& rhs, const float epsilon)
         {
             auto e = Math::Abs(epsilon);
             // CHECK_ASSERT(epsilon != 0);
@@ -64,6 +63,11 @@ namespace vEngine
         float Sin(float x)
         {
             return std::sin(x);
+        }
+        float Sin(Radian x)
+        {
+            UNUSED_PARAMETER(x);
+            return 0;
         }
 
         float Cos(float x)
