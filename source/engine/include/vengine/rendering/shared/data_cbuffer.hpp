@@ -18,7 +18,7 @@
 
 #include <engine.hpp>
 #include <vengine/core/matrix.hpp>
-using namespace vEngine::Math;
+using namespace vEngine::Core;
 
 #endif
 

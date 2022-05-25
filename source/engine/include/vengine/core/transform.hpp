@@ -33,9 +33,9 @@ namespace vEngine
                 Transform() noexcept
                 {
                     this->local_translate_ = float3::Zero();
-                    this->local_rotation_ = float4x4::IdentityMat();
+                    this->local_rotation_ = float4x4::Identity();
                     this->local_scale_ = float3::One();
-                    this->local_to_world_ = float4x4::IdentityMat();
+                    this->local_to_world_ = float4x4::Identity();
                 }
 
                 /// \brief big five - 3: copy constructor
@@ -170,7 +170,7 @@ namespace vEngine
                 float4x4 LocalTransform() const
                 {
                     float4x4 t;
-                    float4x4 r = float4x4::IdentityMat();
+                    float4x4 r = float4x4::Identity();
                     float4x4 s;
                     Math::Translate(t, this->local_translate_);
                     // Math::RotationAxis(r, this->local_rotation_);

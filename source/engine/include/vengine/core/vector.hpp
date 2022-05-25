@@ -17,7 +17,7 @@
 
 namespace vEngine
 {
-    namespace Math
+    namespace Core
     {
         /// \brief Basic vector data type
         ///

@@ -6,21 +6,21 @@
 namespace vEngine
 {
     #define CLASS_AND_SHARED_POINTER(name) \
-	class name;\
-	typedef std::shared_ptr<name> name##SharedPtr;
+    class name;                        \
+    typedef std::shared_ptr<name> name##SharedPtr;
 
-    #define CLASS_AND_SHARED_WEAK_POINTER(name) \
-	class name;\
-	typedef std::shared_ptr<name> name##SharedPtr;\
-	typedef std::weak_ptr<name> name##WeakPtr;
+    #define CLASS_AND_SHARED_WEAK_POINTER(name)        \
+    class name;                                    \
+    typedef std::shared_ptr<name> name##SharedPtr; \
+    typedef std::weak_ptr<name> name##WeakPtr;
 
-	#define CLASS_AND_UNIQUE_POINTER(name) \
-	class name;\
-	typedef std::unique_ptr<name> name##UniquePtr;
+    #define CLASS_AND_UNIQUE_POINTER(name) \
+    class name;                        \
+    typedef std::unique_ptr<name> name##UniquePtr;
 
-	#define STRUCT_AND_SHARED_POINTER(name) \
-	struct name;\
-	typedef std::shared_ptr<name> name##SharedPtr;
+    #define STRUCT_AND_SHARED_POINTER(name) \
+    struct name;                        \
+    typedef std::shared_ptr<name> name##SharedPtr;
 
     typedef std::int8_t int8_t;
     typedef std::int16_t int16_t;
@@ -32,7 +32,7 @@ namespace vEngine
     typedef std::uint16_t uint16_t;
     typedef std::uint32_t uint32_t;
     typedef std::uint64_t uint64_t;
-    namespace Math
+    namespace Core
     {
         template <typename T, int N>
         class Vector;
@@ -57,9 +57,6 @@ namespace vEngine
         class Matrix;
 
         typedef Matrix<float, 4, 4> float4x4;
-    }  // namespace Math
-    namespace Core
-    {
         class Window;
         typedef std::shared_ptr<Window> vEngineWindowPtr;
         class Application;
@@ -95,13 +92,13 @@ namespace vEngine
         CLASS_AND_SHARED_POINTER(GraphicsBuffer)
         CLASS_AND_SHARED_POINTER(Texture)
         CLASS_AND_SHARED_POINTER(MeshRendererComponent)
-        
-        STRUCT_AND_SHARED_POINTER(Shader)
-    }
 
-	#undef CLASS_AND_SHARED_POINTER
-	#undef CLASS_AND_UNIQUE_POINTER
-	#undef STRUCT_AND_SHARED_POINTER
+        STRUCT_AND_SHARED_POINTER(Shader)
+    }  // namespace Rendering
+
+#undef CLASS_AND_SHARED_POINTER
+#undef CLASS_AND_UNIQUE_POINTER
+#undef STRUCT_AND_SHARED_POINTER
 }  // namespace vEngine
 
 #endif /* _INCLUDE_PREDECLEAR_HPP */

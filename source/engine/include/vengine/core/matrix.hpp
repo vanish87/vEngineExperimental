@@ -9,7 +9,7 @@
 
 namespace vEngine
 {
-    namespace Math
+    namespace Core
     {
         enum class MatrixPackType
         {
@@ -180,10 +180,10 @@ namespace vEngine
                     static const Matrix<T, M, N> zero(z);
                     return zero;
                 }
-                static const Matrix<T, M, N>& IdentityMat()
+                static const Matrix<T, M, N>& Identity()
                 {
                     static Matrix<T, M, N> identity;
-                    Identity(identity);
+                    Math::Identity(identity);
                     return identity;
                 }
 
@@ -299,7 +299,7 @@ namespace vEngine
                 template <typename U>
                 constexpr Matrix operator*(const Matrix<U, M, N>& other) noexcept
                 {
-                    return Multiply(*this, other);
+                    return Math::Multiply(*this, other);
                 }
                 template <typename U>
                 constexpr Matrix operator/(const Matrix<U, M, N>& other) noexcept
