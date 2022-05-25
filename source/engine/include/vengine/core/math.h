@@ -5,6 +5,7 @@
 #include <VENGINE_API.hpp>
 
 #include <engine.hpp>
+#include <vengine/core/angle.hpp>
 
 namespace vEngine
 {
@@ -56,7 +57,7 @@ namespace vEngine
     namespace Math
     {
         using namespace vEngine::Core;
-        
+
         /// \brief PI constant
         float const PI = 3.141592653f;
 
@@ -91,6 +92,7 @@ namespace vEngine
 
         float VENGINE_API Sqrt(float x);
         float VENGINE_API Sin(float x);
+        float VENGINE_API Sin(Radian x);
         float VENGINE_API Cos(float x);
         float VENGINE_API ArcCos(float x);
         float VENGINE_API Tan(float x);

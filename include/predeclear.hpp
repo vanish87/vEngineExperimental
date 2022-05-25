@@ -58,10 +58,14 @@ namespace vEngine
 
         typedef Quaternion<float> quaternion;
 
+        class Radian;
+        class Degree;
+
         template <typename T, int M, int N>
         class Matrix;
 
         typedef Matrix<float, 4, 4> float4x4;
+
         class Window;
         typedef std::shared_ptr<Window> vEngineWindowPtr;
         class Application;

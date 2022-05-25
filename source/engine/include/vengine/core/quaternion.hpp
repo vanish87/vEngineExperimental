@@ -20,13 +20,6 @@ namespace vEngine
 {
     namespace Core
     {
-        class Radian
-        {
-        };
-        class Degree
-        {
-        };
-
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
