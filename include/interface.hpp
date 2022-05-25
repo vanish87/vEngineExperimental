@@ -1,6 +1,7 @@
 #ifndef _INCLUDE_INTERFACE_HPP
 #define _INCLUDE_INTERFACE_HPP
 
+#pragma once
 
 /// \brief Interface should only contains functions\n
 /// Use multiple inheritance when it is REALLY necessary.

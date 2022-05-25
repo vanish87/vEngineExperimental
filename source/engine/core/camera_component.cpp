@@ -14,6 +14,7 @@
 #include <vengine/core/transform_node.hpp>
 #include <vengine/rendering/graphics_buffer.hpp>
 #include <vengine/rendering/render_engine.hpp>
+#include <vengine/rendering/shared/data_cbuffer.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.

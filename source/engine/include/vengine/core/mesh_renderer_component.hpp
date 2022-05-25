@@ -20,6 +20,7 @@
 
 #include <vengine/core/context.hpp>
 #include <vengine/rendering/render_engine.hpp>
+#include <vengine/rendering/shared/data_cbuffer.hpp>
 
 /// A brief namespace description.
 namespace vEngine

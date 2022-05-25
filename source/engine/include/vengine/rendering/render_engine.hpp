@@ -6,6 +6,8 @@
 #include <VENGINE_API.hpp>
 
 #include <engine.hpp>
+#include <vengine/rendering/data_struct.hpp>
+#include <vengine/rendering/data_format.hpp>
 #include <map>
 #include <vengine/core/iruntime_module.hpp>
 #include <vengine/core/transform.hpp>

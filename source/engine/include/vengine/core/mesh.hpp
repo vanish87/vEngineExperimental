@@ -30,7 +30,6 @@ namespace vEngine
     namespace Core
     {
         using namespace vEngine::Rendering;
-        using namespace vEngine::Math;
         /// \brief A brief class description.
         ///
         /// A detailed class description, it

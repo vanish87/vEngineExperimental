@@ -1,6 +1,8 @@
 #ifndef _INCLUDE_PREDECLEAR_HPP
 #define _INCLUDE_PREDECLEAR_HPP
 
+#pragma once
+
 #include <cstdint>
 #include <memory>
 namespace vEngine

@@ -78,12 +78,12 @@ namespace vEngine
 
                 reference operator[](size_type index) noexcept
                 {
-                    CHECK_ASSERT(index < N);
+                    static_assert(index < 4);
                     return this->data_[index];
                 }
                 constexpr const_reference operator[](size_type index) const noexcept
                 {
-                    CHECK_ASSERT(index < N);
+                    static_assert(index < 4);
                     return this->data_[index];
                 }
 
