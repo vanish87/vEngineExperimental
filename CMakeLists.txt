@@ -10,7 +10,7 @@ endif()
 set(VENGINE_BUILD_DOC OFF)
 
 # cmake setting
-set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_VERBOSE_MAKEFILE OFF)
 
 # Include cmake modules
 include(GenerateExportHeader)
