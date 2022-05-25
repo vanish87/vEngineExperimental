@@ -15,6 +15,7 @@
 #include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <vengine/core/matrix.hpp>
+#include <vengine/core/quaternion.hpp>
 #include <vengine/core/game_object.hpp>
 
 /// A brief namespace description.
@@ -189,6 +190,8 @@ namespace vEngine
                 float3 local_scale_;
 
                 float4x4 local_to_world_;
+
+                quaternion q;
 
             public:
                 /// \brief A brief function description.
