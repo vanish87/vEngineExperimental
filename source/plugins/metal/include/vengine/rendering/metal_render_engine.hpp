@@ -74,11 +74,17 @@ namespace vEngine
                 }
 
             private:
-                void InitPipline();
-                void DeinitPipline();
+                void InitPipeline();
+                void DeinitPipeline();
                 void TriangleDraw();
 
             private:
+                // MTL::Device device_;
+                MTK::View* view_;
+                MTL::CommandQueue* command_queue_;
+                MTL::RenderPipelineState* current_pipeline_state_;
+                MTL::Buffer* vertex_buffer_;
+                MTL::Buffer* color_buffer_;
         };
 
     }  // namespace Rendering
