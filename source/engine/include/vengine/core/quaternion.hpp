@@ -25,7 +25,7 @@ namespace vEngine
         /// A detailed class description, it
         /// should be 2 lines at least.
         template <typename T = float>
-        class Quaternion
+        class Quaternion final
         {
             private:
                 typedef Vector<T, 4> DataType;
@@ -48,6 +48,108 @@ namespace vEngine
                 typedef typename DataType::difference_type difference_type;
 
             public:
+             
+                /// \brief Constructor: use init list {} to initialize data
+                constexpr Quaternion() noexcept {}
+
+                /// \brief Explicit one parameter constructor to avoid implicit conversion
+                constexpr Quaternion(const T& other) noexcept = delete;
+                constexpr Quaternion(const Vector<T>& other) noexcept = delete;
+
+                /// \brief big five - 3: copy constructor
+                ///
+                /// copy constructor is called by \n
+                ///  1. ClassA a = b; -> declear and assignment \n
+                ///  2. Func(ClassA a) -> pass by value \n
+                ///  3. return temp; -> return by value \n
+                constexpr Quaternion(const Quaternion& other) noexcept
+                {
+                    this->data_ = other.data_;
+                }
+
+                /// \brief big five - 2: assignment operator
+                ///
+                /// with const formal paramter \n
+                /// usage of constexpr: \n
+                /// constexpr can not pass clang compiling => don't need constexpr as following \n
+                /// constexpr Vector& operator=(const Vector& other) noexcept \n
+                Quaternion& operator=(const Quaternion& other) noexcept
+                {
+                    // 1.check self assignment
+                    if (this != &other)
+                    {
+                        // 2.allocate new object before-> to assure memory
+                        // before delete existing one
+                        this->data_ = other.data_;
+                    }
+                    return *this;
+                }
+
+                /// \brief big five - 1: virtual destructor
+                ///
+                /// to assure destructor of
+                /// subclass called
+                /// do not need for vector class
+                // virtual ~Vector() noexcept {}
+
+                /// \brief big five - 4: move constructor
+                ///
+                /// const is not needed: constexpr Vector(const Vector &&other) \n
+                /// The move constructor: \n
+                /// - Takes an r-value reference as a parameter. \n
+                /// - Discards the object’s current state. \n
+                /// - Transfers ownership of the r-value object into the receiver \n
+                /// - Puts the r-value object into an 'empty' state. \n
+                /// - subclass must explicitly std::move the base class \n
+                constexpr Quaternion(Quaternion&& other) noexcept : data_(std::move(other.data_)) {}
+
+                /// \brief big five - 5 : move operator
+                ///
+                /// move operator
+                /// is used like unique_ptr
+                constexpr Quaternion& operator=(const Quaternion&& other) noexcept
+                {
+                    // 1.check self assignment
+                    if (this != &other)
+                    {
+                        // 2.allocate new object before-> to assure memory
+                        // before delete existing one
+                        this->data_ = std::move(other.data_);
+                    }
+                    return *this;
+                }
+
+                /// \brief constructor vector with pointer
+                ///
+                /// Usually used to init vector with
+                /// a data array
+                constexpr Quaternion(const T* other) noexcept = delete;
+                // {
+                //     vector_t<T, N>::do_copy(this->data(), other);
+                // }
+
+                /// \brief copy from other vector type
+                ///
+                /// Will cast data type from U to T
+                /// the size M should equal to N
+                // template <typename U, int M>
+                // constexpr Vector(Vector<U, M> const& rhs) noexcept
+                // {
+                //     static_assert(M == N);
+                //     vector_t<T, N>::do_copy(this->data(), rhs.data());
+                // }
+
+                /// \brief init constructor
+                ///
+                /// use {} to init data, \n
+                /// it will generate a compile error if
+                /// vector is initd with more parameter than it has
+                // constexpr Vector(const T& x, const T& y) noexcept : data_{x, y} {}
+                // constexpr Vector(const T& x, const T& y, const T& z) noexcept : data_{x, y, z} {}
+                constexpr Quaternion(const T& x, const T& y, const T& z, const T& w) noexcept : data_{x, y, z, w} {}
+
+
+            public:
                 iterator begin() noexcept
                 {
                     return this->data_.begin();
@@ -67,6 +169,22 @@ namespace vEngine
                 }
 
             public:
+                reference x() noexcept
+                {
+                    return this->data_[0];
+                }
+                reference y() noexcept
+                {
+                    return this->data_[1];
+                }
+                reference z() noexcept
+                {
+                    return this->data_[2];
+                }
+                reference w() noexcept
+                {
+                    return this->data_[3];
+                }
                 pointer data() noexcept
                 {
                     return &(this->data_[0]);
@@ -78,12 +196,10 @@ namespace vEngine
 
                 reference operator[](size_type index) noexcept
                 {
-                    static_assert(index < 4);
                     return this->data_[index];
                 }
                 constexpr const_reference operator[](size_type index) const noexcept
                 {
-                    static_assert(index < 4);
                     return this->data_[index];
                 }
 
