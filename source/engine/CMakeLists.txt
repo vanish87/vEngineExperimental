@@ -9,6 +9,7 @@ project (vengine)
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core core_source)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/rendering rendering_source)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/animation animation_source)
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/external external_source)
 
@@ -19,6 +20,7 @@ aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/external external_source)
 add_library(${PROJECT_NAME} 
     ${core_source}
     ${rendering_source}
+    ${animation_source}
     ${external_source}
     # ${apple_sources}
 )

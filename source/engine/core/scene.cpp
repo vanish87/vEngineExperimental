@@ -213,6 +213,8 @@ namespace vEngine
             GameNodeDescription desc;
             desc.type = GameNodeType::Transform;
             auto game_node = GameNodeFactory::Create(desc);
+            //set transformation here
+            auto transform = node->mTransformation;
             // parent->AddChild(game_node);
 
             for (uint32_t i = 0; i < node->mNumMeshes; ++i)
