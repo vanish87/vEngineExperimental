@@ -263,6 +263,9 @@ namespace vEngine
                 auto mesh_component = GameNodeFactory::Create<MeshComponent>(cdesc, mesh);
                 mesh_node->AttachComponent(mesh_component);
 
+                // add skeleton to mesh node
+                // mesh_node->AddChild(skeleton)
+
                 auto mesh_renderer = GameNodeFactory::Create<MeshRendererComponent>(cdesc);
                 mesh_node->AttachComponent(mesh_renderer);
 

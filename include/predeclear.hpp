@@ -111,6 +111,7 @@ namespace vEngine
     {
         CLASS_AND_SHARED_POINTER(Animation)
         CLASS_AND_SHARED_POINTER(AnimationClip)
+        CLASS_AND_SHARED_POINTER(Skeleton)
     }
 
 #undef CLASS_AND_SHARED_POINTER

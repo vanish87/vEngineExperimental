@@ -72,7 +72,6 @@ namespace vEngine
                 std::vector<Vertex> vertex_data_;
                 std::vector<uint32_t> index_data_;
 
-
                 std::string file_name_;
                 bool loaded = false;
                 //vertex
