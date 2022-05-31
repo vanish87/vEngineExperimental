@@ -29,6 +29,7 @@ namespace vEngine
             Raw,
             Transform,
             Camera,
+            Mesh,
         };
 
         struct GameObjectDescription

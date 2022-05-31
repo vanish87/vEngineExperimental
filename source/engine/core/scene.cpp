@@ -11,6 +11,7 @@
 
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/game_node_factory.hpp>
+#include <vengine/core/game_object_factory.hpp>
 #include <vengine/core/material.hpp>
 #include <vengine/core/mesh.hpp>
 #include <vengine/core/mesh_renderer_component.hpp>
@@ -209,7 +210,10 @@ namespace vEngine
                     //aiBone's document is confusing
                     //https://learnopengl.com/Guest-Articles/2020/Skeletal-Animation is CORRECT
                 }
-                this->scene_meshes_.emplace_back(std::make_shared<Mesh>(vd, id));
+                GameObjectDescription desc;
+                desc.type = GameObjectType::Mesh;
+                auto mesh_go = GameObjectFactory::Create<Mesh>(desc, vd, id);
+                this->scene_meshes_.emplace_back(mesh_go);
             }
 
             PRINT("num of meshes: " << this->scene_meshes_.size());
