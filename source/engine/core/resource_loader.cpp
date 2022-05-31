@@ -68,9 +68,9 @@ namespace vEngine
         void ResourceLoader::AddSearchPath(const std::string path) 
         {
             std::filesystem::path p = path;
-            if(std::filesystem::exists(p) == false) return;
-
             if(p.is_relative()) p = std::filesystem::absolute(p);
+
+            if(std::filesystem::exists(p) == false) return;
 
             this->search_paths_[p.string()] = p;
         }

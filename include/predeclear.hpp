@@ -7,20 +7,20 @@
 #include <memory>
 namespace vEngine
 {
-    #define CLASS_AND_SHARED_POINTER(name) \
+#define CLASS_AND_SHARED_POINTER(name) \
     class name;                        \
     typedef std::shared_ptr<name> name##SharedPtr;
 
-    #define CLASS_AND_SHARED_WEAK_POINTER(name)        \
+#define CLASS_AND_SHARED_WEAK_POINTER(name)        \
     class name;                                    \
     typedef std::shared_ptr<name> name##SharedPtr; \
     typedef std::weak_ptr<name> name##WeakPtr;
 
-    #define CLASS_AND_UNIQUE_POINTER(name) \
+#define CLASS_AND_UNIQUE_POINTER(name) \
     class name;                        \
     typedef std::unique_ptr<name> name##UniquePtr;
 
-    #define STRUCT_AND_SHARED_POINTER(name) \
+#define STRUCT_AND_SHARED_POINTER(name) \
     struct name;                        \
     typedef std::shared_ptr<name> name##SharedPtr;
 
@@ -106,6 +106,12 @@ namespace vEngine
 
         STRUCT_AND_SHARED_POINTER(Shader)
     }  // namespace Rendering
+
+    namespace Animation
+    {
+        CLASS_AND_SHARED_POINTER(Animation)
+        CLASS_AND_SHARED_POINTER(AnimationClip)
+    }
 
 #undef CLASS_AND_SHARED_POINTER
 #undef CLASS_AND_UNIQUE_POINTER

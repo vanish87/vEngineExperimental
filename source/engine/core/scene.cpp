@@ -51,6 +51,7 @@ namespace vEngine
             this->CreateMaterials(scene);
             this->CreateTextures(scene);
             this->CreateCameras(scene);
+            this->CreateAnimations(scene);
 
             auto root = this->HandleNode(scene->mRootNode, scene);
             root->name_ = "Assimp Root";
@@ -99,11 +100,11 @@ namespace vEngine
         }
         void Scene::CreateMaterials(const aiScene* scene)
         {
+            auto vs_file = ResourceLoader::GetInstance().GetFilePath("vs.hlsl");
+            auto ps_file = ResourceLoader::GetInstance().GetFilePath("ps.hlsl");
             for (uint32_t mid = 0; mid < scene->mNumMaterials; ++mid)
             {
                 auto ai_mat = scene->mMaterials[mid];
-                auto vs_file = "shader/vs.hlsl";
-                auto ps_file = "shader/ps.hlsl";
                 auto mat = std::make_shared<Material>(vs_file, ps_file);
                 mat->Load();
                 this->scene_materials_.emplace_back(mat);
@@ -112,7 +113,7 @@ namespace vEngine
                 {
                     std::filesystem::path p = this->file_path_;
                     auto dir = p.parent_path();
-                    auto texture_path = dir / std::string(szPath.C_Str());
+                    auto texture_path = dir / std::string(szPath.data);
                     if(this->scene_textures_.find(texture_path.string()) == this->scene_textures_.end())
                     {
                         std::vector<byte> out;
@@ -145,8 +146,6 @@ namespace vEngine
             if (this->scene_materials_.size() == 0)
             {
                 PRINT("no materials for scene, add a default material");
-                auto vs_file = "shader/vs.hlsl";
-                auto ps_file = "shader/ps.hlsl";
                 auto mat = std::make_shared<Material>(vs_file, ps_file);
                 mat->Load();
                 this->scene_materials_.emplace_back(mat);
@@ -203,28 +202,58 @@ namespace vEngine
                         id.emplace_back(f.mIndices[fi]);
                     }
                 }
+                for (uint32_t b = 0; b < mesh->mNumBones; ++b)
+                {
+                    PRINT(mesh->mName.data << " has bones " << mesh->mBones[b]->mName.data << " with " << mesh->mBones[b]->mNumWeights << " weights");
+                    //mesh->mBones[b]->mOffsetMatrix will transform vertex from model space to pose/joint local space;
+                    //aiBone's document is confusing
+                    //https://learnopengl.com/Guest-Articles/2020/Skeletal-Animation is CORRECT
+                }
                 this->scene_meshes_.emplace_back(std::make_shared<Mesh>(vd, id));
             }
 
             PRINT("num of meshes: " << this->scene_meshes_.size());
+        }
+        void Scene::CreateAnimations(const aiScene* scene)
+        {
+            for(uint32_t i = 0; i < scene->mNumAnimations; ++i)
+            {
+                //each animation is an AnimationClip
+                auto anim = scene->mAnimations[i];
+                PRINT("handling animation" << anim->mName.data)
+                for(uint32_t c = 0; c < anim->mNumChannels; ++c)
+                {
+                    //Each channel defines node/bone it controls
+                    //for example
+                    //node->mNodeName = "Torso" contains key frames data for "Torso" Node/Bone in the scene
+                    //mNodeName could be aiNode or aiBone
+                    auto node = anim->mChannels[c];
+                    PRINT("channel " << node->mNodeName.data << " has " << node->mNumPositionKeys << " Key frame");
+                }
+
+            }
+
         }
         GameNodeSharedPtr Scene::HandleNode(const aiNode* node, const aiScene* scene)
         {
             GameNodeDescription desc;
             desc.type = GameNodeType::Transform;
             auto game_node = GameNodeFactory::Create(desc);
+            game_node->name_ = node->mName.data;
             //set transformation here
             auto transform = node->mTransformation;
             // parent->AddChild(game_node);
 
             for (uint32_t i = 0; i < node->mNumMeshes; ++i)
             {
+
                 auto mesh_node = GameNodeFactory::Create(desc);
                 // scene_meshes_ contains same mesh data as they are in aiScene
                 auto scene_mesh_id = node->mMeshes[i];
 
                 auto ai_mesh = scene->mMeshes[scene_mesh_id];
                 auto mesh = this->scene_meshes_[scene_mesh_id];
+                PRINT("aiNode " << node->mName.data << " with ai mesh name " << ai_mesh->mName.data);
 
                 ComponentDescription cdesc;
                 auto mesh_component = GameNodeFactory::Create<MeshComponent>(cdesc, mesh);

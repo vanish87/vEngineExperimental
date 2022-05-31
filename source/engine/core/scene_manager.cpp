@@ -25,10 +25,12 @@ namespace vEngine
         SceneManager::~SceneManager() {}
         void SceneManager::Init()
         {
-            ResourceLoader::GetInstance().AddSearchPath("resource");
-            ResourceLoader::GetInstance().AddSearchPath("sponza");
+            ResourceLoader::GetInstance().AddSearchPath("resources");
+            ResourceLoader::GetInstance().AddSearchPath("resources/shader");
+            ResourceLoader::GetInstance().AddSearchPath("resources/sponza");
 
-            auto file = ResourceLoader::GetInstance().GetFilePath("sponza.obj");
+            // auto file = ResourceLoader::GetInstance().GetFilePath("sponza.obj");
+            auto file = ResourceLoader::GetInstance().GetFilePath("model.dae");
             // this->root_ = std::make_shared<GameNode>();
             // this->scene_ = std::make_shared<Scene>("cornell-box.obj");
             // this->scene_ = std::make_shared<Scene>("bunny.obj");

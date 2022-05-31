@@ -67,13 +67,13 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_SOURCE_DIR}/resources
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/resources
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${PROJECT_SOURCE_DIR}/include/vengine/rendering/shared
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>/shader
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/resources/shader
 )
 # INSTALL(TARGETS ${PROJECT_NAME} 
 #         PUBLIC_HEADER DESTINATION $<TARGET_FILE_DIR:${PROJECT_NAME}

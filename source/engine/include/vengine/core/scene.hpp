@@ -63,6 +63,7 @@ namespace vEngine
                 void CreateMaterials(const aiScene* scene);
                 void CreateTextures(const aiScene* scene);
                 void CreateCameras(const aiScene* scene);
+                void CreateAnimations(const aiScene* scene);
 
                 GameNodeSharedPtr MakeTransformNode();
 
@@ -75,6 +76,7 @@ namespace vEngine
                 std::vector<MeshSharedPtr> scene_meshes_;
                 std::unordered_map<std::string, TextureSharedPtr> scene_textures_;
                 std::vector<MaterialSharedPtr> scene_materials_;
+                std::vector<Animation::AnimationSharedPtr> scene_animations_;
 				
         };
 
