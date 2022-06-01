@@ -274,9 +274,7 @@ namespace vEngine
             std::string mesh_name;
             if (this->IsJoint(node, mesh_name))
             {
-                GameNodeDescription desc;
-                desc.type = GameNodeType::Joint;
-                game_node = GameNodeFactory::Create(desc);
+                game_node = this->mesh_joints_[mesh_name][node->mName.data];
                 if (this->mesh_root_joint_.find(mesh_name) == this->mesh_root_joint_.end()) 
                 {
                     this->mesh_root_joint_[mesh_name] = std::dynamic_pointer_cast<Animation::Joint>(game_node);
