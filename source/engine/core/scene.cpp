@@ -19,6 +19,9 @@
 #include <vengine/core/scene.hpp>
 #include <vengine/core/transform_component.hpp>
 
+#include <vengine/animation/joint.hpp>
+#include <vengine/animation/skeleton.hpp>
+
 // #include <vengine/rendering/render_engine.hpp>
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -178,6 +181,7 @@ namespace vEngine
                 auto hasPos = mesh->HasPositions();
                 auto hasUV = mesh->HasTextureCoords(0);
                 auto hasNormal = mesh->HasNormals();
+                auto hasBones = mesh->HasBones();
 
                 std::vector<Vertex> vd;
                 std::vector<uint32_t> id;
@@ -203,12 +207,34 @@ namespace vEngine
                         id.emplace_back(f.mIndices[fi]);
                     }
                 }
-                for (uint32_t b = 0; b < mesh->mNumBones; ++b)
+                if(hasBones)
                 {
-                    PRINT(mesh->mName.data << " has bones " << mesh->mBones[b]->mName.data << " with " << mesh->mBones[b]->mNumWeights << " weights");
-                    //mesh->mBones[b]->mOffsetMatrix will transform vertex from model space to pose/joint local space;
-                    //aiBone's document is confusing
-                    //https://learnopengl.com/Guest-Articles/2020/Skeletal-Animation is CORRECT
+                    GameNodeDescription desc;
+                    desc.type = GameNodeType::Skeleton;
+                    auto skeleton = GameNodeFactory::Create(desc);
+                    for (uint32_t b = 0; b < mesh->mNumBones; ++b)
+                    {
+                        PRINT(mesh->mName.data << " has bones " << mesh->mBones[b]->mName.data << " with " << mesh->mBones[b]->mNumWeights << " weights");
+                        // mesh->mBones[b]->mOffsetMatrix will transform vertex from model space to pose/joint local space;
+                        // aiBone's document is confusing
+                        // https://learnopengl.com/Guest-Articles/2020/Skeletal-Animation is CORRECT
+                        auto bone = mesh->mBones[b];
+
+                        desc.type = GameNodeType::Joint;
+                        auto joint = std::dynamic_pointer_cast<Animation::Joint>(GameNodeFactory::Create(desc));
+                        joint->name_ = bone->mName.data;
+                        // joint->inverse_bind_pos_matrix_ = bone->mOffsetMatrix;
+                        for(uint32_t wid = 0; wid < bone->mNumWeights; ++wid)
+                        {
+                            auto aiWeight = bone->mWeights[wid];
+                            Animation::VertexWeight w;
+                            w.index = aiWeight.mVertexId;
+                            w.weight = aiWeight.mWeight;
+                            joint->weights.emplace_back(w);
+                        }
+
+                        this->mesh_joints_[mesh->mName.data][joint->name_] = joint;
+                    }
                 }
                 GameObjectDescription desc;
                 desc.type = GameObjectType::Mesh;
@@ -238,19 +264,42 @@ namespace vEngine
             }
 
         }
+
+
+
         GameNodeSharedPtr Scene::HandleNode(const aiNode* node, const aiScene* scene)
         {
-            GameNodeDescription desc;
-            desc.type = GameNodeType::Transform;
-            auto game_node = GameNodeFactory::Create(desc);
+            GameNodeSharedPtr game_node = nullptr;
+
+            std::string mesh_name;
+            if (this->IsJoint(node, mesh_name))
+            {
+                GameNodeDescription desc;
+                desc.type = GameNodeType::Joint;
+                game_node = GameNodeFactory::Create(desc);
+                if (this->mesh_root_joint_.find(mesh_name) == this->mesh_root_joint_.end()) 
+                {
+                    this->mesh_root_joint_[mesh_name] = std::dynamic_pointer_cast<Animation::Joint>(game_node);
+                }
+            }
+            else
+            {
+                GameNodeDescription desc;
+                desc.type = GameNodeType::Transform;
+                game_node = GameNodeFactory::Create(desc);
+            }
+
             game_node->name_ = node->mName.data;
             //set transformation here
             auto transform = node->mTransformation;
             // parent->AddChild(game_node);
+            std::string parentName = "None";
+            if(node->mParent != nullptr) parentName = node->mParent->mName.data;
 
+            PRINT("aiNode " << node->mName.data << " parent :" << parentName);
             for (uint32_t i = 0; i < node->mNumMeshes; ++i)
             {
-
+                GameNodeDescription desc;
                 auto mesh_node = GameNodeFactory::Create(desc);
                 // scene_meshes_ contains same mesh data as they are in aiScene
                 auto scene_mesh_id = node->mMeshes[i];

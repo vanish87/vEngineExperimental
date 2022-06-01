@@ -29,6 +29,8 @@ namespace vEngine
         {
             Raw,
             Transform,
+            Skeleton,
+            Joint,
             Camera,
         };
         enum class ComponentType

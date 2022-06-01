@@ -55,6 +55,8 @@ namespace vEngine
         void GameNode::AddChild(const GameNodeSharedPtr game_node)
         {
             // auto ptr = GameNode::shared_from_this();
+            if (game_node->parent_.expired() == false) PRINT_AND_BREAK("cannot add child");
+
             game_node->parent_ = weak_from_this();
             this->children_.push_back(game_node);
 
