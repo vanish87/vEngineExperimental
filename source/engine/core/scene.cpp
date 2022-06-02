@@ -20,7 +20,9 @@
 #include <vengine/core/transform_component.hpp>
 
 #include <vengine/animation/joint.hpp>
+#include <vengine/animation/joint_component.hpp>
 #include <vengine/animation/skeleton.hpp>
+#include <vengine/animation/skeleton_component.hpp>
 
 // #include <vengine/rendering/render_engine.hpp>
 /// A detailed namespace description, it
@@ -80,6 +82,19 @@ namespace vEngine
                 [&](IComponentSharedPtr comp)
                 {
                     comp->SetEnable(true);
+                    return true;
+                });
+
+            this->TraverseAllChildren<Animation::SkeletonComponent>(
+                [&](Animation::SkeletonComponentSharedPtr comp)
+                {
+                    comp->Owner()->TraverseAllChildren<Animation::JointComponent>(
+                        [&](Animation::JointComponentSharedPtr joint)
+                        {
+                            PRINT(joint->name_);
+                            return true;
+                        });
+
                     return true;
                 });
 
@@ -181,7 +196,7 @@ namespace vEngine
                 GameObjectDescription desc;
                 desc.type = GameObjectType::Mesh;
                 auto mesh_go = GameObjectFactory::Create<Mesh>(desc, mesh);
-                this->scene_meshes_.emplace_back(mesh_go);
+                this->scene_meshes_[mid] = mesh_go;
             }
 
             PRINT("num of meshes: " << this->scene_meshes_.size());
@@ -209,39 +224,52 @@ namespace vEngine
 
         bool Scene::IsJoint(const aiNode* node, Animation::JointSharedPtr& joint_found)
         {
+            if (node == nullptr) return false;
+
             auto joint_name = node->mName.data;
             for (const auto& m : this->scene_meshes_)
             {
-                if (m->joint_data_.find(joint_name) != m->joint_data_.end()) 
+                if (m.second->joint_data_.find(joint_name) != m.second->joint_data_.end()) 
                 {
-                    joint_found = m->joint_data_[joint_name];
+                    joint_found = m.second->joint_data_[joint_name];
                     return true;
                 }
             }
             return false;
         }
+
+        bool Scene::IsRootJoint(const aiNode* node, Animation::JointSharedPtr& joint_found)
+        {
+            Animation::JointSharedPtr parent;
+            return this->IsJoint(node, joint_found) && !this->IsJoint(node->mParent, parent);
+        }
         GameNodeSharedPtr Scene::HandleNode(const aiNode* node, const aiScene* scene)
         {
-            GameNodeSharedPtr game_node = nullptr;
+            GameNodeDescription desc;
+            desc.type = GameNodeType::Transform;
+            GameNodeSharedPtr return_node  = GameNodeFactory::Create(desc);
+            GameNodeSharedPtr current_node = return_node;
 
-            // std::string mesh_name;
             Animation::JointSharedPtr joint = nullptr;
-            // if (this->IsJoint(node, joint))
-            // {
-            //     game_node = this->mesh_joints_[mesh_name][node->mName.data];
-            //     if (this->mesh_root_joint_.find(mesh_name) == this->mesh_root_joint_.end()) 
-            //     {
-            //         this->mesh_root_joint_[mesh_name] = std::dynamic_pointer_cast<Animation::Joint>(game_node);
-            //     }
-            // }
-            // else
+            if (this->IsRootJoint(node, joint))
             {
-                GameNodeDescription desc;
-                desc.type = GameNodeType::Transform;
-                game_node = GameNodeFactory::Create(desc);
+                GameNodeDescription sdesc;
+                sdesc.type = GameNodeType::Skeleton;
+                return_node = GameNodeFactory::Create(sdesc);
+                return_node->AddChild(current_node);
+                return_node->name_ = "Skeleton_Root_" + std::string(node->mName.data);
             }
 
-            game_node->name_ = node->mName.data;
+            if(this->IsJoint(node, joint))
+            {
+                ComponentDescription cdesc;
+                auto joint_component = GameNodeFactory::Create<Animation::JointComponent>(cdesc);
+                joint_component->Reset(joint);
+                joint_component->name_ = node->mName.data;
+                current_node->AttachComponent(joint_component);
+            }
+
+            current_node->name_ = node->mName.data;
             //set transformation here
             auto transform = node->mTransformation;
             // parent->AddChild(game_node);
@@ -251,9 +279,9 @@ namespace vEngine
 
             for (uint32_t i = 0; i < node->mNumMeshes; ++i)
             {
-                GameNodeDescription desc;
-                desc.type = GameNodeType::Transform;
-                auto mesh_node = GameNodeFactory::Create(desc);
+                GameNodeDescription mdesc;
+                mdesc.type = GameNodeType::Transform;
+                auto mesh_node = GameNodeFactory::Create(mdesc);
                 // scene_meshes_ contains same mesh data as they are in aiScene
                 auto scene_mesh_id = node->mMeshes[i];
 
@@ -278,16 +306,16 @@ namespace vEngine
                 // mesh_node->Transform()->Scale() = float3(s, s, s);
                 // mesh_node->Transform()->Translate() = float3(0, 0, 1);
 
-                game_node->AddChild(mesh_node);
+                current_node->AddChild(mesh_node);
             }
 
             for (uint32_t c = 0; c < node->mNumChildren; ++c)
             {
                 auto child = this->HandleNode(node->mChildren[c], scene);
-                game_node->AddChild(child);
+                current_node->AddChild(child);
             }
 
-            return game_node;
+            return return_node;
         }
         void Scene::Update()
         {

@@ -68,6 +68,7 @@ namespace vEngine
                 GameNodeSharedPtr MakeTransformNode();
 
                 bool IsJoint(const aiNode* node, Animation::JointSharedPtr& joint_found);
+                bool IsRootJoint(const aiNode* node, Animation::JointSharedPtr& joint_found);
 
             private:
                 ResourceState state_;
@@ -75,7 +76,7 @@ namespace vEngine
 
                 std::vector<CameraComponentSharedPtr> scene_cameras_;
                 std::vector<LightComponentSharedPtr> scene_lights_;
-                std::vector<MeshSharedPtr> scene_meshes_;
+                std::unordered_map<int, MeshSharedPtr> scene_meshes_;
                 std::unordered_map<std::string, TextureSharedPtr> scene_textures_;
                 std::vector<MaterialSharedPtr> scene_materials_;
                 std::vector<Animation::AnimationSharedPtr> scene_animations_;
