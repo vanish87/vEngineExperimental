@@ -11,6 +11,7 @@
 #include <vengine/core/mesh.hpp>
 #include <vengine/core/resource_loader.hpp>
 #include <vengine/rendering/render_engine.hpp>
+#include <vengine/core/game_object_factory.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -21,110 +22,37 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Mesh::Mesh() : vertex_buffer_(nullptr), index_buffer_(nullptr)
+        Mesh::Mesh() : vertex_buffer_{nullptr}, index_buffer_{nullptr}, loaded{false}
         {
-            PRINT("mesh object created");
+            // PRINT("mesh object created");
         }
-        Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices)
+        Mesh::Mesh(const aiMesh* mesh): vertex_buffer_{nullptr}, index_buffer_{nullptr}, loaded{false}
         {
-            this->vertex_data_.clear();
-            this->index_data_.clear();
-
-            this->vertex_data_.insert(this->vertex_data_.end(), vertices.begin(), vertices.end());
-            this->index_data_.insert(this->index_data_.end(), indices.begin(), indices.end());
-
-            PRINT("Vertices count "<< this->vertex_data_.size()<<" indices count " << this->index_data_.size());
-
-            this->loaded = true;
+            this->Load(mesh);
+            PRINT("Vertices count " << this->vertex_data_.size() << " indices count " << this->index_data_.size() << " joint count " << this->joint_data_.size());
         }
 
         Mesh::~Mesh()
         {
             this->vertex_data_.clear();
             this->index_data_.clear();
+            this->joint_data_.clear();
         }
 
-        /// Load mesh from assimp lib
-        /// store them in cpu side, then update to gpu later
-        void Mesh::Load(const std::string file_name)
+        void Mesh::Load(const aiMesh* mesh)
         {
-            // PRINT("Load mesh from file " + file_name);
-            this->file_name_ = file_name;
-            PRINT_AND_BREAK("Not implemented");
-
-            // ResourceLoader::GetInstance().LoadAsync(shared_from_this(),
-            // [&](IResourceSharedPtr c)
-            // {
-            //     UNUSED_PARAMETER(c);
-            //     PRINT(this->file_name_ << " Resource loaded");
-            // });
-        }
-        ResourceState Mesh::CurrentState()
-        {
-            return ResourceState::Unknown;
-        }
-        bool Mesh::Load()
-        {
-            // this->file_name_ = "bunny.obj";
-            // PRINT("Load mesh from file " + this->file_name_);
-
-            Assimp::Importer importer;
-            auto pScene = importer.ReadFile(this->file_name_, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
-            this->HandleNode(pScene->mRootNode, pScene);
-
-            // auto z = 20.0f;
-            // Vertex v1;
-            // v1.pos = float3(-0.5f, 0.7f, z);
-            // Vertex v2;
-            // v2.pos = float3(-0.5f, -0.5, z);
-            // Vertex v3;
-            // v3.pos = float3(0.5f, -0.5f, z);
-            // Vertex v4;
-            // v4.pos = float3(0.5f, 0.5f, z);
-
-            // v1.color = v2.color = v3.color = v4.color = float4::One();
-
-            // this->vertex_data_.push_back(v1);
-            // this->vertex_data_.push_back(v2);
-            // this->vertex_data_.push_back(v3);
-            // this->vertex_data_.push_back(v4);
-
-            // this->index_data_.push_back(0);
-            // this->index_data_.push_back(3);
-            // this->index_data_.push_back(1);
-
-            // this->index_data_.push_back(3);
-            // this->index_data_.push_back(2);
-            // this->index_data_.push_back(1);
-
-            this->loaded = true;
-
-            return true;
-        }
-        bool Mesh::HandleNode(const aiNode* node, const aiScene* scene)
-        {
-            if (node->mNumMeshes > 0)
-            {
-                auto mesh = scene->mMeshes[node->mMeshes[0]];
-                this->HandleMeshNode(mesh, scene);
-                return true;
-            }
-
-            for (uint32_t c = 0; c < node->mNumChildren; ++c)
-            {
-                if (this->HandleNode(node->mChildren[c], scene)) return true;
-            }
-
-            return false;
-        }
-
-        void Mesh::HandleMeshNode(const aiMesh* mesh, const aiScene* scene)
-        {
-            UNUSED_PARAMETER(scene);
+            CHECK_ASSERT_NOT_NULL(mesh);
 
             auto hasPos = mesh->HasPositions();
             auto hasUV = mesh->HasTextureCoords(0);
             auto hasNormal = mesh->HasNormals();
+            // auto hasBones = mesh->HasBones();
+
+            this->vertex_data_.clear();
+            this->index_data_.clear();
+            this->joint_data_.clear();
+
+            this->name_ = mesh->mName.data;
 
             for (uint32_t i = 0; i < mesh->mNumVertices; ++i)
             {
@@ -147,6 +75,35 @@ namespace vEngine
                     this->index_data_.emplace_back(f.mIndices[fi]);
                 }
             }
+            // if (hasBones)
+            {
+                for (uint32_t b = 0; b < mesh->mNumBones; ++b)
+                {
+                    PRINT(mesh->mName.data << " has bones/joint " << mesh->mBones[b]->mName.data << " with " << mesh->mBones[b]->mNumWeights << " weights");
+                    // mesh->mBones[b]->mOffsetMatrix will transform vertex from model space to pose/joint local space;
+                    // aiBone's document is confusing
+                    // https://learnopengl.com/Guest-Articles/2020/Skeletal-Animation is CORRECT
+                    auto bone = mesh->mBones[b];
+
+                    GameObjectDescription jdesc;
+                    jdesc.type = GameObjectType::Joint;
+                    auto joint = GameObjectFactory::Create<Animation::Joint>(jdesc);
+                    joint->name_ = bone->mName.data;
+                    // joint->inverse_bind_pos_matrix_ = bone->mOffsetMatrix;
+                    for (uint32_t wid = 0; wid < bone->mNumWeights; ++wid)
+                    {
+                        auto aiWeight = bone->mWeights[wid];
+                        Animation::VertexWeight w;
+                        w.index = aiWeight.mVertexId;
+                        w.weight = aiWeight.mWeight;
+                        joint->weights.emplace_back(w);
+                    }
+
+                    this->joint_data_[joint->name_] = joint;
+                }
+            }
+
+            this->loaded = true;
         }
 
         /// Create GPU related buffer

@@ -34,6 +34,7 @@ namespace vEngine
 
                 // uuid
                 UUID uuid_;
+                std::string name_;
                 // type?
         };
     }  // namespace Core

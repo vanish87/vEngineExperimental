@@ -8,11 +8,11 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#include <vengine/animation/joint.hpp>
 #include <vengine/animation/skeleton.hpp>
 #include <vengine/core/game_node_factory.hpp>
 #include <vengine/core/transform.hpp>
 #include <vengine/core/transform_node.hpp>
+#include <vengine/animation/joint_component.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -41,24 +41,22 @@ namespace vEngine
                 {
                     ret = std::make_shared<TransformNode>();
                     ComponentDescription cdesc;
-                    auto t = Create<TransformComponent>(cdesc);
-                    ret->AttachComponent(t);
+                    ret->AttachComponent(Create<TransformComponent>(cdesc));
                 }
                 break;
                 case GameNodeType::Skeleton:
                 {
                     ret = std::make_shared<Skeleton>();
                     ComponentDescription cdesc;
-                    auto t = Create<TransformComponent>(cdesc);
-                    ret->AttachComponent(t);
+                    ret->AttachComponent(Create<TransformComponent>(cdesc));
                 }
                 break;
                 case GameNodeType::Joint:
                 {
-                    ret = std::make_shared<Joint>();
+                    ret = std::make_shared<GameNode>();
                     ComponentDescription cdesc;
-                    auto t = Create<TransformComponent>(cdesc);
-                    ret->AttachComponent(t);
+                    ret->AttachComponent(Create<TransformComponent>(cdesc));
+                    ret->AttachComponent(Create<JointComponent>(cdesc));
                 }
                 break;
 

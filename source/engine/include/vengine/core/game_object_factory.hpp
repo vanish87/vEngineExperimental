@@ -30,6 +30,7 @@ namespace vEngine
             Transform,
             Camera,
             Mesh,
+            Joint
         };
 
         struct GameObjectDescription

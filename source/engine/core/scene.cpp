@@ -178,67 +178,9 @@ namespace vEngine
             {
                 auto mesh = scene->mMeshes[mid];
 
-                auto hasPos = mesh->HasPositions();
-                auto hasUV = mesh->HasTextureCoords(0);
-                auto hasNormal = mesh->HasNormals();
-                auto hasBones = mesh->HasBones();
-
-                std::vector<Vertex> vd;
-                std::vector<uint32_t> id;
-
-                for (uint32_t i = 0; i < mesh->mNumVertices; ++i)
-                {
-                    Vertex v;
-                    v.pos = hasPos ? float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z) : float3(0, 0, 0);
-                    // v.pos *= 0.2f;
-                    // v.pos.z() = 0;
-                    v.normal = hasNormal ? float3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z) : float3(0, 0, 0);
-                    v.uv = hasUV ? float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y) : float2(0, 0);
-                    v.color = float4(1, 1, 1, 1);
-
-                    vd.emplace_back(v);
-                }
-
-                for (uint32_t i = 0; i < mesh->mNumFaces; ++i)
-                {
-                    auto f = mesh->mFaces[i];
-                    for (uint32_t fi = 0; fi < f.mNumIndices; ++fi)
-                    {
-                        id.emplace_back(f.mIndices[fi]);
-                    }
-                }
-                if(hasBones)
-                {
-                    GameNodeDescription desc;
-                    desc.type = GameNodeType::Skeleton;
-                    auto skeleton = GameNodeFactory::Create(desc);
-                    for (uint32_t b = 0; b < mesh->mNumBones; ++b)
-                    {
-                        PRINT(mesh->mName.data << " has bones " << mesh->mBones[b]->mName.data << " with " << mesh->mBones[b]->mNumWeights << " weights");
-                        // mesh->mBones[b]->mOffsetMatrix will transform vertex from model space to pose/joint local space;
-                        // aiBone's document is confusing
-                        // https://learnopengl.com/Guest-Articles/2020/Skeletal-Animation is CORRECT
-                        auto bone = mesh->mBones[b];
-
-                        desc.type = GameNodeType::Joint;
-                        auto joint = std::dynamic_pointer_cast<Animation::Joint>(GameNodeFactory::Create(desc));
-                        joint->name_ = bone->mName.data;
-                        // joint->inverse_bind_pos_matrix_ = bone->mOffsetMatrix;
-                        for(uint32_t wid = 0; wid < bone->mNumWeights; ++wid)
-                        {
-                            auto aiWeight = bone->mWeights[wid];
-                            Animation::VertexWeight w;
-                            w.index = aiWeight.mVertexId;
-                            w.weight = aiWeight.mWeight;
-                            joint->weights.emplace_back(w);
-                        }
-
-                        this->mesh_joints_[mesh->mName.data][joint->name_] = joint;
-                    }
-                }
                 GameObjectDescription desc;
                 desc.type = GameObjectType::Mesh;
-                auto mesh_go = GameObjectFactory::Create<Mesh>(desc, vd, id);
+                auto mesh_go = GameObjectFactory::Create<Mesh>(desc, mesh);
                 this->scene_meshes_.emplace_back(mesh_go);
             }
 
@@ -271,16 +213,16 @@ namespace vEngine
         {
             GameNodeSharedPtr game_node = nullptr;
 
-            std::string mesh_name;
-            if (this->IsJoint(node, mesh_name))
-            {
-                game_node = this->mesh_joints_[mesh_name][node->mName.data];
-                if (this->mesh_root_joint_.find(mesh_name) == this->mesh_root_joint_.end()) 
-                {
-                    this->mesh_root_joint_[mesh_name] = std::dynamic_pointer_cast<Animation::Joint>(game_node);
-                }
-            }
-            else
+            // std::string mesh_name;
+            // if (this->IsJoint(node, mesh_name))
+            // {
+            //     game_node = this->mesh_joints_[mesh_name][node->mName.data];
+            //     if (this->mesh_root_joint_.find(mesh_name) == this->mesh_root_joint_.end()) 
+            //     {
+            //         this->mesh_root_joint_[mesh_name] = std::dynamic_pointer_cast<Animation::Joint>(game_node);
+            //     }
+            // }
+            // else
             {
                 GameNodeDescription desc;
                 desc.type = GameNodeType::Transform;
@@ -293,8 +235,8 @@ namespace vEngine
             // parent->AddChild(game_node);
             std::string parentName = "None";
             if(node->mParent != nullptr) parentName = node->mParent->mName.data;
-
             PRINT("aiNode " << node->mName.data << " parent :" << parentName);
+
             for (uint32_t i = 0; i < node->mNumMeshes; ++i)
             {
                 GameNodeDescription desc;
@@ -392,31 +334,31 @@ namespace vEngine
         }
         void Scene::AddTestNode()
         {
-            auto vs_file = "shader/vs.hlsl";
-            auto ps_file = "shader/ps.hlsl";
-            auto mat = std::make_shared<Material>(vs_file, ps_file);
-            mat->Load();
+            // auto vs_file = "shader/vs.hlsl";
+            // auto ps_file = "shader/ps.hlsl";
+            // auto mat = std::make_shared<Material>(vs_file, ps_file);
+            // mat->Load();
 
-            auto gn = std::make_shared<GameNode>();
+            // auto gn = std::make_shared<GameNode>();
 
-            auto mrc = std::make_shared<Rendering::MeshRendererComponent>();
-            mrc->GO()->material_ = mat;
-            gn->AttachComponent(mrc);
-            auto mc = std::make_shared<Rendering::MeshComponent>();
-            mc->GO()->Load("bunny.obj");
-            gn->AttachComponent(mc);
+            // auto mrc = std::make_shared<Rendering::MeshRendererComponent>();
+            // mrc->GO()->material_ = mat;
+            // gn->AttachComponent(mrc);
+            // auto mc = std::make_shared<Rendering::MeshComponent>();
+            // mc->GO()->Load("bunny.obj");
+            // gn->AttachComponent(mc);
 
-            // auto s = 2.0f;
-            // gn->SetScale(float3(s,s,s));
-            // gn->SetPos(float3(0.1f,0,1));
-            // mp->game_object_ = std::make_shared<Rendering::MeshRenderer>();
-            // auto mp = std::make_shared<MeshRendererComponent>();
-            // auto mp = std::make_shared<MeshComponent>();
-            this->AddToSceneNode(gn);
+            // // auto s = 2.0f;
+            // // gn->SetScale(float3(s,s,s));
+            // // gn->SetPos(float3(0.1f,0,1));
+            // // mp->game_object_ = std::make_shared<Rendering::MeshRenderer>();
+            // // auto mp = std::make_shared<MeshRendererComponent>();
+            // // auto mp = std::make_shared<MeshComponent>();
+            // this->AddToSceneNode(gn);
 
-            auto camera = std::make_shared<CameraComponent>();
-            camera->GO()->target = Context::GetInstance().GetRenderEngine().back_buffer_;
-            this->AddToSceneNode(camera);
+            // auto camera = std::make_shared<CameraComponent>();
+            // camera->GO()->target = Context::GetInstance().GetRenderEngine().back_buffer_;
+            // this->AddToSceneNode(camera);
         }
         void Scene::AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node /*= nullptr*/)
         {

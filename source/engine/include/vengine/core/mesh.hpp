@@ -22,6 +22,7 @@
 #include <vengine/core/iresource.hpp>
 #include <vengine/core/element.hpp>
 #include <vengine/core/vector.hpp>
+#include <vengine/animation/joint.hpp>
 
 
 /// A brief namespace description.
@@ -48,22 +49,23 @@ namespace vEngine
         {
             // static_assert(std::is_base_of<IElement, T>::value, "T must derived from IElement");
         };
-        class VENGINE_API Mesh : public GameObject, public IResource 
+        class VENGINE_API Mesh : public GameObject
         {
             // static_assert(std::is_base_of<IElement, V>::value, "T must derived from IElement");
 
             public:
-                /// \brief brief constructor description.
+                /// \brief Construct a new empty Mesh object
+                ///
                 Mesh();
+                /// \brief Construct a new Mesh object with aiMesh
+                /// 
+                /// \param mesh aiMesh to load
+                Mesh(const aiMesh* mesh);
                 virtual ~Mesh();
-                virtual bool Load() override;
-                virtual ResourceState CurrentState() override;
-                void Load(const std::string file_name);
-                bool HandleNode(const aiNode* node, const aiScene* scene);
-                void HandleMeshNode(const aiMesh* mesh, const aiScene* scene);
+                void Load(const aiMesh* mesh);
                 void UpdateGPUBuffer();
 
-                Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
+                // Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
 
 
                 GraphicsBufferSharedPtr vertex_buffer_;
@@ -71,8 +73,8 @@ namespace vEngine
 
                 std::vector<Vertex> vertex_data_;
                 std::vector<uint32_t> index_data_;
+                std::unordered_map<std::string, Animation::JointSharedPtr> joint_data_;
 
-                std::string file_name_;
                 bool loaded = false;
                 //vertex
                 //index

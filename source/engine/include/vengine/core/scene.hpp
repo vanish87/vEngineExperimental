@@ -67,19 +67,19 @@ namespace vEngine
 
                 GameNodeSharedPtr MakeTransformNode();
 
-                bool IsJoint(const aiNode* node, std::string& mesh_name)
-                {
-                    auto name = node->mName.data;
-                    for(const auto& j : this->mesh_joints_)
-                    {
-                        if(j.second.find(name) != j.second.end()) 
-                        {
-                            mesh_name = j.first;
-                            return true;
-                        }
-                    }
-                    return false;
-                }
+                // bool IsJoint(const aiNode* node, std::string& mesh_name)
+                // {
+                //     auto name = node->mName.data;
+                //     for(const auto& j : this->mesh_joints_)
+                //     {
+                //         if(j.second.find(name) != j.second.end()) 
+                //         {
+                //             mesh_name = j.first;
+                //             return true;
+                //         }
+                //     }
+                //     return false;
+                // }
 
             private:
                 ResourceState state_;
@@ -94,8 +94,8 @@ namespace vEngine
 
                 //map mesh to it skeleton
                 //<mesh_name, <joint_name, joint>>
-                std::unordered_map<std::string, std::unordered_map<std::string, Animation::JointSharedPtr>> mesh_joints_;
-                std::unordered_map<std::string, Animation::JointSharedPtr> mesh_root_joint_;
+                // std::unordered_map<std::string, std::unordered_map<std::string, Animation::JointSharedPtr>> mesh_joints_;
+                // std::unordered_map<std::string, Animation::JointSharedPtr> mesh_root_joint_;
         };
 
     }  // namespace Core
