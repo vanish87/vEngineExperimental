@@ -207,14 +207,26 @@ namespace vEngine
 
         }
 
-
-
+        bool Scene::IsJoint(const aiNode* node, Animation::JointSharedPtr& joint_found)
+        {
+            auto joint_name = node->mName.data;
+            for (const auto& m : this->scene_meshes_)
+            {
+                if (m->joint_data_.find(joint_name) != m->joint_data_.end()) 
+                {
+                    joint_found = m->joint_data_[joint_name];
+                    return true;
+                }
+            }
+            return false;
+        }
         GameNodeSharedPtr Scene::HandleNode(const aiNode* node, const aiScene* scene)
         {
             GameNodeSharedPtr game_node = nullptr;
 
             // std::string mesh_name;
-            // if (this->IsJoint(node, mesh_name))
+            Animation::JointSharedPtr joint = nullptr;
+            // if (this->IsJoint(node, joint))
             // {
             //     game_node = this->mesh_joints_[mesh_name][node->mName.data];
             //     if (this->mesh_root_joint_.find(mesh_name) == this->mesh_root_joint_.end()) 
@@ -240,6 +252,7 @@ namespace vEngine
             for (uint32_t i = 0; i < node->mNumMeshes; ++i)
             {
                 GameNodeDescription desc;
+                desc.type = GameNodeType::Transform;
                 auto mesh_node = GameNodeFactory::Create(desc);
                 // scene_meshes_ contains same mesh data as they are in aiScene
                 auto scene_mesh_id = node->mMeshes[i];

@@ -67,19 +67,7 @@ namespace vEngine
 
                 GameNodeSharedPtr MakeTransformNode();
 
-                // bool IsJoint(const aiNode* node, std::string& mesh_name)
-                // {
-                //     auto name = node->mName.data;
-                //     for(const auto& j : this->mesh_joints_)
-                //     {
-                //         if(j.second.find(name) != j.second.end()) 
-                //         {
-                //             mesh_name = j.first;
-                //             return true;
-                //         }
-                //     }
-                //     return false;
-                // }
+                bool IsJoint(const aiNode* node, Animation::JointSharedPtr& joint_found);
 
             private:
                 ResourceState state_;

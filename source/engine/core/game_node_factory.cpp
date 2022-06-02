@@ -13,6 +13,7 @@
 #include <vengine/core/transform.hpp>
 #include <vengine/core/transform_node.hpp>
 #include <vengine/animation/joint_component.hpp>
+#include <vengine/animation/skeleton_component.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -46,9 +47,10 @@ namespace vEngine
                 break;
                 case GameNodeType::Skeleton:
                 {
-                    ret = std::make_shared<Skeleton>();
+                    ret = std::make_shared<GameNode>();
                     ComponentDescription cdesc;
                     ret->AttachComponent(Create<TransformComponent>(cdesc));
+                    ret->AttachComponent(Create<SkeletonComponent>(cdesc));
                 }
                 break;
                 case GameNodeType::Joint:
