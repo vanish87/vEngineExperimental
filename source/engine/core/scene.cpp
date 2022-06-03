@@ -7,8 +7,12 @@
 /// \author author_name
 /// \version version_number
 /// \date xxxx-xx-xxx
+#include <vengine/core/scene.hpp>
+
 #include <external/lodepng.h>
 
+#include <vengine/core/game_node_factory.hpp>
+#include <vengine/core/game_object_factory.hpp>
 #include <vengine/animation/bone.hpp>
 #include <vengine/animation/bone_component.hpp>
 #include <vengine/animation/joint.hpp>
@@ -16,13 +20,10 @@
 #include <vengine/animation/skeleton.hpp>
 #include <vengine/animation/skeleton_component.hpp>
 #include <vengine/core/camera_component.hpp>
-#include <vengine/core/game_node_factory.hpp>
-#include <vengine/core/game_object_factory.hpp>
 #include <vengine/core/material.hpp>
 #include <vengine/core/mesh.hpp>
 #include <vengine/core/mesh_renderer_component.hpp>
 #include <vengine/core/resource_loader.hpp>
-#include <vengine/core/scene.hpp>
 #include <vengine/core/transform_component.hpp>
 
 // #include <vengine/rendering/render_engine.hpp>
@@ -234,7 +235,8 @@ namespace vEngine
 
                     GameObjectDescription desc;
                     desc.type = GameObjectType::Joint;
-                    // auto joint = GameObjectFactory::Create<Animation::Joint>(desc);
+                    // auto joint = GameObjectFactory::Create<Animation::Joint>(desc, 1);
+                    auto joint = std::make_shared<Animation::Joint>();
                     for (uint32_t k = 0; k < node->mNumPositionKeys; ++k)
                     {
                         // joint->posi

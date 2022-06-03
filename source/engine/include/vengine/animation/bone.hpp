@@ -7,8 +7,8 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#ifndef _VENGINE_ANIMATION_JOINT_HPP
-#define _VENGINE_ANIMATION_JOINT_HPP
+#ifndef _VENGINE_ANIMATION_BONE_HPP
+#define _VENGINE_ANIMATION_BONE_HPP
 
 #pragma once
 
@@ -57,4 +57,4 @@ namespace vEngine
 
 }  // namespace vEngine
 
-#endif /* _VENGINE_ANIMATION_JOINT_HPP */
+#endif /* _VENGINE_ANIMATION_BONE_HPP */
