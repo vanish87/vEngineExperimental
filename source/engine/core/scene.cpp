@@ -255,7 +255,7 @@ namespace vEngine
                     for (k = 0; k < node->mNumScalingKeys; ++k)
                     {
                         auto scale = node->mScalingKeys[k];
-                        joint->position_keys_.emplace_back((float)scale.mTime, float3(scale.mValue.x, scale.mValue.y, scale.mValue.z));
+                        joint->scale_keys_.emplace_back((float)scale.mTime, float3(scale.mValue.x, scale.mValue.y, scale.mValue.z));
                     }
 
                     animation->joints_.push_back(joint);
