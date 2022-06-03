@@ -12,10 +12,13 @@
 
 #pragma once
 #include <VENGINE_API.hpp>
+#include <engine.hpp>
 #include <memory>
 #include <vengine/core/game_node.hpp>
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/core/icomponent.hpp>
+
+
 
 /// A brief namespace description.
 namespace vEngine

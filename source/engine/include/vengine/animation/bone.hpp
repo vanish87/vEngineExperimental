@@ -22,7 +22,6 @@ namespace vEngine
 {
     namespace Animation
     {
-		using namespace Core;
 
 		struct VertexWeight
 		{
@@ -34,7 +33,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Bone : public GameObject
+        class Bone : public Core::GameObject
         {
             public:
                 /// \brief brief constructor description.
@@ -45,7 +44,7 @@ namespace vEngine
 
 
 				std::vector<VertexWeight> weights;
-				float4x4 inverse_bind_pose_matrix_;
+				Core::float4x4 inverse_bind_pose_matrix_;
             public:
                 /// \brief A brief function description.
                 ///

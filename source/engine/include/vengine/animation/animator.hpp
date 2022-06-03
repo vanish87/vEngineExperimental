@@ -23,12 +23,11 @@ namespace vEngine
 {
     namespace Animation
     {
-        using namespace ::vEngine::Core;
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Animator : public GameObject
+        class Animator : public Core::GameObject
         {
             public:
                 /// \brief brief constructor description.

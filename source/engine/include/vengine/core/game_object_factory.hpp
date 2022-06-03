@@ -12,8 +12,8 @@
 
 #pragma once
 
-#include "engine.hpp"
-#include "vengine/core/game_object.hpp"
+#include <engine.hpp>
+#include <vengine/core/game_object.hpp>
 
 /// A brief namespace description.
 namespace vEngine

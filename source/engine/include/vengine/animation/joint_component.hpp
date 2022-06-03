@@ -26,7 +26,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class JointComponent : public Component<Joint>
+        class JointComponent : public Core::Component<Joint>
         {
             public:
                 /// \brief brief constructor description.

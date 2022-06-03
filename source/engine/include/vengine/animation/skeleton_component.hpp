@@ -21,12 +21,11 @@ namespace vEngine
 {
     namespace Animation
     {
-		using namespace Core;
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class SkeletonComponent : public Component<Skeleton>
+        class SkeletonComponent : public Core::Component<Skeleton>
         {
             public:
                 /// \brief brief constructor description.

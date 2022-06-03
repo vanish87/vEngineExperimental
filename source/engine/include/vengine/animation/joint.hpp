@@ -22,22 +22,20 @@ namespace vEngine
 {
     namespace Animation
     {
-        using namespace Core;
-
         /// \brief A brief class description.
         ///
         /// Joint is for animation clip
         /// Bone is for pose-vertex binding
-        class Joint : public GameObject
+        class Joint : public Core::GameObject
         {
             public:
                 /// \brief brief constructor description.
                 Joint();
                 virtual ~Joint();
 
-                std::vector<float3> position_keys_;
-                std::vector<quaternion> rotation_keys_;
-                std::vector<float3> scale_keys_;
+                std::vector<Core::float3> position_keys_;
+                std::vector<Core::quaternion> rotation_keys_;
+                std::vector<Core::float3> scale_keys_;
 
             public:
                 /// \brief A brief function description.
