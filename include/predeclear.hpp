@@ -115,6 +115,8 @@ namespace vEngine
         CLASS_AND_SHARED_POINTER(SkeletonComponent)
         CLASS_AND_SHARED_POINTER(Bone)
         CLASS_AND_SHARED_POINTER(BoneComponent)
+        CLASS_AND_SHARED_POINTER(Joint)
+        CLASS_AND_SHARED_POINTER(JointComponent)
     }
 
 #undef CLASS_AND_SHARED_POINTER

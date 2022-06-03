@@ -9,6 +9,12 @@
 /// \date xxxx-xx-xxx
 #include <external/lodepng.h>
 
+#include <vengine/animation/bone.hpp>
+#include <vengine/animation/bone_component.hpp>
+#include <vengine/animation/joint.hpp>
+#include <vengine/animation/joint_component.hpp>
+#include <vengine/animation/skeleton.hpp>
+#include <vengine/animation/skeleton_component.hpp>
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/game_node_factory.hpp>
 #include <vengine/core/game_object_factory.hpp>
@@ -18,11 +24,6 @@
 #include <vengine/core/resource_loader.hpp>
 #include <vengine/core/scene.hpp>
 #include <vengine/core/transform_component.hpp>
-
-#include <vengine/animation/bone.hpp>
-#include <vengine/animation/bone_component.hpp>
-#include <vengine/animation/skeleton.hpp>
-#include <vengine/animation/skeleton_component.hpp>
 
 // #include <vengine/rendering/render_engine.hpp>
 /// A detailed namespace description, it
@@ -81,7 +82,7 @@ namespace vEngine
                 [&](GameNodeSharedPtr gn)
                 {
                     auto p = gn->Parent().lock();
-                    auto pname = p!=nullptr?p->name_:"None";
+                    auto pname = p != nullptr ? p->name_ : "None";
                     // auto name = gn->HasComponent<TransformComponent>()?"Transform":"Raw";
                     // auto cname = gn->HasComponent<CameraComponent>()?"Camera":"Raw";
                     // PRINT("Game Node " << name << " " << cname << " " << gn->name_ << " Parent " << pname);
@@ -147,7 +148,7 @@ namespace vEngine
                     std::filesystem::path p = this->file_path_;
                     auto dir = p.parent_path();
                     auto texture_path = dir / std::string(szPath.data);
-                    if(this->scene_textures_.find(texture_path.string()) == this->scene_textures_.end())
+                    if (this->scene_textures_.find(texture_path.string()) == this->scene_textures_.end())
                     {
                         std::vector<byte> out;
 
@@ -217,23 +218,29 @@ namespace vEngine
         }
         void Scene::CreateAnimations(const aiScene* scene)
         {
-            for(uint32_t i = 0; i < scene->mNumAnimations; ++i)
+            for (uint32_t i = 0; i < scene->mNumAnimations; ++i)
             {
-                //each animation is an AnimationClip
+                // each animation is an AnimationClip
                 auto anim = scene->mAnimations[i];
                 PRINT("handling animation" << anim->mName.data)
-                for(uint32_t c = 0; c < anim->mNumChannels; ++c)
+                for (uint32_t c = 0; c < anim->mNumChannels; ++c)
                 {
-                    //Each channel defines node/bone it controls
-                    //for example
-                    //node->mNodeName = "Torso" contains key frames data for "Torso" Node/Bone in the scene
-                    //mNodeName could be aiNode or aiBone
+                    // Each channel defines node/bone it controls
+                    // for example
+                    // node->mNodeName = "Torso" contains key frames data for "Torso" Node/Bone in the scene
+                    // mNodeName could be aiNode or aiBone
                     auto node = anim->mChannels[c];
                     PRINT("channel " << node->mNodeName.data << " has " << node->mNumPositionKeys << " Key frame");
+
+                    GameObjectDescription desc;
+                    desc.type = GameObjectType::Joint;
+                    // auto joint = GameObjectFactory::Create<Animation::Joint>(desc);
+                    for (uint32_t k = 0; k < node->mNumPositionKeys; ++k)
+                    {
+                        // joint->posi
+                    }
                 }
-
             }
-
         }
 
         bool Scene::IsBone(const aiNode* node, Animation::BoneSharedPtr& bone_found)
@@ -243,7 +250,7 @@ namespace vEngine
             auto joint_name = node->mName.data;
             for (const auto& m : this->scene_meshes_)
             {
-                if (m.second->bone_data_.find(joint_name) != m.second->bone_data_.end()) 
+                if (m.second->bone_data_.find(joint_name) != m.second->bone_data_.end())
                 {
                     bone_found = m.second->bone_data_[joint_name];
                     return true;
@@ -258,7 +265,7 @@ namespace vEngine
 
             for (const auto& m : this->scene_meshes_)
             {
-                if (m.second->bone_data_.find(name) != m.second->bone_data_.end()) 
+                if (m.second->bone_data_.find(name) != m.second->bone_data_.end())
                 {
                     m.second->skeleton_ = skeleton;
                 }
@@ -274,7 +281,7 @@ namespace vEngine
         {
             GameNodeDescription desc;
             desc.type = GameNodeType::Transform;
-            GameNodeSharedPtr return_node  = GameNodeFactory::Create(desc);
+            GameNodeSharedPtr return_node = GameNodeFactory::Create(desc);
             GameNodeSharedPtr current_node = return_node;
 
             Animation::BoneSharedPtr bone = nullptr;
@@ -289,21 +296,21 @@ namespace vEngine
                 this->AttachToMesh(return_node, node->mName.data);
             }
 
-            if(this->IsBone(node, bone))
+            if (this->IsBone(node, bone))
             {
                 ComponentDescription cdesc;
-                auto joint_component = GameNodeFactory::Create<Animation::BoneComponent>(cdesc);
-                joint_component->Reset(bone);
-                joint_component->name_ = node->mName.data;
-                current_node->AttachComponent(joint_component);
+                auto bone_component = GameNodeFactory::Create<Animation::BoneComponent>(cdesc);
+                bone_component->Reset(bone);
+                bone_component->name_ = node->mName.data;
+                current_node->AttachComponent(bone_component);
             }
 
             current_node->name_ = node->mName.data;
-            //set transformation here
+            // set transformation here
             auto transform = node->mTransformation;
             // parent->AddChild(game_node);
             std::string parentName = "None";
-            if(node->mParent != nullptr) parentName = node->mParent->mName.data;
+            if (node->mParent != nullptr) parentName = node->mParent->mName.data;
             PRINT("aiNode " << node->mName.data << " parent :" << parentName);
 
             for (uint32_t i = 0; i < node->mNumMeshes; ++i)

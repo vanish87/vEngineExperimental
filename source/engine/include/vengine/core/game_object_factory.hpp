@@ -31,7 +31,8 @@ namespace vEngine
             Camera,
             Mesh,
             Material,
-            Bone
+            Bone,
+            Joint
         };
 
         struct GameObjectDescription
