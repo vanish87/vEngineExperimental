@@ -14,6 +14,7 @@
 
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
+#include <vengine/animation/joint.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -30,10 +31,13 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 AnimationClip();
+				virtual ~AnimationClip();
 
                 /// class variable description
                 float duration_;
 				float ticks_per_second_;
+
+				std::vector<JointSharedPtr> joints_;
 
             public:
                 /// \brief A brief function description.

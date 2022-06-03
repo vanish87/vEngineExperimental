@@ -80,7 +80,7 @@ namespace vEngine
                 std::unordered_map<int, MeshSharedPtr> scene_meshes_;
                 std::unordered_map<std::string, TextureSharedPtr> scene_textures_;
                 std::vector<MaterialSharedPtr> scene_materials_;
-                std::vector<Animation::AnimationSharedPtr> scene_animations_;
+                std::vector<Animation::AnimationClipSharedPtr> scene_animation_clips_;
 
                 //map mesh to it skeleton
                 //<mesh_name, <joint_name, joint>>

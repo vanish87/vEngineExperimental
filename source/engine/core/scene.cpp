@@ -19,6 +19,7 @@
 #include <vengine/animation/joint_component.hpp>
 #include <vengine/animation/skeleton.hpp>
 #include <vengine/animation/skeleton_component.hpp>
+#include <vengine/animation/animation_clip.hpp>
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/material.hpp>
 #include <vengine/core/mesh.hpp>
@@ -221,6 +222,9 @@ namespace vEngine
         {
             for (uint32_t i = 0; i < scene->mNumAnimations; ++i)
             {
+                GameObjectDescription desc;
+                desc.type = GameObjectType::AnimationClip;
+                auto animation = GameObjectFactory::Create<Animation::AnimationClip>(desc);
                 // each animation is an AnimationClip
                 auto anim = scene->mAnimations[i];
                 PRINT("handling animation" << anim->mName.data)
@@ -233,15 +237,31 @@ namespace vEngine
                     auto node = anim->mChannels[c];
                     PRINT("channel " << node->mNodeName.data << " has " << node->mNumPositionKeys << " Key frame");
 
-                    GameObjectDescription desc;
                     desc.type = GameObjectType::Joint;
-                    // auto joint = GameObjectFactory::Create<Animation::Joint>(desc, 1);
-                    auto joint = std::make_shared<Animation::Joint>();
-                    for (uint32_t k = 0; k < node->mNumPositionKeys; ++k)
+                    auto joint = GameObjectFactory::Create<Animation::Joint>(desc);
+                    joint->name_ = node->mNodeName.data;
+
+                    uint32_t k = 0;
+                    for (k = 0; k < node->mNumPositionKeys; ++k)
                     {
-                        // joint->posi
+                        auto pos = node->mPositionKeys[k];
+                        joint->position_keys_.emplace_back((float)pos.mTime, float3(pos.mValue.x, pos.mValue.y, pos.mValue.z));
                     }
+                    for (k = 0; k < node->mNumRotationKeys; ++k)
+                    {
+                        auto rotation = node->mRotationKeys[k];
+                        joint->rotation_keys_.emplace_back((float)rotation.mTime, quaternion(rotation.mValue.x, rotation.mValue.y, rotation.mValue.z, rotation.mValue.w));
+                    }
+                    for (k = 0; k < node->mNumScalingKeys; ++k)
+                    {
+                        auto scale = node->mScalingKeys[k];
+                        joint->position_keys_.emplace_back((float)scale.mTime, float3(scale.mValue.x, scale.mValue.y, scale.mValue.z));
+                    }
+
+                    animation->joints_.push_back(joint);
                 }
+
+                this->scene_animation_clips_.push_back(animation);
             }
         }
 

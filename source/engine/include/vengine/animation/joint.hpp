@@ -22,6 +22,13 @@ namespace vEngine
 {
     namespace Animation
     {
+        template <typename T>
+        struct JointKey
+        {
+                float time;
+                T value;
+                JointKey(float t, const T& val) : time{t}, value{val} {};
+        };
         /// \brief A brief class description.
         ///
         /// Joint is for animation clip
@@ -33,9 +40,9 @@ namespace vEngine
                 Joint();
                 virtual ~Joint();
 
-                std::vector<Core::float3> position_keys_;
-                std::vector<Core::quaternion> rotation_keys_;
-                std::vector<Core::float3> scale_keys_;
+                std::vector<JointKey<Core::float3>> position_keys_;
+                std::vector<JointKey<Core::quaternion>> rotation_keys_;
+                std::vector<JointKey<Core::float3>> scale_keys_;
 
             public:
                 /// \brief A brief function description.

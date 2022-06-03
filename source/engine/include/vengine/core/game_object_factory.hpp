@@ -32,7 +32,8 @@ namespace vEngine
             Mesh,
             Material,
             Bone,
-            Joint
+            Joint,
+            AnimationClip
         };
 
         struct GameObjectDescription
