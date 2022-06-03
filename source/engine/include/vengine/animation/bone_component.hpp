@@ -1,5 +1,5 @@
-/// \file joint_component.hpp
-/// \brief Head file for Joint component
+/// \file bone_component.hpp
+/// \brief Head file for Bone component
 ///
 /// A detailed file description.
 ///

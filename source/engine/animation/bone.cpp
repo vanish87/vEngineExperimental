@@ -1,6 +1,6 @@
 
-/// \file example_class.cpp
-/// \brief source file for class example.
+/// \file bone.cpp
+/// \brief source file for Bone
 ///
 /// A detailed file description.
 ///

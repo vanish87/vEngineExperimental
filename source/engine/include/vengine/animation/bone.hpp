@@ -1,5 +1,5 @@
-/// \file example_class.hpp
-/// \brief Head file for class dll.
+/// \file bone.hpp
+/// \brief Head file for Bone in mesh
 ///
 /// A detailed file description.
 ///

@@ -1,6 +1,5 @@
-
-/// \file joint_component.cpp
-/// \brief source file for Joint Component
+/// \file bone_component.cpp
+/// \brief source file for Bone Component
 ///
 /// A detailed file description.
 ///
@@ -31,5 +30,5 @@ namespace vEngine
             return 1;
         }
 
-    }  // namespace Core
+    }  // namespace Animation
 }  // namespace vEngine
