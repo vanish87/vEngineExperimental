@@ -227,7 +227,12 @@ namespace vEngine
                 auto animation = GameObjectFactory::Create<Animation::AnimationClip>(desc);
                 // each animation is an AnimationClip
                 auto anim = scene->mAnimations[i];
-                PRINT("handling animation" << anim->mName.data)
+
+                animation->name_ = anim->mName.data;
+                animation->duration_ = static_cast<float>(anim->mDuration);
+                animation->ticks_per_second_ = static_cast<float>(anim->mTicksPerSecond);
+                animation->total_frame_ = Math::FloorToInt(anim->mDuration * anim->mTicksPerSecond);
+                PRINT("handling animation" << anim->mName.data <<" with " << animation->total_frame_ <<" frames")
                 for (uint32_t c = 0; c < anim->mNumChannels; ++c)
                 {
                     // Each channel defines node/bone it controls
@@ -235,7 +240,7 @@ namespace vEngine
                     // node->mNodeName = "Torso" contains key frames data for "Torso" Node/Bone in the scene
                     // mNodeName could be aiNode or aiBone
                     auto node = anim->mChannels[c];
-                    PRINT("channel " << node->mNodeName.data << " has " << node->mNumPositionKeys << " Key frame");
+                    PRINT("channel " << node->mNodeName.data << " has " << node->mNumPositionKeys << " Key values");
 
                     desc.type = GameObjectType::Joint;
                     auto joint = GameObjectFactory::Create<Animation::Joint>(desc);

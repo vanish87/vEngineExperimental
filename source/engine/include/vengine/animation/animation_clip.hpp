@@ -36,6 +36,7 @@ namespace vEngine
                 /// class variable description
                 float duration_;
 				float ticks_per_second_;
+                uint32_t total_frame_;
 
 				std::vector<JointSharedPtr> joints_;
 
