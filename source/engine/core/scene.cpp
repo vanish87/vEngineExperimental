@@ -19,8 +19,8 @@
 #include <vengine/core/scene.hpp>
 #include <vengine/core/transform_component.hpp>
 
-#include <vengine/animation/joint.hpp>
-#include <vengine/animation/joint_component.hpp>
+#include <vengine/animation/bone.hpp>
+#include <vengine/animation/bone_component.hpp>
 #include <vengine/animation/skeleton.hpp>
 #include <vengine/animation/skeleton_component.hpp>
 
@@ -100,10 +100,10 @@ namespace vEngine
             this->TraverseAllChildren<Animation::SkeletonComponent>(
                 [&](Animation::SkeletonComponentSharedPtr comp)
                 {
-                    comp->Owner()->TraverseAllChildren<Animation::JointComponent>(
-                        [&](Animation::JointComponentSharedPtr joint)
+                    comp->Owner()->TraverseAllChildren<Animation::BoneComponent>(
+                        [&](Animation::BoneComponentSharedPtr bone)
                         {
-                            PRINT(joint->name_);
+                            PRINT(bone->name_);
                             return true;
                         });
 
@@ -236,16 +236,16 @@ namespace vEngine
 
         }
 
-        bool Scene::IsJoint(const aiNode* node, Animation::JointSharedPtr& joint_found)
+        bool Scene::IsBone(const aiNode* node, Animation::BoneSharedPtr& bone_found)
         {
             if (node == nullptr) return false;
 
             auto joint_name = node->mName.data;
             for (const auto& m : this->scene_meshes_)
             {
-                if (m.second->joint_data_.find(joint_name) != m.second->joint_data_.end()) 
+                if (m.second->bone_data_.find(joint_name) != m.second->bone_data_.end()) 
                 {
-                    joint_found = m.second->joint_data_[joint_name];
+                    bone_found = m.second->bone_data_[joint_name];
                     return true;
                 }
             }
@@ -258,17 +258,17 @@ namespace vEngine
 
             for (const auto& m : this->scene_meshes_)
             {
-                if (m.second->joint_data_.find(name) != m.second->joint_data_.end()) 
+                if (m.second->bone_data_.find(name) != m.second->bone_data_.end()) 
                 {
                     m.second->skeleton_ = skeleton;
                 }
             }
         }
 
-        bool Scene::IsRootJoint(const aiNode* node, Animation::JointSharedPtr& joint_found)
+        bool Scene::IsRootBone(const aiNode* node, Animation::BoneSharedPtr& bone_found)
         {
-            Animation::JointSharedPtr parent;
-            return this->IsJoint(node, joint_found) && !this->IsJoint(node->mParent, parent);
+            Animation::BoneSharedPtr parent;
+            return this->IsBone(node, bone_found) && !this->IsBone(node->mParent, parent);
         }
         GameNodeSharedPtr Scene::HandleNode(const aiNode* node, const aiScene* scene)
         {
@@ -277,8 +277,8 @@ namespace vEngine
             GameNodeSharedPtr return_node  = GameNodeFactory::Create(desc);
             GameNodeSharedPtr current_node = return_node;
 
-            Animation::JointSharedPtr joint = nullptr;
-            if (this->IsRootJoint(node, joint))
+            Animation::BoneSharedPtr bone = nullptr;
+            if (this->IsRootBone(node, bone))
             {
                 GameNodeDescription sdesc;
                 sdesc.type = GameNodeType::Skeleton;
@@ -289,11 +289,11 @@ namespace vEngine
                 this->AttachToMesh(return_node, node->mName.data);
             }
 
-            if(this->IsJoint(node, joint))
+            if(this->IsBone(node, bone))
             {
                 ComponentDescription cdesc;
-                auto joint_component = GameNodeFactory::Create<Animation::JointComponent>(cdesc);
-                joint_component->Reset(joint);
+                auto joint_component = GameNodeFactory::Create<Animation::BoneComponent>(cdesc);
+                joint_component->Reset(bone);
                 joint_component->name_ = node->mName.data;
                 current_node->AttachComponent(joint_component);
             }

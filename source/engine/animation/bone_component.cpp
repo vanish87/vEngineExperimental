@@ -8,7 +8,7 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#include <vengine/animation/joint_component.hpp>
+#include <vengine/animation/bone_component.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -19,12 +19,12 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        JointComponent::JointComponent() {}
-        JointComponent::~JointComponent() {}
+        BoneComponent::BoneComponent() {}
+        BoneComponent::~BoneComponent() {}
 
         /// A detailed function description, it
         /// should be 2 lines at least.
-        int JointComponent::GetVariable(int p1, float p2)
+        int BoneComponent::GetVariable(int p1, float p2)
         {
             UNUSED_PARAMETER(p1);
             UNUSED_PARAMETER(p2);

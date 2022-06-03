@@ -12,24 +12,29 @@
 
 #pragma once
 
+#include <engine.hpp>
+#include <vengine/core/game_object.hpp>
+
 /// A brief namespace description.
 namespace vEngine
 {
     namespace Animation
     {
+		using namespace Core;
 
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class AnimationClip
+        class AnimationClip : public GameObject
         {
             public:
                 /// \brief brief constructor description.
                 AnimationClip();
 
                 /// class variable description
-                int public_variable_;
+                float duration_;
+				float ticks_per_second_;
 
             public:
                 /// \brief A brief function description.

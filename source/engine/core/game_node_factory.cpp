@@ -12,7 +12,7 @@
 #include <vengine/core/game_node_factory.hpp>
 #include <vengine/core/transform.hpp>
 #include <vengine/core/transform_node.hpp>
-#include <vengine/animation/joint_component.hpp>
+#include <vengine/animation/bone_component.hpp>
 #include <vengine/animation/skeleton_component.hpp>
 
 /// A detailed namespace description, it
@@ -53,12 +53,12 @@ namespace vEngine
                     ret->AttachComponent(Create<SkeletonComponent>(cdesc));
                 }
                 break;
-                case GameNodeType::Joint:
+                case GameNodeType::Bone:
                 {
                     ret = std::make_shared<GameNode>();
                     ComponentDescription cdesc;
                     ret->AttachComponent(Create<TransformComponent>(cdesc));
-                    ret->AttachComponent(Create<JointComponent>(cdesc));
+                    ret->AttachComponent(Create<BoneComponent>(cdesc));
                 }
                 break;
 

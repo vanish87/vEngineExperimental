@@ -29,14 +29,14 @@ namespace vEngine
         Mesh::Mesh(const aiMesh* mesh): vertex_buffer_{nullptr}, index_buffer_{nullptr}, loaded{false}
         {
             this->Load(mesh);
-            PRINT("Vertices count " << this->vertex_data_.size() << " indices count " << this->index_data_.size() << " joint count " << this->joint_data_.size());
+            PRINT("Vertices count " << this->vertex_data_.size() << " indices count " << this->index_data_.size() << " joint count " << this->bone_data_.size());
         }
 
         Mesh::~Mesh()
         {
             this->vertex_data_.clear();
             this->index_data_.clear();
-            this->joint_data_.clear();
+            this->bone_data_.clear();
         }
 
         void Mesh::Load(const aiMesh* mesh)
@@ -50,7 +50,7 @@ namespace vEngine
 
             this->vertex_data_.clear();
             this->index_data_.clear();
-            this->joint_data_.clear();
+            this->bone_data_.clear();
 
             this->name_ = mesh->mName.data;
 
@@ -86,8 +86,8 @@ namespace vEngine
                     auto bone = mesh->mBones[b];
 
                     GameObjectDescription jdesc;
-                    jdesc.type = GameObjectType::Joint;
-                    auto joint = GameObjectFactory::Create<Animation::Joint>(jdesc);
+                    jdesc.type = GameObjectType::Bone;
+                    auto joint = GameObjectFactory::Create<Animation::Bone>(jdesc);
                     joint->name_ = bone->mName.data;
                     // joint->inverse_bind_pos_matrix_ = bone->mOffsetMatrix;
                     for (uint32_t wid = 0; wid < bone->mNumWeights; ++wid)
@@ -99,7 +99,7 @@ namespace vEngine
                         joint->weights.emplace_back(w);
                     }
 
-                    this->joint_data_[joint->name_] = joint;
+                    this->bone_data_[joint->name_] = joint;
                 }
             }
 

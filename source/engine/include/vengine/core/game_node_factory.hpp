@@ -30,7 +30,7 @@ namespace vEngine
             Raw,
             Transform,
             Skeleton,
-            Joint,
+            Bone,
             Camera,
         };
         enum class ComponentType
