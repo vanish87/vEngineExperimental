@@ -45,7 +45,7 @@ namespace vEngine
 
 
 				std::vector<VertexWeight> weights;
-				float4x4 inverse_bind_pos_matrix_;
+				float4x4 inverse_bind_pose_matrix_;
             public:
                 /// \brief A brief function description.
                 ///
