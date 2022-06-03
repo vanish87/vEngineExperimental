@@ -37,6 +37,17 @@ namespace vEngine
         {
             return value < min ? min : value > max ? max : value;
         }
+        template <typename T>
+        int CeilToInt(const T& value)
+        {
+            return static_cast<int>(value + 1);
+        }
+        template <typename T>
+        int FloorToInt(const T& value)
+        {
+            return static_cast<int>(value);
+        }
+        
         template <typename T, int N>
         void Identity(Matrix<T, N, N>& lhs)
         {

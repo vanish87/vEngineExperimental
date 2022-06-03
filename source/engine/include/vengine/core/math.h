@@ -128,6 +128,11 @@ namespace vEngine
         template <typename T>
         T Clamp(const T& value, const T& min, const T& max);
 
+        template <typename T>
+        int CeilToInt(const T& value);
+        template <typename T>
+        int FloorToInt(const T& value);
+
         //=================================================
         // Vector/Matrix related functions
 
