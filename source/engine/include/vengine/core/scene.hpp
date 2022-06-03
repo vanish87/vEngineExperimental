@@ -69,6 +69,7 @@ namespace vEngine
 
                 bool IsJoint(const aiNode* node, Animation::JointSharedPtr& joint_found);
                 bool IsRootJoint(const aiNode* node, Animation::JointSharedPtr& joint_found);
+                void AttachToMesh(const GameNodeSharedPtr skeleton, const std::string name);
 
             private:
                 ResourceState state_;

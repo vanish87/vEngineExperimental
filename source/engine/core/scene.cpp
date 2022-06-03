@@ -252,6 +252,19 @@ namespace vEngine
             return false;
         }
 
+        void Scene::AttachToMesh(const GameNodeSharedPtr skeleton, const std::string name)
+        {
+            CHECK_ASSERT(skeleton->HasComponent<Animation::SkeletonComponent>());
+
+            for (const auto& m : this->scene_meshes_)
+            {
+                if (m.second->joint_data_.find(name) != m.second->joint_data_.end()) 
+                {
+                    m.second->skeleton_ = skeleton;
+                }
+            }
+        }
+
         bool Scene::IsRootJoint(const aiNode* node, Animation::JointSharedPtr& joint_found)
         {
             Animation::JointSharedPtr parent;
@@ -271,7 +284,9 @@ namespace vEngine
                 sdesc.type = GameNodeType::Skeleton;
                 return_node = GameNodeFactory::Create(sdesc);
                 return_node->AddChild(current_node);
-                return_node->name_ = "Skeleton_Root_" + std::string(node->mName.data);
+                return_node->name_ = "Skeleton_Root";
+
+                this->AttachToMesh(return_node, node->mName.data);
             }
 
             if(this->IsJoint(node, joint))

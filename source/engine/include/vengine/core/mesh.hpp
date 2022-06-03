@@ -74,6 +74,7 @@ namespace vEngine
                 std::vector<Vertex> vertex_data_;
                 std::vector<uint32_t> index_data_;
                 std::unordered_map<std::string, Animation::JointSharedPtr> joint_data_;
+                GameNodeSharedPtr skeleton_;
 
                 bool loaded = false;
                 //vertex
