@@ -77,6 +77,18 @@ namespace vEngine
             // root_transform->Transform()->Scale() = float3(s, s, s);
             root_transform->Transform()->Translate() = float3(0.0f, -100, 100);
             // root_transform->Transform()->Translate() = float3(0.0f, 0, 1);
+            this->TraverseAllChildren<GameNode>(
+                [&](GameNodeSharedPtr gn)
+                {
+                    auto p = gn->Parent().lock();
+                    auto pname = p!=nullptr?p->name_:"None";
+                    // auto name = gn->HasComponent<TransformComponent>()?"Transform":"Raw";
+                    // auto cname = gn->HasComponent<CameraComponent>()?"Camera":"Raw";
+                    // PRINT("Game Node " << name << " " << cname << " " << gn->name_ << " Parent " << pname);
+                    PRINT("Game Node " << gn->name_ << " Parent " << pname);
+                    // PRINT(typeid(gn).name());
+                    return true;
+                });
 
             this->TraverseAllChildren<IComponent>(
                 [&](IComponentSharedPtr comp)
@@ -124,7 +136,9 @@ namespace vEngine
             for (uint32_t mid = 0; mid < scene->mNumMaterials; ++mid)
             {
                 auto ai_mat = scene->mMaterials[mid];
-                auto mat = std::make_shared<Material>(vs_file, ps_file);
+                GameObjectDescription desc;
+                desc.type = GameObjectType::Material;
+                auto mat = GameObjectFactory::Create<Material>(desc, vs_file, ps_file);
                 mat->Load();
                 this->scene_materials_.emplace_back(mat);
                 aiString szPath;

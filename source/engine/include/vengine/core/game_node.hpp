@@ -48,6 +48,17 @@ namespace vEngine
                 virtual void AttachComponent(const GameNodeSharedPtr component);
                 virtual void DetachComponent(const GameNodeSharedPtr component);
 
+                template <typename T>
+                bool HasComponent()
+                {
+                    for (auto c : this->children_)
+                    {
+                        auto go = std::dynamic_pointer_cast<T>(c);
+                        if (go != nullptr) return true;
+                    }
+                    return false;
+                }
+
                 // const float4x4 LocalTransform()
                 // {
                 //     return this->transform_.GetLocal();
