@@ -12,6 +12,7 @@
 
 #pragma once
 
+#include <vector>
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
 
@@ -32,6 +33,11 @@ namespace vEngine
 
                 /// class variable description
                 int public_variable_;
+
+                std::vector<BoneSharedPtr> GetBoneUpdated()
+                {
+                    return std::vector<BoneSharedPtr>();
+                }
 
             public:
                 /// \brief A brief function description.

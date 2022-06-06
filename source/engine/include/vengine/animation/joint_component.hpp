@@ -33,6 +33,11 @@ namespace vEngine
                 JointComponent();
                 virtual ~JointComponent();
 
+
+                //==============================================
+                //Joint Component is not needed
+
+
             public:
                 /// \brief A brief function description.
                 ///

@@ -33,6 +33,23 @@ namespace vEngine
                 AnimationClip();
 				virtual ~AnimationClip();
 
+
+                std::vector<JointSharedPtr> GetJointAtTime(const float currentTime)
+                {
+                    UNUSED_PARAMETER(currentTime);
+                    return std::vector<JointSharedPtr>();
+                }
+
+
+                // void Update(const float currentTime)
+                // {
+                //     //update all Joints with currentTime
+                //     for(const auto& j : this->joints_)
+                //     {
+
+                //     }
+                // }
+
                 /// class variable description
                 float duration_;
 				float ticks_per_second_;

@@ -35,8 +35,48 @@ namespace vEngine
 
                 /// class variable description
 
+                void Lerp()
+                {
+                    //do lerp between
+                    // current_clip_ and next_clip_
+
+                    //get a vector of joints
+                    auto joints = this->current_clip_->GetJointAtTime(this->current_time_);
+
+                    //generate pos/rot/scale for each joints
+                    //animation clip will update local bone data
+                    //bone component's transform will update scene node bone data
+
+
+                    // foreach joint in skeleton_
+                    // {
+
+                    // }
+                };
+                
+
+                void Setup(SkeletonSharedPtr skeleton, std::vector<AnimationClipSharedPtr> animations)
+                {
+                    this->skeleton_ = skeleton;
+                    this->animations_ = animations;
+                }
+
+                std::vector<JointSharedPtr> GetAnimatedJoints()
+                {
+                    return std::vector<JointSharedPtr>();
+                }
+
+                //also State management codes
+
+                float current_time_;
+                AnimationClipSharedPtr current_clip_;
+                AnimationClipSharedPtr next_clip_;
+
             public:
-                std::vector<AnimationClip> animations_;
+                std::vector<AnimationClipSharedPtr> animations_;
+
+                //skeleton is not needed here, animator just lerp clip values
+                SkeletonSharedPtr skeleton_;
         };
 
     }  // namespace Animation

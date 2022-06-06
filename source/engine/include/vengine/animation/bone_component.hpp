@@ -33,8 +33,19 @@ namespace vEngine
                 BoneComponent();
 				virtual ~BoneComponent();
 
+                void Update()
+                {
+                    //Just Get transform and set to it's bone game object
+                    //so that mesh renderer can get this transform to render mesh
+
+                    //get scene node transform form it's Transform component
+                    //nodeTransform = this->Owner()->Transform(); -> this transform will be update by animator with calculated TRS from AnimationClip
+                    //set final matrix =  nodeTransform
+                }
+
                 /// class variable description
                 int public_variable_;
+
 
             public:
                 /// \brief A brief function description.

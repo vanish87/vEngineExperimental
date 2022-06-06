@@ -32,6 +32,27 @@ namespace vEngine
                 SkeletonComponent();
                 virtual ~SkeletonComponent();
 
+                virtual void OnUpdate() override
+                {
+
+                    // auto skeleton = this->GO();
+
+                    // auto boneList = skeleton->GetBoneUpdated();
+
+                    // this->TraverseAllChildren<BoneComponent>(
+                    //     [&](BoneComponentSharedPtr bone)
+                    //     {
+                    //         // node->UpdateLocal(parent);
+                    //         // node->OnUpdate();
+                    //         auto transform = bone->Owner()->FirstOf<TransformComponent>();
+
+                    //         // auto pos = node->game_object_->Translate();
+                    //         // PRINT(pos.x() << " " << pos.y());
+                    //         // PRINT(node->name_);
+                    //         return true;
+                    //     });
+                }
+
             public:
                 /// \brief A brief function description.
                 ///
