@@ -163,6 +163,11 @@ namespace vEngine
         // template <typename T, int M = 4, int N = 4>
         // Vector<T, M> Multiply(const Vector<T, M>& lhs,
         //                       const Matrix<T, M, N>& rhs);
+        template <typename T>
+        Quaternion<T> Multiply(const Quaternion<T>& lhs, const Quaternion<T >& rhs);
+
+        template <typename T>
+        Matrix<T, 4, 4> ToMatrix(const Quaternion<T>& q);
 
         template <typename T, int M = 4, int S = 4, int N = 4>
         Matrix<T, M, N> Multiply(const Matrix<T, S, N>& lhs, const Matrix<T, M, S>& rhs);

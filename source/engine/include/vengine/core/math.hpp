@@ -47,7 +47,7 @@ namespace vEngine
         {
             return static_cast<int>(value);
         }
-        
+
         template <typename T, int N>
         void Identity(Matrix<T, N, N>& lhs)
         {
@@ -141,6 +141,36 @@ namespace vEngine
                 }
             }
 
+            return ret;
+        }
+        template <typename T>
+        Quaternion<T> Multiply(const Quaternion<T>& lhs, const Quaternion<T >& rhs)
+        {
+            return Quaternion<T>(
+                lhs.x() * rhs.x() - lhs.y() * rhs.y() - lhs.z() * rhs.z() - lhs.w() * rhs.w(),
+                lhs.y() * rhs.x() + lhs.x() * rhs.y() - lhs.w() * rhs.z() + lhs.z() * rhs.w(),
+                lhs.z() * rhs.x() + lhs.w() * rhs.y() + lhs.x() * rhs.z() - lhs.y() * rhs.w(),
+                lhs.w() * rhs.x() - lhs.z() * rhs.y() + lhs.y() * rhs.z() + lhs.x() * rhs.w());
+        }
+        template <typename T>
+        Matrix<T, 4, 4> ToMatrix(const Quaternion<T>& q)
+        {
+            Matrix<T, 4, 4> ret;
+            auto a = q.x();
+            auto b = q.y();
+            auto c = q.z();
+            auto d = q.w();
+            ret[0][0] = 1 - 2 * c * c - 2 * d * d;
+            ret[0][1] = 2 * b * c - 2 * a * d;
+            ret[0][2] = 2 * a * c + 2 * b * d;
+
+            ret[1][0] = 2 * b * c + 2 * a * d;
+            ret[1][1] = 1 - 2 * b * b - 2 * d * d;
+            ret[1][2] = 2 * c * d - 2 * a * b;
+
+            ret[2][0] = 2 * b * d - 2 * a * c;
+            ret[2][1] = 2 * a * b + 2 * c * d;
+            ret[2][2] = 1 - 2 * b * b - 2 * c * c;
             return ret;
         }
 

@@ -14,6 +14,7 @@
 
 #include <engine.hpp>
 #include <vengine/core/vector.hpp>
+#include <vengine/core/math.h>
 
 /// A brief namespace description.
 namespace vEngine
@@ -173,7 +174,15 @@ namespace vEngine
                 {
                     return this->data_[0];
                 }
+                constexpr const_reference x() const noexcept
+                {
+                    return this->data_[0];
+                }
                 reference y() noexcept
+                {
+                    return this->data_[1];
+                }
+                constexpr const_reference y() const noexcept
                 {
                     return this->data_[1];
                 }
@@ -181,7 +190,15 @@ namespace vEngine
                 {
                     return this->data_[2];
                 }
+                constexpr const_reference z() const noexcept
+                {
+                    return this->data_[2];
+                }
                 reference w() noexcept
+                {
+                    return this->data_[3];
+                }
+                constexpr const_reference w() const noexcept
                 {
                     return this->data_[3];
                 }
@@ -203,8 +220,24 @@ namespace vEngine
                     return this->data_[index];
                 }
 
+                public:
+                // template<typename U>
+                // const Quaternion& operator*=(const Quaternion<U>& other) noexcept
+                // {
+                //     return Math::Multiply(*this, other);
+                // }
+                template<typename U>
+                const Quaternion<T> operator*(const Quaternion<U>& other) noexcept
+                {
+                    return Math::Multiply(*this, other);
+                }
+
+
                 void Norm();
-                void Conjugate();
+                Quaternion<T> Conjugate()
+                {
+                    return Quaternion<T>(this->x(), -this->y(), -this->z(), -this->w());
+                }
                 void Inverse();
         };
     }  // namespace Core
