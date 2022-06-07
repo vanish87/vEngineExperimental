@@ -92,7 +92,7 @@ namespace vEngine
 
         float VENGINE_API Sqrt(float x);
         float VENGINE_API Sin(float x);
-        float VENGINE_API Sin(Radian x);
+        float VENGINE_API Sin(radian x);
         float VENGINE_API Cos(float x);
         float VENGINE_API ArcCos(float x);
         float VENGINE_API Tan(float x);

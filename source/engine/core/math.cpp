@@ -64,7 +64,7 @@ namespace vEngine
         {
             return std::sin(x);
         }
-        float Sin(Radian x)
+        float Sin(radian x)
         {
             UNUSED_PARAMETER(x);
             return 0;

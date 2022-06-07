@@ -60,8 +60,13 @@ namespace vEngine
 
         typedef Quaternion<float> quaternion;
 
+        template <typename T>
         class Radian;
+        template <typename T>
         class Degree;
+
+        typedef Radian<float> radian;
+        typedef Degree<float> degree;
 
         template <typename T, int M, int N>
         class Matrix;
