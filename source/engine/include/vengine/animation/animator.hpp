@@ -55,9 +55,10 @@ namespace vEngine
                 };
                 
 
-                void Setup(SkeletonSharedPtr skeleton, std::vector<AnimationClipSharedPtr> animations)
+                // void Setup(SkeletonSharedPtr skeleton, std::vector<AnimationClipSharedPtr> animations)
+                void Setup(std::vector<AnimationClipSharedPtr> animations)
                 {
-                    this->skeleton_ = skeleton;
+                    // this->skeleton_ = skeleton;
                     this->animations_ = animations;
                 }
 
@@ -76,7 +77,7 @@ namespace vEngine
                 std::vector<AnimationClipSharedPtr> animations_;
 
                 //skeleton is not needed here, animator just lerp clip values
-                SkeletonSharedPtr skeleton_;
+                // SkeletonSharedPtr skeleton_;
         };
 
     }  // namespace Animation

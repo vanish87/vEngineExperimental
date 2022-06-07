@@ -14,6 +14,7 @@
 
 #include <engine.hpp>
 #include <vengine/core/component.hpp>
+#include <vengine/core/transform_node.hpp>
 #include <vengine/animation/animator.hpp>
 #include <vengine/animation/skeleton_component.hpp>
 #include <vengine/animation/bone_component.hpp>
@@ -36,8 +37,8 @@ namespace vEngine
                 virtual ~AnimatorComponent();
                 virtual void OnInit() override
                 {
-                    auto skeleton = this->FirstOf<SkeletonComponent>();
-                    this->GO()->Setup(skeleton->GO(), std::vector<AnimationClipSharedPtr>());
+                    // auto skeleton = this->FirstOf<SkeletonComponent>();
+                    // this->GO()->Setup(skeleton->GO(), std::vector<AnimationClipSharedPtr>());
                 };
                 virtual void OnUpdate() override
                 {
@@ -58,7 +59,12 @@ namespace vEngine
                             // node->OnUpdate();
 
 							//set bone's Transform to animated TRS
+							auto gn = std::dynamic_pointer_cast<Core::TransformNode>(node->Owner());
+							auto j = joints[0];
 
+							gn->Transform()->Translate() = j->position_keys_[0].value;
+							gn->Transform()->Rotation() = j->rotation_keys_[0].value;
+							gn->Transform()->Scale() = j->scale_keys_[0].value;
 
                             // auto pos = node->game_object_->Translate();
                             // PRINT(pos.x() << " " << pos.y());

@@ -290,6 +290,9 @@ namespace vEngine
         {
             CHECK_ASSERT(skeleton->HasComponent<Animation::SkeletonComponent>());
 
+            //TODO: attach this skeleton to MeshRendererComponent
+            //because transform related operation should handle by game node/component
+            //not by game object
             for (const auto& m : this->scene_meshes_)
             {
                 if (m.second->bone_data_.find(name) != m.second->bone_data_.end())

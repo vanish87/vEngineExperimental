@@ -55,6 +55,7 @@ namespace vEngine
 				float ticks_per_second_;
                 uint32_t total_frame_;
 
+                //a.k.a channel for animation clips
 				std::vector<JointSharedPtr> joints_;
 
             public:
