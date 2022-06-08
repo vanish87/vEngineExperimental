@@ -78,8 +78,9 @@ namespace vEngine
             // auto s = 0.01f;
             auto root_transform = std::dynamic_pointer_cast<TransformNode>(root);
             // root_transform->Transform()->Scale() = float3(s, s, s);
-            root_transform->Transform()->Translate() = float3(0.0f, -100, 100);
-            // root_transform->Transform()->Translate() = float3(0.0f, 0, 1);
+            // root_transform->Transform()->Translate() = float3(0.0f, -100, 100);
+            root_transform->Transform()->Translate() = float3(0.0f, 0, 1);
+            root_transform->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/4, float3(0,1,0));
             this->TraverseAllChildren<GameNode>(
                 [&](GameNodeSharedPtr gn)
                 {

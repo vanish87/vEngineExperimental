@@ -30,7 +30,8 @@ namespace vEngine
             ResourceLoader::GetInstance().AddSearchPath("resources/sponza");
 
             // auto file = ResourceLoader::GetInstance().GetFilePath("sponza.obj");
-            auto file = ResourceLoader::GetInstance().GetFilePath("model.dae");
+            // auto file = ResourceLoader::GetInstance().GetFilePath("model.dae");
+            auto file = ResourceLoader::GetInstance().GetFilePath("bunny.obj");
             // this->root_ = std::make_shared<GameNode>();
             // this->scene_ = std::make_shared<Scene>("cornell-box.obj");
             // this->scene_ = std::make_shared<Scene>("bunny.obj");

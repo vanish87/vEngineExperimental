@@ -21,10 +21,10 @@ namespace vEngine
 {
     namespace Core
     {
-        /// \brief A brief class description.
+        /// \brief Quaternion for rotation
         ///
-        /// A detailed class description, it
-        /// should be 2 lines at least.
+        /// real part of quaternion is x() component
+        /// so Quaternion is (x, yi, zj, wk)
         template <typename T = float>
         class Quaternion final
         {
@@ -239,6 +239,14 @@ namespace vEngine
                     return Quaternion<T>(this->x(), -this->y(), -this->z(), -this->w());
                 }
                 void Inverse();
+
+                public:
+
+                static const Quaternion<T>& Identity()
+                {
+                    static Quaternion<T> identity(1,0,0,0);
+                    return identity;
+                }
         };
     }  // namespace Core
 }  // namespace vEngine

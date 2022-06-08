@@ -34,7 +34,7 @@ namespace vEngine
                 Transform() noexcept
                 {
                     this->local_translate_ = float3::Zero();
-                    this->local_rotation_ = float4x4::Identity();
+                    this->local_rotation_ = quaternion::Identity();
                     this->local_scale_ = float3::One();
                     this->local_to_world_ = float4x4::Identity();
                 }
@@ -120,15 +120,21 @@ namespace vEngine
                 /// use {} to init data, \n
                 /// it will generate a compile error if
                 /// vector is initd with more parameter than it has
-                Transform(const float3& translate, const float4x4& rotation, const float3& scale) : local_translate_{translate}, local_rotation_{rotation}, local_scale_{scale} {}
+                Transform(const float3& translate, const quaternion& rotation, const float3& scale) : local_translate_{translate}, local_rotation_{rotation}, local_scale_{scale} {}
 
                 const float3& Translate() const
                 {
                     return this->local_translate_;
                 }
-                const float4x4& Rotation() const
+                const quaternion& Rotation() const
                 {
+                    // return Math::ToMatrix(this->local_rotation_);
                     return this->local_rotation_;
+                }
+                const float4x4 RotationAsMatrix() const
+                {
+                    return Math::ToMatrix(this->local_rotation_);
+                    // return this->local_rotation_;
                 }
                 const float3& Scale() const
                 {
@@ -139,9 +145,9 @@ namespace vEngine
                 {
                     return const_cast<float3&>(static_cast<const Transform*>(this)->Translate());
                 }
-                float4x4& Rotation()
+                quaternion& Rotation()
                 {
-                    return const_cast<float4x4&>(static_cast<const Transform*>(this)->Rotation());
+                    return const_cast<quaternion&>(static_cast<const Transform*>(this)->Rotation());
                 }
                 float3& Scale()
                 {
@@ -174,7 +180,7 @@ namespace vEngine
                     float4x4 r = float4x4::Identity();
                     float4x4 s;
                     Math::Translate(t, this->local_translate_);
-                    // Math::RotationAxis(r, this->local_rotation_);
+                    r = Math::ToMatrix(this->local_rotation_);
                     Math::Scale(s, this->local_scale_);
                     // return t * r * s;
                     return s * r * t;
@@ -186,12 +192,12 @@ namespace vEngine
 
             private:
                 float3 local_translate_;
-                float4x4 local_rotation_;
+                // float4x4 local_rotation_;
                 float3 local_scale_;
 
                 float4x4 local_to_world_;
 
-                quaternion q;
+                quaternion local_rotation_;
 
             public:
                 /// \brief A brief function description.
