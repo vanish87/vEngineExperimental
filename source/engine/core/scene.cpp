@@ -48,7 +48,6 @@ namespace vEngine
         {
             return this->state_;
         }
-
         bool Scene::Load()
         {
             // this->AddTestNode();
@@ -79,8 +78,8 @@ namespace vEngine
             auto root_transform = std::dynamic_pointer_cast<TransformNode>(root);
             // root_transform->Transform()->Scale() = float3(s, s, s);
             // root_transform->Transform()->Translate() = float3(0.0f, -100, 100);
-            root_transform->Transform()->Translate() = float3(0.0f, 0, 1);
-            root_transform->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/4, float3(0,1,0));
+            root_transform->Transform()->Translate() = float3(0.0f, 0, 20);
+            root_transform->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/2, float3(1,0,0));
             this->TraverseAllChildren<GameNode>(
                 [&](GameNodeSharedPtr gn)
                 {
@@ -386,6 +385,7 @@ namespace vEngine
         }
         void Scene::Update()
         {
+            // root_node->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/2+timer , float3(1,0,0));
             this->TraverseAllChildren<TransformComponent>(
                 [&](TransformComponentSharedPtr node)
                 {
