@@ -30,9 +30,9 @@ ps_out ps_main(vs_out input)
 	float3 reflect_dir = 2 * dot(light_dir, normal) * normal - light_dir;
 	// reflect_dir = reflect(light_dir, normal);
 
-	float diffse = dot(light_dir, normal);
+	float diffuse = max(0, dot(light_dir, normal));
 	float specular = pow(max(dot(reflect_dir, view_dir),0), 10);
-	float4 col = ambient_col + (diffuse_col * diffse  + specular_col * specular);
+	float4 col = ambient_col + (diffuse_col * diffuse  + specular_col * specular);
 	// return float4(normal, 1);
 	ps_out ret = (ps_out)0;
 	ret.color0 = col;
