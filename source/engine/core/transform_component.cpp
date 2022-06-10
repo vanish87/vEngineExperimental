@@ -23,10 +23,12 @@ namespace vEngine
         void TransformComponent::OnUpdate()
         {
             auto current = this->Owner();
-            auto parent = std::dynamic_pointer_cast<TransformNode>(current->Parent().lock());
-            if (parent != nullptr)
+            auto parent = current->Parent().lock();
+            if (parent != nullptr && parent->HasComponent<TransformComponent>())
             {
-                this->GO()->UpdateLocalToWorld(parent->Transform());
+                auto t = parent->FirstOf<TransformComponent>();
+                // PRINT("Node " << this->Owner()->name_ << "Update with " << parent->name_);
+                this->GO()->UpdateLocalToWorld(t->GO());
             }
             else
             {
