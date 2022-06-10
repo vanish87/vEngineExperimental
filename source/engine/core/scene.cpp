@@ -20,6 +20,7 @@
 #include <vengine/animation/skeleton.hpp>
 #include <vengine/animation/skeleton_component.hpp>
 #include <vengine/animation/animation_clip.hpp>
+#include <vengine/animation/animator_component.hpp>
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/material.hpp>
 #include <vengine/core/mesh.hpp>
@@ -74,12 +75,13 @@ namespace vEngine
             // this->AttachComponent(trans);
 
             // auto s = 1.5f;
-            // auto s = 0.01f;
+            auto s = 0.1f;
             auto root_transform = std::dynamic_pointer_cast<TransformNode>(root);
-            // root_transform->Transform()->Scale() = float3(s, s, s);
             // root_transform->Transform()->Translate() = float3(0.0f, -100, 100);
-            root_transform->Transform()->Translate() = float3(0.0f, 0, 20);
-            root_transform->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/2, float3(1,0,0));
+            root_transform->Transform()->Scale() = float3(s, s, s);
+            root_transform->Transform()->Translate() = float3(0.0f, 0, 10);
+            // root_transform->Transform()->Translate() = float3(0.0f, 0, 20);
+            // root_transform->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/2, float3(1,0,0));
             this->TraverseAllChildren<GameNode>(
                 [&](GameNodeSharedPtr gn)
                 {
@@ -103,6 +105,7 @@ namespace vEngine
             this->TraverseAllChildren<Animation::SkeletonComponent>(
                 [&](Animation::SkeletonComponentSharedPtr comp)
                 {
+                    PRINT("Scene Skeleton " << comp->name_);
                     comp->Owner()->TraverseAllChildren<Animation::BoneComponent>(
                         [&](Animation::BoneComponentSharedPtr bone)
                         {
@@ -232,7 +235,7 @@ namespace vEngine
                 animation->duration_ = static_cast<float>(anim->mDuration);
                 animation->ticks_per_second_ = static_cast<float>(anim->mTicksPerSecond);
                 animation->total_frame_ = Math::FloorToInt(anim->mDuration * anim->mTicksPerSecond);
-                PRINT("handling animation" << anim->mName.data <<" with " << animation->total_frame_ <<" frames")
+                PRINT("handling " << animation->name_ << " animation with " << animation->total_frame_ << " frames")
                 for (uint32_t c = 0; c < anim->mNumChannels; ++c)
                 {
                     // Each channel defines node/bone it controls
@@ -323,16 +326,34 @@ namespace vEngine
                 return_node->AddChild(current_node);
                 return_node->name_ = "Skeleton_Root";
 
+                ComponentDescription cdesc;
+                cdesc.type = ComponentType::Animator;
+                auto animator_component = GameNodeFactory::Create<Animation::AnimatorComponent>(cdesc);
+                animator_component->name_ = "Animator for " + std::string(node->mName.data);
+                animator_component->GO()->current_clip_ = this->scene_animation_clips_[0];
+                return_node->AttachComponent(animator_component);
+
                 this->AttachToMesh(return_node, node->mName.data);
             }
 
             if (this->IsBone(node, bone))
             {
                 ComponentDescription cdesc;
+                cdesc.type = ComponentType::Bone;
                 auto bone_component = GameNodeFactory::Create<Animation::BoneComponent>(cdesc);
                 bone_component->Reset(bone);
                 bone_component->name_ = node->mName.data;
                 current_node->AttachComponent(bone_component);
+
+                auto mesh_component = GameNodeFactory::Create<MeshComponent>(cdesc);
+                Mesh::GenerateCube(mesh_component->GO());
+                current_node->AttachComponent(mesh_component);
+
+                auto mesh_renderer = GameNodeFactory::Create<MeshRendererComponent>(cdesc);
+                current_node->AttachComponent(mesh_renderer);
+
+                auto mat = this->scene_materials_[0];
+                mesh_renderer->GO()->material_ = mat;
             }
 
             current_node->name_ = node->mName.data;
@@ -363,7 +384,7 @@ namespace vEngine
                 // mesh_node->AddChild(skeleton)
 
                 auto mesh_renderer = GameNodeFactory::Create<MeshRendererComponent>(cdesc);
-                mesh_node->AttachComponent(mesh_renderer);
+                // mesh_node->AttachComponent(mesh_renderer);
 
                 auto mat = this->scene_materials_[ai_mesh->mMaterialIndex];
                 mesh_renderer->GO()->material_ = mat;
@@ -386,11 +407,28 @@ namespace vEngine
         void Scene::Update()
         {
             // root_node->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/2+timer , float3(1,0,0));
+            this->TraverseAllChildren<Animation::AnimatorComponent>(
+                [&](Animation::AnimatorComponentSharedPtr node)
+                {
+                    // node->UpdateLocal(parent);
+                    node->OnUpdate();
+                    return true;
+                });
+
             this->TraverseAllChildren<TransformComponent>(
                 [&](TransformComponentSharedPtr node)
                 {
                     // node->UpdateLocal(parent);
                     node->OnUpdate();
+
+                    if(node->Owner()->name_ == "Torso")
+                    {
+                        auto pos = node->GO()->Translate();
+                        PRINT(pos.x() << " " << pos.y() << " " << pos.z());
+                        auto mat = node->GO()->LocalToWorldTransform();
+
+                        PRINT(mat[3][0] << " " << mat[3][1] << " " << mat[3][2]);
+                    }
 
                     // auto pos = node->game_object_->Translate();
                     // PRINT(pos.x() << " " << pos.y());

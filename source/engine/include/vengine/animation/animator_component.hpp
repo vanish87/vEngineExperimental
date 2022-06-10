@@ -50,9 +50,10 @@ namespace vEngine
                     auto animator = this->GO();
                     animator->Lerp();
 
-                    auto joints = animator->GetAnimatedJoints();
+                    // auto joints = animator->GetAnimatedJoints();
+					auto joints = animator->current_clip_->joints_;
 
-                    this->TraverseAllChildren<BoneComponent>(
+                    this->Owner()->TraverseAllChildren<BoneComponent>(
                         [&](BoneComponentSharedPtr node)
                         {
                             // node->UpdateLocal(parent);
@@ -60,11 +61,20 @@ namespace vEngine
 
 							//set bone's Transform to animated TRS
 							auto gn = std::dynamic_pointer_cast<Core::TransformNode>(node->Owner());
-							auto j = joints[0];
+							JointSharedPtr j = nullptr;
+							for(auto joint : joints)
+							{
+								if(joint->name_ == node->name_)
+								{
+									j = joint;
+									break;
+								}
+							}
+							// auto j = joints[0];
 
-							gn->Transform()->Translate() = j->position_keys_[0].value;
-							gn->Transform()->Rotation() = j->rotation_keys_[0].value;
-							gn->Transform()->Scale() = j->scale_keys_[0].value;
+							// gn->Transform()->Translate() = j->position_keys_[0].value;
+							// gn->Transform()->Rotation() = j->rotation_keys_[0].value;
+							// gn->Transform()->Scale() = j->scale_keys_[0].value;
 
                             // auto pos = node->game_object_->Translate();
                             // PRINT(pos.x() << " " << pos.y());

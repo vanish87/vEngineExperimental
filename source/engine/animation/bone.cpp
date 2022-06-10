@@ -18,7 +18,7 @@ namespace vEngine
     {
         /// constructor detailed defintion,
         /// should be 2 lines
-        Bone::Bone() : public_variable_(10) {}
+        Bone::Bone() : id_(-1) {}
 
         /// A detailed function description, it
         /// should be 2 lines at least.

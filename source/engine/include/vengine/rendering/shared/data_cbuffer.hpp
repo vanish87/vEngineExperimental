@@ -31,6 +31,8 @@ struct vs_in
 	float3 normal semantics_def(NORMAL);
 	float2 texcoord semantics_def(TEXCOORD0);
 	float4 color semantics_def(COLOR);
+	int4 bone_id semantics_def(BLENDINDICES);
+	float4 bone_weight semantics_def(BLENDWEIGHT);
 };
 struct vs_out 
 {
@@ -54,6 +56,7 @@ struct_def vEngineCameraConstantBuffer register_def(b0)
 struct_def vEngineObjectConstantBuffer register_def(b1)
 {
 	float4x4 local_to_world_matrix;
+	float4x4 bone_;
 };
 
 #endif /* _VENGINE_RENDERING_DATA_CBUFFER_HPP */

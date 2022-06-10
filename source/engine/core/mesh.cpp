@@ -39,6 +39,15 @@ namespace vEngine
             this->bone_data_.clear();
         }
 
+        float4x4 Mesh::AiMatrixToFloat4x4(aiMatrix4x4 mat)
+        {
+            return Math::Transpose(float4x4(
+                mat[0][0], mat[0][1], mat[0][2], mat[0][3], 
+                mat[1][0], mat[1][1], mat[1][2], mat[1][3], 
+                mat[2][0], mat[2][1], mat[2][2], mat[2][3], 
+                mat[3][0], mat[3][1], mat[3][2], mat[3][3]));
+        }
+
         void Mesh::Load(const aiMesh* mesh)
         {
             CHECK_ASSERT_NOT_NULL(mesh);
@@ -63,6 +72,9 @@ namespace vEngine
                 v.normal = hasNormal ? float3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z) : float3(0, 0, 0);
                 v.uv = hasUV ? float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y) : float2(0, 0);
                 v.color = float4(1, 1, 1, 1);
+
+                v.bone_id = int4(-1, -1, -1, -1);
+                v.bone_weight = float4::Zero();
 
                 this->vertex_data_.emplace_back(v);
             }
@@ -89,7 +101,8 @@ namespace vEngine
                     jdesc.type = GameObjectType::Bone;
                     auto joint = GameObjectFactory::Create<Animation::Bone>(jdesc);
                     joint->name_ = bone->mName.data;
-                    // joint->inverse_bind_pos_matrix_ = bone->mOffsetMatrix;
+                    joint->id_ = b;
+                    joint->inverse_bind_pose_matrix_ = this->AiMatrixToFloat4x4(bone->mOffsetMatrix);
                     for (uint32_t wid = 0; wid < bone->mNumWeights; ++wid)
                     {
                         auto aiWeight = bone->mWeights[wid];
@@ -97,10 +110,29 @@ namespace vEngine
                         w.index = aiWeight.mVertexId;
                         w.weight = aiWeight.mWeight;
                         joint->weights.emplace_back(w);
+
+                        auto vid = w.index;
+                        auto vweight = w.weight;
+
+                        auto& v = this->vertex_data_[vid];
+                        for(uint32_t vcount = 0; vcount < 4; ++vcount)
+                        {
+                            if (v.bone_id[vcount] != -1)
+                            {
+                                // CHECK_ASSERT(vcount < 3);
+                                continue;
+                            }
+
+                            v.bone_id[vcount] = b;
+                            v.bone_weight[vcount] = vweight;
+                        }
                     }
 
+                    CHECK_ASSERT(this->bone_data_.find(joint->name_) == this->bone_data_.end());
                     this->bone_data_[joint->name_] = joint;
+
                 }
+
             }
 
             this->loaded = true;
@@ -122,10 +154,13 @@ namespace vEngine
                 desc.resource.total_size = desc.resource.count * desc.resource.stride;
                 desc.resource.data = this->vertex_data_.data();
 
+                //Not used
                 desc.layout.elements_.push_back(ElementLayout::Element("POSITION", DataFormat::RGBFloat));
                 desc.layout.elements_.push_back(ElementLayout::Element("NORMAL", DataFormat::RGBFloat));
                 desc.layout.elements_.push_back(ElementLayout::Element("UV", DataFormat::RGFloat));
                 desc.layout.elements_.push_back(ElementLayout::Element("COLOR", DataFormat::RGBA32));
+                desc.layout.elements_.push_back(ElementLayout::Element("BLENDINDICES", DataFormat::RGBAInt));
+                desc.layout.elements_.push_back(ElementLayout::Element("BLENDWEIGHT", DataFormat::RGBAFloat));
                 desc.layout.topology = ElementTopology::TriangleList;
 
                 this->vertex_buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
@@ -144,6 +179,50 @@ namespace vEngine
                 desc.resource.data = this->index_data_.data();
                 this->index_buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
             }
+        }
+
+        void Mesh::GenerateCube(MeshSharedPtr mesh)
+        {
+            mesh->vertex_data_.clear();
+            mesh->index_data_.clear();
+
+            if (mesh->vertex_buffer_ != nullptr) mesh->vertex_buffer_.reset();
+            if (mesh->index_buffer_ != nullptr) mesh->index_buffer_.reset();
+
+            Vertex v0;
+            v0.pos = float3(0.5f, 0.5f, 0);
+            v0.normal = float3(0,0,-1);
+            v0.uv = float2(1,1);
+
+            Vertex v1;
+            v1.pos = float3(-0.5f, 0.5f, 0);
+            v1.normal = float3(0,0,-1);
+            v1.uv = float2(0,1);
+
+            Vertex v2;
+            v2.pos = float3(-0.5f, -0.5f, 0);
+            v2.normal = float3(0,0,-1);
+            v2.uv = float2(0,0);
+
+            Vertex v3;
+            v3.pos = float3(0.5f, -0.5f, 0);
+            v3.normal = float3(0,0,-1);
+            v3.uv = float2(1,0);
+
+            mesh->vertex_data_.push_back(v0);
+            mesh->vertex_data_.push_back(v1);
+            mesh->vertex_data_.push_back(v2);
+            mesh->vertex_data_.push_back(v3);
+
+            mesh->index_data_.push_back(0);
+            mesh->index_data_.push_back(1);
+            mesh->index_data_.push_back(2);
+
+            mesh->index_data_.push_back(0);
+            mesh->index_data_.push_back(2);
+            mesh->index_data_.push_back(3);
+
+            mesh->loaded = true;
         }
     }  // namespace Core
 

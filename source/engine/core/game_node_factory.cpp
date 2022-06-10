@@ -14,6 +14,7 @@
 #include <vengine/core/transform_node.hpp>
 #include <vengine/animation/bone_component.hpp>
 #include <vengine/animation/skeleton_component.hpp>
+#include <vengine/animation/animator_component.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -59,6 +60,14 @@ namespace vEngine
                     ComponentDescription cdesc;
                     ret->AttachComponent(Create<TransformComponent>(cdesc));
                     ret->AttachComponent(Create<BoneComponent>(cdesc));
+                }
+                break;
+                case GameNodeType::Animator:
+                {
+                    ret = std::make_shared<GameNode>();
+                    ComponentDescription cdesc;
+                    ret->AttachComponent(Create<AnimatorComponent>(cdesc));
+                    // ret->AttachComponent(Create<BoneComponent>(cdesc));
                 }
                 break;
 

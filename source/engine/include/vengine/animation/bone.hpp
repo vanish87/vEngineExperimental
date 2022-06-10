@@ -40,7 +40,8 @@ namespace vEngine
                 Bone();
 
                 /// class variable description
-                int public_variable_;
+                int id_;
+
 
 
 				std::vector<VertexWeight> weights;

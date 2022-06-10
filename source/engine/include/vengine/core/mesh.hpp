@@ -42,6 +42,8 @@ namespace vEngine
             float3 normal;
             float2 uv;
             float4 color;
+            int4 bone_id;
+            float4 bone_weight;
         };
 
         template <typename T = Vertex>
@@ -64,9 +66,9 @@ namespace vEngine
                 virtual ~Mesh();
                 void Load(const aiMesh* mesh);
                 void UpdateGPUBuffer();
+                float4x4 AiMatrixToFloat4x4(aiMatrix4x4 mat);
 
                 // Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
-
 
                 GraphicsBufferSharedPtr vertex_buffer_;
                 GraphicsBufferSharedPtr index_buffer_;
@@ -79,6 +81,9 @@ namespace vEngine
                 bool loaded = false;
                 //vertex
                 //index
+
+                public:
+                static void GenerateCube(MeshSharedPtr mesh);
 
         };
     }  // namespace Core

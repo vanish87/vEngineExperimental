@@ -24,6 +24,12 @@ namespace vEngine
     struct name;                        \
     typedef std::shared_ptr<name> name##SharedPtr;
 
+    template <typename T, std::size_t S>
+    constexpr std::size_t array_length(const T (&)[S])
+    {
+        return S;
+    }
+
     typedef std::int8_t int8_t;
     typedef std::int16_t int16_t;
     typedef std::int32_t int32_t;
@@ -114,6 +120,8 @@ namespace vEngine
 
     namespace Animation
     {
+        CLASS_AND_SHARED_POINTER(Animator)
+        CLASS_AND_SHARED_POINTER(AnimatorComponent)
         CLASS_AND_SHARED_POINTER(Animation)
         CLASS_AND_SHARED_POINTER(AnimationClip)
         CLASS_AND_SHARED_POINTER(Skeleton)

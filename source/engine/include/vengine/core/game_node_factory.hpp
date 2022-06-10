@@ -31,6 +31,7 @@ namespace vEngine
             Transform,
             Skeleton,
             Bone,
+            Animator,
             Camera,
         };
         enum class ComponentType
@@ -38,6 +39,8 @@ namespace vEngine
             Transform,
             Camera,
             MeshRenderer,
+            Animator,
+            Bone,
         };
         // template<typename T>
         struct ComponentDescription

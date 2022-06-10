@@ -14,6 +14,7 @@ namespace vEngine
             RGBFloat,
             RGBAFloat,
             R32Int,
+            RGBAInt,
         };
     }
 }  // namespace vEngine
