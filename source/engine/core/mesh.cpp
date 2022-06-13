@@ -95,21 +95,21 @@ namespace vEngine
                     // mesh->mBones[b]->mOffsetMatrix will transform vertex from model space to pose/joint local space;
                     // aiBone's document is confusing
                     // https://learnopengl.com/Guest-Articles/2020/Skeletal-Animation is CORRECT
-                    auto bone = mesh->mBones[b];
+                    auto ai_bone = mesh->mBones[b];
 
                     GameObjectDescription jdesc;
                     jdesc.type = GameObjectType::Bone;
-                    auto joint = GameObjectFactory::Create<Animation::Bone>(jdesc);
-                    joint->name_ = bone->mName.data;
-                    joint->id_ = b;
-                    joint->inverse_bind_pose_matrix_ = this->AiMatrixToFloat4x4(bone->mOffsetMatrix);
-                    for (uint32_t wid = 0; wid < bone->mNumWeights; ++wid)
+                    auto bone = GameObjectFactory::Create<Animation::Bone>(jdesc);
+                    bone->name_ = ai_bone->mName.data;
+                    bone->id_ = b;
+                    bone->inverse_bind_pose_matrix_ = this->AiMatrixToFloat4x4(ai_bone->mOffsetMatrix);
+                    for (uint32_t wid = 0; wid < ai_bone->mNumWeights; ++wid)
                     {
-                        auto aiWeight = bone->mWeights[wid];
+                        auto aiWeight = ai_bone->mWeights[wid];
                         Animation::VertexWeight w;
                         w.index = aiWeight.mVertexId;
                         w.weight = aiWeight.mWeight;
-                        joint->weights.emplace_back(w);
+                        bone->weights.emplace_back(w);
 
                         auto vid = w.index;
                         auto vweight = w.weight;
@@ -128,8 +128,8 @@ namespace vEngine
                         }
                     }
 
-                    CHECK_ASSERT(this->bone_data_.find(joint->name_) == this->bone_data_.end());
-                    this->bone_data_[joint->name_] = joint;
+                    CHECK_ASSERT(this->bone_data_.find(bone->name_) == this->bone_data_.end());
+                    this->bone_data_[bone->name_] = bone;
 
                 }
 
