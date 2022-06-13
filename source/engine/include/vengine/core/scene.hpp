@@ -71,6 +71,8 @@ namespace vEngine
                 bool IsRootBone(const aiNode* node, Animation::BoneSharedPtr& joint_found);
                 void AttachToMesh(const GameNodeSharedPtr skeleton, const std::string name);
 
+                void Print();
+
             private:
                 ResourceState state_;
                 std::string file_path_;

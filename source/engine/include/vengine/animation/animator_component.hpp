@@ -72,9 +72,10 @@ namespace vEngine
 							}
 							// auto j = joints[0];
 
-							// gn->Transform()->Translate() = j->position_keys_[0].value;
-							// gn->Transform()->Rotation() = j->rotation_keys_[0].value;
-							// gn->Transform()->Scale() = j->scale_keys_[0].value;
+							gn->Transform()->Translate() = j->position_keys_[0].value;
+							gn->Transform()->Rotation() = j->rotation_keys_[0].value;
+							gn->Transform()->Scale() = j->scale_keys_[0].value;
+							// gn->Transform()->Scale() = Core::float3(0.5f, 0.5f, 0.5f);
 
                             // auto pos = node->game_object_->Translate();
                             // PRINT(pos.x() << " " << pos.y());

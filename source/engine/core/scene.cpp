@@ -49,6 +49,44 @@ namespace vEngine
         {
             return this->state_;
         }
+        void Scene::Print()
+        {
+            this->TraverseAllChildren<GameNode>(
+                [&](GameNodeSharedPtr gn)
+                {
+                    auto p = gn->Parent().lock();
+                    auto pname = p != nullptr ? p->name_ : "None";
+                    // auto name = gn->HasComponent<TransformComponent>()?"Transform":"Raw";
+                    // auto cname = gn->HasComponent<CameraComponent>()?"Camera":"Raw";
+                    // PRINT("Game Node " << name << " " << cname << " " << gn->name_ << " Parent " << pname);
+                    auto comp = std::dynamic_pointer_cast<IComponent>(gn);
+                    if (comp != nullptr) return true;
+
+                    PRINT("Game Node " << gn->name_ << " Parent " << pname);
+                    gn->ForEachChild<IComponent>(
+                        [&](IComponentSharedPtr child)
+                        {
+                            auto cn = std::dynamic_pointer_cast<TransformComponent>(child);
+                            if (cn == nullptr) return;
+                            auto bone = std::dynamic_pointer_cast<Animation::BoneComponent>(child);
+                            auto name = cn->name_;
+                            if (bone != nullptr) name += " BoneComponent";
+
+                            PRINT("Game Node " << gn->name_ << " Has " << name);
+
+                            auto pos = cn->GO()->Translate();
+                            PRINT(pos.x() << " " << pos.y() << " " << pos.z());
+                            auto mat = cn->GO()->LocalToWorldTransform();
+                            PRINT("Global " << mat[3][0] << " " << mat[3][1] << " " << mat[3][2]);
+                            // PRINT(typeid(gn).name());
+                            // return true;
+                        });
+
+                    return true;
+                });
+        }
+        float timer;
+        TransformNodeSharedPtr transform_;
         bool Scene::Load()
         {
             // this->AddTestNode();
@@ -79,42 +117,10 @@ namespace vEngine
             auto root_transform = std::dynamic_pointer_cast<TransformNode>(root);
             // root_transform->Transform()->Translate() = float3(0.0f, -100, 100);
             root_transform->Transform()->Scale() = float3(s, s, s);
-            root_transform->Transform()->Translate() = float3(0.0f, 0, 3);
+            root_transform->Transform()->Translate() = float3(0.0f, 0, 4);
+            transform_ = root_transform;
             // root_transform->Transform()->Translate() = float3(0.0f, 0, 20);
-            root_transform->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/2, float3(1,0,0));
-            this->TraverseAllChildren<GameNode>(
-                [&](GameNodeSharedPtr gn)
-                {
-                    auto p = gn->Parent().lock();
-                    auto pname = p != nullptr ? p->name_ : "None";
-                    // auto name = gn->HasComponent<TransformComponent>()?"Transform":"Raw";
-                    // auto cname = gn->HasComponent<CameraComponent>()?"Camera":"Raw";
-                    // PRINT("Game Node " << name << " " << cname << " " << gn->name_ << " Parent " << pname);
-                    auto comp = std::dynamic_pointer_cast<IComponent>(gn);
-                    if (comp != nullptr) return true;
-
-                    PRINT("Game Node " << gn->name_ << " Parent " << pname);
-                    gn->ForEachChild<IComponent>(
-                        [&](IComponentSharedPtr child)
-                        {
-                            auto cn = std::dynamic_pointer_cast<TransformComponent>(child);
-                            if(cn == nullptr) return;
-                            auto bone = std::dynamic_pointer_cast<Animation::BoneComponent>(child);
-                            auto name = cn->name_;
-                            if(bone != nullptr) name += " BoneComponent";
-
-                            PRINT("Game Node " << gn->name_ << " Has " << name);
-
-                            auto pos = cn->GO()->Translate();
-                            PRINT(pos.x() << " " << pos.y() << " " << pos.z());
-                            auto mat = cn->GO()->LocalToWorldTransform();
-                            PRINT("Global " << mat[3][0] << " " << mat[3][1] << " " << mat[3][2]);
-                            // PRINT(typeid(gn).name());
-                            // return true;
-                        });
-
-                    return true;
-                });
+            // root_transform->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI / 2, float3(1, 0, 0));
 
             this->TraverseAllChildren<IComponent>(
                 [&](IComponentSharedPtr comp)
@@ -279,7 +285,7 @@ namespace vEngine
                     for (k = 0; k < node->mNumRotationKeys; ++k)
                     {
                         auto rotation = node->mRotationKeys[k];
-                        joint->rotation_keys_.emplace_back((float)rotation.mTime, quaternion(rotation.mValue.x, rotation.mValue.y, rotation.mValue.z, rotation.mValue.w));
+                        joint->rotation_keys_.emplace_back((float)rotation.mTime, quaternion(rotation.mValue.w, rotation.mValue.x, rotation.mValue.y, rotation.mValue.z));
                     }
                     for (k = 0; k < node->mNumScalingKeys; ++k)
                     {
@@ -405,7 +411,7 @@ namespace vEngine
                 // mesh_node->AddChild(skeleton)
 
                 auto mesh_renderer = GameNodeFactory::Create<MeshRendererComponent>(cdesc);
-                mesh_node->AttachComponent(mesh_renderer);
+                // mesh_node->AttachComponent(mesh_renderer);
 
                 auto mat = this->scene_materials_[ai_mesh->mMaterialIndex];
                 mesh_renderer->GO()->material_ = mat;
@@ -427,7 +433,10 @@ namespace vEngine
         }
         void Scene::Update()
         {
-            if(this->CurrentState() != ResourceState::Loaded) return;
+            if (this->CurrentState() != ResourceState::Loaded) return;
+
+            timer += 0.005f;
+            transform_->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/2+timer , float3(1,0,0));
 
             // root_node->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/2+timer , float3(1,0,0));
             this->TraverseAllChildren<Animation::AnimatorComponent>(
@@ -444,53 +453,13 @@ namespace vEngine
                     // node->UpdateLocal(parent);
                     node->OnUpdate();
 
-                    if (node->Owner()->name_ == "Torso")
-                    {
-                        auto pos = node->GO()->Translate();
-                        PRINT(pos.x() << " " << pos.y() << " " << pos.z());
-                        auto mat = node->GO()->LocalToWorldTransform();
-
-                        PRINT(mat[3][0] << " " << mat[3][1] << " " << mat[3][2]);
-                    }
-
                     // auto pos = node->game_object_->Translate();
                     // PRINT(pos.x() << " " << pos.y());
                     // PRINT(node->name_);
                     return true;
                 });
-            this->TraverseAllChildren<GameNode>(
-                [&](GameNodeSharedPtr gn)
-                {
-                    auto p = gn->Parent().lock();
-                    auto pname = p != nullptr ? p->name_ : "None";
-                    // auto name = gn->HasComponent<TransformComponent>()?"Transform":"Raw";
-                    // auto cname = gn->HasComponent<CameraComponent>()?"Camera":"Raw";
-                    // PRINT("Game Node " << name << " " << cname << " " << gn->name_ << " Parent " << pname);
-                    auto comp = std::dynamic_pointer_cast<IComponent>(gn);
-                    if (comp != nullptr) return true;
 
-                    PRINT("Game Node " << gn->name_ << " Parent " << pname);
-                    gn->ForEachChild<IComponent>(
-                        [&](IComponentSharedPtr child)
-                        {
-                            auto cn = std::dynamic_pointer_cast<TransformComponent>(child);
-                            if(cn == nullptr) return;
-                            auto bone = std::dynamic_pointer_cast<Animation::BoneComponent>(child);
-                            auto name = cn->name_;
-                            if(bone != nullptr) name += " BoneComponent";
-
-                            PRINT("Game Node " << gn->name_ << " Has " << name);
-
-                            auto pos = cn->GO()->Translate();
-                            PRINT(pos.x() << " " << pos.y() << " " << pos.z());
-                            auto mat = cn->GO()->LocalToWorldTransform();
-                            PRINT("Global " << mat[3][0] << " " << mat[3][1] << " " << mat[3][2]);
-                            // PRINT(typeid(gn).name());
-                            // return true;
-                        });
-
-                    return true;
-                });
+            // this->Print();
             // camera
             // frame
             // flush each scene object
