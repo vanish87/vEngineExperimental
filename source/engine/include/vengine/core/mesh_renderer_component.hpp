@@ -21,6 +21,8 @@
 #include <vengine/core/context.hpp>
 #include <vengine/rendering/render_engine.hpp>
 #include <vengine/rendering/shared/data_cbuffer.hpp>
+#include <vengine/animation/skeleton_component.hpp>
+#include <vengine/animation/bone_component.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -41,6 +43,23 @@ namespace vEngine
                 void OnBeginRender()
                 {
                     vEngineObjectConstantBuffer cb;
+                    auto mesh = this->GO()->renderable_;
+                    if(mesh->skeleton_ != nullptr)
+                    {
+                        auto skeleton = mesh->skeleton_->FirstOf<Animation::SkeletonComponent>();
+
+                        auto bones = skeleton->GetBones();
+                        auto count = 0;
+                        for (const auto& b : bones)
+                        {
+                            auto transform = b->Owner()->FirstOf<TransformComponent>();
+                            auto bone_matrix = transform->GO()->LocalToWorldTransform();
+                            auto offset = mesh->bone_data_[b->name_]->inverse_bind_pose_matrix_;
+
+                            cb.bone[count++] = offset * bone_matrix;
+                        }
+                    }
+
                     auto trans = std::dynamic_pointer_cast<TransformNode>(this->Owner());
                     cb.local_to_world_matrix = trans->Transform()->LocalToWorldTransform();
                     // cb.local_to_world_matrix = this->Transform()->LocalToWorldTransform();

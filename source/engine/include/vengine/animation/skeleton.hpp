@@ -34,10 +34,10 @@ namespace vEngine
                 /// class variable description
                 int public_variable_;
 
-                std::vector<BoneSharedPtr> GetBoneUpdated()
-                {
-                    return std::vector<BoneSharedPtr>();
-                }
+                // std::vector<BoneSharedPtr> GetBoneUpdated()
+                // {
+                //     return std::vector<BoneSharedPtr>();
+                // }
 
             public:
                 /// \brief A brief function description.

@@ -411,7 +411,7 @@ namespace vEngine
                 // mesh_node->AddChild(skeleton)
 
                 auto mesh_renderer = GameNodeFactory::Create<MeshRendererComponent>(cdesc);
-                // mesh_node->AttachComponent(mesh_renderer);
+                mesh_node->AttachComponent(mesh_renderer);
 
                 auto mat = this->scene_materials_[ai_mesh->mMaterialIndex];
                 mesh_renderer->GO()->material_ = mat;

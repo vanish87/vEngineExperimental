@@ -56,7 +56,7 @@ struct_def vEngineCameraConstantBuffer register_def(b0)
 struct_def vEngineObjectConstantBuffer register_def(b1)
 {
 	float4x4 local_to_world_matrix;
-	float4x4 bone_;
+	float4x4 bone[128];
 };
 
 #endif /* _VENGINE_RENDERING_DATA_CBUFFER_HPP */

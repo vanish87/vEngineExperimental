@@ -15,6 +15,7 @@
 #include <engine.hpp>
 #include <vengine/core/component.hpp>
 #include <vengine/animation/skeleton.hpp>
+#include <vengine/animation/bone_component.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -37,6 +38,8 @@ namespace vEngine
 
                     // auto skeleton = this->GO();
 
+                    // ============== 
+                    // this is done in Animator component
                     // auto boneList = skeleton->GetBoneUpdated();
 
                     // this->TraverseAllChildren<BoneComponent>(
@@ -51,6 +54,19 @@ namespace vEngine
                     //         // PRINT(node->name_);
                     //         return true;
                     //     });
+                }
+
+                std::vector<BoneComponentSharedPtr> GetBones()
+                {
+                    std::vector<BoneComponentSharedPtr> ret;
+                    this->Owner()->TraverseAllChildren<BoneComponent>(
+                        [&](BoneComponentSharedPtr node)
+                        {
+                            ret.push_back(node);
+                            return true;
+                        });
+
+                    return ret;
                 }
 
             public:
