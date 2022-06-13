@@ -190,37 +190,98 @@ namespace vEngine
             if (mesh->index_buffer_ != nullptr) mesh->index_buffer_.reset();
 
             Vertex v0;
-            v0.pos = float3(0.5f, 0.5f, 0);
+            v0.pos = float3(0.5f, 0.5f, 0.5f);
             v0.normal = float3(0,0,-1);
             v0.uv = float2(1,1);
 
             Vertex v1;
-            v1.pos = float3(-0.5f, 0.5f, 0);
+            v1.pos = float3(-0.5f, 0.5f, 0.5f);
             v1.normal = float3(0,0,-1);
             v1.uv = float2(0,1);
 
             Vertex v2;
-            v2.pos = float3(-0.5f, -0.5f, 0);
+            v2.pos = float3(-0.5f, -0.5f, 0.5f);
             v2.normal = float3(0,0,-1);
             v2.uv = float2(0,0);
 
             Vertex v3;
-            v3.pos = float3(0.5f, -0.5f, 0);
+            v3.pos = float3(0.5f, -0.5f, 0.5f);
             v3.normal = float3(0,0,-1);
             v3.uv = float2(1,0);
+
+            Vertex v4;
+            v4.pos = float3(0.5f, 0.5f, -0.5f);
+            v4.normal = float3(0,0,-1);
+            v4.uv = float2(1,0);
+            Vertex v5;
+            v5.pos = float3(-0.5f, 0.5f, -0.5f);
+            v5.normal = float3(0,0,-1);
+            v5.uv = float2(1,0);
+            Vertex v6;
+            v6.pos = float3(-0.5f, -0.5f, -0.5f);
+            v6.normal = float3(0,0,-1);
+            v6.uv = float2(1,0);
+            Vertex v7;
+            v7.pos = float3(0.5f, -0.5f, -0.5f);
+            v7.normal = float3(0,0,-1);
+            v7.uv = float2(1,0);
 
             mesh->vertex_data_.push_back(v0);
             mesh->vertex_data_.push_back(v1);
             mesh->vertex_data_.push_back(v2);
             mesh->vertex_data_.push_back(v3);
+            mesh->vertex_data_.push_back(v4);
+            mesh->vertex_data_.push_back(v5);
+            mesh->vertex_data_.push_back(v6);
+            mesh->vertex_data_.push_back(v7);
+
+            mesh->index_data_.push_back(0);
+            mesh->index_data_.push_back(2);
+            mesh->index_data_.push_back(1);
+
+            mesh->index_data_.push_back(0);
+            mesh->index_data_.push_back(3);
+            mesh->index_data_.push_back(2);
+
+            mesh->index_data_.push_back(4);
+            mesh->index_data_.push_back(5);
+            mesh->index_data_.push_back(6);
+
+            mesh->index_data_.push_back(4);
+            mesh->index_data_.push_back(6);
+            mesh->index_data_.push_back(7);
+
+            mesh->index_data_.push_back(0);
+            mesh->index_data_.push_back(4);
+            mesh->index_data_.push_back(3);
+
+            mesh->index_data_.push_back(3);
+            mesh->index_data_.push_back(4);
+            mesh->index_data_.push_back(7);
+
+            mesh->index_data_.push_back(5);
+            mesh->index_data_.push_back(1);
+            mesh->index_data_.push_back(6);
+
+            mesh->index_data_.push_back(1);
+            mesh->index_data_.push_back(6);
+            mesh->index_data_.push_back(2);
 
             mesh->index_data_.push_back(0);
             mesh->index_data_.push_back(1);
-            mesh->index_data_.push_back(2);
+            mesh->index_data_.push_back(5);
 
             mesh->index_data_.push_back(0);
+            mesh->index_data_.push_back(5);
+            mesh->index_data_.push_back(4);
+
             mesh->index_data_.push_back(2);
             mesh->index_data_.push_back(3);
+            mesh->index_data_.push_back(6);
+
+            mesh->index_data_.push_back(3);
+            mesh->index_data_.push_back(7);
+            mesh->index_data_.push_back(6);
 
             mesh->loaded = true;
         }
