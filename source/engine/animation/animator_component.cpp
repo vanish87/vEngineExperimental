@@ -19,7 +19,10 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        AnimatorComponent::AnimatorComponent() {}
+        AnimatorComponent::AnimatorComponent()
+        {
+            timer = 0;
+        }
         AnimatorComponent::~AnimatorComponent() {}
 
         /// A detailed function description, it

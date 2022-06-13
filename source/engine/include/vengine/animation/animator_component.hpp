@@ -37,6 +37,7 @@ namespace vEngine
                 virtual ~AnimatorComponent();
                 virtual void OnInit() override
                 {
+                    this->timer = 0;
                     // auto skeleton = this->FirstOf<SkeletonComponent>();
                     // this->GO()->Setup(skeleton->GO(), std::vector<AnimationClipSharedPtr>());
                 };
@@ -49,6 +50,9 @@ namespace vEngine
                     Core::Component<Animator>::OnUpdate();
                     auto animator = this->GO();
                     animator->Lerp();
+
+                    timer += 0.01f;
+                    int fid = Math::FloorToInt(timer);
 
                     // auto joints = animator->GetAnimatedJoints();
 					auto joints = animator->current_clip_->joints_;
@@ -72,9 +76,11 @@ namespace vEngine
 							}
 							// auto j = joints[0];
 
-							gn->Transform()->Translate() = j->position_keys_[0].value;
-							gn->Transform()->Rotation() = j->rotation_keys_[0].value;
-							gn->Transform()->Scale() = j->scale_keys_[0].value;
+                            auto size = j->position_keys_.size();
+
+							gn->Transform()->Translate() = j->position_keys_[fid%size].value;
+							gn->Transform()->Rotation() = j->rotation_keys_[fid%size].value;
+							gn->Transform()->Scale() = j->scale_keys_[fid%size].value;
 							// gn->Transform()->Scale() = Core::float3(0.5f, 0.5f, 0.5f);
 
                             // auto pos = node->game_object_->Translate();
@@ -83,6 +89,8 @@ namespace vEngine
                             return true;
                         });
                 };
+
+                float timer;
 
             public:
                 /// \brief A brief function description.
