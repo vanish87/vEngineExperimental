@@ -81,7 +81,7 @@ namespace vEngine
             root_transform->Transform()->Scale() = float3(s, s, s);
             root_transform->Transform()->Translate() = float3(0.0f, 0, 3);
             // root_transform->Transform()->Translate() = float3(0.0f, 0, 20);
-            // root_transform->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/2, float3(1,0,0));
+            root_transform->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/2, float3(1,0,0));
             this->TraverseAllChildren<GameNode>(
                 [&](GameNodeSharedPtr gn)
                 {
@@ -405,7 +405,7 @@ namespace vEngine
                 // mesh_node->AddChild(skeleton)
 
                 auto mesh_renderer = GameNodeFactory::Create<MeshRendererComponent>(cdesc);
-                // mesh_node->AttachComponent(mesh_renderer);
+                mesh_node->AttachComponent(mesh_renderer);
 
                 auto mat = this->scene_materials_[ai_mesh->mMaterialIndex];
                 mesh_renderer->GO()->material_ = mat;
