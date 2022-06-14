@@ -17,6 +17,7 @@ namespace vEngine
             TextureR,   // Read only texture
             TextureRW,  // as Shader Resource and Render Target
             TextureW,   // as Render Target only
+            Depth,
         };
 
         enum class GraphicsResourceUsage
@@ -104,6 +105,8 @@ namespace vEngine
 
         struct FrameBufferDescriptor
         {
+                uint32_t width;
+                uint32_t height;
                 DataFormat colorFormat;
                 DataFormat depthStencilFormat;
                 GraphicsResourceUsage usage;

@@ -34,6 +34,8 @@ namespace vEngine
                     return D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
                 case GraphicsResourceType::TextureW:
                     return D3D11_BIND_RENDER_TARGET;
+                case GraphicsResourceType::Depth:
+                    return D3D11_BIND_DEPTH_STENCIL;
                 default:
                     return D3D11_BIND_UNORDERED_ACCESS;
             }
@@ -80,6 +82,8 @@ namespace vEngine
                     return DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT;
                 case DataFormat::RGBAInt:
                     return DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_SINT;
+                case DataFormat::D24U8:
+                    return DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT;
                 default:
                     break;
             }
@@ -137,6 +141,11 @@ namespace vEngine
 
             auto backBufferTexture = std::make_shared<D3D11Texture>(pBackBuffer);
             FrameBufferDescriptor desc;
+            desc.colorFormat = DataFormat::RGBA32;
+            desc.depthStencilFormat = DataFormat::D24U8;
+            desc.width = width;
+            desc.height = height;
+            desc.usage = GraphicsResourceUsage::GPU_ReadWrite;
             this->back_buffer_ = std::make_shared<D3D11FrameBuffer>(backBufferTexture, desc);
             // this->Bind(frameBuffer);
 
@@ -148,10 +157,58 @@ namespace vEngine
             viewport.TopLeftY = 0;
             viewport.Width = static_cast<FLOAT>(width);
             viewport.Height = static_cast<FLOAT>(height);
+            viewport.MinDepth = 0;
+            viewport.MaxDepth = 1;
+
+            D3D11_RASTERIZER_DESC rasterizerStateDesc = {
+        D3D11_FILL_SOLID,		// FillMode
+        D3D11_CULL_NONE,
+        FALSE,					// FrontCounterClockwise
+        0,						// DepthBias
+        0.0f,					// DepthBiasClamp
+        0.0f,					// SlopeScaledDepthBias
+        TRUE,					// DepthClipEnable
+        FALSE,					// ScissorEnable
+        FALSE,					// MultisampleEnable
+        FALSE					// AntialiasedLineEnable
+    };
+
+    ID3D11RasterizerState * pRasterizerState = NULL;
+    hr = this->d3d_device_->CreateRasterizerState( &rasterizerStateDesc, &pRasterizerState );
+            CHECK_ASSERT(hr == S_OK);
+
+    this->d3d_imm_context_->RSSetState( pRasterizerState );
 
             d3d_imm_context_->RSSetViewports(1, &viewport);
 
-            // this->InitPipeline();
+               D3D11_DEPTH_STENCIL_DESC depthStencilStateDesc = {
+                    TRUE,								// DepthEnable
+                    D3D11_DEPTH_WRITE_MASK_ALL,			// DepthWriteMask
+                    D3D11_COMPARISON_LESS,				// DepthFunc
+                    FALSE,								// StencilEnable
+                    D3D11_DEFAULT_STENCIL_READ_MASK,	// StencilReadMask
+                    D3D11_DEFAULT_STENCIL_WRITE_MASK,	// StencilWriteMask
+                    {
+                        D3D11_STENCIL_OP_KEEP,			// FrontFace.StencilFailOp
+                        D3D11_STENCIL_OP_KEEP,			// FrontFace.StencilDepthFailOp
+                        D3D11_STENCIL_OP_KEEP,			// FrontFace.StencilPassOp
+                        D3D11_COMPARISON_ALWAYS			// FrontFace.StencilFunc
+                    },
+                    {
+                        D3D11_STENCIL_OP_KEEP,			// BackFace.StencilFailOp
+                        D3D11_STENCIL_OP_KEEP,			// BackFace.StencilDepthFailOp
+                        D3D11_STENCIL_OP_KEEP,			// BackFace.StencilPassOp
+                        D3D11_COMPARISON_ALWAYS			// BackFace.StencilFunc
+                    }
+                };
+
+                ID3D11DepthStencilState * pDepthStencilState = NULL;
+                hr = this->d3d_device_->CreateDepthStencilState(&depthStencilStateDesc, &pDepthStencilState);
+            CHECK_ASSERT(hr == S_OK);
+
+                this->d3d_imm_context_->OMSetDepthStencilState(pDepthStencilState, 0);
+
+                // this->InitPipeline();
         }
         void D3D11RenderEngine::Update()
         {
@@ -333,11 +390,10 @@ namespace vEngine
         }
         void D3D11RenderEngine::OnBind(const FrameBufferSharedPtr frameBuffer)
         {
-            // auto color = dynamic_cast<D3D11Texture*>(frameBuffer->GetColor(0).get());
             auto color = std::dynamic_pointer_cast<D3D11Texture>(frameBuffer->GetColor(0));
-            // auto depth = dynamic_cast<D3D11Texture*>(frameBuffer->GetDepthStencil().get());
-            this->d3d_imm_context_->OMSetRenderTargets(1, color->AsRTV().GetAddressOf(), nullptr);
-            // this->d3d_imm_context_->OMSetRenderTargets(1, color->AsRTV().GetAddressOf(), depth->AsDSV().Get());
+            auto depth = std::dynamic_pointer_cast<D3D11Texture>(frameBuffer->GetDepthStencil());
+            this->d3d_imm_context_->OMSetRenderTargets(1, color->AsRTV().GetAddressOf(), depth == nullptr ? nullptr : depth->AsDSV().Get());
+            // this->d3d_imm_context_->OMSetRenderTargets(1, color->AsRTV().GetAddressOf(), nullptr);
         }
         void D3D11RenderEngine::OnBind(const PipelineStateSharedPtr pipeline_state)
         {
@@ -376,7 +432,9 @@ namespace vEngine
         {
             // const float bg[4] = {0.0f, 0.2f, 0.4f, 1.0f};
             auto color_buffer = std::dynamic_pointer_cast<D3D11Texture>(this->current_frame_buffer_->GetColor(0));
+            auto depth_buffer = std::dynamic_pointer_cast<D3D11Texture>(this->current_frame_buffer_->GetDepthStencil());
             this->d3d_imm_context_->ClearRenderTargetView(color_buffer->AsRTV().Get(), color.data());
+            this->d3d_imm_context_->ClearDepthStencilView(depth_buffer->AsDSV().Get(), D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1, 0);
         }
 
         void D3D11RenderEngine::OnEndFrame()

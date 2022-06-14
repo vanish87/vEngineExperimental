@@ -51,7 +51,7 @@ namespace vEngine
                     init_data.SysMemPitch = desc.resource.pitch;
                     init_data.SysMemSlicePitch = 0;
 
-                    auto hr = device->CreateTexture2D(&d3d_desc, &init_data, this->tex2D_.GetAddressOf());
+                    auto hr = device->CreateTexture2D(&d3d_desc, desc.resource.data == nullptr ? nullptr : &init_data, this->tex2D_.GetAddressOf());
                     if (FAILED(hr))
                     {
                         PRINT_AND_BREAK("Cannot create Texture2D");
@@ -113,6 +113,14 @@ namespace vEngine
         }
         ComPtr<ID3D11DepthStencilView> D3D11Texture::AsDSV()
         {
+            if (this->ds_view_ == nullptr)
+            {
+                auto re = &Core::Context::GetInstance().GetRenderEngine();
+                auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
+                auto device = d3d_re->Device();
+
+                device->CreateDepthStencilView(this->tex2D_.Get(), nullptr, this->ds_view_.GetAddressOf());
+            }
             return this->ds_view_;
         }
 
