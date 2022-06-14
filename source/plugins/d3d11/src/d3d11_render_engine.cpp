@@ -159,10 +159,11 @@ namespace vEngine
             viewport.Height = static_cast<FLOAT>(height);
             viewport.MinDepth = 0;
             viewport.MaxDepth = 1;
+            d3d_imm_context_->RSSetViewports(1, &viewport);
 
             D3D11_RASTERIZER_DESC rasterizerStateDesc = {
         D3D11_FILL_SOLID,		// FillMode
-        D3D11_CULL_NONE,
+        D3D11_CULL_BACK,
         FALSE,					// FrontCounterClockwise
         0,						// DepthBias
         0.0f,					// DepthBiasClamp
@@ -177,9 +178,8 @@ namespace vEngine
     hr = this->d3d_device_->CreateRasterizerState( &rasterizerStateDesc, &pRasterizerState );
             CHECK_ASSERT(hr == S_OK);
 
-    this->d3d_imm_context_->RSSetState( pRasterizerState );
+    // this->d3d_imm_context_->RSSetState( pRasterizerState );
 
-            d3d_imm_context_->RSSetViewports(1, &viewport);
 
                D3D11_DEPTH_STENCIL_DESC depthStencilStateDesc = {
                     TRUE,								// DepthEnable
@@ -206,7 +206,7 @@ namespace vEngine
                 hr = this->d3d_device_->CreateDepthStencilState(&depthStencilStateDesc, &pDepthStencilState);
             CHECK_ASSERT(hr == S_OK);
 
-                this->d3d_imm_context_->OMSetDepthStencilState(pDepthStencilState, 0);
+                // this->d3d_imm_context_->OMSetDepthStencilState(pDepthStencilState, 0);
 
                 // this->InitPipeline();
         }
