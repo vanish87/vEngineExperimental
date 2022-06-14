@@ -120,7 +120,7 @@ namespace vEngine
             root_transform->Transform()->Translate() = float3(0.0f, 0, 4);
             transform_ = root_transform;
             // root_transform->Transform()->Translate() = float3(0.0f, 0, 20);
-            // root_transform->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI / 2, float3(1, 0, 0));
+            root_transform->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI / 2, float3(1, 0, 0));
 
             this->TraverseAllChildren<IComponent>(
                 [&](IComponentSharedPtr comp)
@@ -436,7 +436,7 @@ namespace vEngine
             if (this->CurrentState() != ResourceState::Loaded) return;
 
             timer += 0.005f;
-            transform_->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/2+timer , float3(1,0,0));
+            // transform_->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/2+timer , float3(1,0,0));
 
             // root_node->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/2+timer , float3(1,0,0));
             this->TraverseAllChildren<Animation::AnimatorComponent>(
