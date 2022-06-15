@@ -51,6 +51,8 @@ namespace vEngine
                         // auto count = 0;
                         for (const auto& b : bones)
                         {
+                            if(mesh->bone_data_.find(b->name_) == mesh->bone_data_.end()) continue;
+
                             auto transform = b->Owner()->FirstOf<TransformComponent>();
                             auto bone_matrix = transform->GO()->LocalToWorldTransform();
                             auto bone_go = mesh->bone_data_[b->name_];

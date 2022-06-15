@@ -117,7 +117,7 @@ namespace vEngine
             auto root_transform = root->FirstOf<TransformComponent>();
             // root_transform->Transform()->Translate() = float3(0.0f, -100, 100);
             root_transform->GO()->Scale() = float3(s, s, s);
-            root_transform->GO()->Translate() = float3(0.0f, 0, 4);
+            root_transform->GO()->Translate() = float3(0.0f, 0, 3);
             transform_ = root_transform;
             // root_transform->Transform()->Translate() = float3(0.0f, 0, 20);
             root_transform->GO()->Rotation() = Math::RotateAngleAxis(Math::PI / 2, float3(1, 0, 0));
@@ -436,7 +436,7 @@ namespace vEngine
             if (this->CurrentState() != ResourceState::Loaded) return;
 
             timer += 0.005f;
-            // transform_->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/2+timer , float3(1,0,0));
+            transform_->GO()->Rotation() = Math::RotateAngleAxis(Math::PI/2+timer , float3(1,0,0));
 
             // root_node->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/2+timer , float3(1,0,0));
             this->TraverseAllChildren<Animation::AnimatorComponent>(
