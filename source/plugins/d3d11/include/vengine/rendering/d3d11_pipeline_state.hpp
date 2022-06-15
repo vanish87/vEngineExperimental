@@ -35,6 +35,9 @@ namespace vEngine
                 ComPtr<ID3DBlob> ps_blob_;
                 ComPtr<ID3D11VertexShader> vs_;
                 ComPtr<ID3D11PixelShader> ps_;
+
+                ComPtr<ID3D11RasterizerState> rasterizer_state_;
+                ComPtr<ID3D11DepthStencilState> depth_stencil_state_;
         };
     }  // namespace Rendering
 }  // namespace vEngine

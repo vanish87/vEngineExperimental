@@ -43,6 +43,7 @@ namespace vEngine
                 static D3D11_USAGE ToD3DUsage(GraphicsResourceUsage usage);
                 static DXGI_FORMAT ToD3DFormat(DataFormat formart);
                 static DataFormat D3DFormatToDataFormat(DXGI_FORMAT formart);
+                static D3D11_RASTERIZER_DESC ToD3D11RasterizerDesc(RasterizerDescriptor desc);
 
                 /// \brief mainly used to create Resource Views(ie. RenderTargetView)
                 /// 

@@ -90,6 +90,56 @@ namespace vEngine
             CHECK_ASSERT(false);
             return DXGI_FORMAT::DXGI_FORMAT_UNKNOWN;
         }
+        D3D11_RASTERIZER_DESC D3D11RenderEngine::ToD3D11RasterizerDesc(RasterizerDescriptor desc) {
+            D3D11_RASTERIZER_DESC d3ddesc;
+            switch (desc.fill_mode)
+            {
+                case FillMode::Solid:
+                    d3ddesc.FillMode = D3D11_FILL_SOLID;
+                    break;
+                case FillMode::Wireframe:
+                    d3ddesc.FillMode = D3D11_FILL_WIREFRAME;
+                    break;
+                default:
+                    break;
+            }
+            switch (desc.cull_mode)
+            {
+                case CullMode::None:
+                    d3ddesc.CullMode = D3D11_CULL_NONE;
+                    break;
+                case CullMode::Front:
+                    d3ddesc.CullMode = D3D11_CULL_FRONT;
+                    break;
+                case CullMode::Back:
+                    d3ddesc.CullMode = D3D11_CULL_BACK;
+                    break;
+                default:
+                    break;
+            }
+
+            switch (desc.front_facing)
+            {
+                case FrontFacingDirection::Clockwise:
+                    d3ddesc.FrontCounterClockwise = false;
+                    break;
+                case FrontFacingDirection::CounterClockwise:
+                    d3ddesc.FrontCounterClockwise = true;
+                    break;
+                default:
+                    break;
+            }
+
+            d3ddesc.DepthBias = desc.depth_bias;
+            d3ddesc.DepthBiasClamp = desc.depth_bias_clamp;
+            d3ddesc.SlopeScaledDepthBias = desc.slop_scaled_depth_bias;
+            d3ddesc.DepthClipEnable = desc.depth_clip_enabled;
+            d3ddesc.MultisampleEnable = desc.multisample_enabled;
+            d3ddesc.AntialiasedLineEnable = desc.antialiased_line_enabled;
+            d3ddesc.ScissorEnable = false;
+
+            return d3ddesc;
+        }
         DataFormat D3D11RenderEngine::D3DFormatToDataFormat(DXGI_FORMAT format)
         {
             switch (format)
@@ -415,6 +465,8 @@ namespace vEngine
             CHECK_ASSERT(hr == S_OK);
 
             this->d3d_imm_context_->IASetInputLayout(this->layout);
+
+            this->d3d_imm_context_->RSSetState(d3d_state->rasterizer_state_.Get());
         }
         void D3D11RenderEngine::OnBind(const GraphicsBufferSharedPtr graphics_buffer)
         {
