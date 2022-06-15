@@ -90,7 +90,8 @@ namespace vEngine
             CHECK_ASSERT(false);
             return DXGI_FORMAT::DXGI_FORMAT_UNKNOWN;
         }
-        D3D11_RASTERIZER_DESC D3D11RenderEngine::ToD3D11RasterizerDesc(RasterizerDescriptor desc) {
+        D3D11_RASTERIZER_DESC D3D11RenderEngine::ToD3D11RasterizerDesc(RasterizerDescriptor desc)
+        {
             D3D11_RASTERIZER_DESC d3ddesc;
             switch (desc.fill_mode)
             {
@@ -138,6 +139,56 @@ namespace vEngine
             d3ddesc.AntialiasedLineEnable = desc.antialiased_line_enabled;
             d3ddesc.ScissorEnable = false;
 
+            return d3ddesc;
+        }
+        D3D11_DEPTH_STENCIL_DESC D3D11RenderEngine::ToD3D11DepthStencilDesc(DepthStencilDescriptor desc)
+        {
+            D3D11_DEPTH_STENCIL_DESC d3ddesc;
+            switch (desc.depth_write_mask)
+            {
+                case DepthWriteMask::All:
+                    d3ddesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+                    break;
+                case DepthWriteMask::Zero:
+                    d3ddesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+                    break;
+                default:
+                    break;
+            }
+            switch (desc.comparison_func)
+            {
+                case ComparisonFunc::Never:
+                    d3ddesc.DepthFunc = D3D11_COMPARISON_NEVER;
+                    break;
+                case ComparisonFunc::Less:
+                    d3ddesc.DepthFunc = D3D11_COMPARISON_LESS;
+                    break;
+                case ComparisonFunc::Equal:
+                    d3ddesc.DepthFunc = D3D11_COMPARISON_EQUAL;
+                    break;
+                case ComparisonFunc::LessEqual:
+                    d3ddesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+                    break;
+                case ComparisonFunc::Greater:
+                    d3ddesc.DepthFunc = D3D11_COMPARISON_GREATER;
+                    break;
+                case ComparisonFunc::NotEqual:
+                    d3ddesc.DepthFunc = D3D11_COMPARISON_NOT_EQUAL;
+                    break;
+                case ComparisonFunc::GreatEqual:
+                    d3ddesc.DepthFunc = D3D11_COMPARISON_GREATER_EQUAL;
+                    break;
+                case ComparisonFunc::Always:
+                    d3ddesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
+                    break;
+                default:
+                    break;
+            }
+
+            d3ddesc.DepthEnable = desc.depth_enabled;
+            d3ddesc.StencilEnable = desc.stencil_enabled;
+            d3ddesc.StencilReadMask = desc.stencil_read_mask;
+            d3ddesc.StencilWriteMask = desc.stencil_write_mask;
             return d3ddesc;
         }
         DataFormat D3D11RenderEngine::D3DFormatToDataFormat(DXGI_FORMAT format)
@@ -212,53 +263,50 @@ namespace vEngine
             d3d_imm_context_->RSSetViewports(1, &viewport);
 
             D3D11_RASTERIZER_DESC rasterizerStateDesc = {
-        D3D11_FILL_SOLID,		// FillMode
-        D3D11_CULL_BACK,
-        FALSE,					// FrontCounterClockwise
-        0,						// DepthBias
-        0.0f,					// DepthBiasClamp
-        0.0f,					// SlopeScaledDepthBias
-        TRUE,					// DepthClipEnable
-        FALSE,					// ScissorEnable
-        FALSE,					// MultisampleEnable
-        FALSE					// AntialiasedLineEnable
-    };
+                D3D11_FILL_SOLID,  // FillMode
+                D3D11_CULL_BACK,
+                FALSE,  // FrontCounterClockwise
+                0,      // DepthBias
+                0.0f,   // DepthBiasClamp
+                0.0f,   // SlopeScaledDepthBias
+                TRUE,   // DepthClipEnable
+                FALSE,  // ScissorEnable
+                FALSE,  // MultisampleEnable
+                FALSE   // AntialiasedLineEnable
+            };
 
-    ID3D11RasterizerState * pRasterizerState = NULL;
-    hr = this->d3d_device_->CreateRasterizerState( &rasterizerStateDesc, &pRasterizerState );
+            ID3D11RasterizerState* pRasterizerState = NULL;
+            hr = this->d3d_device_->CreateRasterizerState(&rasterizerStateDesc, &pRasterizerState);
             CHECK_ASSERT(hr == S_OK);
 
-    // this->d3d_imm_context_->RSSetState( pRasterizerState );
+            // this->d3d_imm_context_->RSSetState( pRasterizerState );
 
+            D3D11_DEPTH_STENCIL_DESC depthStencilStateDesc = {TRUE,                              // DepthEnable
+                                                              D3D11_DEPTH_WRITE_MASK_ALL,        // DepthWriteMask
+                                                              D3D11_COMPARISON_LESS,             // DepthFunc
+                                                              FALSE,                             // StencilEnable
+                                                              D3D11_DEFAULT_STENCIL_READ_MASK,   // StencilReadMask
+                                                              D3D11_DEFAULT_STENCIL_WRITE_MASK,  // StencilWriteMask
+                                                              {
+                                                                  D3D11_STENCIL_OP_KEEP,   // FrontFace.StencilFailOp
+                                                                  D3D11_STENCIL_OP_KEEP,   // FrontFace.StencilDepthFailOp
+                                                                  D3D11_STENCIL_OP_KEEP,   // FrontFace.StencilPassOp
+                                                                  D3D11_COMPARISON_ALWAYS  // FrontFace.StencilFunc
+                                                              },
+                                                              {
+                                                                  D3D11_STENCIL_OP_KEEP,   // BackFace.StencilFailOp
+                                                                  D3D11_STENCIL_OP_KEEP,   // BackFace.StencilDepthFailOp
+                                                                  D3D11_STENCIL_OP_KEEP,   // BackFace.StencilPassOp
+                                                                  D3D11_COMPARISON_ALWAYS  // BackFace.StencilFunc
+                                                              }};
 
-               D3D11_DEPTH_STENCIL_DESC depthStencilStateDesc = {
-                    TRUE,								// DepthEnable
-                    D3D11_DEPTH_WRITE_MASK_ALL,			// DepthWriteMask
-                    D3D11_COMPARISON_LESS,				// DepthFunc
-                    FALSE,								// StencilEnable
-                    D3D11_DEFAULT_STENCIL_READ_MASK,	// StencilReadMask
-                    D3D11_DEFAULT_STENCIL_WRITE_MASK,	// StencilWriteMask
-                    {
-                        D3D11_STENCIL_OP_KEEP,			// FrontFace.StencilFailOp
-                        D3D11_STENCIL_OP_KEEP,			// FrontFace.StencilDepthFailOp
-                        D3D11_STENCIL_OP_KEEP,			// FrontFace.StencilPassOp
-                        D3D11_COMPARISON_ALWAYS			// FrontFace.StencilFunc
-                    },
-                    {
-                        D3D11_STENCIL_OP_KEEP,			// BackFace.StencilFailOp
-                        D3D11_STENCIL_OP_KEEP,			// BackFace.StencilDepthFailOp
-                        D3D11_STENCIL_OP_KEEP,			// BackFace.StencilPassOp
-                        D3D11_COMPARISON_ALWAYS			// BackFace.StencilFunc
-                    }
-                };
-
-                ID3D11DepthStencilState * pDepthStencilState = NULL;
-                hr = this->d3d_device_->CreateDepthStencilState(&depthStencilStateDesc, &pDepthStencilState);
+            ID3D11DepthStencilState* pDepthStencilState = NULL;
+            hr = this->d3d_device_->CreateDepthStencilState(&depthStencilStateDesc, &pDepthStencilState);
             CHECK_ASSERT(hr == S_OK);
 
-                // this->d3d_imm_context_->OMSetDepthStencilState(pDepthStencilState, 0);
+            // this->d3d_imm_context_->OMSetDepthStencilState(pDepthStencilState, 0);
 
-                // this->InitPipeline();
+            // this->InitPipeline();
         }
         void D3D11RenderEngine::Update()
         {
@@ -467,6 +515,7 @@ namespace vEngine
             this->d3d_imm_context_->IASetInputLayout(this->layout);
 
             this->d3d_imm_context_->RSSetState(d3d_state->rasterizer_state_.Get());
+            this->d3d_imm_context_->OMSetDepthStencilState(d3d_state->depth_stencil_state_.Get(), 0);
         }
         void D3D11RenderEngine::OnBind(const GraphicsBufferSharedPtr graphics_buffer)
         {
@@ -486,7 +535,7 @@ namespace vEngine
             auto color_buffer = std::dynamic_pointer_cast<D3D11Texture>(this->current_frame_buffer_->GetColor(0));
             auto depth_buffer = std::dynamic_pointer_cast<D3D11Texture>(this->current_frame_buffer_->GetDepthStencil());
             this->d3d_imm_context_->ClearRenderTargetView(color_buffer->AsRTV().Get(), color.data());
-            this->d3d_imm_context_->ClearDepthStencilView(depth_buffer->AsDSV().Get(), D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1, 0);
+            this->d3d_imm_context_->ClearDepthStencilView(depth_buffer->AsDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
         }
 
         void D3D11RenderEngine::OnEndFrame()

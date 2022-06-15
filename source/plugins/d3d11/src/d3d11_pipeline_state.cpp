@@ -60,6 +60,10 @@ namespace vEngine
             D3D11_RASTERIZER_DESC rdesc = D3D11RenderEngine::ToD3D11RasterizerDesc(this->descriptor_.rasterizer_descriptor);
             hr = device->CreateRasterizerState(&rdesc, this->rasterizer_state_.GetAddressOf());
             CHECK_ASSERT(hr == S_OK);
+
+            D3D11_DEPTH_STENCIL_DESC ddesc = D3D11RenderEngine::ToD3D11DepthStencilDesc(this->descriptor_.depth_stencil_descriptor);
+            hr = device->CreateDepthStencilState(&ddesc, this->depth_stencil_state_.GetAddressOf());
+            CHECK_ASSERT(hr == S_OK);
         }
     }  // namespace Rendering
 }  // namespace vEngine
