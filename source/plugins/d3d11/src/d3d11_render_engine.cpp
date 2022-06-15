@@ -262,50 +262,6 @@ namespace vEngine
             viewport.MaxDepth = 1;
             d3d_imm_context_->RSSetViewports(1, &viewport);
 
-            D3D11_RASTERIZER_DESC rasterizerStateDesc = {
-                D3D11_FILL_SOLID,  // FillMode
-                D3D11_CULL_BACK,
-                FALSE,  // FrontCounterClockwise
-                0,      // DepthBias
-                0.0f,   // DepthBiasClamp
-                0.0f,   // SlopeScaledDepthBias
-                TRUE,   // DepthClipEnable
-                FALSE,  // ScissorEnable
-                FALSE,  // MultisampleEnable
-                FALSE   // AntialiasedLineEnable
-            };
-
-            ID3D11RasterizerState* pRasterizerState = NULL;
-            hr = this->d3d_device_->CreateRasterizerState(&rasterizerStateDesc, &pRasterizerState);
-            CHECK_ASSERT(hr == S_OK);
-
-            // this->d3d_imm_context_->RSSetState( pRasterizerState );
-
-            D3D11_DEPTH_STENCIL_DESC depthStencilStateDesc = {TRUE,                              // DepthEnable
-                                                              D3D11_DEPTH_WRITE_MASK_ALL,        // DepthWriteMask
-                                                              D3D11_COMPARISON_LESS,             // DepthFunc
-                                                              FALSE,                             // StencilEnable
-                                                              D3D11_DEFAULT_STENCIL_READ_MASK,   // StencilReadMask
-                                                              D3D11_DEFAULT_STENCIL_WRITE_MASK,  // StencilWriteMask
-                                                              {
-                                                                  D3D11_STENCIL_OP_KEEP,   // FrontFace.StencilFailOp
-                                                                  D3D11_STENCIL_OP_KEEP,   // FrontFace.StencilDepthFailOp
-                                                                  D3D11_STENCIL_OP_KEEP,   // FrontFace.StencilPassOp
-                                                                  D3D11_COMPARISON_ALWAYS  // FrontFace.StencilFunc
-                                                              },
-                                                              {
-                                                                  D3D11_STENCIL_OP_KEEP,   // BackFace.StencilFailOp
-                                                                  D3D11_STENCIL_OP_KEEP,   // BackFace.StencilDepthFailOp
-                                                                  D3D11_STENCIL_OP_KEEP,   // BackFace.StencilPassOp
-                                                                  D3D11_COMPARISON_ALWAYS  // BackFace.StencilFunc
-                                                              }};
-
-            ID3D11DepthStencilState* pDepthStencilState = NULL;
-            hr = this->d3d_device_->CreateDepthStencilState(&depthStencilStateDesc, &pDepthStencilState);
-            CHECK_ASSERT(hr == S_OK);
-
-            // this->d3d_imm_context_->OMSetDepthStencilState(pDepthStencilState, 0);
-
             // this->InitPipeline();
         }
         void D3D11RenderEngine::Update()
