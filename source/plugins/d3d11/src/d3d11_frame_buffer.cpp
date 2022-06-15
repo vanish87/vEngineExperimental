@@ -23,7 +23,7 @@ namespace vEngine
         /// constructor detailed defintion,
         /// should be 2 lines
         D3D11FrameBuffer::D3D11FrameBuffer(const FrameBufferDescriptor& desc) : FrameBuffer(desc) {}
-        D3D11FrameBuffer::D3D11FrameBuffer(TextureSharedPtr backBuffer, const FrameBufferDescriptor& desc) : FrameBuffer(backBuffer, desc) {}
+        // D3D11FrameBuffer::D3D11FrameBuffer(TextureSharedPtr backBuffer, const FrameBufferDescriptor& desc) : FrameBuffer(backBuffer, desc) {}
 
         /// A detailed function description, it
         /// should be 2 lines at least.

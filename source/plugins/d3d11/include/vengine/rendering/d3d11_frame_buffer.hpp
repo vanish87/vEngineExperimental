@@ -31,7 +31,7 @@ namespace vEngine
                 /// \brief brief constructor description.
                 // D3D11FrameBuffer();
                 D3D11FrameBuffer(const FrameBufferDescriptor& desc);
-                D3D11FrameBuffer(TextureSharedPtr backBuffer, const FrameBufferDescriptor& desc);
+                // D3D11FrameBuffer(TextureSharedPtr backBuffer, const FrameBufferDescriptor& desc);
 
                 /// class variable description
                 // int public_variable_;

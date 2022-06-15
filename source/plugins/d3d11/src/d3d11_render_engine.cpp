@@ -239,16 +239,32 @@ namespace vEngine
             ID3D11Texture2D* pBackBuffer;
             hr = this->d3d_swap_chain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
             CHECK_ASSERT(hr == S_OK);
-
             auto backBufferTexture = std::make_shared<D3D11Texture>(pBackBuffer);
+
             FrameBufferDescriptor desc;
             desc.colorFormat = DataFormat::RGBA32;
             desc.depthStencilFormat = DataFormat::D24U8;
             desc.width = width;
             desc.height = height;
             desc.usage = GraphicsResourceUsage::GPU_ReadWrite;
-            this->back_buffer_ = std::make_shared<D3D11FrameBuffer>(backBufferTexture, desc);
-            // this->Bind(frameBuffer);
+            this->back_buffer_ = std::make_shared<D3D11FrameBuffer>(desc);
+
+            TextureDescriptor tdesc;
+            tdesc.width = desc.width;
+            tdesc.height = desc.height;
+            tdesc.depth = 1;
+            tdesc.format = desc.depthStencilFormat;
+            tdesc.dimension = TextureDimension::TD_2D;
+            tdesc.type = GraphicsResourceType::Depth;
+            tdesc.usage = GraphicsResourceUsage::GPU_ReadWrite;
+            tdesc.resource.data = nullptr;
+            auto depth_tex = Context::GetInstance().GetRenderEngine().Create(tdesc);
+
+            this->back_buffer_->BindColor(backBufferTexture, 0);
+            this->back_buffer_->BindDepthStencil(depth_tex);
+
+            //Note: before render camera scene.cpp will bind camera's frame buffer
+            // this->Bind(this->back_buffer_);
 
             // Set the viewport
             D3D11_VIEWPORT viewport;
