@@ -35,10 +35,9 @@ namespace vEngine
 
                 virtual void OnUpdate() override
                 {
-
                     // auto skeleton = this->GO();
 
-                    // ============== 
+                    // ==============
                     // this is done in Animator component
                     // auto boneList = skeleton->GetBoneUpdated();
 
@@ -58,16 +57,20 @@ namespace vEngine
 
                 std::vector<BoneComponentSharedPtr> GetBones()
                 {
-                    std::vector<BoneComponentSharedPtr> ret;
-                    this->Owner()->TraverseAllChildren<BoneComponent>(
-                        [&](BoneComponentSharedPtr node)
-                        {
-                            ret.push_back(node);
-                            return true;
-                        });
+                    if (this->current_bone_list_.size() == 0)
+                    {
+                        this->Owner()->TraverseAllChildren<BoneComponent>(
+                            [&](BoneComponentSharedPtr node)
+                            {
+                                this->current_bone_list_.push_back(node);
+                                return true;
+                            });
+                    }
 
-                    return ret;
+                    return this->current_bone_list_;
                 }
+
+                std::vector<BoneComponentSharedPtr> current_bone_list_;
 
             public:
                 /// \brief A brief function description.
@@ -77,7 +80,7 @@ namespace vEngine
                 /// \return Description for return value.
                 int GetVariable(int p1, float p2);
         };
-    }  // namespace Core
+    }  // namespace Animation
 
 }  // namespace vEngine
 
