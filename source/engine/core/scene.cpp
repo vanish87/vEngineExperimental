@@ -86,7 +86,7 @@ namespace vEngine
                 });
         }
         float timer;
-        TransformNodeSharedPtr transform_;
+        TransformComponentSharedPtr transform_;
         bool Scene::Load()
         {
             // this->AddTestNode();
@@ -114,13 +114,13 @@ namespace vEngine
 
             // auto s = 1.5f;
             auto s = 0.1f;
-            auto root_transform = std::dynamic_pointer_cast<TransformNode>(root);
+            auto root_transform = root->FirstOf<TransformComponent>();
             // root_transform->Transform()->Translate() = float3(0.0f, -100, 100);
-            root_transform->Transform()->Scale() = float3(s, s, s);
-            root_transform->Transform()->Translate() = float3(0.0f, 0, 4);
+            root_transform->GO()->Scale() = float3(s, s, s);
+            root_transform->GO()->Translate() = float3(0.0f, 0, 4);
             transform_ = root_transform;
             // root_transform->Transform()->Translate() = float3(0.0f, 0, 20);
-            root_transform->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI / 2, float3(1, 0, 0));
+            root_transform->GO()->Rotation() = Math::RotateAngleAxis(Math::PI / 2, float3(1, 0, 0));
 
             this->TraverseAllChildren<IComponent>(
                 [&](IComponentSharedPtr comp)

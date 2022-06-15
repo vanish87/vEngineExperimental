@@ -11,7 +11,6 @@
 #include <vengine/animation/skeleton.hpp>
 #include <vengine/core/game_node_factory.hpp>
 #include <vengine/core/transform.hpp>
-#include <vengine/core/transform_node.hpp>
 #include <vengine/animation/bone_component.hpp>
 #include <vengine/animation/skeleton_component.hpp>
 #include <vengine/animation/animator_component.hpp>
@@ -41,7 +40,7 @@ namespace vEngine
             {
                 case GameNodeType::Transform:
                 {
-                    ret = std::make_shared<TransformNode>();
+                    ret = std::make_shared<GameNode>();
                     ComponentDescription cdesc;
                     ret->AttachComponent(Create<TransformComponent>(cdesc));
                 }

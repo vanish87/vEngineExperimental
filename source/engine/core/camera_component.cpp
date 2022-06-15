@@ -11,7 +11,6 @@
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/context.hpp>
 #include <vengine/core/transform_component.hpp>
-#include <vengine/core/transform_node.hpp>
 #include <vengine/rendering/graphics_buffer.hpp>
 #include <vengine/rendering/render_engine.hpp>
 #include <vengine/rendering/shared/data_cbuffer.hpp>
@@ -47,8 +46,8 @@ namespace vEngine
             vEngineCameraConstantBuffer cb;
             cb.camera_pos = float4(0, 0, 100, 1);
 
-            auto trans = std::dynamic_pointer_cast<TransformNode>(this->Owner());
-            cb.view_matrix = trans->Transform()->LocalToWorldTransform();
+            auto trans = this->Owner()->FirstOf<TransformComponent>();
+            cb.view_matrix = trans->GO()->LocalToWorldTransform();
             // Math::Translate(cb.view_matrix, 0, 0, 100);
             // cb.view_matrix = Math::Transpose(cb.view_matrix);
             cb.proj_matrix = cam->ProjectionMatrix();

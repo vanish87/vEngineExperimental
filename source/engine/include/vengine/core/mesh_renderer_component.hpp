@@ -14,7 +14,6 @@
 #include <vengine/core/component.hpp>
 #include <vengine/core/mesh_renderer.hpp>
 #include <vengine/core/mesh_component.hpp>
-#include <vengine/core/transform_node.hpp>
 #include <vengine/core/transform_component.hpp>
 #include <vengine/rendering/graphics_buffer.hpp>
 
@@ -60,8 +59,8 @@ namespace vEngine
                         }
                     }
 
-                    auto trans = std::dynamic_pointer_cast<TransformNode>(this->Owner());
-                    cb.local_to_world_matrix = trans->Transform()->LocalToWorldTransform();
+                    auto trans = this->Owner()->FirstOf<TransformComponent>();
+                    cb.local_to_world_matrix = trans->GO()->LocalToWorldTransform();
                     // cb.local_to_world_matrix = this->Transform()->LocalToWorldTransform();
                     // Math::Translate(cb.local_to_world_matrix, 0, 0, 1);
                     // cb.local_to_world_matrix[0][0] = 0.1f;

@@ -14,7 +14,7 @@
 
 #include <engine.hpp>
 #include <vengine/core/component.hpp>
-#include <vengine/core/transform_node.hpp>
+#include <vengine/core/transform_component.hpp>
 #include <vengine/animation/animator.hpp>
 #include <vengine/animation/skeleton_component.hpp>
 #include <vengine/animation/bone_component.hpp>
@@ -65,7 +65,7 @@ namespace vEngine
                             // node->OnUpdate();
 
 							//set bone's Transform to animated TRS
-							auto gn = std::dynamic_pointer_cast<Core::TransformNode>(node->Owner());
+							auto transform = node->Owner()->FirstOf<Core::TransformComponent>();
 							JointSharedPtr j = nullptr;
 							for(auto joint : joints)
 							{
@@ -75,13 +75,14 @@ namespace vEngine
 									break;
 								}
 							}
+                            if(transform == nullptr || j == nullptr) return true;
 							// auto j = joints[0];
 
                             auto size = j->position_keys_.size();
 
-							gn->Transform()->Translate() = j->position_keys_[fid%size].value;
-							gn->Transform()->Rotation() = j->rotation_keys_[fid%size].value;
-							gn->Transform()->Scale() = j->scale_keys_[fid%size].value;
+							transform->GO()->Translate() = j->position_keys_[fid%size].value;
+							transform->GO()->Rotation() = j->rotation_keys_[fid%size].value;
+							transform->GO()->Scale() = j->scale_keys_[fid%size].value;
 							// gn->Transform()->Scale() = Core::float3(0.5f, 0.5f, 0.5f);
 
                             // auto pos = node->game_object_->Translate();

@@ -9,7 +9,6 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/core/transform_component.hpp>
-#include <vengine/core/transform_node.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
