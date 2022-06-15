@@ -89,6 +89,7 @@ namespace vEngine
             }
             // if (hasBones)
             {
+                    std::unordered_map<int, int> statics;
                 for (uint32_t b = 0; b < mesh->mNumBones; ++b)
                 {
                     PRINT(mesh->mName.data << " has bones/joint " << mesh->mBones[b]->mName.data << " with " << mesh->mBones[b]->mNumWeights << " weights");
@@ -103,6 +104,7 @@ namespace vEngine
                     bone->name_ = ai_bone->mName.data;
                     bone->id_ = b;
                     bone->inverse_bind_pose_matrix_ = this->AiMatrixToFloat4x4(ai_bone->mOffsetMatrix);
+
                     for (uint32_t wid = 0; wid < ai_bone->mNumWeights; ++wid)
                     {
                         auto aiWeight = ai_bone->mWeights[wid];
@@ -115,6 +117,8 @@ namespace vEngine
                         auto vweight = w.weight;
 
                         auto& v = this->vertex_data_[vid];
+                        statics[vid]++;
+
                         for(uint32_t vcount = 0; vcount < 4; ++vcount)
                         {
                             if (v.bone_id[vcount] != -1)
@@ -128,10 +132,14 @@ namespace vEngine
                         }
                     }
 
+
                     CHECK_ASSERT(this->bone_data_.find(bone->name_) == this->bone_data_.end());
                     this->bone_data_[bone->name_] = bone;
 
                 }
+                    auto max = 0;
+                    for(auto& s: statics) max = Math::Max(max, s.second);
+                    PRINT(max);
 
             }
 

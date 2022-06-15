@@ -377,7 +377,7 @@ namespace vEngine
                 current_node->AttachComponent(mesh_component);
 
                 auto mesh_renderer = GameNodeFactory::Create<MeshRendererComponent>(cdesc);
-                current_node->AttachComponent(mesh_renderer);
+                // current_node->AttachComponent(mesh_renderer);
 
                 auto mat = this->scene_materials_[0];
                 mesh_renderer->GO()->material_ = mat;

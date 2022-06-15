@@ -13,13 +13,15 @@ vs_out vs_main(vs_in input)
 
 	float4 pos = 0;
 	float3 mpos = input.position;
-	float3 normal = input.normal;
+	float3 normal = 0;
+	float3 mnormal = input.normal;
 
 	for(int i = 0; i < 4; ++i)
 	{
 		int bid = input.bone_id[i];
 		if(bid < 0) continue;
 		pos += mul(float4(mpos, 1), bone[bid]) * input.bone_weight[i];
+		normal += mul(mnormal, (float3x3)bone[bid]) * input.bone_weight[i];
 	}
 
 	pos.w = 1;
@@ -27,15 +29,17 @@ vs_out vs_main(vs_in input)
 	{
 		pos.xyz = mpos;
 		output.position = mul(pos, mvp);
+		output.pos_w = mul(pos, m).xyz;
+		output.normal = mul(mnormal, (float3x3)m);
 	}
 	else
 	{
 		output.position = mul(pos, vp);
+		output.pos_w = pos.xyz;
+		output.normal = normal;
 	}
 
 	output.texcoord = input.texcoord;
-	output.pos_w = mul(pos, m).xyz;
-	output.normal = mul(normal, (float3x3)m);
 	output.color = input.color;
 	return output;
 }
