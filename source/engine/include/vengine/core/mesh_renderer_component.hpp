@@ -48,14 +48,15 @@ namespace vEngine
                         auto skeleton = mesh->skeleton_->FirstOf<Animation::SkeletonComponent>();
 
                         auto bones = skeleton->GetBones();
-                        auto count = 0;
+                        // auto count = 0;
                         for (const auto& b : bones)
                         {
                             auto transform = b->Owner()->FirstOf<TransformComponent>();
                             auto bone_matrix = transform->GO()->LocalToWorldTransform();
-                            auto offset = mesh->bone_data_[b->name_]->inverse_bind_pose_matrix_;
+                            auto bone_go = mesh->bone_data_[b->name_];
+                            auto offset = bone_go->inverse_bind_pose_matrix_;
 
-                            cb.bone[count++] = offset * bone_matrix;
+                            cb.bone[bone_go->id_] = offset * bone_matrix;
                         }
                     }
 
