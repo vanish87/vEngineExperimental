@@ -6,6 +6,7 @@
 
 #include <engine.hpp>
 #include <vengine/core/angle.hpp>
+#include <vengine/core/vector.hpp>
 
 namespace vEngine
 {
@@ -102,6 +103,9 @@ namespace vEngine
         float VENGINE_API Ln(float x);
         float VENGINE_API Pow(float base, float exp);
 
+        color VENGINE_API ToColor(const float4& fcolor);
+        float4 VENGINE_API ToFloat(const color& color);
+
         /// \brief if a number(only float/double) is NAN(not a number)
         ///
         /// \tparam T should be float/double, int will be a compile error
@@ -128,10 +132,11 @@ namespace vEngine
         template <typename T>
         T Clamp(const T& value, const T& min, const T& max);
 
-        template <typename T>
-        int CeilToInt(const T& value);
-        template <typename T>
-        int FloorToInt(const T& value);
+        template <typename T, typename U = int>
+        U CeilToInt(const T& value);
+        template <typename T, typename U = int>
+        U FloorToInt(const T& value);
+
 
         //=================================================
         // Vector/Matrix related functions

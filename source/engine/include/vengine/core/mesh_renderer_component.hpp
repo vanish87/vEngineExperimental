@@ -51,7 +51,17 @@ namespace vEngine
                         // auto count = 0;
                         for (const auto& b : bones)
                         {
-                            if(mesh->bone_data_.find(b->name_) == mesh->bone_data_.end()) continue;
+                            if(mesh->bone_data_.find(b->name_) == mesh->bone_data_.end()) 
+                            {
+                                GameObjectDescription jdesc;
+                                jdesc.type = GameObjectType::Bone;
+                                auto new_bone = GameObjectFactory::Create<Animation::Bone>(jdesc);
+                                new_bone->name_ = b->name_;
+                                new_bone->id_ = static_cast<int>(mesh->bone_data_.size());
+                                new_bone->inverse_bind_pose_matrix_ = float4x4::Identity();
+                                mesh->bone_data_[b->name_] = new_bone;
+                                PRINT_AND_BREAK("Missing bone");
+                            }
 
                             auto transform = b->Owner()->FirstOf<TransformComponent>();
                             auto bone_matrix = transform->GO()->LocalToWorldTransform();

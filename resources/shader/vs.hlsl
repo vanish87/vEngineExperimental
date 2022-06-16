@@ -16,16 +16,28 @@ vs_out vs_main(vs_in input)
 	float3 normal = 0;
 	float3 mnormal = input.normal;
 
-	for(int i = 0; i < 4; ++i)
+	bool hasBone = false;
+	int i = 0;
+
+	for(i = 0; i < 4; ++i)
 	{
-		int bid = input.bone_id[i];
+		int bid = input.bone_id_0[i];
 		if(bid < 0) continue;
-		pos += mul(float4(mpos, 1), bone[bid]) * input.bone_weight[i];
-		normal += mul(mnormal, (float3x3)bone[bid]) * input.bone_weight[i];
+		hasBone = true;
+		pos += mul(float4(mpos, 1), bone[bid]) * input.bone_weight_0[i];
+		normal += mul(mnormal, (float3x3)bone[bid]) * input.bone_weight_0[i];
+	}
+	for(i = 0; i < 4; ++i)
+	{
+		int bid = input.bone_id_1[i];
+		if(bid < 0) continue;
+		hasBone = true;
+		pos += mul(float4(mpos, 1), bone[bid]) * input.bone_weight_1[i];
+		normal += mul(mnormal, (float3x3)bone[bid]) * input.bone_weight_1[i];
 	}
 
 	pos.w = 1;
-	if(input.bone_id[0] < 0) 
+	if(!hasBone)
 	{
 		pos.xyz = mpos;
 		output.position = mul(pos, mvp);

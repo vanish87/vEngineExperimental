@@ -73,8 +73,8 @@ namespace vEngine
                 v.uv = hasUV ? float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y) : float2(0, 0);
                 v.color = float4(1, 1, 1, 1);
 
-                v.bone_id = int4(-1, -1, -1, -1);
-                v.bone_weight = float4::Zero();
+                v.bone_id_0 = v.bone_id_1 = int4(-1, -1, -1, -1);
+                v.bone_weight_0 = v.bone_weight_1 = float4::Zero();
 
                 this->vertex_data_.emplace_back(v);
             }
@@ -119,22 +119,41 @@ namespace vEngine
                         auto& v = this->vertex_data_[vid];
                         statics[vid]++;
 
-                        for(uint32_t vcount = 0; vcount < 4; ++vcount)
+                        for(uint32_t vcount = 0; vcount < 8; ++vcount)
                         {
-                            if (v.bone_id[vcount] != -1)
+                            if(vcount < 4)
                             {
-                                // CHECK_ASSERT(vcount < 3);
-                                continue;
-                            }
+                                if (v.bone_id_0[vcount] != -1)
+                                {
+                                    // CHECK_ASSERT(vcount < 3);
+                                    continue;
+                                }
 
-                            v.bone_id[vcount] = b;
-                            v.bone_weight[vcount] = vweight;
+                                v.bone_id_0[vcount] = b;
+                                v.bone_weight_0[vcount] = vweight;
+                                break;
+                            }
+                            else
+                            {
+                                auto index = vcount % 4;
+                                if (v.bone_id_1[index] != -1)
+                                {
+                                    // CHECK_ASSERT(vcount < 3);
+                                    continue;
+                                }
+
+                                v.bone_id_1[index] = b;
+                                v.bone_weight_1[index] = vweight;
+                                break;
+                            }
                         }
                     }
 
 
                     CHECK_ASSERT(this->bone_data_.find(bone->name_) == this->bone_data_.end());
                     this->bone_data_[bone->name_] = bone;
+
+                    PRINT("Bone " << bone->name_ << " id " << bone->id_);
 
                 }
                     auto max = 0;

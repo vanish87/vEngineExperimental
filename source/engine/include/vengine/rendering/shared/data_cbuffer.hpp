@@ -31,8 +31,10 @@ struct vs_in
 	float3 normal semantics_def(NORMAL);
 	float2 texcoord semantics_def(TEXCOORD0);
 	float4 color semantics_def(COLOR);
-	int4 bone_id semantics_def(BLENDINDICES);
-	float4 bone_weight semantics_def(BLENDWEIGHT);
+	int4 bone_id_0 semantics_def(BLENDINDICES0);
+	float4 bone_weight_0 semantics_def(BLENDWEIGHT0);
+	int4 bone_id_1 semantics_def(BLENDINDICES1);
+	float4 bone_weight_1 semantics_def(BLENDWEIGHT1);
 };
 struct vs_out 
 {

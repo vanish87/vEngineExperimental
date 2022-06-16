@@ -479,6 +479,8 @@ namespace vEngine
                 {"COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
                 {"BLENDINDICES", 0, DXGI_FORMAT_R32G32B32A32_SINT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
                 {"BLENDWEIGHT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"BLENDINDICES", 1, DXGI_FORMAT_R32G32B32A32_SINT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+                {"BLENDWEIGHT", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
             };
 
             auto hr = this->d3d_device_->CreateInputLayout(input_desc, (UINT)array_length(input_desc), d3d_state->vs_blob_->GetBufferPointer(), d3d_state->vs_blob_->GetBufferSize(), &this->layout);
@@ -506,7 +508,7 @@ namespace vEngine
             // const float bg[4] = {0.0f, 0.2f, 0.4f, 1.0f};
             auto color_buffer = std::dynamic_pointer_cast<D3D11Texture>(this->current_frame_buffer_->GetColor(0));
             auto depth_buffer = std::dynamic_pointer_cast<D3D11Texture>(this->current_frame_buffer_->GetDepthStencil());
-            this->d3d_imm_context_->ClearRenderTargetView(color_buffer->AsRTV().Get(), color.data());
+            this->d3d_imm_context_->ClearRenderTargetView(color_buffer->AsRTV().Get(), Math::ToFloat(color).data());
             this->d3d_imm_context_->ClearDepthStencilView(depth_buffer->AsDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
         }
 

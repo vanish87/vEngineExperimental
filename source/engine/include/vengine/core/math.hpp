@@ -37,15 +37,15 @@ namespace vEngine
         {
             return value < min ? min : value > max ? max : value;
         }
-        template <typename T>
-        int CeilToInt(const T& value)
+        template <typename T, typename U>
+        U CeilToInt(const T& value)
         {
-            return static_cast<int>(value + 1);
+            return static_cast<U>(value + 1);
         }
-        template <typename T>
-        int FloorToInt(const T& value)
+        template <typename T, typename U>
+        U FloorToInt(const T& value)
         {
-            return static_cast<int>(value);
+            return static_cast<U>(value);
         }
 
         template <typename T, int N>

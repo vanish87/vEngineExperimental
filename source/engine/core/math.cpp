@@ -117,6 +117,19 @@ namespace vEngine
         {
             return pow(base, exp);
         }
+        color ToColor(const float4& float_color)
+        {
+            color ret;
+            ret.x() = Math::CeilToInt<float, uint8_t>(float_color.x() * 255);
+            ret.y() = Math::CeilToInt<float, uint8_t>(float_color.y() * 255);
+            ret.z() = Math::CeilToInt<float, uint8_t>(float_color.z() * 255);
+            ret.w() = Math::CeilToInt<float, uint8_t>(float_color.w() * 255);
+            return ret;
+        }
+        float4 ToFloat(const color& color)
+        {
+            return float4(color) / float4(255, 255, 255, 255);
+        }
 
     }  // namespace Math
 }  // namespace vEngine

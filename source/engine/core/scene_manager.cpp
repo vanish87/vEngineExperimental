@@ -31,8 +31,8 @@ namespace vEngine
             ResourceLoader::GetInstance().AddSearchPath("resources/bob");
 
             // auto file = ResourceLoader::GetInstance().GetFilePath("sponza.obj");
-            // auto file = ResourceLoader::GetInstance().GetFilePath("model.dae");
-            auto file = ResourceLoader::GetInstance().GetFilePath("bob_lamp_update_export.dae");
+            auto file = ResourceLoader::GetInstance().GetFilePath("model.dae");
+            // auto file = ResourceLoader::GetInstance().GetFilePath("bob_lamp_update_export.dae");
             // auto file = ResourceLoader::GetInstance().GetFilePath("bunny.obj");
             // this->root_ = std::make_shared<GameNode>();
             // this->scene_ = std::make_shared<Scene>("cornell-box.obj");

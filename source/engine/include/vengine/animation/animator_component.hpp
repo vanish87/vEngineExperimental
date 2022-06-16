@@ -51,9 +51,9 @@ namespace vEngine
                     auto animator = this->GO();
                     animator->Lerp();
 
-                    timer += 0.01f;
-                    // int fid = Math::FloorToInt(timer);
-                    auto fid = 0;
+                    timer += 0.001f;
+                    int fid = Math::FloorToInt(timer);
+                    // auto fid = 0;
 
                     // auto joints = animator->GetAnimatedJoints();
 					auto joints = animator->current_clip_->joints_;

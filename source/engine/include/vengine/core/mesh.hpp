@@ -41,9 +41,11 @@ namespace vEngine
             float3 pos;
             float3 normal;
             float2 uv;
-            float4 color;
-            int4 bone_id;
-            float4 bone_weight;
+            color color;
+            int4 bone_id_0;
+            float4 bone_weight_0;
+            int4 bone_id_1;
+            float4 bone_weight_1;
         };
 
         template <typename T = Vertex>

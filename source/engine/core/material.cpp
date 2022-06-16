@@ -41,6 +41,7 @@ namespace vEngine
             // this->Load(this->ps_shader_);
 
             PipelineStateDescriptor desc;
+            // desc.rasterizer_descriptor.cull_mode = CullMode::None;
             desc.vs_name = this->vs_name_;
             desc.ps_name = this->ps_name_;
             this->pipeline_state_ = Context::GetInstance().GetRenderEngine().Register(desc);
