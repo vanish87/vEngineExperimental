@@ -13,6 +13,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <unordered_set>
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -37,7 +38,8 @@ namespace vEngine
 
             public:
                 /// \brief brief constructor description.
-                Scene(const std::string file_path);
+                Scene();
+                void AddFile(const std::string file);
 
                 bool Load() override;
                 ResourceState CurrentState() override;
@@ -60,7 +62,7 @@ namespace vEngine
 
                 GameNodeSharedPtr HandleNode(const aiNode* node, const aiScene* scene);
                 void CreateMeshes(const aiScene* scene);
-                void CreateMaterials(const aiScene* scene);
+                void CreateMaterials(const aiScene* scene, const std::string current_path);
                 void CreateTextures(const aiScene* scene);
                 void CreateCameras(const aiScene* scene);
                 void CreateAnimations(const aiScene* scene);
@@ -75,7 +77,9 @@ namespace vEngine
 
             private:
                 ResourceState state_;
-                std::string file_path_;
+                // std::string file_path_;
+
+                std::unordered_set<std::string> file_list_;
 
                 std::vector<CameraComponentSharedPtr> scene_cameras_;
                 std::vector<LightComponentSharedPtr> scene_lights_;

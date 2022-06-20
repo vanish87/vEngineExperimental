@@ -37,72 +37,51 @@ namespace vEngine
     {
         /// constructor detailed defintion,
         /// should be 2 lines
-        Scene::Scene(const std::string file_path) : GameNode()
+        Scene::Scene() : GameNode()
         {
-            this->file_path_ = file_path;
-            this->name_ = file_path;
+            // this->file_path_ = file_path;
+            // this->name_ = file_path;
             this->state_ = ResourceState::Unknown;
             // this->root_ = std::make_shared<GameNode>();
+        }
+        void Scene::AddFile(const std::string file)
+        {
+            this->file_list_.insert(file);
         }
 
         ResourceState Scene::CurrentState()
         {
             return this->state_;
         }
-        void Scene::Print()
-        {
-            this->TraverseAllChildren<GameNode>(
-                [&](GameNodeSharedPtr gn)
-                {
-                    auto p = gn->Parent().lock();
-                    auto pname = p != nullptr ? p->name_ : "None";
-                    // auto name = gn->HasComponent<TransformComponent>()?"Transform":"Raw";
-                    // auto cname = gn->HasComponent<CameraComponent>()?"Camera":"Raw";
-                    // PRINT("Game Node " << name << " " << cname << " " << gn->name_ << " Parent " << pname);
-                    auto comp = std::dynamic_pointer_cast<IComponent>(gn);
-                    if (comp != nullptr) return true;
-
-                    PRINT("Game Node " << gn->name_ << " Parent " << pname);
-                    gn->ForEachChild<IComponent>(
-                        [&](IComponentSharedPtr child)
-                        {
-                            auto cn = std::dynamic_pointer_cast<TransformComponent>(child);
-                            if (cn == nullptr) return;
-                            auto bone = std::dynamic_pointer_cast<Animation::BoneComponent>(child);
-                            auto name = cn->name_;
-                            if (bone != nullptr) name += " BoneComponent";
-
-                            PRINT("Game Node " << gn->name_ << " Has " << name);
-
-                            auto pos = cn->GO()->Translate();
-                            PRINT(pos.x() << " " << pos.y() << " " << pos.z());
-                            auto mat = cn->GO()->LocalToWorldTransform();
-                            PRINT("Global " << mat[3][0] << " " << mat[3][1] << " " << mat[3][2]);
-                            // PRINT(typeid(gn).name());
-                            // return true;
-                        });
-
-                    return true;
-                });
-        }
         float timer;
-        TransformComponentSharedPtr transform_;
         bool Scene::Load()
         {
             // this->AddTestNode();
             this->state_ = ResourceState::Loading;
 
-            Assimp::Importer importer;
-            auto scene = importer.ReadFile(this->file_path_, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
-            this->CreateMeshes(scene);
-            this->CreateMaterials(scene);
-            this->CreateTextures(scene);
-            this->CreateCameras(scene);
-            this->CreateAnimations(scene);
+            for(const auto& f : this->file_list_)
+            {
+                Assimp::Importer importer;
+                auto scene = importer.ReadFile(f, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
+                this->CreateMeshes(scene);
+                this->CreateMaterials(scene, f);
+                this->CreateTextures(scene);
+                this->CreateCameras(scene);
+                this->CreateAnimations(scene);
 
-            auto root = this->HandleNode(scene->mRootNode, scene);
-            root->name_ = "Assimp Root";
-            this->AddChild(root);
+                auto root = this->HandleNode(scene->mRootNode, scene);
+                root->name_ = "Assimp File: " + f;
+                this->AddChild(root);
+
+                auto s = 0.1f;
+                auto root_transform = root->FirstOf<TransformComponent>();
+                // root_transform->Transform()->Translate() = float3(0.0f, -100, 100);
+                root_transform->GO()->Scale() = float3(s, s, s);
+                root_transform->GO()->Translate() = float3(0.0f, 0, 3);
+                // root_transform->Transform()->Translate() = float3(0.0f, 0, 20);
+                root_transform->GO()->Rotation() = Math::RotateAngleAxis(Math::PI / 2, float3(1, 0, 0));
+            }
+
 
             // auto root = ComponentFactory::Create<TransformComponent>();
             // root->name_ = "SceneRoot";
@@ -113,14 +92,6 @@ namespace vEngine
             // this->AttachComponent(trans);
 
             // auto s = 1.5f;
-            auto s = 0.1f;
-            auto root_transform = root->FirstOf<TransformComponent>();
-            // root_transform->Transform()->Translate() = float3(0.0f, -100, 100);
-            root_transform->GO()->Scale() = float3(s, s, s);
-            root_transform->GO()->Translate() = float3(0.0f, 0, 3);
-            transform_ = root_transform;
-            // root_transform->Transform()->Translate() = float3(0.0f, 0, 20);
-            root_transform->GO()->Rotation() = Math::RotateAngleAxis(Math::PI / 2, float3(1, 0, 0));
 
             this->TraverseAllChildren<IComponent>(
                 [&](IComponentSharedPtr comp)
@@ -162,7 +133,7 @@ namespace vEngine
 
             PRINT("num of cameras: " << this->scene_cameras_.size());
         }
-        void Scene::CreateMaterials(const aiScene* scene)
+        void Scene::CreateMaterials(const aiScene* scene, const std::string current_path)
         {
             auto vs_file = ResourceLoader::GetInstance().GetFilePath("vs.hlsl");
             auto ps_file = ResourceLoader::GetInstance().GetFilePath("ps.hlsl");
@@ -177,7 +148,7 @@ namespace vEngine
                 aiString szPath;
                 if (AI_SUCCESS == ai_mat->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), szPath))
                 {
-                    std::filesystem::path p = this->file_path_;
+                    std::filesystem::path p = current_path;
                     auto dir = p.parent_path();
                     auto texture_path = dir / std::string(szPath.data);
                     if (this->scene_textures_.find(texture_path.string()) == this->scene_textures_.end())
@@ -556,6 +527,42 @@ namespace vEngine
                 //         return true;
                 //     });
             }
+        }
+        void Scene::Print()
+        {
+            this->TraverseAllChildren<GameNode>(
+                [&](GameNodeSharedPtr gn)
+                {
+                    auto p = gn->Parent().lock();
+                    auto pname = p != nullptr ? p->name_ : "None";
+                    // auto name = gn->HasComponent<TransformComponent>()?"Transform":"Raw";
+                    // auto cname = gn->HasComponent<CameraComponent>()?"Camera":"Raw";
+                    // PRINT("Game Node " << name << " " << cname << " " << gn->name_ << " Parent " << pname);
+                    auto comp = std::dynamic_pointer_cast<IComponent>(gn);
+                    if (comp != nullptr) return true;
+
+                    PRINT("Game Node " << gn->name_ << " Parent " << pname);
+                    gn->ForEachChild<IComponent>(
+                        [&](IComponentSharedPtr child)
+                        {
+                            auto cn = std::dynamic_pointer_cast<TransformComponent>(child);
+                            if (cn == nullptr) return;
+                            auto bone = std::dynamic_pointer_cast<Animation::BoneComponent>(child);
+                            auto name = cn->name_;
+                            if (bone != nullptr) name += " BoneComponent";
+
+                            PRINT("Game Node " << gn->name_ << " Has " << name);
+
+                            auto pos = cn->GO()->Translate();
+                            PRINT(pos.x() << " " << pos.y() << " " << pos.z());
+                            auto mat = cn->GO()->LocalToWorldTransform();
+                            PRINT("Global " << mat[3][0] << " " << mat[3][1] << " " << mat[3][2]);
+                            // PRINT(typeid(gn).name());
+                            // return true;
+                        });
+
+                    return true;
+                });
         }
     }  // namespace Core
 
