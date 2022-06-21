@@ -29,9 +29,11 @@ namespace vEngine
             ResourceLoader::GetInstance().AddSearchPath("resources/shader");
             ResourceLoader::GetInstance().AddSearchPath("resources/sponza");
             ResourceLoader::GetInstance().AddSearchPath("resources/bob");
+            ResourceLoader::GetInstance().AddSearchPath("resources/boblamp");
 
+            auto file = ResourceLoader::GetInstance().GetFilePath("boblampclean.md5mesh");
             // auto file = ResourceLoader::GetInstance().GetFilePath("sponza.obj");
-            auto file = ResourceLoader::GetInstance().GetFilePath("model.dae");
+            // auto file = ResourceLoader::GetInstance().GetFilePath("model.dae");
             // auto file = ResourceLoader::GetInstance().GetFilePath("bob_lamp_update_export.dae");
             // auto file = ResourceLoader::GetInstance().GetFilePath("bunny.obj");
             // this->root_ = std::make_shared<GameNode>();

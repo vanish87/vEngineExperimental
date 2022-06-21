@@ -73,13 +73,13 @@ namespace vEngine
                 root->name_ = "Assimp File: " + f;
                 this->AddChild(root);
 
-                auto s = 0.1f;
+                auto s = 0.01f;
                 auto root_transform = root->FirstOf<TransformComponent>();
                 // root_transform->Transform()->Translate() = float3(0.0f, -100, 100);
                 root_transform->GO()->Scale() = float3(s, s, s);
                 root_transform->GO()->Translate() = float3(0.0f, 0, 3);
                 // root_transform->Transform()->Translate() = float3(0.0f, 0, 20);
-                root_transform->GO()->Rotation() = Math::RotateAngleAxis(Math::PI / 2, float3(1, 0, 0));
+                root_transform->GO()->Rotation() = Math::RotateAngleAxis(Math::PI / 2, float3(0, 0, 1));
             }
 
 
@@ -146,7 +146,7 @@ namespace vEngine
                 mat->Load();
                 this->scene_materials_.emplace_back(mat);
                 aiString szPath;
-                if (AI_SUCCESS == ai_mat->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), szPath))
+                if (AI_SUCCESS == ai_mat->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), szPath) && false)
                 {
                     std::filesystem::path p = current_path;
                     auto dir = p.parent_path();
@@ -343,15 +343,15 @@ namespace vEngine
                 bone_component->name_ = node->mName.data;
                 current_node->AttachComponent(bone_component);
 
-                auto mesh_component = GameNodeFactory::Create<MeshComponent>(cdesc);
-                Mesh::GenerateCube(mesh_component->GO());
-                current_node->AttachComponent(mesh_component);
+                // auto mesh_component = GameNodeFactory::Create<MeshComponent>(cdesc);
+                // Mesh::GenerateCube(mesh_component->GO());
+                // current_node->AttachComponent(mesh_component);
 
-                auto mesh_renderer = GameNodeFactory::Create<MeshRendererComponent>(cdesc);
+                // auto mesh_renderer = GameNodeFactory::Create<MeshRendererComponent>(cdesc);
                 // current_node->AttachComponent(mesh_renderer);
 
-                auto mat = this->scene_materials_[0];
-                mesh_renderer->GO()->material_ = mat;
+                // auto mat = this->scene_materials_[0];
+                // mesh_renderer->GO()->material_ = mat;
             }
 
             current_node->name_ = node->mName.data;
@@ -407,7 +407,15 @@ namespace vEngine
             if (this->CurrentState() != ResourceState::Loaded) return;
 
             timer += 0.005f;
-            // transform_->GO()->Rotation() = Math::RotateAngleAxis(Math::PI/2+timer , float3(1,0,0));
+            this->ForEachChild<GameNode>(
+                [&](GameNodeSharedPtr child)
+                {
+                    auto trasform = child->FirstOf<TransformComponent>();
+                    if(trasform != nullptr)
+					{
+						trasform->GO()->Rotation() = Math::RotateAngleAxis(Math::PI / 2 + timer, float3(0, 0, 1));
+					}
+                });
 
             // root_node->Transform()->Rotation() = Math::RotateAngleAxis(Math::PI/2+timer , float3(1,0,0));
             this->TraverseAllChildren<Animation::AnimatorComponent>(

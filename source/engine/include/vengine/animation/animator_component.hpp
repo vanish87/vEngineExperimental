@@ -78,11 +78,13 @@ namespace vEngine
                             if(transform == nullptr || j == nullptr) return true;
 							// auto j = joints[0];
 
-                            auto size = j->position_keys_.size();
+                            auto ps = j->position_keys_.size();
+                            auto rs = j->rotation_keys_.size();
+                            auto ss = j->scale_keys_.size();
 
-							transform->GO()->Translate() = j->position_keys_[fid%size].value;
-							transform->GO()->Rotation() = j->rotation_keys_[fid%size].value;
-							transform->GO()->Scale() = j->scale_keys_[fid%size].value;
+							transform->GO()->Translate() = j->position_keys_[fid%ps].value;
+							transform->GO()->Rotation() = j->rotation_keys_[fid%rs].value;
+							transform->GO()->Scale() = j->scale_keys_[fid%ss].value;
 							// gn->Transform()->Scale() = Core::float3(0.5f, 0.5f, 0.5f);
 
                             // auto pos = node->game_object_->Translate();
