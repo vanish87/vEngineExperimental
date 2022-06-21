@@ -271,77 +271,73 @@ namespace vEngine
             }
         }
 
-        bool Scene::IsBone(const aiNode* node, Animation::BoneSharedPtr& bone_found)
+        bool Scene::IsBone(const aiNode* node, Animation::BoneComponentSharedPtr& bone_found)
         {
             if (node == nullptr) return false;
 
-            auto joint_name = node->mName.data;
+            auto bone_name = node->mName.data;
             for (const auto& m : this->scene_meshes_)
             {
-                if (m.second->bone_data_.find(joint_name) != m.second->bone_data_.end())
+                if (m.second->bone_data_.find(bone_name) != m.second->bone_data_.end())
                 {
-                    bone_found = m.second->bone_data_[joint_name];
+                    bone_found = m.second->bone_data_[bone_name];
                     return true;
                 }
             }
             return false;
         }
 
-        void Scene::AttachToMesh(const GameNodeSharedPtr skeleton, const std::string name)
-        {
-            CHECK_ASSERT(skeleton->HasComponent<Animation::SkeletonComponent>());
+        // void Scene::AttachToMesh(const GameNodeSharedPtr skeleton, const std::string name)
+        // {
+        //     CHECK_ASSERT(skeleton->HasComponent<Animation::SkeletonComponent>());
 
-            // TODO: attach this skeleton to MeshRendererComponent
-            // because transform related operation should handle by game node/component
-            // not by game object
-            for (const auto& m : this->scene_meshes_)
-            {
-                if (m.second->bone_data_.find(name) != m.second->bone_data_.end())
-                {
-                    m.second->skeleton_ = skeleton;
-                }
-            }
-        }
+        //     // TODO: attach this skeleton to MeshRendererComponent
+        //     // because transform related operation should handle by game node/component
+        //     // not by game object
+        //     for (const auto& m : this->scene_meshes_)
+        //     {
+        //         if (m.second->bone_data_.find(name) != m.second->bone_data_.end())
+        //         {
+        //             m.second->skeleton_ = skeleton;
+        //         }
+        //     }
+        // }
 
-        bool Scene::IsRootBone(const aiNode* node, Animation::BoneSharedPtr& bone_found)
-        {
-            Animation::BoneSharedPtr parent;
-            return this->IsBone(node, bone_found) && !this->IsBone(node->mParent, parent);
-        }
+        // bool Scene::IsRootBone(const aiNode* node, Animation::BoneSharedPtr& bone_found)
+        // {
+        //     Animation::BoneSharedPtr parent;
+        //     return this->IsBone(node, bone_found) && !this->IsBone(node->mParent, parent);
+        // }
         GameNodeSharedPtr Scene::HandleNode(const aiNode* node, const aiScene* scene)
         {
             GameNodeDescription desc;
             desc.type = GameNodeType::Transform;
-            GameNodeSharedPtr return_node = GameNodeFactory::Create(desc);
-            GameNodeSharedPtr current_node = return_node;
+            GameNodeSharedPtr gn = GameNodeFactory::Create(desc);
+            // GameNodeSharedPtr current_node = return_node;
 
-            Animation::BoneSharedPtr bone = nullptr;
-            if (this->IsRootBone(node, bone))
-            {
-                GameNodeDescription sdesc;
-                sdesc.type = GameNodeType::Skeleton;
-                return_node = GameNodeFactory::Create(sdesc);
-                return_node->AddChild(current_node);
-                return_node->name_ = "Skeleton_Root";
+            Animation::BoneComponentSharedPtr bone = nullptr;
+            // if (this->IsRootBone(node, bone))
+            // {
+            //     GameNodeDescription sdesc;
+            //     sdesc.type = GameNodeType::Skeleton;
+            //     return_node = GameNodeFactory::Create(sdesc);
+            //     return_node->AddChild(current_node);
+            //     return_node->name_ = "Skeleton_Root";
 
-                ComponentDescription cdesc;
-                cdesc.type = ComponentType::Animator;
-                auto animator_component = GameNodeFactory::Create<Animation::AnimatorComponent>(cdesc);
-                animator_component->name_ = "Animator for " + std::string(node->mName.data);
-                animator_component->GO()->current_clip_ = this->scene_animation_clips_[0];
-                return_node->AttachComponent(animator_component);
+            //     ComponentDescription cdesc;
+            //     cdesc.type = ComponentType::Animator;
+            //     auto animator_component = GameNodeFactory::Create<Animation::AnimatorComponent>(cdesc);
+            //     animator_component->name_ = "Animator for " + std::string(node->mName.data);
+            //     animator_component->GO()->current_clip_ = this->scene_animation_clips_[0];
+            //     return_node->AttachComponent(animator_component);
 
-                this->AttachToMesh(return_node, node->mName.data);
-            }
+            //     this->AttachToMesh(return_node, node->mName.data);
+            // }
 
             if (this->IsBone(node, bone))
             {
-                ComponentDescription cdesc;
-                cdesc.type = ComponentType::Bone;
-                auto bone_component = GameNodeFactory::Create<Animation::BoneComponent>(cdesc);
-                bone_component->Reset(bone);
-                bone_component->name_ = node->mName.data;
-                current_node->AttachComponent(bone_component);
+                PRINT("Handle "<< node->mName.data);
+                gn->AttachComponent(bone);
 
                 // auto mesh_component = GameNodeFactory::Create<MeshComponent>(cdesc);
                 // Mesh::GenerateCube(mesh_component->GO());
@@ -354,7 +350,7 @@ namespace vEngine
                 // mesh_renderer->GO()->material_ = mat;
             }
 
-            current_node->name_ = node->mName.data;
+            gn->name_ = node->mName.data;
             // set transformation here
             auto transform = node->mTransformation;
             // parent->AddChild(game_node);
@@ -391,16 +387,16 @@ namespace vEngine
                 // mesh_node->Transform()->Scale() = float3(s, s, s);
                 // mesh_node->Transform()->Translate() = float3(0, 0, 1);
 
-                current_node->AddChild(mesh_node);
+                gn->AddChild(mesh_node);
             }
 
             for (uint32_t c = 0; c < node->mNumChildren; ++c)
             {
                 auto child = this->HandleNode(node->mChildren[c], scene);
-                current_node->AddChild(child);
+                gn->AddChild(child);
             }
 
-            return return_node;
+            return gn;
         }
         void Scene::Update()
         {

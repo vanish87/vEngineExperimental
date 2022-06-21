@@ -77,8 +77,9 @@ namespace vEngine
 
                 std::vector<Vertex> vertex_data_;
                 std::vector<uint32_t> index_data_;
-                std::unordered_map<std::string, Animation::BoneSharedPtr> bone_data_;
-                GameNodeSharedPtr skeleton_;
+                //TODO Verify if the usage of BoneComponentSharedPtr is a good mesh/bone design
+                //GameObject usually does not contain a GameNode object
+                std::unordered_map<std::string, Animation::BoneComponentSharedPtr> bone_data_;
 
                 bool loaded = false;
                 //vertex

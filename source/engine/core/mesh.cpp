@@ -11,7 +11,8 @@
 #include <vengine/core/mesh.hpp>
 #include <vengine/core/resource_loader.hpp>
 #include <vengine/rendering/render_engine.hpp>
-#include <vengine/core/game_object_factory.hpp>
+#include <vengine/core/game_node_factory.hpp>
+#include <vengine/animation/bone_component.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -98,9 +99,10 @@ namespace vEngine
                     // https://learnopengl.com/Guest-Articles/2020/Skeletal-Animation is CORRECT
                     auto ai_bone = mesh->mBones[b];
 
-                    GameObjectDescription jdesc;
-                    jdesc.type = GameObjectType::Bone;
-                    auto bone = GameObjectFactory::Create<Animation::Bone>(jdesc);
+                    ComponentDescription bdesc;
+                    bdesc.type = ComponentType::Bone;
+                    auto comp = GameNodeFactory::Create<Animation::BoneComponent>(bdesc);
+                    auto bone = comp->GO();
                     bone->name_ = ai_bone->mName.data;
                     bone->id_ = b;
                     bone->inverse_bind_pose_matrix_ = this->AiMatrixToFloat4x4(ai_bone->mOffsetMatrix);
@@ -151,7 +153,7 @@ namespace vEngine
 
 
                     CHECK_ASSERT(this->bone_data_.find(bone->name_) == this->bone_data_.end());
-                    this->bone_data_[bone->name_] = bone;
+                    this->bone_data_[bone->name_] = comp;
 
                     PRINT("Bone " << bone->name_ << " id " << bone->id_);
 
