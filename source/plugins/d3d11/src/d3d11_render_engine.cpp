@@ -265,7 +265,7 @@ namespace vEngine
             scd.SampleDesc.Count = 1;                            // how many multisamples
             scd.Windowed = true;                                 // windowed/full-screen mode
 
-            auto hr = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_DEBUG , nullptr, 0, D3D11_SDK_VERSION, &scd, &d3d_swap_chain_, &d3d_device_, nullptr, &d3d_imm_context_);
+            auto hr = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &scd, &d3d_swap_chain_, &d3d_device_, nullptr, &d3d_imm_context_);
 
             CHECK_ASSERT(hr == S_OK);
             CHECK_ASSERT_NOT_NULL(this->d3d_swap_chain_);

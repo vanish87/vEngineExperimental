@@ -27,7 +27,7 @@ namespace vEngine
         {
             // PRINT("mesh object created");
         }
-        Mesh::Mesh(const aiMesh* mesh): vertex_buffer_{nullptr}, index_buffer_{nullptr}, loaded{false}
+        Mesh::Mesh(const aiMesh* mesh) : vertex_buffer_{nullptr}, index_buffer_{nullptr}, loaded{false}
         {
             this->Load(mesh);
             PRINT("Vertices count " << this->vertex_data_.size() << " indices count " << this->index_data_.size() << " joint count " << this->bone_data_.size());
@@ -90,7 +90,7 @@ namespace vEngine
             }
             // if (hasBones)
             {
-                    std::unordered_map<int, int> statics;
+                std::unordered_map<int, int> statics;
                 for (uint32_t b = 0; b < mesh->mNumBones; ++b)
                 {
                     PRINT(mesh->mName.data << " has bones/joint " << mesh->mBones[b]->mName.data << " with " << mesh->mBones[b]->mNumWeights << " weights");
@@ -120,10 +120,11 @@ namespace vEngine
 
                         auto& v = this->vertex_data_[vid];
                         statics[vid]++;
+                        CHECK_ASSERT(statics[vid] < 8);
 
-                        for(uint32_t vcount = 0; vcount < 8; ++vcount)
+                        for (uint32_t vcount = 0; vcount < 8; ++vcount)
                         {
-                            if(vcount < 4)
+                            if (vcount < 4)
                             {
                                 if (v.bone_id_0[vcount] != -1)
                                 {
@@ -151,17 +152,14 @@ namespace vEngine
                         }
                     }
 
-
                     CHECK_ASSERT(this->bone_data_.find(bone->name_) == this->bone_data_.end());
                     this->bone_data_[bone->name_] = comp;
 
                     PRINT("Bone " << bone->name_ << " id " << bone->id_);
-
                 }
-                    auto max = 0;
-                    for(auto& s: statics) max = Math::Max(max, s.second);
-                    PRINT(max);
-
+                auto max = 0;
+                for (auto& s : statics) max = Math::Max(max, s.second);
+                PRINT(max);
             }
 
             this->loaded = true;
@@ -183,7 +181,7 @@ namespace vEngine
                 desc.resource.total_size = desc.resource.count * desc.resource.stride;
                 desc.resource.data = this->vertex_data_.data();
 
-                //Not used
+                // Not used
                 desc.layout.elements_.push_back(ElementLayout::Element("POSITION", DataFormat::RGBFloat));
                 desc.layout.elements_.push_back(ElementLayout::Element("NORMAL", DataFormat::RGBFloat));
                 desc.layout.elements_.push_back(ElementLayout::Element("UV", DataFormat::RGFloat));
@@ -220,40 +218,40 @@ namespace vEngine
 
             Vertex v0;
             v0.pos = float3(0.5f, 0.5f, 0.5f);
-            v0.normal = float3(0,0,-1);
-            v0.uv = float2(1,1);
+            v0.normal = float3(0, 0, -1);
+            v0.uv = float2(1, 1);
 
             Vertex v1;
             v1.pos = float3(-0.5f, 0.5f, 0.5f);
-            v1.normal = float3(0,0,-1);
-            v1.uv = float2(0,1);
+            v1.normal = float3(0, 0, -1);
+            v1.uv = float2(0, 1);
 
             Vertex v2;
             v2.pos = float3(-0.5f, -0.5f, 0.5f);
-            v2.normal = float3(0,0,-1);
-            v2.uv = float2(0,0);
+            v2.normal = float3(0, 0, -1);
+            v2.uv = float2(0, 0);
 
             Vertex v3;
             v3.pos = float3(0.5f, -0.5f, 0.5f);
-            v3.normal = float3(0,0,-1);
-            v3.uv = float2(1,0);
+            v3.normal = float3(0, 0, -1);
+            v3.uv = float2(1, 0);
 
             Vertex v4;
             v4.pos = float3(0.5f, 0.5f, -0.5f);
-            v4.normal = float3(0,0,-1);
-            v4.uv = float2(1,0);
+            v4.normal = float3(0, 0, -1);
+            v4.uv = float2(1, 0);
             Vertex v5;
             v5.pos = float3(-0.5f, 0.5f, -0.5f);
-            v5.normal = float3(0,0,-1);
-            v5.uv = float2(1,0);
+            v5.normal = float3(0, 0, -1);
+            v5.uv = float2(1, 0);
             Vertex v6;
             v6.pos = float3(-0.5f, -0.5f, -0.5f);
-            v6.normal = float3(0,0,-1);
-            v6.uv = float2(1,0);
+            v6.normal = float3(0, 0, -1);
+            v6.uv = float2(1, 0);
             Vertex v7;
             v7.pos = float3(0.5f, -0.5f, -0.5f);
-            v7.normal = float3(0,0,-1);
-            v7.uv = float2(1,0);
+            v7.normal = float3(0, 0, -1);
+            v7.uv = float2(1, 0);
 
             mesh->vertex_data_.push_back(v0);
             mesh->vertex_data_.push_back(v1);

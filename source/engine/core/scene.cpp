@@ -346,7 +346,7 @@ namespace vEngine
             GameNodeSharedPtr gn = GameNodeFactory::Create(desc);
             // GameNodeSharedPtr current_node = return_node;
 
-            Animation::BoneComponentSharedPtr bone = nullptr;
+            // Animation::BoneComponentSharedPtr bone = nullptr;
             // if (this->IsRootBone(node, bone))
             // {
             //     GameNodeDescription sdesc;
