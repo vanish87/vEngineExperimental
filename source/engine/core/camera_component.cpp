@@ -21,12 +21,13 @@ namespace vEngine
 {
     namespace Core
     {
+        using namespace Rendering;
 
         /// constructor detailed defintion,
         /// should be 2 lines
         CameraComponent::CameraComponent()
         {
-            auto cbuffer_desc = GraphicsBufferDescriptor();
+            GraphicsBufferDescriptor cbuffer_desc;
             cbuffer_desc.type = GraphicsResourceType::CBuffer;
             cbuffer_desc.usage = GraphicsResourceUsage::CPU_Write_GPU_Read;
             cbuffer_desc.resource.offset = 0;

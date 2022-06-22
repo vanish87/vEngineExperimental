@@ -21,8 +21,6 @@ namespace vEngine
 {
     namespace Core
     {
-        using namespace Math;
-        using namespace Rendering;
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
@@ -33,7 +31,7 @@ namespace vEngine
                 /// \brief brief constructor description.
                 Camera();
 
-                FrameBufferSharedPtr target;
+                Rendering::FrameBufferSharedPtr target;
 
                 const float4x4 ProjectionMatrix() const
                 {

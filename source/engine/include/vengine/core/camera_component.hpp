@@ -34,7 +34,7 @@ namespace vEngine
 
                 void OnBeginCamera();
 
-                GraphicsBufferSharedPtr camera_constant_buffer_;
+                Rendering::GraphicsBufferSharedPtr camera_constant_buffer_;
         };
     }  // namespace Core
 }  // namespace vEngine
