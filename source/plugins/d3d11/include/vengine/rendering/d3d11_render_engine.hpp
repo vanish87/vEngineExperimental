@@ -20,6 +20,7 @@ namespace vEngine
                     PRINT("Destructor D3D11");
                 }
                 void Init() override;
+                void InitDebug();
                 void Deinit() override;
                 void Update() override;
                 void PrintInfo() override;

@@ -1,6 +1,9 @@
 #include <d3dcompiler.h>
 
 #include <cstring>
+#include <filesystem>
+#include <shlobj.h>
+
 #include <vengine/core/application.hpp>
 #include <vengine/core/context.hpp>
 #include <vengine/core/vector.hpp>
@@ -204,8 +207,42 @@ namespace vEngine
             return DataFormat::Undefined;
         }
 
+        void D3D11RenderEngine::InitDebug()
+        {
+            LPWSTR programFilesPath = nullptr;
+            SHGetKnownFolderPath(FOLDERID_ProgramFiles, KF_FLAG_DEFAULT, NULL, &programFilesPath);
+
+            std::filesystem::path pixInstallationPath = programFilesPath;
+            pixInstallationPath /= "Microsoft PIX";
+
+            std::wstring newestVersionFound;
+
+            for (auto const& directory_entry : std::filesystem::directory_iterator(pixInstallationPath))
+            {
+                if (directory_entry.is_directory())
+                {
+                    if (newestVersionFound.empty() || newestVersionFound < directory_entry.path().filename().c_str())
+                    {
+                        newestVersionFound = directory_entry.path().filename().c_str();
+                    }
+                }
+            }
+
+            if (newestVersionFound.empty())
+            {
+                // TODO: Error, no PIX installation found
+            }
+
+            auto pix_path = pixInstallationPath / newestVersionFound / "WinPixGpuCapturer.dll";
+            if (::GetModuleHandle("WinPixGpuCapturer.dll") == 0)
+            {
+                ::LoadLibrary(pix_path.string().c_str());
+            }
+        }
         void D3D11RenderEngine::Init()
         {
+            // this->InitDebug();
+
             // TODO Use IDXGIFactory to check adapters
 
             const auto config = Context::GetInstance().CurrentConfigure();
@@ -228,7 +265,7 @@ namespace vEngine
             scd.SampleDesc.Count = 1;                            // how many multisamples
             scd.Windowed = true;                                 // windowed/full-screen mode
 
-            auto hr = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &scd, &d3d_swap_chain_, &d3d_device_, nullptr, &d3d_imm_context_);
+            auto hr = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_DEBUG , nullptr, 0, D3D11_SDK_VERSION, &scd, &d3d_swap_chain_, &d3d_device_, nullptr, &d3d_imm_context_);
 
             CHECK_ASSERT(hr == S_OK);
             CHECK_ASSERT_NOT_NULL(this->d3d_swap_chain_);
