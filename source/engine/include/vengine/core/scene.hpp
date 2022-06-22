@@ -69,7 +69,7 @@ namespace vEngine
 
                 GameNodeSharedPtr MakeTransformNode();
 
-                bool IsBone(const aiNode* node, Animation::BoneComponentSharedPtr& bone_found);
+                void HandleBoneNode(const aiNode* node, const GameNodeSharedPtr game_node);
                 // bool IsRootBone(const aiNode* node, Animation::BoneSharedPtr& joint_found);
                 // void AttachToMesh(const GameNodeSharedPtr skeleton, const std::string name);
 

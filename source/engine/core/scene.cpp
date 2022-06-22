@@ -10,6 +10,7 @@
 #include <vengine/core/scene.hpp>
 
 #include <external/lodepng.h>
+#include <external/tga.h>
 
 #include <vengine/core/game_node_factory.hpp>
 #include <vengine/core/game_object_factory.hpp>
@@ -146,7 +147,7 @@ namespace vEngine
                 mat->Load();
                 this->scene_materials_.emplace_back(mat);
                 aiString szPath;
-                if (AI_SUCCESS == ai_mat->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), szPath) && false)
+                if (AI_SUCCESS == ai_mat->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), szPath))
                 {
                     std::filesystem::path p = current_path;
                     auto dir = p.parent_path();
@@ -155,10 +156,41 @@ namespace vEngine
                     {
                         std::vector<byte> out;
 
-                        uint32_t width;
-                        uint32_t height;
-                        auto error = lodepng::decode(out, width, height, texture_path.string());
-                        CHECK_ASSERT(error == 0);
+                        uint32_t width = 0;
+                        uint32_t height = 0;
+                        if(texture_path.extension() == ".png")
+                        {
+                            auto error = lodepng::decode(out, width, height, texture_path.string());
+                            CHECK_ASSERT(error == 0);
+                        }
+                        else
+                        if(texture_path.extension() == ".tga")
+                        {
+                            FILE* f;
+                            auto error = fopen_s(&f, texture_path.string().c_str(), "rb");
+                            CHECK_ASSERT(error == 0);
+
+                            tga::StdioFileInterface file(f);
+                            tga::Decoder decoder(&file);
+                            tga::Header header;
+                            if(!decoder.readHeader(header)) CHECK_ASSERT(false);
+
+                            tga::Image image;
+                            image.bytesPerPixel = header.bytesPerPixel();
+                            image.rowstride = header.width * header.bytesPerPixel();
+
+                            out.resize(image.rowstride * header.height);
+                            image.pixels = &out[0];
+
+                            if(!decoder.readImage(header, image, nullptr)) CHECK_ASSERT(false);
+
+                            width = header.width;
+                            height = header.height;
+                        }
+                        else
+                        {
+                            PRINT_AND_BREAK("texture file " << texture_path << " not supported");
+                        }
 
                         TextureDescriptor tdesc;
                         tdesc.width = width;
@@ -271,20 +303,19 @@ namespace vEngine
             }
         }
 
-        bool Scene::IsBone(const aiNode* node, Animation::BoneComponentSharedPtr& bone_found)
+        void Scene::HandleBoneNode(const aiNode* node, const GameNodeSharedPtr game_node)
         {
-            if (node == nullptr) return false;
+            if (node == nullptr) return;
 
             auto bone_name = node->mName.data;
             for (const auto& m : this->scene_meshes_)
             {
                 if (m.second->bone_data_.find(bone_name) != m.second->bone_data_.end())
                 {
-                    bone_found = m.second->bone_data_[bone_name];
-                    return true;
+                    auto bone_comp = m.second->bone_data_[bone_name];
+                    game_node->AttachComponent(bone_comp);
                 }
             }
-            return false;
         }
 
         // void Scene::AttachToMesh(const GameNodeSharedPtr skeleton, const std::string name)
@@ -334,10 +365,10 @@ namespace vEngine
             //     this->AttachToMesh(return_node, node->mName.data);
             // }
 
-            if (this->IsBone(node, bone))
-            {
-                PRINT("Handle "<< node->mName.data);
-                gn->AttachComponent(bone);
+            // if (this->IsBone(node, bone))
+            // {
+            //     PRINT("Handle "<< node->mName.data);
+            //     gn->AttachComponent(bone);
 
                 // auto mesh_component = GameNodeFactory::Create<MeshComponent>(cdesc);
                 // Mesh::GenerateCube(mesh_component->GO());
@@ -348,7 +379,9 @@ namespace vEngine
 
                 // auto mat = this->scene_materials_[0];
                 // mesh_renderer->GO()->material_ = mat;
-            }
+            // }
+
+            this->HandleBoneNode(node, gn);
 
             gn->name_ = node->mName.data;
             // set transformation here
