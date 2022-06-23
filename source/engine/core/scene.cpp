@@ -57,12 +57,19 @@ namespace vEngine
             asset->GO()->Load(rdesc);
 
             this->AddChild(asset->GO()->root_);
+        }
+        void Scene::ActiveScene()
+        {
+            //find first available camera as main camera;
+            //link each animation to its mesh with newly created animator node
+            auto asset = this->FirstOf<AssetComponent>();
 
             asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Translate() = float3(0, 0, 5);
             auto s = 0.1f;
             asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Scale() = float3(s,s,s);
 
             auto main_camera = asset->GO()->cameras_[0];
+            GameNodeDescription gndesc;
             gndesc.type = GameNodeType::Camera;
             auto camera_gn = GameNodeFactory::Create(gndesc);
             camera_gn->FirstOf<CameraComponent>()->Reset(main_camera);
@@ -75,6 +82,7 @@ namespace vEngine
                     comp->SetEnable(true);
                     return true;
                 });
+
         }
 
         void Scene::Update()
