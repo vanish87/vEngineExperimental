@@ -58,6 +58,17 @@ namespace vEngine
 
             this->AddChild(asset->GO()->root_);
 
+            asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Translate() = float3(0, 0, 5);
+            auto s = 0.1f;
+            asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Scale() = float3(s,s,s);
+
+            auto main_camera = asset->GO()->cameras_[0];
+            gndesc.type = GameNodeType::Camera;
+            auto camera_gn = GameNodeFactory::Create(gndesc);
+            camera_gn->FirstOf<CameraComponent>()->Reset(main_camera);
+            // camera_gn->FirstOf<TransformComponent>()->GO()->Translate() = float3(0,0,5);
+            this->AddChild(camera_gn);
+
             this->TraverseAllChildren<IComponent>(
                 [&](IComponentSharedPtr comp)
                 {
@@ -78,12 +89,7 @@ namespace vEngine
             this->TraverseAllChildren<TransformComponent>(
                 [&](TransformComponentSharedPtr node)
                 {
-                    // node->UpdateLocal(parent);
                     node->OnUpdate();
-
-                    // auto pos = node->game_object_->Translate();
-                    // PRINT(pos.x() << " " << pos.y());
-                    // PRINT(node->name_);
                     return true;
                 });
 

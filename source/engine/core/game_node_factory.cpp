@@ -78,6 +78,14 @@ namespace vEngine
                     // ret->AttachComponent(Create<BoneComponent>(cdesc));
                 }
                 break;
+                case GameNodeType::Camera:
+                {
+                    ret = std::make_shared<GameNode>();
+                    ComponentDescription cdesc;
+                    ret->AttachComponent(Create<TransformComponent>(cdesc));
+                    ret->AttachComponent(Create<CameraComponent>(cdesc));
+                }
+                break;
 
 
                 default:
