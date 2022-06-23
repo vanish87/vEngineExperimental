@@ -28,6 +28,7 @@ namespace vEngine
         enum class GameNodeType
         {
             Raw,
+            Asset,
             Transform,
             Skeleton,
             Bone,

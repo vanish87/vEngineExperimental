@@ -22,6 +22,7 @@
 #include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <vengine/core/thread.hpp>
+#include <vengine/core/iresource.hpp>
 
 namespace vEngine
 {
@@ -49,7 +50,7 @@ namespace vEngine
         class ResourceLoadingJob : public ThreadJob
         {
             public:
-                ResourceLoadingJob(IResourceSharedPtr JobObj, std::function<void(IResourceSharedPtr user_data)> const& complete_callback);
+                ResourceLoadingJob(IResourceSharedPtr resource, const ResourceDescriptor& desc, std::function<void(IResourceSharedPtr user_data)> const& complete_callback);
                 ~ResourceLoadingJob();
 
             public:
@@ -58,6 +59,7 @@ namespace vEngine
             private:
                 ResourceLoadingJob(){};
                 IResourceSharedPtr resource_to_load_;
+                ResourceDescriptor desc_;
                 std::function<void(IResourceSharedPtr user_data)> complete_call_back_;
         };
         class ResourceLoader
@@ -66,7 +68,7 @@ namespace vEngine
 
             public:
 
-                void LoadAsync(IResourceSharedPtr resource, std::function<void(IResourceSharedPtr user_data)> const& complete_callback = nullptr);
+                void LoadAsync(IResourceSharedPtr resource, const ResourceDescriptor& desc, std::function<void(IResourceSharedPtr user_data)> const& complete_callback = nullptr);
                 // void AddSync();
 
                 std::string GetFilePath(const std::string file_name);

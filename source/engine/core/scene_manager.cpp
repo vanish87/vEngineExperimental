@@ -40,13 +40,13 @@ namespace vEngine
             // this->scene_ = std::make_shared<Scene>("cornell-box.obj");
             // this->scene_ = std::make_shared<Scene>("bunny.obj");
             this->scene_ = std::make_shared<Scene>();
-            this->scene_->AddFile(file);
-            ResourceLoader::GetInstance().LoadAsync(this->scene_,
-            [&](IResourceSharedPtr c)
-            {
-                UNUSED_PARAMETER(c);
-                PRINT("Resource loaded");
-            });
+            this->scene_->LoadFile(file);
+            // ResourceLoader::GetInstance().LoadAsync(this->scene_,
+            // [&](IResourceSharedPtr c)
+            // {
+            //     UNUSED_PARAMETER(c);
+            //     PRINT("Resource loaded");
+            // });
             // this->scene_->Load();
 
             // std::vector<byte> out;
@@ -71,10 +71,7 @@ namespace vEngine
         }
         void SceneManager::Update()
         {
-            if (this->scene_->CurrentState() == ResourceState::Loaded)
-            {
-                this->scene_->Update();
-            }
+            this->scene_->Update();
         }
 
     }  // namespace Core

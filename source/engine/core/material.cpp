@@ -17,13 +17,14 @@ namespace vEngine
 {
     namespace Core
     {
-
+        using namespace Rendering;
         /// constructor detailed defintion,
         /// should be 2 lines
         Material::Material(const std::string vs_name, const std::string ps_name) : vs_name_{vs_name}, ps_name_{ps_name} {}
 
-        bool Material::Load()
+        bool Material::Load(const ResourceDescriptor& descriptor)
         {
+            UNUSED_PARAMETER(descriptor);
             // this->d3d_imm_context_->VSSetShader(this->vs, 0, 0);
             // this->d3d_imm_context_->PSSetShader(this->ps, 0, 0);
 

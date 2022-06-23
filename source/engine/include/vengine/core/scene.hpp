@@ -28,21 +28,21 @@ namespace vEngine
 {
     namespace Core
     {
-        using namespace Rendering;
+        // using namespace Rendering;
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Scene : public GameNode, public IResource
+        class Scene : public GameNode//, public IResource
         {
 
             public:
                 /// \brief brief constructor description.
                 Scene();
-                void AddFile(const std::string file);
+                void LoadFile(const std::string file);
 
-                bool Load() override;
-                ResourceState CurrentState() override;
+                // bool Load() override;
+                // ResourceState CurrentState() override;
 
 				void Update();
 				void Flush();
@@ -60,33 +60,27 @@ namespace vEngine
                 void AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node = nullptr);
                 void AddTestNode();
 
-                GameNodeSharedPtr HandleNode(const aiNode* node, const aiScene* scene);
-                void CreateMeshes(const aiScene* scene);
-                void CreateMaterials(const aiScene* scene, const std::string current_path);
-                void CreateTextures(const aiScene* scene);
-                void CreateCameras(const aiScene* scene);
-                void CreateAnimations(const aiScene* scene);
+                // GameNodeSharedPtr HandleNode(const aiNode* node, const aiScene* scene);
+                // void CreateMeshes(const aiScene* scene);
+                // void CreateMaterials(const aiScene* scene, const std::string current_path);
+                // void CreateTextures(const aiScene* scene);
+                // void CreateCameras(const aiScene* scene);
+                // void CreateAnimations(const aiScene* scene);
 
-                GameNodeSharedPtr MakeTransformNode();
+                // GameNodeSharedPtr MakeTransformNode();
 
-                void HandleBoneNode(const aiNode* node, const GameNodeSharedPtr game_node);
+                // void HandleBoneNode(const aiNode* node, const GameNodeSharedPtr game_node);
                 // bool IsRootBone(const aiNode* node, Animation::BoneSharedPtr& joint_found);
                 // void AttachToMesh(const GameNodeSharedPtr skeleton, const std::string name);
 
                 void Print();
 
             private:
-                ResourceState state_;
+                // ResourceState state_;
                 // std::string file_path_;
 
-                std::unordered_set<std::string> file_list_;
+                // std::unordered_set<std::string> file_list_;
 
-                std::vector<CameraComponentSharedPtr> scene_cameras_;
-                std::vector<LightComponentSharedPtr> scene_lights_;
-                std::unordered_map<int, MeshSharedPtr> scene_meshes_;
-                std::unordered_map<std::string, TextureSharedPtr> scene_textures_;
-                std::vector<MaterialSharedPtr> scene_materials_;
-                std::vector<Animation::AnimationClipSharedPtr> scene_animation_clips_;
 
                 //map mesh to it skeleton
                 //<mesh_name, <joint_name, joint>>

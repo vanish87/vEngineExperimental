@@ -159,7 +159,7 @@ namespace vEngine
                 }
                 auto max = 0;
                 for (auto& s : statics) max = Math::Max(max, s.second);
-                PRINT(max);
+                PRINT("max vertex count for blend " << max);
             }
 
             this->loaded = true;

@@ -20,7 +20,7 @@ namespace vEngine
 {
     namespace Core
     {
-        using namespace Rendering;
+        // using namespace Rendering;
 
         /// \brief A brief class description.
         ///
@@ -36,7 +36,7 @@ namespace vEngine
                     // PRINT("Destory material");
                 }
 
-                bool Load() override;
+                bool Load(const ResourceDescriptor& descriptor) override;
                 ResourceState CurrentState() override
                 {
                     return ResourceState::Unknown;
@@ -57,11 +57,11 @@ namespace vEngine
                 // all vs/ps related data is stored in PipelineState
                 std::string vs_name_;
                 std::string ps_name_;
-                PipelineStateSharedPtr pipeline_state_;
+                Rendering::PipelineStateSharedPtr pipeline_state_;
 
                 // maybe layout like D3D11_INPUT_ELEMENT_DESC
 
-                GraphicsBufferSharedPtr constant_buffer_;
+                Rendering::GraphicsBufferSharedPtr constant_buffer_;
                 std::vector<Rendering::TextureSharedPtr> textures_;
 
                 // parameter example

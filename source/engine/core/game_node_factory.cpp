@@ -10,7 +10,9 @@
 
 #include <vengine/animation/skeleton.hpp>
 #include <vengine/core/game_node_factory.hpp>
-#include <vengine/core/transform.hpp>
+#include <vengine/core/transform_component.hpp>
+#include <vengine/core/asset_component.hpp>
+#include <vengine/animation/bone_component.hpp>
 #include <vengine/animation/bone_component.hpp>
 #include <vengine/animation/skeleton_component.hpp>
 #include <vengine/animation/animator_component.hpp>
@@ -38,6 +40,13 @@ namespace vEngine
             GameNodeSharedPtr ret = nullptr;
             switch (desc.type)
             {
+                case GameNodeType::Asset:
+                {
+                    ret = std::make_shared<GameNode>();
+                    ComponentDescription cdesc;
+                    ret->AttachComponent(Create<AssetComponent>(cdesc));
+                }
+                break;
                 case GameNodeType::Transform:
                 {
                     ret = std::make_shared<GameNode>();
@@ -69,6 +78,7 @@ namespace vEngine
                     // ret->AttachComponent(Create<BoneComponent>(cdesc));
                 }
                 break;
+
 
                 default:
                     break;

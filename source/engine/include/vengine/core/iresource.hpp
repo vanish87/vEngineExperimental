@@ -15,10 +15,15 @@ namespace vEngine
             Loading,
             Loaded,
         };
+        struct ResourceDescriptor
+        {
+            std::string file_path;
+        };
+        
         Interface VENGINE_API IResource
         {
         public:
-            virtual bool Load() = 0;
+            virtual bool Load(const ResourceDescriptor& descriptor) = 0;
             virtual ResourceState CurrentState() = 0;
         };
     }  // namespace Core
