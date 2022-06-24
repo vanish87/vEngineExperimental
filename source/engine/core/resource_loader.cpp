@@ -74,12 +74,12 @@ namespace vEngine
 
             this->search_paths_[p.string()] = p;
         }
-        std::string ResourceLoader::GetFilePath(const std::string file_name)
+        std::filesystem::path ResourceLoader::GetFilePath(const std::string file_name)
         {
             for(auto p = this->search_paths_.begin(); p != this->search_paths_.end(); ++p)
             {
                 const auto path = p->second / file_name;
-                if(std::filesystem::exists(path)) return path.string();
+                if(std::filesystem::exists(path)) return path;
             }
 
             CHECK_ASSERT(false);

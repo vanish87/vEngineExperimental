@@ -71,7 +71,7 @@ namespace vEngine
                 void LoadAsync(IResourceSharedPtr resource, const ResourceDescriptor& desc, std::function<void(IResourceSharedPtr user_data)> const& complete_callback = nullptr);
                 // void AddSync();
 
-                std::string GetFilePath(const std::string file_name);
+                std::filesystem::path GetFilePath(const std::string file_name);
                 void AddSearchPath(const std::string path);
             private:
                 ResourceLoadingThread loading_thread_;
