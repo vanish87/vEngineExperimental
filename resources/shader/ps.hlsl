@@ -35,7 +35,7 @@ ps_out ps_main(vs_out input)
 	float4 col = ambient_col + (diffuse_col * diffuse  + specular_col * specular);
 	// return float4(normal, 1);
 	ps_out ret = (ps_out)0;
-	ret.color0 = col;
+	ret.color0 = diffuse_col;
 	return ret;
 }
 
