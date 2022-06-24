@@ -312,6 +312,7 @@ namespace vEngine
                                 joint->scale_keys_.emplace_back((float)scale.mTime, float3(scale.mValue.x, scale.mValue.y, scale.mValue.z));
                             }
 
+							//TODO: use unordered_map for fast access
                             animation->joints_.push_back(joint);
                         }
 
