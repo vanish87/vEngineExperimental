@@ -179,6 +179,9 @@ namespace vEngine
             ret[3][1] = 0;
             ret[3][2] = 0;
             ret[3][3] = 1;
+
+            ret = Math::Transpose(ret);
+
             return ret;
         }
         template <typename T>

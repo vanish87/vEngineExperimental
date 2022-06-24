@@ -51,14 +51,16 @@ namespace vEngine
                     auto animator = this->GO();
                     animator->Lerp();
 
-                    timer += 0.001f;
+                    timer += 0.01f;
                     int fid = Math::FloorToInt(timer);
                     // auto fid = 0;
 
                     // auto joints = animator->GetAnimatedJoints();
-					auto joints = animator->current_clip_->joints_;
+                    if (animator->current_clip_ == nullptr) animator->current_clip_ = animator->animations_[0];
 
-                    this->Owner()->TraverseAllChildren<BoneComponent>(
+                    auto joints = animator->current_clip_->joints_;
+
+                    this->animation_root_->TraverseAllChildren<BoneComponent>(
                         [&](BoneComponentSharedPtr node)
                         {
                             // node->UpdateLocal(parent);
@@ -75,7 +77,7 @@ namespace vEngine
 									break;
 								}
 							}
-                            if(transform == nullptr || j == nullptr) return true;
+                            // if(transform == nullptr || j == nullptr) return true;
 							// auto j = joints[0];
 
                             auto ps = j->position_keys_.size();
@@ -95,6 +97,7 @@ namespace vEngine
                 };
 
                 float timer;
+                Core::GameNodeSharedPtr animation_root_;
 
             public:
                 /// \brief A brief function description.

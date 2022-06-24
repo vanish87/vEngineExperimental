@@ -104,6 +104,7 @@ namespace vEngine
                     auto comp = GameNodeFactory::Create<Animation::BoneComponent>(bdesc);
                     auto bone = comp->GO();
                     bone->name_ = ai_bone->mName.data;
+                    comp->name_ = ai_bone->mName.data;
                     bone->id_ = b;
                     bone->inverse_bind_pose_matrix_ = this->AiMatrixToFloat4x4(ai_bone->mOffsetMatrix);
 

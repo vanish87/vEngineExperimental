@@ -68,17 +68,24 @@ namespace vEngine
             //link each animation to its mesh with newly created animator node
             auto asset = this->FirstOf<AssetComponent>(1);
 
-            asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Translate() = float3(0, 0, 5);
-            auto s = 0.05f;
-            asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Scale() = float3(s,s,s);
+            // asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Translate() = float3(0, 0, 5);
+            // auto s = 0.01f;
+            // asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Scale() = float3(s,s,s);
 
             auto main_camera = asset->GO()->cameras_[0];
             GameNodeDescription gndesc;
             gndesc.type = GameNodeType::Camera;
             auto camera_gn = GameNodeFactory::Create(gndesc);
             camera_gn->FirstOf<CameraComponent>()->Reset(main_camera);
-            // camera_gn->FirstOf<TransformComponent>()->GO()->Translate() = float3(0,0,5);
+            camera_gn->FirstOf<TransformComponent>()->GO()->Translate() = float3(0,-20,120);
             this->AddChild(camera_gn);
+
+            gndesc.type = GameNodeType::Animator;
+            auto animator_gn = GameNodeFactory::Create(gndesc);
+            auto animator_comp = animator_gn->FirstOf<Animation::AnimatorComponent>();
+            animator_comp->GO()->Setup(asset->GO()->animation_clips_);
+            animator_comp->animation_root_ = asset->GO()->root_;
+            this->AddChild(animator_gn);
 
             this->TraverseAllChildren<IComponent>(
                 [&](IComponentSharedPtr comp)
@@ -95,7 +102,9 @@ namespace vEngine
         {
             timer += 0.001f;
             auto asset = this->FirstOf<AssetComponent>(1);
-            asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Rotation() = Math::RotateAngleAxis(timer, float3(1,0,0));
+            auto rot90 = Math::RotateAngleAxis(Math::PI * 0.5f, float3(0,0,1));
+            auto rotanim = Math::RotateAngleAxis(timer, float3(1,0,0));
+            asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Rotation() = rot90 * rotanim;
             this->TraverseAllChildren<Animation::AnimatorComponent>(
                 [&](Animation::AnimatorComponentSharedPtr node)
                 {
