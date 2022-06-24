@@ -48,7 +48,12 @@ namespace vEngine
             cb.camera_pos = float4(0, 0, 100, 1);
 
             auto trans = this->Owner()->FirstOf<TransformComponent>();
-            cb.view_matrix = trans->GO()->LocalToWorldTransform();
+            //TODO use rot to rotate forward/up vector
+            auto rot = trans->GO()->Rotation();
+            auto eye= trans->GO()->Translate();
+            auto at = Math::TransformPoint(float4(0,0,1,1), Math::ToMatrix(rot));
+            auto up = float3(0,1,0);
+            cb.view_matrix = Math::LookAtLH(eye, float3(at.x(), at.y(), at.z()), up);
             // Math::Translate(cb.view_matrix, 0, 0, 100);
             // cb.view_matrix = Math::Transpose(cb.view_matrix);
             cb.proj_matrix = cam->ProjectionMatrix();

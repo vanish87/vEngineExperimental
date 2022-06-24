@@ -18,7 +18,7 @@ namespace vEngine
         };
         /// \brief Define a MxN matrix with data type T
         ///
-        /// Note M is number of row elements, N is number of col elements. \n
+        /// Note M is the number of row elements, N is the number of col elements. \n
         /// use matrix[row][col] to assess data. \n
         /// the data layout is colum major, see Math for details.
         /// \tparam T

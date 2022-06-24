@@ -77,7 +77,7 @@ namespace vEngine
             gndesc.type = GameNodeType::Camera;
             auto camera_gn = GameNodeFactory::Create(gndesc);
             camera_gn->FirstOf<CameraComponent>()->Reset(main_camera);
-            camera_gn->FirstOf<TransformComponent>()->GO()->Translate() = float3(0,-20,120);
+            camera_gn->FirstOf<TransformComponent>()->GO()->Translate() = float3(0,100,-120);
             this->AddChild(camera_gn);
 
             gndesc.type = GameNodeType::Animator;
@@ -105,6 +105,7 @@ namespace vEngine
             auto rot90 = Math::RotateAngleAxis(Math::PI * 0.5f, float3(0,0,1));
             auto rotanim = Math::RotateAngleAxis(timer, float3(1,0,0));
             asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Rotation() = rot90 * rotanim;
+
             this->TraverseAllChildren<Animation::AnimatorComponent>(
                 [&](Animation::AnimatorComponentSharedPtr node)
                 {

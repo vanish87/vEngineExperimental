@@ -153,13 +153,12 @@ namespace vEngine
                 {
                     return const_cast<float3&>(static_cast<const Transform*>(this)->Scale());
                 }
-                void UpdateLocalToWorld(const TransformSharedPtr parent)
+                void UpdateLocalToWorld(const TransformSharedPtr parent = nullptr)
                 {
-                    this->local_to_world_ = this->LocalTransform() * parent->LocalToWorldTransform();
-                }
-                void UpdateLocalToWorld()
-                {
-                    this->local_to_world_ = this->LocalTransform();
+                    auto pmatrix = float4x4::Identity();
+                    if(parent != nullptr) pmatrix = parent->LocalToWorldTransform();
+                    
+                    this->local_to_world_ = this->LocalTransform() * pmatrix;
                 }
 
 
