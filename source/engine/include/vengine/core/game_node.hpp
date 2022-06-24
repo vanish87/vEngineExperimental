@@ -93,9 +93,9 @@ namespace vEngine
                 // }
 
                 template <typename T>
-                std::shared_ptr<T> FirstOf()
+                std::shared_ptr<T> FirstOf(const int level = 0)
                 {
-                    for (auto c : this->children_)
+                    for (const auto& c : this->children_)
                     {
                         auto go = std::dynamic_pointer_cast<T>(c);
                         if (go != nullptr)
@@ -103,12 +103,20 @@ namespace vEngine
                             return go;
                         }
                     }
+                    if (level > 0)
+                    {
+                        for (const auto& c : this->children_)
+                        {
+                            auto node = c->FirstOf<T>(level - 1);
+                            if (node != nullptr) return node;
+                        }
+                    }
                     return nullptr;
                 }
                 template <typename T>
                 void ForEachChild(std::function<void(std::shared_ptr<T>)> const& iter)
                 {
-                    for (auto c : this->children_)
+                    for (const auto& c : this->children_)
                     {
                         auto go = std::dynamic_pointer_cast<T>(c);
                         if (go != nullptr)

@@ -31,7 +31,7 @@ namespace vEngine
             ResourceLoader::GetInstance().AddSearchPath("resources/bob");
             ResourceLoader::GetInstance().AddSearchPath("resources/boblamp");
 
-            auto file = ResourceLoader::GetInstance().GetFilePath("boblampclean.md5mesh");
+            // auto file = ResourceLoader::GetInstance().GetFilePath("boblampclean.md5mesh");
             // auto file = ResourceLoader::GetInstance().GetFilePath("sponza.obj");
             // auto file = ResourceLoader::GetInstance().GetFilePath("model.dae");
             // auto file = ResourceLoader::GetInstance().GetFilePath("bob_lamp_update_export.dae");
@@ -40,7 +40,11 @@ namespace vEngine
             // this->scene_ = std::make_shared<Scene>("cornell-box.obj");
             // this->scene_ = std::make_shared<Scene>("bunny.obj");
             this->scene_ = std::make_shared<Scene>();
-            this->scene_->LoadFile(file);
+            auto file = ResourceLoader::GetInstance().GetFilePath("boblampclean.md5mesh");
+            this->scene_->LoadFile(file.string());
+            // file = ResourceLoader::GetInstance().GetFilePath("boblampclean.md5anim");
+            // this->scene_->LoadFile(file.string());
+            this->scene_->ActiveScene();
             // ResourceLoader::GetInstance().LoadAsync(this->scene_,
             // [&](IResourceSharedPtr c)
             // {

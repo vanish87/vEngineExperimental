@@ -174,7 +174,7 @@ namespace vEngine
                         auto ai_mat = scene->mMaterials[mid];
                         GameObjectDescription desc;
                         desc.type = GameObjectType::Material;
-                        auto mat = GameObjectFactory::Create<Material>(desc, vs_file, ps_file);
+                        auto mat = GameObjectFactory::Create<Material>(desc, vs_file.string(), ps_file.string());
                         ResourceDescriptor rdesc;
                         mat->Load(rdesc);
                         this->materials_.emplace_back(mat);
@@ -244,7 +244,7 @@ namespace vEngine
                     if (this->materials_.size() == 0)
                     {
                         PRINT("no materials for scene, add a default material");
-                        auto mat = std::make_shared<Material>(vs_file, ps_file);
+                        auto mat = std::make_shared<Material>(vs_file.string(), ps_file.string());
                         ResourceDescriptor rdesc;
                         mat->Load(rdesc);
                         this->materials_.emplace_back(mat);

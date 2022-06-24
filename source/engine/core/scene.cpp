@@ -48,6 +48,8 @@ namespace vEngine
         }
         void Scene::LoadFile(const std::string file)
         {
+            PRINT("Loading " << file);
+
             GameNodeDescription gndesc;
             gndesc.type = GameNodeType::Asset;
             auto gn = GameNodeFactory::Create(gndesc);
@@ -56,16 +58,18 @@ namespace vEngine
             rdesc.file_path = file;
             asset->GO()->Load(rdesc);
 
-            this->AddChild(asset->GO()->root_);
+            gn->AddChild(asset->GO()->root_);
+
+            this->AddChild(gn);
         }
         void Scene::ActiveScene()
         {
             //find first available camera as main camera;
             //link each animation to its mesh with newly created animator node
-            auto asset = this->FirstOf<AssetComponent>();
+            auto asset = this->FirstOf<AssetComponent>(1);
 
             asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Translate() = float3(0, 0, 5);
-            auto s = 0.1f;
+            auto s = 0.05f;
             asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Scale() = float3(s,s,s);
 
             auto main_camera = asset->GO()->cameras_[0];
@@ -85,8 +89,13 @@ namespace vEngine
 
         }
 
+        float timer = 0;
+
         void Scene::Update()
         {
+            timer += 0.001f;
+            auto asset = this->FirstOf<AssetComponent>(1);
+            asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Rotation() = Math::RotateAngleAxis(timer, float3(1,0,0));
             this->TraverseAllChildren<Animation::AnimatorComponent>(
                 [&](Animation::AnimatorComponentSharedPtr node)
                 {
