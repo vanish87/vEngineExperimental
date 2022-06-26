@@ -328,6 +328,7 @@ namespace vEngine
                     {
                         if (m.second->bone_data_.find(bone_name) != m.second->bone_data_.end())
                         {
+							//TODO Add init/bind pose pos/rotation/scale to bone_comp
                             auto bone_comp = m.second->bone_data_[bone_name];
                             game_node->AttachComponent(bone_comp);
                         }

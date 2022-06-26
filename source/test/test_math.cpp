@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <vengine/core/math.h>
+#include <vengine/core/math.hpp>
 
 #include <vengine/core/matrix.hpp>
 #include <engine.hpp>

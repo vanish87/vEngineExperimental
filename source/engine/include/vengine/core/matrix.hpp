@@ -2,7 +2,7 @@
 #define _VENGINE_CORE_MATRIX_HPP
 
 #pragma once
-#include <vengine/core/math.h>
+#include <vengine/core/math.hpp>
 
 // #include <engine.hpp>
 #include <vengine/core/vector.hpp>

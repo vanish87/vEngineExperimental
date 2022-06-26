@@ -1,396 +1,221 @@
-#ifndef _VENGINE_CORE_MATH_HPP
-#define _VENGINE_CORE_MATH_HPP
+#ifndef _VENGINE_CORE_MATH_H
+#define _VENGINE_CORE_MATH_H
 
 #pragma once
-#include <cmath>
+#include <VENGINE_API.hpp>
+
+#include <engine.hpp>
+#include <vengine/core/angle.hpp>
+#include <vengine/core/vector.hpp>
 
 namespace vEngine
 {
+    /// \brief Math Functions \n
+    /// Brief contine
+    ///
+    /// This implementation of Math/Engine libraries basically follows
+    /// conventions of DirectX/HLSL/Windows.
+    ///
+    /// Row major system
+    /// ========================
+    /// - Vector is row major [x,y,z,w]
+    /// - Matrix is row major \n
+    /// \code
+    /// [e0,  e1,  e2,  e3 ]
+    /// [e4,  e5,  e6,  e7 ]
+    /// [e8,  e9,  e10, e11]
+    /// [e12, e13, e14, e15]
+    /// \endcode
+    /// - Matrix<T, M, N> will define a M x N matrix with M elements in each
+    /// row, and N rows. \n So the row variable will be N, the col variable will
+    /// be M
+    ///
+    /// Left-hand system
+    /// ========================
+    /// - Z-Axis positive direction points into screen
+    /// - Direction of cross product of two vectors follows
+    /// left hand rule(clock-wise)
+    ///
+    /// Left-multiply system
+    /// ========================
+    /// - Vector left multiply Matrix \n
+    /// \code
+    /// v[x,y,z,w]*[m00,m01,m02,m03]
+    ///            [m10,m11,m12,m13]
+    ///            [m20,m21,m22,m23]
+    ///            [m30,m31,m32,m33]
+    /// \endcode
+    ///
+    /// Matrix/Projection conversion
+    /// ========================
+    /// - Z value range [0,1]
+    /// - Z value direction [near, far]
+    ///
+    /// Detailed Doc of Math Heading 1
+    /// ========================
+    /// Something after heading
+    /// with function reference \ref Abs and \ref IsNAN
     namespace Math
     {
-        /// Detailed function doc
+        using namespace vEngine::Core;
+
+        /// \brief PI constant
+        float const PI = 3.141592653f;
+
+        /// \brief E constant
+        float const E = 2.718281828f;
+
+        //=================================================
+        // float related functions
+
+        /// \brief Check if two const floats are equal
+        ///
+        /// \param lhs
+        /// \param rhs
+        /// \return true
+        /// \return false
+        bool VENGINE_API IsFloatEqual(const float& lhs, const float& rhs);
+
+        /// \brief Check if two floats are less different than epsilon
+        ///
+        /// \param lhs
+        /// \param rhs
+        /// \param epsilon
+        /// \return true
+        /// \return false
+        bool VENGINE_API IsFloatEqual(const float& lhs, const float& rhs, const float epsilon);
+
+        /// \brief return absolute of a number
+        ///
+        /// \param num
+        /// \return float
+        float VENGINE_API Abs(float num);
+
+        float VENGINE_API Sqrt(float x);
+        float VENGINE_API Sin(float x);
+        float VENGINE_API Sin(radian x);
+        float VENGINE_API Cos(float x);
+        float VENGINE_API ArcCos(float x);
+        float VENGINE_API Tan(float x);
+        float VENGINE_API ArcTan(float x);
+        float VENGINE_API Cot(float x);
+        float VENGINE_API InvSqrt(float number);
+        float VENGINE_API Ln(float x);
+        float VENGINE_API Pow(float base, float exp);
+
+        color VENGINE_API ToColor(const float4& fcolor);
+        float4 VENGINE_API ToFloat(const color& color);
+
+        /// \brief if a number(only float/double) is NAN(not a number)
+        ///
+        /// \tparam T should be float/double, int will be a compile error
+        /// \param x
+        /// \return true
+        /// \return false
         template <typename T>
-        bool IsNAN(const T& x)
-        {
-            return std::isnan(x);
-        }
+        bool IsNAN(const T& x);
+
+        /// \brief if a number is INF(infinity)
+        ///
+        /// \tparam T
+        /// \param x
+        /// \return true
+        /// \return false
+        template <typename T>
+        bool IsINF(const T& x);
 
         template <typename T>
-        bool IsINF(const T& x)
-        {
-            return std::isinf(x);
-        }
+        T Min(const T& lhs, const T& rhs);
+        template <typename T>
+        T Max(const T& lhs, const T& rhs);
 
         template <typename T>
-        T Min(const T& lhs, const T& rhs)
-        {
-            return std::min(lhs, rhs);
-        }
-        template <typename T>
-        T Max(const T& lhs, const T& rhs)
-        {
-            return std::max(lhs, rhs);
-        }
+        T Clamp(const T& value, const T& min, const T& max);
 
-        template <typename T>
-        T Clamp(const T& value, const T& min, const T& max)
-        {
-            return value < min ? min : value > max ? max : value;
-        }
-        template <typename T, typename U>
-        U CeilToInt(const T& value)
-        {
-            return static_cast<U>(value + 1);
-        }
-        template <typename T, typename U>
-        U FloorToInt(const T& value)
-        {
-            return static_cast<U>(value);
-        }
+        template <typename T, typename U = int>
+        U CeilToInt(const T& value);
+        template <typename T, typename U = int>
+        U FloorToInt(const T& value);
 
-        template <typename T, int N>
-        void Identity(Matrix<T, N, N>& lhs)
-        {
-            for (size_t r = 0; r < lhs.row; ++r)
-            {
-                for (size_t c = 0; c < lhs.col; ++c)
-                {
-                    lhs[r][c] = static_cast<T>(r == c ? 1 : 0);
-                }
-            }
-        }
+
+        //=================================================
+        // Vector/Matrix related functions
+
+        template <typename T, int N = 4>
+        void Identity(Matrix<T, N, N>& lhs);
+
         template <typename T, int M, int N>
-        Matrix<T, N, M> Transpose(const Matrix<T, M, N>& lhs)
-        {
-            Matrix<T, N, M> ret;
-            for (size_t r = 0; r < lhs.row; ++r)
-            {
-                for (size_t c = 0; c < lhs.col; ++c)
-                {
-                    ret[c][r] = lhs[r][c];
-                }
-            }
-            return ret;
-        }
+        Matrix<T, N, M> Transpose(const Matrix<T, M, N>& lhs);
 
-        template <typename T, int N>
-        T Dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
-        {
-            T ret{0};
-            for (auto i = 0; i < N; ++i) ret += lhs[i] * rhs[i];
-            return ret;
-        }
+        template <typename T, int N = 4>
+        T Dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs);
 
         template <typename T>
-        Vector<T, 3> Cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)
-        {
-            return Vector<T, 3>(lhs.y() * rhs.z() - lhs.z() * rhs.y(), lhs.z() * rhs.x() - lhs.x() * rhs.z(), lhs.x() * rhs.y() - lhs.y() * rhs.x());
-        }
+        Vector<T, 3> Cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs);
 
         template <typename T>
-        T Normalize(const T& rhs)
-        {
-            auto dot = Dot(rhs, rhs);
-            CHECK_ASSERT(IsFloatEqual(dot, 0) == false);
-            return rhs * InvSqrt(dot);
-        }
+        T Normalize(const T& rhs);
 
-        template <typename T, int N>
-        Vector<T, N> TransformPoint(const Vector<T, N>& lhs, const Matrix<T, N, N>& rhs)
-        {
-            // the last element of position will be 1
-            CHECK_ASSERT(IsFloatEqual(lhs[N - 1], 1));
+        template <typename T, int N = 4>
+        Vector<T, N> TransformPoint(const Vector<T, N>& lhs, const Matrix<T, N, N>& rhs);
 
-            Vector<T, N> ret;
-            for (size_t i = 0; i < lhs.size; ++i)
-            {
-                for (size_t j = 0; j < rhs.row; ++j)
-                {
-                    ret[i] += lhs[i] * rhs[i][j];
-                }
-            }
-            ret *= 1.0f / ret[N - 1];
-            return ret;
-        }
-        template <typename T, int N>
-        Vector<T, N> TransformVector(const Vector<T, N>& lhs, const Matrix<T, N, N>& rhs)
-        {
-            // the last element of vector will be 0
-            CHECK_ASSERT(IsFloatEqual(lhs[N - 1], 0));
+        template <typename T, int N = 4>
+        Vector<T, N> TransformVector(const Vector<T, N>& lhs, const Matrix<T, N, N>& rhs);
 
-            Vector<T, N> ret;
-            for (size_t i = 0; i < lhs.size; ++i)
-            {
-                for (size_t j = 0; j < rhs.row; ++j)
-                {
-                    ret[i] += lhs[i] * rhs[i][j];
-                }
-            }
-            return ret;
-        }
-        template <typename T, int M, int N>
-        Matrix<T, M, N> OuterProduct(const Vector<T, M>& lhs, const Vector<T, N>& rhs)
-        {
-            Matrix<T, M, N> ret;
+        template <typename T, int M = 4, int N = 4>
+        Matrix<T, M, N> OuterProduct(const Vector<T, M>& lhs, const Vector<T, N>& rhs);
 
-            for (size_t n = 0; n < N; ++n)
-            {
-                for (size_t m = 0; m < M; ++m)
-                {
-                    ret[n][m] = lhs[m] * rhs[n];
-                }
-            }
-
-            return ret;
-        }
+        // template <typename T, int M = 4, int N = 4>
+        // Vector<T, M> Multiply(const Vector<T, M>& lhs,
+        //                       const Matrix<T, M, N>& rhs);
         template <typename T>
-        Quaternion<T> Multiply(const Quaternion<T>& lhs, const Quaternion<T >& rhs)
-        {
-            return Quaternion<T>(
-                lhs.x() * rhs.x() - lhs.y() * rhs.y() - lhs.z() * rhs.z() - lhs.w() * rhs.w(),
-                lhs.y() * rhs.x() + lhs.x() * rhs.y() - lhs.w() * rhs.z() + lhs.z() * rhs.w(),
-                lhs.z() * rhs.x() + lhs.w() * rhs.y() + lhs.x() * rhs.z() - lhs.y() * rhs.w(),
-                lhs.w() * rhs.x() - lhs.z() * rhs.y() + lhs.y() * rhs.z() + lhs.x() * rhs.w());
-        }
-        template <typename T>
-        Matrix<T, 4, 4> ToMatrix(const Quaternion<T>& q)
-        {
-            Matrix<T, 4, 4> ret;
-            auto a = q.x();
-            auto b = q.y();
-            auto c = q.z();
-            auto d = q.w();
-            ret[0][0] = 1 - 2 * c * c - 2 * d * d;
-            ret[0][1] = 2 * b * c - 2 * a * d;
-            ret[0][2] = 2 * a * c + 2 * b * d;
-            ret[0][3] = 0;
-
-            ret[1][0] = 2 * b * c + 2 * a * d;
-            ret[1][1] = 1 - 2 * b * b - 2 * d * d;
-            ret[1][2] = 2 * c * d - 2 * a * b;
-            ret[1][3] = 0;
-
-            ret[2][0] = 2 * b * d - 2 * a * c;
-            ret[2][1] = 2 * a * b + 2 * c * d;
-            ret[2][2] = 1 - 2 * b * b - 2 * c * c;
-            ret[2][3] = 0;
-
-            ret[3][0] = 0;
-            ret[3][1] = 0;
-            ret[3][2] = 0;
-            ret[3][3] = 1;
-
-            ret = Math::Transpose(ret);
-
-            return ret;
-        }
-        template <typename T>
-        Quaternion<T> RotateAngleAxis(const float angle, const float3& axis)
-        {
-            Quaternion<T> ret;
-            ret.x() = Math::Cos(angle * 0.5f);
-            ret.y() = Math::Sin(angle * 0.5f) * axis.x();
-            ret.z() = Math::Sin(angle * 0.5f) * axis.y();
-            ret.w() = Math::Sin(angle * 0.5f) * axis.z();
-            return ret;
-        }
-
-        template <typename T, int M, int S, int N>
-        Matrix<T, M, N> Multiply(const Matrix<T, S, N>& lhs, const Matrix<T, M, S>& rhs)
-        {
-            // CHECK_ASSERT(lhs.row == rhs.col);
-            Matrix<T, M, N> ret;
-
-            for (size_t row = 0; row < lhs.row; ++row)
-            {
-                for (size_t col = 0; col < rhs.col; ++col)
-                {
-                    ret[row][col] = 0;
-                    for (size_t i = 0; i < S; ++i)
-                    {
-                        ret[row][col] += lhs[row][i] * rhs[i][col];
-                    }
-                }
-            }
-            return ret;
-        }
+        Quaternion<T> Multiply(const Quaternion<T>& lhs, const Quaternion<T >& rhs);
 
         template <typename T>
-        T Determinant(const Matrix<T, 4, 4>& matrix)
-        {
-            // from KlayGE
-            T const _3142_3241(matrix[2][0] * matrix[3][1] - matrix[2][1] * matrix[3][0]);
-            T const _3143_3341(matrix[2][0] * matrix[3][2] - matrix[2][2] * matrix[3][0]);
-            T const _3144_3441(matrix[2][0] * matrix[3][3] - matrix[2][3] * matrix[3][0]);
-            T const _3243_3342(matrix[2][1] * matrix[3][2] - matrix[2][2] * matrix[3][1]);
-            T const _3244_3442(matrix[2][1] * matrix[3][3] - matrix[2][3] * matrix[3][1]);
-            T const _3344_3443(matrix[2][2] * matrix[3][3] - matrix[2][3] * matrix[3][2]);
+        Matrix<T, 4, 4> ToMatrix(const Quaternion<T>& q);
+        template <typename T = float>
+        Quaternion<T> RotateAngleAxis(const float angle, const float3& axis);
 
-            return matrix[0][0] * (matrix[1][1] * _3344_3443 - matrix[1][2] * _3244_3442 + matrix[1][3] * _3243_3342) -
-                   matrix[0][1] * (matrix[1][0] * _3344_3443 - matrix[1][2] * _3144_3441 + matrix[1][3] * _3143_3341) +
-                   matrix[0][2] * (matrix[1][0] * _3244_3442 - matrix[1][1] * _3144_3441 + matrix[1][3] * _3142_3241) -
-                   matrix[0][3] * (matrix[1][0] * _3243_3342 - matrix[1][1] * _3143_3341 + matrix[1][2] * _3142_3241);
-        }
+        template <typename T, int M = 4, int S = 4, int N = 4>
+        Matrix<T, M, N> Multiply(const Matrix<T, S, N>& lhs, const Matrix<T, M, S>& rhs);
 
         template <typename T>
-        Matrix<T, 4, 4> Inverse(const Matrix<T, 4, 4>& rhs)
-        {
-            // from KlayGE
-            const T _2132_2231(rhs[1][0] * rhs[2][1] - rhs[1][1] * rhs[2][0]);
-            const T _2133_2331(rhs[1][0] * rhs[2][2] - rhs[1][2] * rhs[2][0]);
-            const T _2134_2431(rhs[1][0] * rhs[2][3] - rhs[1][3] * rhs[2][0]);
-            const T _2142_2241(rhs[1][0] * rhs[3][1] - rhs[1][1] * rhs[3][0]);
-            const T _2143_2341(rhs[1][0] * rhs[3][2] - rhs[1][2] * rhs[3][0]);
-            const T _2144_2441(rhs[1][0] * rhs[3][3] - rhs[1][3] * rhs[3][0]);
-            const T _2233_2332(rhs[1][1] * rhs[2][2] - rhs[1][2] * rhs[2][1]);
-            const T _2234_2432(rhs[1][1] * rhs[2][3] - rhs[1][3] * rhs[2][1]);
-            const T _2243_2342(rhs[1][1] * rhs[3][2] - rhs[1][2] * rhs[3][1]);
-            const T _2244_2442(rhs[1][1] * rhs[3][3] - rhs[1][3] * rhs[3][1]);
-            const T _2334_2433(rhs[1][2] * rhs[2][3] - rhs[1][3] * rhs[2][2]);
-            const T _2344_2443(rhs[1][2] * rhs[3][3] - rhs[1][3] * rhs[3][2]);
-            const T _3142_3241(rhs[2][0] * rhs[3][1] - rhs[2][1] * rhs[3][0]);
-            const T _3143_3341(rhs[2][0] * rhs[3][2] - rhs[2][2] * rhs[3][0]);
-            const T _3144_3441(rhs[2][0] * rhs[3][3] - rhs[2][3] * rhs[3][0]);
-            const T _3243_3342(rhs[2][1] * rhs[3][2] - rhs[2][2] * rhs[3][1]);
-            const T _3244_3442(rhs[2][1] * rhs[3][3] - rhs[2][3] * rhs[3][1]);
-            const T _3344_3443(rhs[2][2] * rhs[3][3] - rhs[2][3] * rhs[3][2]);
-
-            const T det(Determinant(rhs));
-            if (det != 0)
-            {
-                T invDet(T(1) / det);
-
-                return Matrix<T, 4, 4>(
-                    +invDet * (rhs[1][1] * _3344_3443 - rhs[1][2] * _3244_3442 + rhs[1][3] * _3243_3342), -invDet * (rhs[0][1] * _3344_3443 - rhs[0][2] * _3244_3442 + rhs[0][3] * _3243_3342),
-                    +invDet * (rhs[0][1] * _2344_2443 - rhs[0][2] * _2244_2442 + rhs[0][3] * _2243_2342), -invDet * (rhs[0][1] * _2334_2433 - rhs[0][2] * _2234_2432 + rhs[0][3] * _2233_2332),
-
-                    -invDet * (rhs[1][0] * _3344_3443 - rhs[1][2] * _3144_3441 + rhs[1][3] * _3143_3341), +invDet * (rhs[0][0] * _3344_3443 - rhs[0][2] * _3144_3441 + rhs[0][3] * _3143_3341),
-                    -invDet * (rhs[0][0] * _2344_2443 - rhs[0][2] * _2144_2441 + rhs[0][3] * _2143_2341), +invDet * (rhs[0][0] * _2334_2433 - rhs[0][2] * _2134_2431 + rhs[0][3] * _2133_2331),
-
-                    +invDet * (rhs[1][0] * _3244_3442 - rhs[1][1] * _3144_3441 + rhs[1][3] * _3142_3241), -invDet * (rhs[0][0] * _3244_3442 - rhs[0][1] * _3144_3441 + rhs[0][3] * _3142_3241),
-                    +invDet * (rhs[0][0] * _2244_2442 - rhs[0][1] * _2144_2441 + rhs[0][3] * _2142_2241), -invDet * (rhs[0][0] * _2234_2432 - rhs[0][1] * _2134_2431 + rhs[0][3] * _2132_2231),
-
-                    -invDet * (rhs[1][0] * _3243_3342 - rhs[1][1] * _3143_3341 + rhs[1][2] * _3142_3241), +invDet * (rhs[0][0] * _3243_3342 - rhs[0][1] * _3143_3341 + rhs[0][2] * _3142_3241),
-                    -invDet * (rhs[0][0] * _2243_2342 - rhs[0][1] * _2143_2341 + rhs[0][2] * _2142_2241), +invDet * (rhs[0][0] * _2233_2332 - rhs[0][1] * _2133_2331 + rhs[0][2] * _2132_2231));
-            }
-            else
-            {
-                return rhs;
-            }
-        }
+        T Determinant(const Matrix<T, 4, 4>& matrix);
 
         template <typename T>
-        Matrix<T, 4, 4> LookAtLH(const Vector<T, 3>& eye, const Vector<T, 3>& at, const Vector<T, 3>& up)
-        {
-            auto zaxis = Normalize(at - eye);
-            auto xaxis = Normalize(Cross(up, zaxis));
-            auto yaxis = Cross(zaxis, xaxis);
+        Matrix<T, 4, 4> Inverse(const Matrix<T, 4, 4>& matrix);
 
-            return Matrix<T, 4, 4>(xaxis.x(), yaxis.x(), zaxis.x(), 0, xaxis.y(), yaxis.y(), zaxis.y(), 0, xaxis.z(), yaxis.z(), zaxis.z(), 0, -Dot(xaxis, eye), -Dot(yaxis, eye), -Dot(zaxis, eye), 1);
-        }
+        //=================================================
+        // View/Projection related functions
 
         template <typename T>
-        Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect, const T n, const T f)
-        {
-            float y_scale = Cot(fovy / 2);
-            float x_scale = y_scale / aspect;
-            // float m33 = f / (f - n);
-
-            float m22 = f / (f - n);
-            float m32 = -(f*n) / (f - n);
-
-            return Matrix<T, 4, 4>(
-                x_scale, 0, 0, 0, 
-                0, y_scale, 0, 0,
-                0, 0, m22, 1,
-                0, 0, m32, 0);
-        }
+        Matrix<T, 4, 4> LookAtLH(const Vector<T, 3>& eye, const Vector<T, 3>& at, const Vector<T, 3>& up);
 
         template <typename T>
-        void XRotation(Matrix<T, 4, 4>& lhs, const float theta)
-        {
-            Identity(lhs);
-            lhs[1][1] = Math::Cos(theta);
-            lhs[1][2] = Math::Sin(theta);
-            lhs[2][1] = -Math::Sin(theta);
-            lhs[2][2] = Math::Cos(theta);
-        }
+        Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect, const T zn, const T zf);
 
         template <typename T>
-        void YRotation(Matrix<T, 4, 4>& lhs, const float theta)
-        {
-            Identity(lhs);
-            lhs[0][0] = Math::Cos(theta);
-            lhs[0][2] = -Math::Sin(theta);
-            lhs[2][0] = Math::Sin(theta);
-            lhs[2][2] = Math::Cos(theta);
-        }
+        void XRotation(Matrix<T, 4, 4>& matrix, const float theta);
 
         template <typename T>
-        void ZRotation(Matrix<T, 4, 4>& lhs, const float theta)
-        {
-            Identity(lhs);
-            lhs[0][0] = Math::Cos(theta);
-            lhs[0][1] = Math::Sin(theta);
-            lhs[1][0] = -Math::Sin(theta);
-            lhs[1][1] = Math::Cos(theta);
-        }
+        void YRotation(Matrix<T, 4, 4>& lhs, const float theta);
 
         template <typename T>
-        void RotationAxis(Matrix<T, 4, 4>& lhs, const Vector<T, 3>& axis, const float theta)
-        {
-            Identity(lhs);
-            auto naxis = Normalize(axis);
-
-            lhs[0][0] = (1.0f - Cos(theta)) * naxis.x() * naxis.x() + Cos(theta);
-            lhs[1][0] = (1.0f - Cos(theta)) * naxis.x() * naxis.y() + Sin(theta) * naxis.z();
-            lhs[2][0] = (1.0f - Cos(theta)) * naxis.x() * naxis.z() - Sin(theta) * naxis.y();
-            lhs[0][1] = (1.0f - Cos(theta)) * naxis.y() * naxis.x() - Sin(theta) * naxis.z();
-            lhs[1][1] = (1.0f - Cos(theta)) * naxis.y() * naxis.y() + Cos(theta);
-            lhs[2][1] = (1.0f - Cos(theta)) * naxis.y() * naxis.z() + Sin(theta) * naxis.x();
-            lhs[0][2] = (1.0f - Cos(theta)) * naxis.z() * naxis.x() + Sin(theta) * naxis.y();
-            lhs[1][2] = (1.0f - Cos(theta)) * naxis.z() * naxis.y() - Sin(theta) * naxis.x();
-            lhs[2][2] = (1.0f - Cos(theta)) * naxis.z() * naxis.z() + Cos(theta);
-        }
+        void ZRotation(Matrix<T, 4, 4>& lhs, const float theta);
 
         template <typename T>
-        void Translate(Matrix<T, 4, 4>& lhs, const Vector<T, 3> xyz)
-        {
-            Identity(lhs);
-            // left hand coordinate system
-            lhs[3][0] = xyz.x();
-            lhs[3][1] = xyz.y();
-            lhs[3][2] = xyz.z();
-        }
-        template <typename T>
-        void Translate(Matrix<T, 4, 4>& lhs, const float x, const float y, const float z)
-        {
-            Identity(lhs);
-            // left hand coordinate system
-            lhs[3][0] = x;
-            lhs[3][1] = y;
-            lhs[3][2] = z;
-        }
+        void RotationAxis(Matrix<T, 4, 4>& lhs, const Vector<T, 3>& axis, const float theta);
 
         template <typename T>
-        void Scale(Matrix<T, 4, 4>& lhs, const Vector<T, 3> scale)
-        {
-            Identity(lhs);
-            lhs[0][0] = scale.x();
-            lhs[1][1] = scale.y();
-            lhs[2][2] = scale.z();
-        }
-        template <typename T>
-        void Scale(Matrix<T, 4, 4>& lhs, const float scale)
-        {
-            Identity(lhs);
+        void Translate(Matrix<T, 4, 4>& lhs, const float x, const float y, const float z);
 
-            lhs[0][0] = scale;
-            lhs[1][1] = scale;
-            lhs[2][2] = scale;
-        }
+        template <typename T>
+        void Scale(Matrix<T, 4, 4>& lhs, const float scale);
 
     }  // namespace Math
 }  // namespace vEngine
 
-#endif /* _VENGINE_CORE_MATH_HPP */
+// include template definitions after declearations above
+// for separate declearation/definition of template functions
+#include <vengine/core/math.inc>
+#endif /* _VENGINE_CORE_MATH_H */

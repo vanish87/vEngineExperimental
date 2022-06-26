@@ -93,7 +93,7 @@ namespace vEngine
                 // }
 
                 template <typename T>
-                std::shared_ptr<T> FirstOf(const int level = 0)
+                std::shared_ptr<T> FirstOf(const int search_depth = 0)
                 {
                     for (const auto& c : this->children_)
                     {
@@ -103,11 +103,11 @@ namespace vEngine
                             return go;
                         }
                     }
-                    if (level > 0)
+                    if (search_depth > 0)
                     {
                         for (const auto& c : this->children_)
                         {
-                            auto node = c->FirstOf<T>(level - 1);
+                            auto node = c->FirstOf<T>(search_depth - 1);
                             if (node != nullptr) return node;
                         }
                     }

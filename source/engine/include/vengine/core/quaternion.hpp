@@ -14,7 +14,7 @@
 
 #include <engine.hpp>
 #include <vengine/core/vector.hpp>
-#include <vengine/core/math.h>
+#include <vengine/core/math.hpp>
 
 /// A brief namespace description.
 namespace vEngine

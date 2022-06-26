@@ -1,4 +1,4 @@
-#include <vengine/core/math.h>
+#include <vengine/core/math.hpp>
 
 namespace vEngine
 {

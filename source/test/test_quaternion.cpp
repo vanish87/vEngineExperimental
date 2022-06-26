@@ -5,7 +5,7 @@
 #include <engine.hpp>
 #include <vengine/core/quaternion.hpp>
 #include <vengine/core/matrix.hpp>
-#include <vengine/core/math.h>
+#include <vengine/core/math.hpp>
 
 using namespace vEngine::Core;
 using namespace vEngine::Math;
