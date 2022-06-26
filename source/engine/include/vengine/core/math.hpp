@@ -1,5 +1,5 @@
-#ifndef _VENGINE_CORE_MATH_H
-#define _VENGINE_CORE_MATH_H
+#ifndef _VENGINE_CORE_MATH_HPP
+#define _VENGINE_CORE_MATH_HPP
 
 #pragma once
 #include <VENGINE_API.hpp>
@@ -218,4 +218,4 @@ namespace vEngine
 // include template definitions after declearations above
 // for separate declearation/definition of template functions
 #include <vengine/core/math.inc>
-#endif /* _VENGINE_CORE_MATH_H */
+#endif /* _VENGINE_CORE_MATH_HPP */
