@@ -20,7 +20,10 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Animator::Animator() {}
+        Animator::Animator()
+        {
+            this->current_time_ = 0;
+        }
 
     }  // namespace Animation
 }  // namespace vEngine

@@ -21,7 +21,7 @@ namespace vEngine
         /// should be 2 lines
         AnimatorComponent::AnimatorComponent()
         {
-            timer = 0;
+            // timer = 0;
         }
         AnimatorComponent::~AnimatorComponent() {}
 

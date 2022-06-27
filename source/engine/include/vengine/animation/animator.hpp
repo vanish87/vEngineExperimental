@@ -35,13 +35,18 @@ namespace vEngine
 
                 /// class variable description
 
-                void Lerp()
+                void UpdateLerp(const float dt)
                 {
+                    UNUSED_PARAMETER(dt);
+                    // auto joints = animator->GetAnimatedJoints();
+                    if (this->current_clip_ == nullptr) this->current_clip_ = this->animations_[0];
+
+                    // this->current_time_ += dt;
                     //do lerp between
                     // current_clip_ and next_clip_
 
                     //get a vector of joints
-                    auto joints = this->current_clip_->GetJointAtTime(this->current_time_);
+                    this->current_joints_ = this->current_clip_->GetJointAtTime(this->current_time_);
 
                     //generate pos/rot/scale for each joints
                     //animation clip will update local bone data
@@ -62,14 +67,16 @@ namespace vEngine
                     this->animations_ = animations;
                 }
 
-                std::vector<JointSharedPtr> GetAnimatedJoints()
+                std::unordered_map<std::string, JointSharedPtr> GetAnimatedJoints()
                 {
-                    return std::vector<JointSharedPtr>();
+                    return this->current_joints_;
                 }
 
                 //also State management codes
 
                 float current_time_;
+				std::unordered_map<std::string, JointSharedPtr> current_joints_;
+
                 AnimationClipSharedPtr current_clip_;
                 AnimationClipSharedPtr next_clip_;
 

@@ -12,6 +12,8 @@
 
 #pragma once
 
+#include <unordered_map>
+
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
 #include <vengine/animation/joint.hpp>
@@ -34,10 +36,29 @@ namespace vEngine
 				virtual ~AnimationClip();
 
 
-                std::vector<JointSharedPtr> GetJointAtTime(const float currentTime)
+                std::unordered_map<std::string, JointSharedPtr> GetJointAtTime(const float currentTime)
                 {
-                    UNUSED_PARAMETER(currentTime);
-                    return std::vector<JointSharedPtr>();
+                    // this->current_joint_->position_keys_[0].time = currentTime;
+                    // this->current_joint_->position_keys_[0].value = currentTime;
+                    auto total =Math::CeilToInt(this->duration_);
+                    auto clip_time = currentTime > total ? currentTime - (total * (int)(currentTime / total)) : currentTime;
+
+                    for(const auto& j : this->joints_)
+                    {
+                        if(this->current_joints_.find(j->name_) == this->current_joints_.end())
+                        {
+                            this->current_joints_[j->name_] = std::make_shared<Joint>();
+                            this->current_joints_[j->name_]->position_keys_.emplace_back(0.0f, Core::float3::Zero());
+                            this->current_joints_[j->name_]->rotation_keys_.emplace_back(0.0f, Core::quaternion::Identity());
+                            this->current_joints_[j->name_]->scale_keys_.emplace_back(0.0f, Core::float3::One());
+                        }
+                        // auto current_key = 
+                        this->current_joints_[j->name_]->position_keys_[0] = j->PosAtTime(clip_time);
+                        this->current_joints_[j->name_]->rotation_keys_[0] = j->RotAtTime(clip_time);
+                        this->current_joints_[j->name_]->scale_keys_[0] = j->ScaleAtTime(clip_time);
+
+                    }
+                    return this->current_joints_;
                 }
 
 
@@ -54,6 +75,8 @@ namespace vEngine
                 float duration_;
 				float ticks_per_second_;
                 uint32_t total_frame_;
+
+                std::unordered_map<std::string, JointSharedPtr> current_joints_;
 
                 //a.k.a channel for animation clips
 				std::vector<JointSharedPtr> joints_;

@@ -13,6 +13,7 @@
 #pragma once
 
 #include <engine.hpp>
+#include <vengine/core/constants.hpp>
 #include <vengine/core/component.hpp>
 #include <vengine/core/transform_component.hpp>
 #include <vengine/animation/animator.hpp>
@@ -37,7 +38,7 @@ namespace vEngine
                 virtual ~AnimatorComponent();
                 virtual void OnInit() override
                 {
-                    this->timer = 0;
+                    // this->timer = 0;
                     // auto skeleton = this->FirstOf<SkeletonComponent>();
                     // this->GO()->Setup(skeleton->GO(), std::vector<AnimationClipSharedPtr>());
                 };
@@ -49,16 +50,16 @@ namespace vEngine
 
                     Core::Component<Animator>::OnUpdate();
                     auto animator = this->GO();
-                    animator->Lerp();
+                    animator->UpdateLerp(TIME_PER_UPDATE);
 
-                    timer += 0.01f;
-                    int fid = Math::FloorToInt(timer);
+                    // timer += TIME_PER_UPDATE;
+                    // int fid = Math::FloorToInt(timer);
                     // auto fid = 0;
 
                     // auto joints = animator->GetAnimatedJoints();
-                    if (animator->current_clip_ == nullptr) animator->current_clip_ = animator->animations_[0];
+                    // if (animator->current_clip_ == nullptr) animator->current_clip_ = animator->animations_[0];
 
-                    auto joints = animator->current_clip_->joints_;
+                    auto joints = animator->GetAnimatedJoints();
 
                     this->animation_root_->TraverseAllChildren<BoneComponent>(
                         [&](BoneComponentSharedPtr node)
@@ -68,25 +69,21 @@ namespace vEngine
 
 							//set bone's Transform to animated TRS
 							auto transform = node->Owner()->FirstOf<Core::TransformComponent>();
-							JointSharedPtr j = nullptr;
-							for(auto joint : joints)
-							{
-								if(joint->name_ == node->name_)
-								{
-									j = joint;
-									break;
-								}
-							}
+							JointSharedPtr j = joints[node->name_];
                             // if(transform == nullptr || j == nullptr) return true;
 							// auto j = joints[0];
 
-                            auto ps = j->position_keys_.size();
-                            auto rs = j->rotation_keys_.size();
-                            auto ss = j->scale_keys_.size();
+                            // auto ps = j->position_keys_.size();
+                            // auto rs = j->rotation_keys_.size();
+                            // auto ss = j->scale_keys_.size();
 
-							transform->GO()->Translate() = j->position_keys_[fid%ps].value;
-							transform->GO()->Rotation() = j->rotation_keys_[fid%rs].value;
-							transform->GO()->Scale() = j->scale_keys_[fid%ss].value;
+                            transform->GO()->Translate() = j->position_keys_[0].value;
+                            transform->GO()->Rotation() = j->rotation_keys_[0].value;
+                            transform->GO()->Scale() = j->scale_keys_[0].value;
+
+							// transform->GO()->Translate() = j->position_keys_[fid%ps].value;
+							// transform->GO()->Rotation() = j->rotation_keys_[fid%rs].value;
+							// transform->GO()->Scale() = j->scale_keys_[fid%ss].value;
 							// gn->Transform()->Scale() = Core::float3(0.5f, 0.5f, 0.5f);
 
                             // auto pos = node->game_object_->Translate();
@@ -96,7 +93,7 @@ namespace vEngine
                         });
                 };
 
-                float timer;
+                // float timer;
                 Core::GameNodeSharedPtr animation_root_;
 
             public:
