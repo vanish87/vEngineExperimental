@@ -1,5 +1,5 @@
-#ifndef _VENGINE_CORE_MATH_HPP
-#define _VENGINE_CORE_MATH_HPP
+#ifndef _VENGINE_CORE_MATH_H
+#define _VENGINE_CORE_MATH_H
 
 #pragma once
 #include <VENGINE_API.hpp>
@@ -132,6 +132,9 @@ namespace vEngine
         template <typename T>
         T Clamp(const T& value, const T& min, const T& max);
 
+        template <typename T>
+        T Norm(const T& value);
+
         template <typename T, typename U = int>
         U CeilToInt(const T& value);
         template <typename T, typename U = int>
@@ -212,10 +215,26 @@ namespace vEngine
         template <typename T>
         void Scale(Matrix<T, 4, 4>& lhs, const float scale);
 
+        //=================================================
+        // Animation related functions
+        template <typename T, int N>
+        T Dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs);
+        template <typename T>
+        T Dot(const Quaternion<T>& lhs, const Quaternion<T>& rhs);
+
+        template <typename T, typename S = float>
+        const T Lerp(const T& x, const T& y, const S& s);
+
+        template<typename T>
+        Quaternion<T> NLerp(const Quaternion<T>& x, const Quaternion<T>& y, const float& s);
+        
+        template<typename T, typename U>
+        Quaternion<T> SLerp(const Quaternion<T>& x, const Quaternion<T>& y, const U& s);
+
     }  // namespace Math
 }  // namespace vEngine
 
 // include template definitions after declearations above
 // for separate declearation/definition of template functions
 #include <vengine/core/math.inc>
-#endif /* _VENGINE_CORE_MATH_HPP */
+#endif /* _VENGINE_CORE_MATH_H */

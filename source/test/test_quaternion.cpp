@@ -24,4 +24,9 @@ TEST(Quaternion, Construct)
 
 	auto matrix = ToMatrix(q3);
 
+	auto q4 = q3 * 2.0f;
+
+	quaternion qx, py;
+	auto r = NLerp(qx, py, 0.5f);
+
 }

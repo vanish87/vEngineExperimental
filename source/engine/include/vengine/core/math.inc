@@ -76,9 +76,12 @@ namespace vEngine
         template <typename T, int N>
         T Dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
         {
-            T ret{0};
-            for (auto i = 0; i < N; ++i) ret += lhs[i] * rhs[i];
-            return ret;
+            return vector_t<T, N>::do_dot(lhs.data(), rhs.data());
+        }
+        template <typename T>
+        T Dot(const Quaternion<T>& lhs, const Quaternion<T>& rhs)
+        {
+            return vector_t<T, 4>::do_dot(lhs.data(), rhs.data());
         }
 
         template <typename T>
@@ -388,6 +391,29 @@ namespace vEngine
             lhs[0][0] = scale;
             lhs[1][1] = scale;
             lhs[2][2] = scale;
+        }
+
+        template <typename T, typename S>
+        const T Lerp(const T& x, const T& y, const S& s)
+        {
+            return x + (y - x) * s;
+        }
+        template<typename T>
+        Quaternion<T> NLerp(const Quaternion<T>& x, const Quaternion<T>& y, const float& s)
+        {
+            auto ret = Lerp(x, y, s);
+            return ret.Normalized();
+        }
+        template<typename T, typename U>
+        Quaternion<T> SLerp(const Quaternion<T>& x, const Quaternion<T>& y, const U& s)
+        {
+            auto theta = Math::ArcCos(Math::Dot(x, y));
+            return x * (Sin((1 - s) * theta) / Sin(theta)) +  y * (Sin(s * theta) / Sin(theta));
+        }
+        template <typename T>
+        T Norm(const T& value)
+        {
+            return nullptr;
         }
 
     }  // namespace Math

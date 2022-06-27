@@ -221,19 +221,69 @@ namespace vEngine
                 }
 
                 public:
-                // template<typename U>
-                // const Quaternion& operator*=(const Quaternion<U>& other) noexcept
-                // {
-                //     return Math::Multiply(*this, other);
-                // }
+                /// \brief add each element of vector
+                template <typename U>
+                const Quaternion& operator+=(const Quaternion<U>& other) noexcept
+                {
+                    vector_t<T, 4>::do_add(this->data(), this->data(), other.data());
+                    return *this;
+                }
+                /// \brief substract each element of vector
+                template <typename U>
+                const Quaternion& operator-=(const Quaternion<U>& other) noexcept
+                {
+                    vector_t<T, 4>::do_sub(this->data(), this->data(), other.data());
+                    return *this;
+                }
+                template <typename U>
+                const Quaternion& operator*=(const U& other) noexcept
+                {
+                    vector_t<T, 4>::do_mul(this->data(), this->data(), other);
+                    return *this;
+                }
+                template<typename U>
+                const Quaternion& operator/=(const U& other) noexcept
+                {
+                    vector_t<T, 4>::do_div(this->data(), this->data(), other);
+                    return *this;
+                }
+                
+                template <typename U>
+                constexpr Quaternion operator+(const Quaternion<U>& other) const noexcept
+                {
+                    return Quaternion(*this) += other;
+                }
+                template <typename U>
+                constexpr Quaternion operator-(const Quaternion<U>& other) const noexcept
+                {
+                    return Quaternion(*this) -= other;
+                }
+                template<typename U>
+                constexpr Quaternion operator*(const U& other) const noexcept
+                {
+                    return Quaternion(*this) *= other;
+                }
+                template<typename U>
+                constexpr Quaternion<T> operator/(const U& other) const noexcept
+                {
+                    return Quaternion(*this) /= other;
+                }
+
                 template<typename U>
                 const Quaternion<T> operator*(const Quaternion<U>& other) noexcept
                 {
                     return Math::Multiply(*this, other);
                 }
 
-
-                void Norm();
+                const T Norm() const noexcept
+                {
+                    auto dot = Math::Dot(this->data_, this->data_);
+                    return Math::Sqrt(dot);
+                }
+                const Quaternion<T> Normalized() const noexcept
+                {
+                    return Quaternion<T>(*this) / this->Norm();
+                }
                 Quaternion<T> Conjugate()
                 {
                     return Quaternion<T>(this->x(), -this->y(), -this->z(), -this->w());
