@@ -58,7 +58,7 @@ namespace vEngine
             rdesc.file_path = file;
             asset->GO()->Load(rdesc);
 
-            gn->AddChild(asset->GO()->root_);
+            gn->AddChild(asset->GO()->GetRoot());
 
             this->AddChild(gn);
         }
@@ -72,7 +72,7 @@ namespace vEngine
             // auto s = 0.01f;
             // asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Scale() = float3(s,s,s);
 
-            auto main_camera = asset->GO()->cameras_[0];
+            auto main_camera = asset->GO()->GetCamera(0);
             GameNodeDescription gndesc;
             gndesc.type = GameNodeType::Camera;
             auto camera_gn = GameNodeFactory::Create(gndesc);
@@ -83,8 +83,8 @@ namespace vEngine
             gndesc.type = GameNodeType::Animator;
             auto animator_gn = GameNodeFactory::Create(gndesc);
             auto animator_comp = animator_gn->FirstOf<Animation::AnimatorComponent>();
-            animator_comp->GO()->SetAnimations(asset->GO()->animation_clips_);
-            animator_comp->SetAnimationRoot(asset->GO()->root_);
+            animator_comp->GO()->SetAnimations(asset->GO()->GetAnimations());
+            animator_comp->SetAnimationRoot(asset->GO()->GetRoot());
             this->AddChild(animator_gn);
 
             this->TraverseAllChildren<IComponent>(
@@ -104,7 +104,7 @@ namespace vEngine
             auto asset = this->FirstOf<AssetComponent>(1);
             auto rot90 = Math::RotateAngleAxis(Math::PI * 0.5f, float3(0,0,1));
             auto rotanim = Math::RotateAngleAxis(timer, float3(1,0,0));
-            asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Rotation() = rot90 * rotanim;
+            asset->GO()->GetRoot()->FirstOf<TransformComponent>()->GO()->Rotation() = rot90 * rotanim;
 
             this->TraverseAllChildren<Animation::AnimatorComponent>(
                 [&](Animation::AnimatorComponentSharedPtr node)

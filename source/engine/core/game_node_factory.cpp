@@ -12,6 +12,7 @@
 #include <vengine/core/game_node_factory.hpp>
 #include <vengine/core/transform_component.hpp>
 #include <vengine/core/asset_component.hpp>
+#include <vengine/core/camera_component.hpp>
 #include <vengine/animation/bone_component.hpp>
 #include <vengine/animation/bone_component.hpp>
 #include <vengine/animation/skeleton_component.hpp>
