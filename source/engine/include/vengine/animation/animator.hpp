@@ -14,9 +14,8 @@
 #pragma once
 
 #include <engine.hpp>
-#include <vector>
+#include <unordered_map>
 #include <vengine/core/game_object.hpp>
-#include <vengine/animation/animation_clip.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -35,56 +34,27 @@ namespace vEngine
 
                 /// class variable description
 
-                void UpdateLerp(const float dt)
-                {
-                    UNUSED_PARAMETER(dt);
-                    // auto joints = animator->GetAnimatedJoints();
-                    if (this->current_clip_ == nullptr) this->current_clip_ = this->animations_[0];
-
-                    // this->current_time_ += dt;
-                    //do lerp between
-                    // current_clip_ and next_clip_
-
-                    //get a vector of joints
-                    this->current_joints_ = this->current_clip_->GetJointAtTime(this->current_time_);
-
-                    //generate pos/rot/scale for each joints
-                    //animation clip will update local bone data
-                    //bone component's transform will update scene node bone data
-
-
-                    // foreach joint in skeleton_
-                    // {
-
-                    // }
-                };
-                
+                void UpdateLerp(const float dt);
 
                 // void Setup(SkeletonSharedPtr skeleton, std::vector<AnimationClipSharedPtr> animations)
-                void Setup(std::vector<AnimationClipSharedPtr> animations)
-                {
-                    // this->skeleton_ = skeleton;
-                    this->animations_ = animations;
-                }
+                void SetAnimations(std::vector<AnimationClipSharedPtr> animations);
 
-                std::unordered_map<std::string, JointSharedPtr> GetAnimatedJoints()
-                {
-                    return this->current_joints_;
-                }
+                std::unordered_map<std::string, JointSharedPtr> GetAnimatedJoints();
 
-                //also State management codes
+                // also State management codes
 
+            private:
                 float current_time_;
-				std::unordered_map<std::string, JointSharedPtr> current_joints_;
+                std::unordered_map<std::string, JointSharedPtr> current_joints_;
 
                 AnimationClipSharedPtr current_clip_;
                 AnimationClipSharedPtr next_clip_;
 
-            public:
                 std::vector<AnimationClipSharedPtr> animations_;
 
-                //skeleton is not needed here, animator just lerp clip values
-                // SkeletonSharedPtr skeleton_;
+            public:
+                // skeleton is not needed here, animator just lerp clip values
+                //  SkeletonSharedPtr skeleton_;
         };
 
     }  // namespace Animation

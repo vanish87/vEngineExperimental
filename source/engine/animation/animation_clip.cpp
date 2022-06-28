@@ -9,6 +9,7 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/animation/animation_clip.hpp>
+#include <vengine/animation/joint.hpp>
 #include <vengine/core/vector.hpp>
 
 /// A detailed namespace description, it

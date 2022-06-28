@@ -83,8 +83,8 @@ namespace vEngine
             gndesc.type = GameNodeType::Animator;
             auto animator_gn = GameNodeFactory::Create(gndesc);
             auto animator_comp = animator_gn->FirstOf<Animation::AnimatorComponent>();
-            animator_comp->GO()->Setup(asset->GO()->animation_clips_);
-            animator_comp->animation_root_ = asset->GO()->root_;
+            animator_comp->GO()->SetAnimations(asset->GO()->animation_clips_);
+            animator_comp->SetAnimationRoot(asset->GO()->root_);
             this->AddChild(animator_gn);
 
             this->TraverseAllChildren<IComponent>(

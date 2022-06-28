@@ -16,7 +16,6 @@
 
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
-#include <vengine/animation/joint.hpp>
 
 /// A brief namespace description.
 namespace vEngine
