@@ -41,9 +41,6 @@ namespace vEngine
 
                 /// class variable description
                 int id_;
-
-
-
 				std::vector<VertexWeight> weights;
 				Core::float4x4 inverse_bind_pose_matrix_;
             public:

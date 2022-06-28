@@ -20,6 +20,15 @@ namespace vEngine
         /// should be 2 lines
         BoneComponent::BoneComponent() {}
         BoneComponent::~BoneComponent() {}
+        // void BoneComponent::Update()
+        //         {
+        //             //Just Get transform and set to it's bone game object
+        //             //so that mesh renderer can get this transform to render mesh
+
+        //             //get scene node transform form it's Transform component
+        //             //nodeTransform = this->Owner()->Transform(); -> this transform will be update by animator with calculated TRS from AnimationClip
+        //             //set final matrix =  nodeTransform
+        //         }
 
         /// A detailed function description, it
         /// should be 2 lines at least.

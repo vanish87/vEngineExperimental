@@ -11,6 +11,8 @@
 #include <vengine/animation/animation_clip.hpp>
 #include <vengine/animation/joint.hpp>
 #include <vengine/core/vector.hpp>
+#include <vengine/core/math.hpp>
+#include <vengine/core/quaternion.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -18,6 +20,8 @@ namespace vEngine
 {
     namespace Animation
     {
+        using namespace Math;
+        using namespace Core;
 
         /// constructor detailed defintion,
         /// should be 2 lines
@@ -46,7 +50,7 @@ namespace vEngine
         {
             // this->current_joint_->position_keys_[0].time = currentTime;
             // this->current_joint_->position_keys_[0].value = currentTime;
-            auto total = Math::CeilToInt(this->duration_);
+            auto total = CeilToInt(this->duration_);
             auto clip_time = currentTime > total ? currentTime - (total * (int)(currentTime / total)) : currentTime;
 
             for (const auto& j : this->joints_)
@@ -54,9 +58,9 @@ namespace vEngine
                 if (this->current_joints_.find(j.first) == this->current_joints_.end())
                 {
                     this->current_joints_[j.first] = std::make_shared<Joint>();
-                    this->current_joints_[j.first]->position_keys_.emplace_back(0.0f, Core::float3::Zero());
-                    this->current_joints_[j.first]->rotation_keys_.emplace_back(0.0f, Core::quaternion::Identity());
-                    this->current_joints_[j.first]->scale_keys_.emplace_back(0.0f, Core::float3::One());
+                    this->current_joints_[j.first]->position_keys_.emplace_back(0.0f, float3::Zero());
+                    this->current_joints_[j.first]->rotation_keys_.emplace_back(0.0f, quaternion::Identity());
+                    this->current_joints_[j.first]->scale_keys_.emplace_back(0.0f, float3::One());
                 }
                 // auto current_key =
                 this->current_joints_[j.first]->position_keys_[0] = j.second->PosAtTime(clip_time);

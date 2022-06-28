@@ -125,11 +125,11 @@ namespace vEngine
         CLASS_AND_SHARED_POINTER(AnimatorComponent)
         CLASS_AND_SHARED_POINTER(Animation)
         CLASS_AND_SHARED_POINTER(AnimationClip)
-        CLASS_AND_SHARED_POINTER(Skeleton)
-        CLASS_AND_SHARED_POINTER(SkeletonComponent)
         CLASS_AND_SHARED_POINTER(Bone)
         CLASS_AND_SHARED_POINTER(BoneComponent)
         CLASS_AND_SHARED_POINTER(Joint)
+        // CLASS_AND_SHARED_POINTER(Skeleton)
+        // CLASS_AND_SHARED_POINTER(SkeletonComponent)
         // CLASS_AND_SHARED_POINTER(JointComponent)
     }
 
