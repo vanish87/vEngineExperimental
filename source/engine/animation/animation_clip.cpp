@@ -20,15 +20,55 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        AnimationClip::AnimationClip()
+        AnimationClip::AnimationClip() : duration_{0}, ticks_per_second_{0}, total_frame_{0}
         {
-            this->duration_ = 0;
+            // this->duration_ = 0;
             // this->current_joint_ = std::make_shared<Joint>();
             // this->current_joint_->position_keys_.emplace_back(0, Core::float3(0, 0, 0));
             // this->current_joint_->rotation_keys_.emplace_back(0, Core::quaternion::Identity());
             // this->current_joint_->scale_keys_.emplace_back(0, Core::float3(1, 1, 1));
         }
         AnimationClip::~AnimationClip() {}
+        float& AnimationClip::Duration()
+        {
+            return this->duration_;
+        }
+        float& AnimationClip::TicksPerSecond()
+        {
+            return this->ticks_per_second_;
+        }
+        uint32_t& AnimationClip::TotalFrame()
+        {
+            return this->total_frame_;
+        }
+        std::unordered_map<std::string, JointSharedPtr> AnimationClip::GetJointAtTime(const float currentTime)
+        {
+            // this->current_joint_->position_keys_[0].time = currentTime;
+            // this->current_joint_->position_keys_[0].value = currentTime;
+            auto total = Math::CeilToInt(this->duration_);
+            auto clip_time = currentTime > total ? currentTime - (total * (int)(currentTime / total)) : currentTime;
+
+            for (const auto& j : this->joints_)
+            {
+                if (this->current_joints_.find(j.first) == this->current_joints_.end())
+                {
+                    this->current_joints_[j.first] = std::make_shared<Joint>();
+                    this->current_joints_[j.first]->position_keys_.emplace_back(0.0f, Core::float3::Zero());
+                    this->current_joints_[j.first]->rotation_keys_.emplace_back(0.0f, Core::quaternion::Identity());
+                    this->current_joints_[j.first]->scale_keys_.emplace_back(0.0f, Core::float3::One());
+                }
+                // auto current_key =
+                this->current_joints_[j.first]->position_keys_[0] = j.second->PosAtTime(clip_time);
+                this->current_joints_[j.first]->rotation_keys_[0] = j.second->RotAtTime(clip_time);
+                this->current_joints_[j.first]->scale_keys_[0] = j.second->ScaleAtTime(clip_time);
+            }
+            return this->current_joints_;
+        }
+        void AnimationClip::AddJoint(const std::string& joint_name, const JointSharedPtr joint)
+        {
+            CHECK_ASSERT(this->joints_.find(joint_name) == this->joints_.end());
+            this->joints_[joint_name] = joint;
+        }
 
         /// A detailed function description, it
         /// should be 2 lines at least.

@@ -278,10 +278,10 @@ namespace vEngine
                         auto anim = scene->mAnimations[i];
 
                         animation->name_ = anim->mName.data;
-                        animation->duration_ = static_cast<float>(anim->mDuration);
-                        animation->ticks_per_second_ = static_cast<float>(anim->mTicksPerSecond);
-                        animation->total_frame_ = Math::FloorToInt(anim->mDuration * anim->mTicksPerSecond);
-                        PRINT("handling " << animation->name_ << " animation with " << animation->total_frame_ << " frames")
+                        animation->Duration() = static_cast<float>(anim->mDuration);
+                        animation->TicksPerSecond() = static_cast<float>(anim->mTicksPerSecond);
+                        animation->TotalFrame() = Math::FloorToInt(anim->mDuration * anim->mTicksPerSecond);
+                        PRINT("handling " << animation->name_ << " animation with " << animation->TotalFrame() << " frames")
                         for (uint32_t c = 0; c < anim->mNumChannels; ++c)
                         {
                             // Each channel defines node/bone it controls
@@ -313,7 +313,7 @@ namespace vEngine
                             }
 
 							//TODO: use unordered_map for fast access
-                            animation->joints_.push_back(joint);
+                            animation->AddJoint(joint->name_, joint);
                         }
 
                         this->animation_clips_.push_back(animation);

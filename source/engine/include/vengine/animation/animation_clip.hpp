@@ -33,53 +33,23 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 AnimationClip();
-				virtual ~AnimationClip();
+                virtual ~AnimationClip();
 
+                std::unordered_map<std::string, JointSharedPtr> GetJointAtTime(const float currentTime);
+                void AddJoint(const std::string& joint_name, const JointSharedPtr joint);
+                float& Duration();
+                float& TicksPerSecond();
+                uint32_t& TotalFrame();
 
-                std::unordered_map<std::string, JointSharedPtr> GetJointAtTime(const float currentTime)
-                {
-                    // this->current_joint_->position_keys_[0].time = currentTime;
-                    // this->current_joint_->position_keys_[0].value = currentTime;
-                    auto total =Math::CeilToInt(this->duration_);
-                    auto clip_time = currentTime > total ? currentTime - (total * (int)(currentTime / total)) : currentTime;
-
-                    for(const auto& j : this->joints_)
-                    {
-                        if(this->current_joints_.find(j->name_) == this->current_joints_.end())
-                        {
-                            this->current_joints_[j->name_] = std::make_shared<Joint>();
-                            this->current_joints_[j->name_]->position_keys_.emplace_back(0.0f, Core::float3::Zero());
-                            this->current_joints_[j->name_]->rotation_keys_.emplace_back(0.0f, Core::quaternion::Identity());
-                            this->current_joints_[j->name_]->scale_keys_.emplace_back(0.0f, Core::float3::One());
-                        }
-                        // auto current_key = 
-                        this->current_joints_[j->name_]->position_keys_[0] = j->PosAtTime(clip_time);
-                        this->current_joints_[j->name_]->rotation_keys_[0] = j->RotAtTime(clip_time);
-                        this->current_joints_[j->name_]->scale_keys_[0] = j->ScaleAtTime(clip_time);
-
-                    }
-                    return this->current_joints_;
-                }
-
-
-                // void Update(const float currentTime)
-                // {
-                //     //update all Joints with currentTime
-                //     for(const auto& j : this->joints_)
-                //     {
-
-                //     }
-                // }
-
+            private:
                 /// class variable description
                 float duration_;
-				float ticks_per_second_;
+                float ticks_per_second_;
                 uint32_t total_frame_;
 
                 std::unordered_map<std::string, JointSharedPtr> current_joints_;
-
-                //a.k.a channel for animation clips
-				std::vector<JointSharedPtr> joints_;
+                // a.k.a channel for animation clips
+                std::unordered_map<std::string, JointSharedPtr> joints_;
 
             public:
                 /// \brief A brief function description.
