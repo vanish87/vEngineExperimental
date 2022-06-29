@@ -37,7 +37,7 @@ namespace vEngine
             // auto joints = animator->GetAnimatedJoints();
             if (this->current_clip_ == nullptr) this->current_clip_ = this->animations_[0];
 
-            // this->current_time_ += dt;
+            this->current_time_ += dt;
             // do lerp between
             // current_clip_ and next_clip_
 

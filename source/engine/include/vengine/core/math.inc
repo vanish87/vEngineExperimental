@@ -40,12 +40,12 @@ namespace vEngine
         template <typename T, typename U>
         U CeilToInt(const T& value)
         {
-            return static_cast<U>(value + 1);
+            return static_cast<U>(std::ceil(value));
         }
         template <typename T, typename U>
         U FloorToInt(const T& value)
         {
-            return static_cast<U>(value);
+            return static_cast<U>(std::floor(value));
         }
 
         template <typename T, int N>
