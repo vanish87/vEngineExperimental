@@ -89,7 +89,7 @@ namespace vEngine
                 }
                 static T do_dot(const T lhs[N], const T rhs[N]) noexcept
                 {
-                    return lhs[0] * rhs[0] + vector_t<T, N - 1>::do_dot(lhs + 1, lhs + 1);
+                    return lhs[0] * rhs[0] + vector_t<T, N - 1>::do_dot(lhs + 1, rhs + 1);
                 }
         };
 
