@@ -4,6 +4,11 @@
 // This file is released under the terms of the MIT license.
 // Read LICENSE.txt for more information.
 
+#ifdef _MSC_VER
+    #pragma warning(push)
+    #pragma warning(disable : 4189) 
+#endif
+
 #include <external/tga.h>
 
 #include <algorithm>
@@ -278,3 +283,7 @@ void Encoder::write32Rgb(color_t c)
 }
 
 } // namespace tga
+
+#ifdef _MSC_VER
+    #pragma warning(pop)
+#endif
