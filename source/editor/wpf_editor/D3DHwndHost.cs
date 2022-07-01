@@ -13,13 +13,13 @@ namespace D3DWPFExample
 {
 	public class D3DDLL
 	{
-		[DllImport("editor_helperd.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("editor_plugind.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern void Context_Init(IntPtr window);
 
-		[DllImport("editor_helperd.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("editor_plugind.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern void Context_Update();
 		
-		[DllImport("editor_helperd.dll", CallingConvention = CallingConvention.Cdecl)]
+		[DllImport("editor_plugind.dll", CallingConvention = CallingConvention.Cdecl)]
 		public static extern void Context_Deinit();
 
 	}
