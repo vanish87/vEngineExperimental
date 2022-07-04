@@ -40,7 +40,6 @@ namespace vEngine
                 /// \brief brief constructor description.
                 Scene();
                 void LoadFile(const std::string file);
-                void ActiveScene();
 
 				void Update();
 				void Flush();
