@@ -44,7 +44,7 @@ namespace vEngine
             this->scene_->LoadFile(file.string());
             // file = ResourceLoader::GetInstance().GetFilePath("boblampclean.md5anim");
             // this->scene_->LoadFile(file.string());
-            this->scene_->ActiveScene();
+            // this->scene_->ActiveScene();
             // ResourceLoader::GetInstance().LoadAsync(this->scene_,
             // [&](IResourceSharedPtr c)
             // {

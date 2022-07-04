@@ -27,6 +27,7 @@
 #include <vengine/core/mesh.hpp>
 #include <vengine/core/mesh_renderer_component.hpp>
 #include <vengine/core/resource_loader.hpp>
+#include <vengine/core/iresource.hpp>
 #include <vengine/core/transform_component.hpp>
 #include <vengine/core/asset_component.hpp>
 
@@ -50,17 +51,31 @@ namespace vEngine
         {
             PRINT("Loading " << file);
 
-            GameNodeDescription gndesc;
-            gndesc.type = GameNodeType::Asset;
-            auto gn = GameNodeFactory::Create(gndesc);
-            auto asset = gn->FirstOf<AssetComponent>();
+            GameObjectDescription godesc;
+            godesc.type = GameObjectType::Asset;
+            auto asset = GameObjectFactory::Create<Asset>(godesc);
             ResourceDescriptor rdesc;
             rdesc.file_path = file;
-            asset->GO()->Load(rdesc);
+            rdesc.complete_call_back = 
+            [&](IResourceSharedPtr c)
+            {
+                GameNodeDescription gndesc;
+                gndesc.type = GameNodeType::Asset;
+                auto gn = GameNodeFactory::Create(gndesc);
+                auto asset_comp = gn->FirstOf<AssetComponent>();
+                auto asset = std::dynamic_pointer_cast<Asset>(c);
+                asset_comp->Reset(asset);
+                gn->AddChild(asset->GetRoot());
+                this->AddChild(gn);
 
-            gn->AddChild(asset->GO()->GetRoot());
+                auto rot90 = Math::RotateAngleAxis(Math::PI * 0.5f, float3(0, 0, 1));
+                asset->GetRoot()->FirstOf<TransformComponent>()->GO()->Rotation() = rot90;
 
-            this->AddChild(gn);
+                this->ActiveScene();
+            };
+
+            ResourceLoader::GetInstance().LoadAsync(asset, rdesc);
+
         }
         void Scene::ActiveScene()
         {
@@ -100,11 +115,11 @@ namespace vEngine
 
         void Scene::Update()
         {
-            timer += 0.001f;
-            auto asset = this->FirstOf<AssetComponent>(1);
-            auto rot90 = Math::RotateAngleAxis(Math::PI * 0.5f, float3(0,0,1));
-            auto rotanim = Math::RotateAngleAxis(timer, float3(1,0,0));
-            asset->GO()->GetRoot()->FirstOf<TransformComponent>()->GO()->Rotation() = rot90 * rotanim;
+            // timer += 0.001f;
+            // auto asset = this->FirstOf<AssetComponent>(1);
+            // auto rot90 = Math::RotateAngleAxis(Math::PI * 0.5f, float3(0,0,1));
+            // auto rotanim = Math::RotateAngleAxis(timer, float3(1,0,0));
+            // asset->GO()->GetRoot()->FirstOf<TransformComponent>()->GO()->Rotation() = rot90 * rotanim;
 
             this->TraverseAllChildren<Animation::AnimatorComponent>(
                 [&](Animation::AnimatorComponentSharedPtr node)

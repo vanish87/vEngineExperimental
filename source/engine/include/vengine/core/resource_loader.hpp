@@ -50,7 +50,7 @@ namespace vEngine
         class ResourceLoadingJob : public ThreadJob
         {
             public:
-                ResourceLoadingJob(IResourceSharedPtr resource, const ResourceDescriptor& desc, std::function<void(IResourceSharedPtr user_data)> const& complete_callback);
+                ResourceLoadingJob(IResourceSharedPtr resource, const ResourceDescriptor& desc);
                 ~ResourceLoadingJob();
 
             public:
@@ -60,7 +60,6 @@ namespace vEngine
                 ResourceLoadingJob(){};
                 IResourceSharedPtr resource_to_load_;
                 ResourceDescriptor desc_;
-                std::function<void(IResourceSharedPtr user_data)> complete_call_back_;
         };
         class ResourceLoader
         {
@@ -68,7 +67,7 @@ namespace vEngine
 
             public:
 
-                void LoadAsync(IResourceSharedPtr resource, const ResourceDescriptor& desc, std::function<void(IResourceSharedPtr user_data)> const& complete_callback = nullptr);
+                void LoadAsync(IResourceSharedPtr resource, const ResourceDescriptor& desc);
                 // void AddSync();
 
                 std::filesystem::path GetFilePath(const std::string file_name);
