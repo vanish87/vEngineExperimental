@@ -10,6 +10,8 @@
 #ifndef _VENGINE_CORE_MATERIAL_HPP
 #define _VENGINE_CORE_MATERIAL_HPP
 
+#include <filesystem>
+
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
 #include <vengine/core/iresource.hpp>
@@ -26,17 +28,19 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Material : public GameObject, IResource
+        class Material : public GameObject, public IResource
         {
             public:
                 /// \brief brief constructor description.
-                Material(const std::string vs_name, const std::string ps_name);
+                Material();
                 ~Material()
                 {
                     // PRINT("Destory material");
                 }
 
-                bool Load(const ResourceDescriptor& descriptor) override;
+                // void SetShader(const std::filesystem::path path, const ShaderType type);
+
+                bool Load(const ResourceDescriptorSharedPtr descriptor) override;
                 ResourceState CurrentState() override
                 {
                     return ResourceState::Unknown;
@@ -55,8 +59,8 @@ namespace vEngine
                 //  };
 
                 // all vs/ps related data is stored in PipelineState
-                std::string vs_name_;
-                std::string ps_name_;
+                // std::string vs_name_;
+                // std::string ps_name_;
                 Rendering::PipelineStateSharedPtr pipeline_state_;
 
                 // maybe layout like D3D11_INPUT_ELEMENT_DESC

@@ -20,10 +20,17 @@ namespace vEngine
         using namespace Rendering;
         /// constructor detailed defintion,
         /// should be 2 lines
-        Material::Material(const std::string vs_name, const std::string ps_name) : vs_name_{vs_name}, ps_name_{ps_name} {}
+        Material::Material(){}
 
-        bool Material::Load(const ResourceDescriptor& descriptor)
+        struct MaterialResourceDesc : public ResourceDescriptor
         {
+            /* data */
+        };
+        
+
+        bool Material::Load(const ResourceDescriptorSharedPtr descriptor)
+        {
+            // auto desc = std::dynamic_pointer_cast<MaterialResourceDesc>(descriptor);
             UNUSED_PARAMETER(descriptor);
             // this->d3d_imm_context_->VSSetShader(this->vs, 0, 0);
             // this->d3d_imm_context_->PSSetShader(this->ps, 0, 0);
@@ -44,13 +51,17 @@ namespace vEngine
             PipelineStateDescriptor desc;
             // desc.rasterizer_descriptor.fill_mode = FillMode::Wireframe;
             // desc.rasterizer_descriptor.cull_mode = CullMode::None;
-            desc.vs_name = this->vs_name_;
-            desc.ps_name = this->ps_name_;
+            // desc.vs_name = this->vs_name_;
+            // desc.ps_name = this->ps_name_;
             this->pipeline_state_ = Context::GetInstance().GetRenderEngine().Register(desc);
             Context::GetInstance().GetRenderEngine().Bind(this->pipeline_state_);
 
             return true;
         }
+                // void Material::SetShader(const std::filesystem::path path, const ShaderType type)
+                // {
+
+                // }
 
         void Material::UpdateGPUResource()
         {

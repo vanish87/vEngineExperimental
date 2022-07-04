@@ -54,9 +54,9 @@ namespace vEngine
             GameObjectDescription godesc;
             godesc.type = GameObjectType::Asset;
             auto asset = GameObjectFactory::Create<Asset>(godesc);
-            ResourceDescriptor rdesc;
-            rdesc.file_path = file_path;
-            rdesc.complete_call_back = 
+            auto rdesc = std::make_shared<ResourceDescriptor>();
+            rdesc->file_path = file_path;
+            rdesc->complete_call_back = 
             [&](IResourceSharedPtr c)
             {
                 GameNodeDescription gndesc;

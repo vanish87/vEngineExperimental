@@ -37,7 +37,7 @@ namespace vEngine
                 /// \brief brief constructor description.
                 Asset();
                 virtual ~Asset();
-                bool Load(const ResourceDescriptor& descriptor) override;
+                bool Load(const ResourceDescriptorSharedPtr descriptor) override;
                 ResourceState CurrentState() override;
 
                 const GameNodeSharedPtr GetRoot() const;

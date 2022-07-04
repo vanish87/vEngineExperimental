@@ -25,8 +25,8 @@ namespace vEngine
             PRINT("PipelineState Base");
             this->descriptor_ = desc;
 
-            this->vs_shader_ = std::make_shared<Shader>(this->descriptor_.vs_name);
-            this->ps_shader_ = std::make_shared<Shader>(this->descriptor_.ps_name);
+            // this->vs_shader_ = std::make_shared<Shader>(this->descriptor_.vs_name);
+            // this->ps_shader_ = std::make_shared<Shader>(this->descriptor_.ps_name);
             
             this->Load(this->vs_shader_);
             this->Load(this->ps_shader_);
@@ -39,7 +39,7 @@ namespace vEngine
         {
             // std::ifstream fin(shader.name + ".hlsl", std::ios::binary);
             // std::ifstream fin(shader.name + ".hlsl");
-            std::ifstream fin(shader->name);
+            std::ifstream fin(shader->path.string());
 
             if (!fin)
             {

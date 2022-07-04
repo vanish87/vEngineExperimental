@@ -60,7 +60,7 @@ namespace vEngine
             this->loading_thread_.Join();
         }
 
-        void ResourceLoader::LoadAsync(IResourceSharedPtr resource, const ResourceDescriptor& desc)
+        void ResourceLoader::LoadAsync(IResourceSharedPtr resource, const ResourceDescriptorSharedPtr desc)
         {
             this->loading_thread_.AddToQueue(std::make_shared<ResourceLoadingJob>(resource, desc));
         }
@@ -86,7 +86,7 @@ namespace vEngine
             return nullptr;
         }
 
-        ResourceLoadingJob::ResourceLoadingJob(IResourceSharedPtr resource, const ResourceDescriptor& desc)
+        ResourceLoadingJob::ResourceLoadingJob(IResourceSharedPtr resource, const ResourceDescriptorSharedPtr desc)
         {
             this->desc_ = desc;
             this->resource_to_load_ = resource;
@@ -103,9 +103,9 @@ namespace vEngine
             // ModelLoad.Begin(Profiler::PE_FUNCTION_CALL);
             this->resource_to_load_->Load(this->desc_);
             // ModelLoad.End(Profiler::PE_FUNCTION_CALL, "ResourceLoadingJob::Load::" + this->object_to_load_->GetName());
-            if (this->desc_.complete_call_back != nullptr)
+            if (this->desc_->complete_call_back != nullptr)
             {
-                this->desc_.complete_call_back(this->resource_to_load_);
+                this->desc_->complete_call_back(this->resource_to_load_);
             }
         }
 

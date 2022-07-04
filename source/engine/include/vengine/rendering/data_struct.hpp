@@ -4,11 +4,20 @@
 #pragma once
 
 #include <vector>
+#include <unordered_map>
+#include <filesystem>
 #include <vengine/rendering/data_format.hpp>
 namespace vEngine
 {
     namespace Rendering
     {
+        enum class ShaderType
+        {
+            VS,
+            GS,
+            PS,
+            CS,
+        };
         enum class GraphicsResourceType
         {
             Index,
@@ -174,17 +183,16 @@ namespace vEngine
         struct PipelineStateDescriptor
         {
                 // similar design as https://docs.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_graphics_pipeline_state_desc
-                std::string vs_name;
-                std::string ps_name;
+                std::unordered_map<ShaderType, std::filesystem::path> shaders;
                 RasterizerDescriptor rasterizer_descriptor;
                 DepthStencilDescriptor depth_stencil_descriptor;
         };
 
         struct Shader
         {
-                std::string name;
+                std::filesystem::path path;
                 std::vector<char> content;
-                Shader(const std::string name) : name{name} {};
+                Shader(const std::filesystem::path path) : path{path} {};
         };
     }  // namespace Rendering
 

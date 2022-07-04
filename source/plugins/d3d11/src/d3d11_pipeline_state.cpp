@@ -29,7 +29,7 @@ namespace vEngine
             ComPtr<ID3DBlob> error;
 
             auto vs = this->vs_shader_;
-            auto hr = D3DCompile(vs->content.data(), vs->content.size(), vs->name.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "vs_main", "vs_5_0", 0, 0, vs_blob_.GetAddressOf(), error.GetAddressOf());
+            auto hr = D3DCompile(vs->content.data(), vs->content.size(), vs->path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "vs_main", "vs_5_0", 0, 0, vs_blob_.GetAddressOf(), error.GetAddressOf());
             if (error != nullptr)
             {
                 std::string err(static_cast<char*>(error->GetBufferPointer()), error->GetBufferSize());
@@ -38,7 +38,7 @@ namespace vEngine
             CHECK_ASSERT(hr == S_OK);
 
             auto ps = this->ps_shader_;
-            hr = D3DCompile(ps->content.data(), ps->content.size(), ps->name.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "ps_main", "ps_5_0", 0, 0, ps_blob_.GetAddressOf(), error.GetAddressOf());
+            hr = D3DCompile(ps->content.data(), ps->content.size(), ps->path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "ps_main", "ps_5_0", 0, 0, ps_blob_.GetAddressOf(), error.GetAddressOf());
             if (error != nullptr)
             {
                 std::string err(static_cast<char*>(error->GetBufferPointer()), error->GetBufferSize());

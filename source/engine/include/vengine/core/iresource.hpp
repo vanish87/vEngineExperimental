@@ -3,6 +3,7 @@
 
 #pragma once
 #include <VENGINE_API.hpp>
+#include <engine.hpp>
 #include <functional>
 #include <filesystem>
 
@@ -25,7 +26,7 @@ namespace vEngine
         Interface VENGINE_API IResource
         {
         public:
-            virtual bool Load(const ResourceDescriptor& descriptor) = 0;
+            virtual bool Load(const ResourceDescriptorSharedPtr descriptor) = 0;
             virtual ResourceState CurrentState() = 0;
         };
     }  // namespace Core

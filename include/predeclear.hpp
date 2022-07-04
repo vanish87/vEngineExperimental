@@ -102,6 +102,7 @@ namespace vEngine
         CLASS_AND_SHARED_POINTER(IComponent)
         CLASS_AND_SHARED_POINTER(IRenderer)
         CLASS_AND_SHARED_POINTER(IResource)
+        STRUCT_AND_SHARED_POINTER(ResourceDescriptor)
 
         CLASS_AND_SHARED_POINTER(ThreadJob)
 

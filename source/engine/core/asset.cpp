@@ -58,9 +58,9 @@ namespace vEngine
         {
             return this->animation_clips_;
         }
-        bool Asset::Load(const ResourceDescriptor& descriptor)
+        bool Asset::Load(const ResourceDescriptorSharedPtr descriptor)
         {
-            auto f = descriptor.file_path.string();
+            auto f = descriptor->file_path.string();
             Assimp::Importer importer;
             auto scene = importer.ReadFile(f, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
 
@@ -162,8 +162,8 @@ namespace vEngine
                 auto ai_mat = scene->mMaterials[mid];
                 GameObjectDescription desc;
                 desc.type = GameObjectType::Material;
-                auto mat = GameObjectFactory::Create<Material>(desc, vs_file.string(), ps_file.string());
-                ResourceDescriptor rdesc;
+                auto mat = GameObjectFactory::Create<Material>(desc);
+                auto rdesc = std::make_shared<ResourceDescriptor>();
                 mat->Load(rdesc);
                 this->materials_.emplace_back(mat);
                 aiString szPath;
@@ -232,8 +232,8 @@ namespace vEngine
             if (this->materials_.size() == 0)
             {
                 PRINT("no materials for scene, add a default material");
-                auto mat = std::make_shared<Material>(vs_file.string(), ps_file.string());
-                ResourceDescriptor rdesc;
+                auto mat = std::make_shared<Material>();
+                auto rdesc = std::make_shared<ResourceDescriptor>();
                 mat->Load(rdesc);
                 this->materials_.emplace_back(mat);
             }
