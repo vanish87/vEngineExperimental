@@ -16,7 +16,6 @@
 #include <queue>
 #include <functional>
 
-#include <filesystem>
 #include <unordered_map>
 
 #include <VENGINE_API.hpp>

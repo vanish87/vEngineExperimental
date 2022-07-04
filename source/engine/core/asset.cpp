@@ -60,7 +60,7 @@ namespace vEngine
         }
         bool Asset::Load(const ResourceDescriptor& descriptor)
         {
-            auto f = descriptor.file_path;
+            auto f = descriptor.file_path.string();
             Assimp::Importer importer;
             auto scene = importer.ReadFile(f, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
 

@@ -47,15 +47,15 @@ namespace vEngine
             // this->state_ = ResourceState::Unknown;
             // this->root_ = std::make_shared<GameNode>();
         }
-        void Scene::LoadFile(const std::string file)
+        void Scene::LoadFile(const std::filesystem::path file_path)
         {
-            PRINT("Loading " << file);
+            PRINT("Loading " << file_path);
 
             GameObjectDescription godesc;
             godesc.type = GameObjectType::Asset;
             auto asset = GameObjectFactory::Create<Asset>(godesc);
             ResourceDescriptor rdesc;
-            rdesc.file_path = file;
+            rdesc.file_path = file_path;
             rdesc.complete_call_back = 
             [&](IResourceSharedPtr c)
             {

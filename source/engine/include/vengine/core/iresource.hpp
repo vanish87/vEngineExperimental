@@ -4,6 +4,7 @@
 #pragma once
 #include <VENGINE_API.hpp>
 #include <functional>
+#include <filesystem>
 
 namespace vEngine
 {
@@ -17,7 +18,7 @@ namespace vEngine
         };
         struct ResourceDescriptor
         {
-            std::string file_path;
+            std::filesystem::path file_path;
             std::function<void(IResourceSharedPtr resource_loaded)> complete_call_back;
         };
         
