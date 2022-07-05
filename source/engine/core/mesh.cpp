@@ -24,10 +24,21 @@ namespace vEngine
 
         MeshSharedPtr Mesh::Default(const MeshPrimitive primitive, const int sub_div)
         {
-            UNUSED_PARAMETER(primitive);
+            // UNUSED_PARAMETER(primitive);
             UNUSED_PARAMETER(sub_div);
-
             static auto m = std::make_shared<Mesh>();
+            if (m->CurrentState() != ResourceState::Loaded)
+            {
+                switch (primitive)
+                {
+                    case MeshPrimitive::Cube:
+                        GenerateCube(m);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
             return m;
         }
         bool Mesh::Load(const ResourceDescriptorSharedPtr desc)

@@ -110,7 +110,8 @@ namespace vEngine
                 PRINT("aiNode " << node->mName.data << " with ai mesh name " << ai_mesh->mName.data);
 
                 ComponentDescription cdesc;
-                auto mesh_component = GameNodeFactory::Create<MeshComponent>(cdesc, mesh);
+                auto mesh_component = GameNodeFactory::Create<MeshComponent>(cdesc);
+                mesh_component->Reset(mesh);
                 mesh_node->AttachComponent(mesh_component);
 
                 auto mesh_renderer = GameNodeFactory::Create<MeshRendererComponent>(cdesc);
