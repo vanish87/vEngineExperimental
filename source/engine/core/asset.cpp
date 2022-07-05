@@ -41,6 +41,7 @@ namespace vEngine
     namespace Core
     {
         using namespace Animation;
+        using namespace Rendering;
 
         /// constructor detailed defintion,
         /// should be 2 lines

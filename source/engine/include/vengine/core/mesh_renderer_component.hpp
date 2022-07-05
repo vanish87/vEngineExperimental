@@ -28,12 +28,11 @@ namespace vEngine
 {
     namespace Rendering
     {
-        using namespace vEngine::Core;
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class MeshRendererComponent : public Component<MeshRenderer>
+        class MeshRendererComponent : public Core::Component<MeshRenderer>
         {
             public:
                 /// \brief brief constructor description.

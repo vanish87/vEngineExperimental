@@ -38,6 +38,8 @@ namespace vEngine
 {
     namespace Core
     {
+        using namespace Rendering;
+
         /// constructor detailed defintion,
         /// should be 2 lines
         Scene::Scene() : GameNode()

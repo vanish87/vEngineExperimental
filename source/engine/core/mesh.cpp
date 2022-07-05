@@ -21,6 +21,8 @@ namespace vEngine
     namespace Core
     {
 
+        using namespace Rendering;
+
         /// constructor detailed defintion,
         /// should be 2 lines
         Mesh::Mesh() : vertex_buffer_{nullptr}, index_buffer_{nullptr}, loaded{false}

@@ -30,7 +30,6 @@ namespace vEngine
 {
     namespace Core
     {
-        using namespace vEngine::Rendering;
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
@@ -73,8 +72,8 @@ namespace vEngine
 
                 // Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
 
-                GraphicsBufferSharedPtr vertex_buffer_;
-                GraphicsBufferSharedPtr index_buffer_;
+                Rendering::GraphicsBufferSharedPtr vertex_buffer_;
+                Rendering::GraphicsBufferSharedPtr index_buffer_;
 
                 std::vector<Vertex> vertex_data_;
                 std::vector<uint32_t> index_data_;
