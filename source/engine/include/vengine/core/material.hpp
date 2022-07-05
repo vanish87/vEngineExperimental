@@ -44,10 +44,7 @@ namespace vEngine
                 // void SetShader(const std::filesystem::path path, const ShaderType type);
 
                 bool Load(const ResourceDescriptorSharedPtr descriptor) override;
-                ResourceState CurrentState() override
-                {
-                    return ResourceState::Unknown;
-                }
+                ResourceState CurrentState() override;
 
                 void UpdateGPUResource();
 
@@ -64,6 +61,8 @@ namespace vEngine
                 // all vs/ps related data is stored in PipelineState
                 // std::string vs_name_;
                 // std::string ps_name_;
+                ResourceState current_state_ = ResourceState::Unknown;
+
                 Rendering::PipelineStateSharedPtr pipeline_state_;
 
                 // maybe layout like D3D11_INPUT_ELEMENT_DESC

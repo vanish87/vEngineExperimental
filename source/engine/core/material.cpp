@@ -20,9 +20,12 @@ namespace vEngine
         using namespace Rendering;
         /// constructor detailed defintion,
         /// should be 2 lines
-        Material::Material(){}
+        Material::Material() {}
 
-        
+        ResourceState Material::CurrentState()
+        {
+            return this->current_state_;
+        }
 
         bool Material::Load(const ResourceDescriptorSharedPtr descriptor)
         {
@@ -55,19 +58,18 @@ namespace vEngine
 
             return true;
         }
-                // void Material::SetShader(const std::filesystem::path path, const ShaderType type)
-                // {
+        // void Material::SetShader(const std::filesystem::path path, const ShaderType type)
+        // {
 
-                // }
+        // }
 
         void Material::UpdateGPUResource()
         {
-            if(this->textures_.size() > 0)
+            if (this->textures_.size() > 0)
             {
                 auto tex = this->textures_[0];
                 Context::GetInstance().GetRenderEngine().Bind(tex);
             }
-
         }
 
     }  // namespace Core

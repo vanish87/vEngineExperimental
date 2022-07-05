@@ -178,6 +178,7 @@ namespace vEngine
 
                         uint32_t width = 0;
                         uint32_t height = 0;
+                        auto format = DataFormat::RGBA32;
                         if (texture_path.extension() == ".png")
                         {
                             auto error = lodepng::decode(out, width, height, texture_path.string());
@@ -215,12 +216,12 @@ namespace vEngine
                         tdesc.width = width;
                         tdesc.height = height;
                         tdesc.depth = 1;
-                        tdesc.format = DataFormat::RGBA32;
+                        tdesc.format = format;
                         tdesc.dimension = TextureDimension::TD_2D;
                         tdesc.type = GraphicsResourceType::TextureR;
                         tdesc.usage = GraphicsResourceUsage::GPU_Read_Only;
                         tdesc.resource.data = out.data();
-                        tdesc.resource.pitch = sizeof(byte) * 4 * width;
+                        tdesc.resource.pitch = sizeof(byte) * GetByteSize(format) * width;
                         tdesc.slot = GraphicsBufferSlot::Slot0;
 
                         auto tex = Context::GetInstance().GetRenderEngine().Create(tdesc);
@@ -237,7 +238,7 @@ namespace vEngine
                 GameObjectDescription desc;
                 desc.type = GameObjectType::Material;
                 auto mat = GameObjectFactory::Create<Material>(desc);
-                
+
                 auto rdesc = std::make_shared<MaterialResourceDesc>();
                 rdesc->shaders[ShaderType::VS] = vs_file;
                 rdesc->shaders[ShaderType::PS] = ps_file;
