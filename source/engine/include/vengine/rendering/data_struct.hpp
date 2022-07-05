@@ -192,7 +192,8 @@ namespace vEngine
         {
                 std::filesystem::path path;
                 std::vector<char> content;
-                Shader(const std::filesystem::path path) : path{path} {};
+                ShaderType type;
+                Shader(const std::filesystem::path path, const ShaderType type) : path{path}, type{type} {};
         };
     }  // namespace Rendering
 

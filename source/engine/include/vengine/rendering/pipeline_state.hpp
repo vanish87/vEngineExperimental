@@ -23,23 +23,22 @@ namespace vEngine
         /// \brief Unity-like Graphics buffer
         ///
         /// Graphics buffer could be index/vertex buffer or
-		/// constant buffer.
-		/// It could be used in cpu and/or gpu
-		// template<typename T>
+        /// constant buffer.
+        /// It could be used in cpu and/or gpu
+        // template<typename T>
         class VENGINE_API PipelineState
         {
             public:
                 /// \brief brief constructor description.
                 PipelineState(const PipelineStateDescriptor& desc);
                 virtual ~PipelineState();
-                bool Load(ShaderSharedPtr shader);
+                bool Load(ShaderType type, std::filesystem::path path);
 
                 /// class variable description
                 // int public_variable_;
 
-				PipelineStateDescriptor descriptor_;
-                ShaderSharedPtr vs_shader_;
-                ShaderSharedPtr ps_shader_;
+                PipelineStateDescriptor descriptor_;
+                std::unordered_map<ShaderType, ShaderSharedPtr> shaders_;
 
             public:
                 /// \brief A brief function description.
@@ -47,9 +46,8 @@ namespace vEngine
                 /// \param p1 Description for p1.
                 /// \param p2 Description for p2.
                 /// \return Description for return value.
-		};
-	}
-}
+        };
+    }  // namespace Rendering
+}  // namespace vEngine
 
 #endif /* _VENGINE_RENDERING_PIPELINE_STATE_HPP */
-

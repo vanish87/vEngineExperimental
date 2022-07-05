@@ -19,10 +19,11 @@ namespace vEngine
         };
         struct ResourceDescriptor
         {
-            std::filesystem::path file_path;
-            std::function<void(IResourceSharedPtr resource_loaded)> complete_call_back;
+                virtual ~ResourceDescriptor() {}
+                std::filesystem::path file_path;
+                std::function<void(IResourceSharedPtr resource_loaded)> complete_call_back;
         };
-        
+
         Interface VENGINE_API IResource
         {
         public:

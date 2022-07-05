@@ -22,7 +22,10 @@ namespace vEngine
 {
     namespace Core
     {
-        // using namespace Rendering;
+        struct MaterialResourceDesc : public ResourceDescriptor
+        {
+                std::unordered_map<Rendering::ShaderType, std::filesystem::path> shaders;
+        };
 
         /// \brief A brief class description.
         ///

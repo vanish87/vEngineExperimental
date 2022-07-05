@@ -12,7 +12,7 @@ SamplerState MeshTextureSampler
     AddressV = Wrap;
 };
 
-ps_out ps_main(vs_out input)
+ps_out main(vs_out input)
 {
 	// float3 light_pos = float3(1000, 1000, 0);
 	float4 ambient_col = 0.1f;

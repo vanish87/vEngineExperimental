@@ -163,7 +163,9 @@ namespace vEngine
                 GameObjectDescription desc;
                 desc.type = GameObjectType::Material;
                 auto mat = GameObjectFactory::Create<Material>(desc);
-                auto rdesc = std::make_shared<ResourceDescriptor>();
+                auto rdesc = std::make_shared<MaterialResourceDesc>();
+                rdesc->shaders[ShaderType::VS] = vs_file;
+                rdesc->shaders[ShaderType::PS] = ps_file;
                 mat->Load(rdesc);
                 this->materials_.emplace_back(mat);
                 aiString szPath;
@@ -232,8 +234,13 @@ namespace vEngine
             if (this->materials_.size() == 0)
             {
                 PRINT("no materials for scene, add a default material");
-                auto mat = std::make_shared<Material>();
-                auto rdesc = std::make_shared<ResourceDescriptor>();
+                GameObjectDescription desc;
+                desc.type = GameObjectType::Material;
+                auto mat = GameObjectFactory::Create<Material>(desc);
+                
+                auto rdesc = std::make_shared<MaterialResourceDesc>();
+                rdesc->shaders[ShaderType::VS] = vs_file;
+                rdesc->shaders[ShaderType::PS] = ps_file;
                 mat->Load(rdesc);
                 this->materials_.emplace_back(mat);
             }

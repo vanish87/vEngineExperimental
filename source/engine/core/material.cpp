@@ -22,16 +22,12 @@ namespace vEngine
         /// should be 2 lines
         Material::Material(){}
 
-        struct MaterialResourceDesc : public ResourceDescriptor
-        {
-            /* data */
-        };
         
 
         bool Material::Load(const ResourceDescriptorSharedPtr descriptor)
         {
-            // auto desc = std::dynamic_pointer_cast<MaterialResourceDesc>(descriptor);
-            UNUSED_PARAMETER(descriptor);
+            auto desc = std::dynamic_pointer_cast<MaterialResourceDesc>(descriptor);
+            // UNUSED_PARAMETER(descriptor);
             // this->d3d_imm_context_->VSSetShader(this->vs, 0, 0);
             // this->d3d_imm_context_->PSSetShader(this->ps, 0, 0);
 
@@ -48,12 +44,13 @@ namespace vEngine
             // this->Load(this->vs_shader_);
             // this->Load(this->ps_shader_);
 
-            PipelineStateDescriptor desc;
+            PipelineStateDescriptor pdesc;
+            pdesc.shaders = desc->shaders;
             // desc.rasterizer_descriptor.fill_mode = FillMode::Wireframe;
             // desc.rasterizer_descriptor.cull_mode = CullMode::None;
             // desc.vs_name = this->vs_name_;
             // desc.ps_name = this->ps_name_;
-            this->pipeline_state_ = Context::GetInstance().GetRenderEngine().Register(desc);
+            this->pipeline_state_ = Context::GetInstance().GetRenderEngine().Register(pdesc);
             Context::GetInstance().GetRenderEngine().Bind(this->pipeline_state_);
 
             return true;

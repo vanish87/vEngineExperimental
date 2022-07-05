@@ -3,7 +3,7 @@
 #include "data_cbuffer.hpp"
 
 
-vs_out vs_main(vs_in input) 
+vs_out main(vs_in input) 
 {
 	vs_out output = (vs_out)0; 
 	float4x4 m = local_to_world_matrix;
