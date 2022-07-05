@@ -34,19 +34,18 @@ namespace vEngine
         class Material : public GameObject, public IResource
         {
             public:
+                static MaterialSharedPtr Default();
+
                 /// \brief brief constructor description.
                 Material();
-                ~Material()
-                {
-                    // PRINT("Destory material");
-                }
-
+                ~Material();
                 // void SetShader(const std::filesystem::path path, const ShaderType type);
 
                 bool Load(const ResourceDescriptorSharedPtr descriptor) override;
                 ResourceState CurrentState() override;
 
                 void UpdateGPUResource();
+
 
                 // color
                 // parameter

@@ -53,6 +53,7 @@ namespace vEngine
         {
             // static_assert(std::is_base_of<IElement, T>::value, "T must derived from IElement");
         };
+        // template <typename T = Vertex>
         class VENGINE_API Mesh : public GameObject
         {
             // static_assert(std::is_base_of<IElement, V>::value, "T must derived from IElement");
@@ -87,6 +88,7 @@ namespace vEngine
 
                 public:
                 static void GenerateCube(MeshSharedPtr mesh);
+                static MeshSharedPtr Default();
 
         };
     }  // namespace Core

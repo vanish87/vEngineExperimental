@@ -73,8 +73,9 @@ namespace vEngine
                 template <typename T>
                 static std::shared_ptr<T> Default()
                 {
-                    static auto go = std::make_shared<T>();
-                    return go;
+                    return T::Default();
+                    // static auto go = std::make_shared<T>();
+                    // return go;
                 }
 
                 // static GameNodeSharedPtr Create(const GameNodeDescription& desc);

@@ -33,6 +33,12 @@ namespace vEngine
 
                 Rendering::FrameBufferSharedPtr target;
 
+                static CameraSharedPtr Default()
+                {
+                    static auto cam = std::make_shared<Camera>();
+                    return cam;
+                }
+
                 const float4x4 ProjectionMatrix() const
                 {
                     return this->proj_matrix_;

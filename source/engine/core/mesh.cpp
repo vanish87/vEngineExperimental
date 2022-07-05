@@ -40,6 +40,12 @@ namespace vEngine
             this->bone_data_.clear();
         }
 
+        MeshSharedPtr Default()
+        {
+            static auto m = std::make_shared<Mesh>();
+            return m;
+        }
+
         float4x4 Mesh::AiMatrixToFloat4x4(aiMatrix4x4 mat)
         {
             return Math::Transpose(float4x4(

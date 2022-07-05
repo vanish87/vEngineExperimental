@@ -235,14 +235,7 @@ namespace vEngine
             if (this->materials_.size() == 0)
             {
                 PRINT("no materials for scene, add a default material");
-                GameObjectDescription desc;
-                desc.type = GameObjectType::Material;
-                auto mat = GameObjectFactory::Create<Material>(desc);
-
-                auto rdesc = std::make_shared<MaterialResourceDesc>();
-                rdesc->shaders[ShaderType::VS] = vs_file;
-                rdesc->shaders[ShaderType::PS] = ps_file;
-                mat->Load(rdesc);
+                auto mat = GameObjectFactory::Default<Material>();
                 this->materials_.emplace_back(mat);
             }
             PRINT("num of materials: " << this->materials_.size());

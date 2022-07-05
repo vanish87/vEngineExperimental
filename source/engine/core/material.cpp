@@ -10,6 +10,7 @@
 #include <vengine/core/context.hpp>
 #include <vengine/core/material.hpp>
 #include <vengine/rendering/render_engine.hpp>
+#include <vengine/core/resource_loader.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -21,6 +22,22 @@ namespace vEngine
         /// constructor detailed defintion,
         /// should be 2 lines
         Material::Material() {}
+        Material::~Material() {}
+
+        MaterialSharedPtr Material::Default()
+        {
+            static auto mat = std::make_shared<Material>();
+            if (mat->CurrentState() != ResourceState::Loaded)
+            {
+                auto desc = std::make_shared<MaterialResourceDesc>();
+                auto vs_file = ResourceLoader::GetInstance().GetFilePath("vs.hlsl");
+                auto ps_file = ResourceLoader::GetInstance().GetFilePath("ps.hlsl");
+                desc->shaders[ShaderType::VS] = vs_file;
+                desc->shaders[ShaderType::PS] = ps_file;
+                mat->Load(desc);
+            }
+            return mat;
+        }
 
         ResourceState Material::CurrentState()
         {
@@ -56,6 +73,7 @@ namespace vEngine
             this->pipeline_state_ = Context::GetInstance().GetRenderEngine().Register(pdesc);
             Context::GetInstance().GetRenderEngine().Bind(this->pipeline_state_);
 
+            this->current_state_ = ResourceState::Loaded;
             return true;
         }
         // void Material::SetShader(const std::filesystem::path path, const ShaderType type)
