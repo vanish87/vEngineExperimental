@@ -47,13 +47,19 @@ namespace vEngine
             float4 bone_weight_1;
         };
 
+        enum class MeshPrimitive
+        {
+            Cube,
+            Sphere,
+        };
+
         template <typename T = Vertex>
         class Mesh_T : public GameObject, public IResource
         {
             // static_assert(std::is_base_of<IElement, T>::value, "T must derived from IElement");
         };
         // template <typename T = Vertex>
-        class VENGINE_API Mesh : public GameObject
+        class VENGINE_API Mesh : public GameObject, public IResource
         {
             // static_assert(std::is_base_of<IElement, V>::value, "T must derived from IElement");
 
@@ -69,6 +75,10 @@ namespace vEngine
                 void Load(const aiMesh* mesh);
                 void UpdateGPUBuffer();
                 float4x4 AiMatrixToFloat4x4(aiMatrix4x4 mat);
+
+                bool Load(const ResourceDescriptorSharedPtr desc) override;
+                ResourceState CurrentState() override;
+                ResourceState current_state_ = ResourceState::Unknown;
 
                 // Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
 
@@ -87,7 +97,7 @@ namespace vEngine
 
                 public:
                 static void GenerateCube(MeshSharedPtr mesh);
-                static MeshSharedPtr Default();
+                static MeshSharedPtr Default(const MeshPrimitive primitive = MeshPrimitive::Cube, const int sub_div = 0);
 
         };
     }  // namespace Core

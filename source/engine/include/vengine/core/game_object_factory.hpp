@@ -70,10 +70,10 @@ namespace vEngine
                     return gn;
                 }
 
-                template <typename T>
-                static std::shared_ptr<T> Default()
+                template <typename T, class... Args>
+                static std::shared_ptr<T> Default(Args&&... args)
                 {
-                    return T::Default();
+                    return T::Default(std::forward<Args>(args)...);
                     // static auto go = std::make_shared<T>();
                     // return go;
                 }
