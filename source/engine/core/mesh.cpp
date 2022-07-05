@@ -41,11 +41,11 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Mesh::Mesh() : vertex_buffer_{nullptr}, index_buffer_{nullptr}, loaded{false}
+        Mesh::Mesh() : vertex_buffer_{nullptr}, index_buffer_{nullptr}
         {
             // PRINT("mesh object created");
         }
-        Mesh::Mesh(const aiMesh* mesh) : vertex_buffer_{nullptr}, index_buffer_{nullptr}, loaded{false}
+        Mesh::Mesh(const aiMesh* mesh) : vertex_buffer_{nullptr}, index_buffer_{nullptr}
         {
             this->Load(mesh);
             PRINT("Vertices count " << this->vertex_data_.size() << " indices count " << this->index_data_.size() << " joint count " << this->bone_data_.size());
@@ -184,14 +184,14 @@ namespace vEngine
                 PRINT("max vertex count for blend " << max);
             }
 
-            this->loaded = true;
+            this->current_state_ = ResourceState::Loaded;
         }
 
         /// Create GPU related buffer
         /// ie. Index/Vertice buffer for rendering
         void Mesh::UpdateGPUBuffer()
         {
-            if (this->vertex_buffer_ == nullptr && this->loaded)
+            if (this->vertex_buffer_ == nullptr && this->CurrentState() == ResourceState::Loaded)
             {
                 // PRINT("Create mesh vertex Buffer");
                 GraphicsBufferDescriptor desc;
@@ -215,7 +215,7 @@ namespace vEngine
                 this->vertex_buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
             }
 
-            if (this->index_buffer_ == nullptr && this->loaded)
+            if (this->index_buffer_ == nullptr && this->CurrentState() == ResourceState::Loaded)
             {
                 // PRINT("Create mesh index Buffer");
                 GraphicsBufferDescriptor desc;
@@ -332,7 +332,7 @@ namespace vEngine
             mesh->index_data_.push_back(7);
             mesh->index_data_.push_back(6);
 
-            mesh->loaded = true;
+            mesh->current_state_ = ResourceState::Loaded;
         }
     }  // namespace Core
 

@@ -91,7 +91,7 @@ namespace vEngine
                 //GameObject usually does not contain a GameNode object
                 std::unordered_map<std::string, Animation::BoneComponentSharedPtr> bone_data_;
 
-                bool loaded = false;
+                // bool loaded = false;
                 //vertex
                 //index
 
