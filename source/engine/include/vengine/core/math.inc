@@ -415,7 +415,9 @@ namespace vEngine
         template<typename T, typename S>
         Quaternion<T> SLerp(const Quaternion<T>& x, const Quaternion<T>& y, const S& s)
         {
-            auto theta = Math::ArcCos(Math::Dot(x, y));
+            PRINT_AND_BREAK("Not verified");
+            
+            auto theta = ArcCos(Math::Dot(x, y));
             return x * (Sin((1 - s) * theta) / Sin(theta)) + y * (Sin(s * theta) / Sin(theta));
         }
         template <typename T>
