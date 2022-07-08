@@ -36,6 +36,7 @@ namespace vEngine
                         break;
 
                     default:
+                        NOT_IMPL_ASSERT;
                         break;
                 }
             }
