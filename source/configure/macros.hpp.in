@@ -2,7 +2,7 @@
 #define _ENGINE_MACROS_HPP
 #pragma once
 
-#define NOTIMPL_ASSERT          \
+#define NOT_IMPL_ASSERT          \
     {                           \
         PRINT_FILE_AND_FUCTION; \
         DEBUG_BREAK             \
