@@ -3,7 +3,9 @@
 
 #pragma once
 #include <VENGINE_API.hpp>
+#include <engine.hpp>
 #include <functional>
+#include <filesystem>
 
 namespace vEngine
 {
@@ -17,13 +19,15 @@ namespace vEngine
         };
         struct ResourceDescriptor
         {
-            std::string file_path;
+                virtual ~ResourceDescriptor() {}
+                std::filesystem::path file_path;
+                std::function<void(IResourceSharedPtr resource_loaded)> complete_call_back;
         };
-        
+
         Interface VENGINE_API IResource
         {
         public:
-            virtual bool Load(const ResourceDescriptor& descriptor) = 0;
+            virtual bool Load(const ResourceDescriptorSharedPtr descriptor) = 0;
             virtual ResourceState CurrentState() = 0;
         };
     }  // namespace Core

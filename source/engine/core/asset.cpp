@@ -41,6 +41,7 @@ namespace vEngine
     namespace Core
     {
         using namespace Animation;
+        using namespace Rendering;
 
         /// constructor detailed defintion,
         /// should be 2 lines
@@ -58,9 +59,9 @@ namespace vEngine
         {
             return this->animation_clips_;
         }
-        bool Asset::Load(const ResourceDescriptor& descriptor)
+        bool Asset::Load(const ResourceDescriptorSharedPtr descriptor)
         {
-            auto f = descriptor.file_path;
+            auto f = descriptor->file_path.string();
             Assimp::Importer importer;
             auto scene = importer.ReadFile(f, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
 
@@ -109,7 +110,8 @@ namespace vEngine
                 PRINT("aiNode " << node->mName.data << " with ai mesh name " << ai_mesh->mName.data);
 
                 ComponentDescription cdesc;
-                auto mesh_component = GameNodeFactory::Create<MeshComponent>(cdesc, mesh);
+                auto mesh_component = GameNodeFactory::Create<MeshComponent>(cdesc);
+                mesh_component->Reset(mesh);
                 mesh_node->AttachComponent(mesh_component);
 
                 auto mesh_renderer = GameNodeFactory::Create<MeshRendererComponent>(cdesc);
@@ -162,8 +164,10 @@ namespace vEngine
                 auto ai_mat = scene->mMaterials[mid];
                 GameObjectDescription desc;
                 desc.type = GameObjectType::Material;
-                auto mat = GameObjectFactory::Create<Material>(desc, vs_file.string(), ps_file.string());
-                ResourceDescriptor rdesc;
+                auto mat = GameObjectFactory::Create<Material>(desc);
+                auto rdesc = std::make_shared<MaterialResourceDesc>();
+                rdesc->shaders[ShaderType::VS] = vs_file;
+                rdesc->shaders[ShaderType::PS] = ps_file;
                 mat->Load(rdesc);
                 this->materials_.emplace_back(mat);
                 aiString szPath;
@@ -176,6 +180,7 @@ namespace vEngine
 
                         uint32_t width = 0;
                         uint32_t height = 0;
+                        auto format = DataFormat::RGBA32;
                         if (texture_path.extension() == ".png")
                         {
                             auto error = lodepng::decode(out, width, height, texture_path.string());
@@ -213,12 +218,12 @@ namespace vEngine
                         tdesc.width = width;
                         tdesc.height = height;
                         tdesc.depth = 1;
-                        tdesc.format = DataFormat::RGBA32;
+                        tdesc.format = format;
                         tdesc.dimension = TextureDimension::TD_2D;
                         tdesc.type = GraphicsResourceType::TextureR;
                         tdesc.usage = GraphicsResourceUsage::GPU_Read_Only;
                         tdesc.resource.data = out.data();
-                        tdesc.resource.pitch = sizeof(byte) * 4 * width;
+                        tdesc.resource.pitch = sizeof(byte) * GetByteSize(format) * width;
                         tdesc.slot = GraphicsBufferSlot::Slot0;
 
                         auto tex = Context::GetInstance().GetRenderEngine().Create(tdesc);
@@ -232,9 +237,7 @@ namespace vEngine
             if (this->materials_.size() == 0)
             {
                 PRINT("no materials for scene, add a default material");
-                auto mat = std::make_shared<Material>(vs_file.string(), ps_file.string());
-                ResourceDescriptor rdesc;
-                mat->Load(rdesc);
+                auto mat = GameObjectFactory::Default<Material>();
                 this->materials_.emplace_back(mat);
             }
             PRINT("num of materials: " << this->materials_.size());

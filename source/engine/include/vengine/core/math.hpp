@@ -223,13 +223,16 @@ namespace vEngine
         T Dot(const Quaternion<T>& lhs, const Quaternion<T>& rhs);
 
         template <typename T, typename S = float>
-        const T Lerp(const T& x, const T& y, const S& s);
+        const T Lerp(const T& x, const T& y, const S& t);
 
-        template<typename T>
-        Quaternion<T> NLerp(const Quaternion<T>& x, const Quaternion<T>& y, const float& s);
+        template <typename T>
+        const T Lerp(const T& x, const T& y, const T& s);
+
+        template <typename T, typename S = float>
+        Quaternion<T> NLerp(const Quaternion<T>& x, const Quaternion<T>& y, const S& s);
         
-        template<typename T, typename U>
-        Quaternion<T> SLerp(const Quaternion<T>& x, const Quaternion<T>& y, const U& s);
+        template<typename T, typename S = float>
+        Quaternion<T> SLerp(const Quaternion<T>& x, const Quaternion<T>& y, const S& s);
 
     }  // namespace Math
 }  // namespace vEngine

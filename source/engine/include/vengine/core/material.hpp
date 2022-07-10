@@ -10,6 +10,8 @@
 #ifndef _VENGINE_CORE_MATERIAL_HPP
 #define _VENGINE_CORE_MATERIAL_HPP
 
+#include <filesystem>
+
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
 #include <vengine/core/iresource.hpp>
@@ -20,29 +22,30 @@ namespace vEngine
 {
     namespace Core
     {
-        // using namespace Rendering;
+        struct MaterialResourceDesc : public ResourceDescriptor
+        {
+                std::unordered_map<Rendering::ShaderType, std::filesystem::path> shaders;
+        };
 
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Material : public GameObject, IResource
+        class Material : public GameObject, public IResource
         {
             public:
-                /// \brief brief constructor description.
-                Material(const std::string vs_name, const std::string ps_name);
-                ~Material()
-                {
-                    // PRINT("Destory material");
-                }
+                static MaterialSharedPtr Default();
 
-                bool Load(const ResourceDescriptor& descriptor) override;
-                ResourceState CurrentState() override
-                {
-                    return ResourceState::Unknown;
-                }
+                /// \brief brief constructor description.
+                Material();
+                ~Material();
+                // void SetShader(const std::filesystem::path path, const ShaderType type);
+
+                bool Load(const ResourceDescriptorSharedPtr descriptor) override;
+                ResourceState CurrentState() override;
 
                 void UpdateGPUResource();
+
 
                 // color
                 // parameter
@@ -55,8 +58,10 @@ namespace vEngine
                 //  };
 
                 // all vs/ps related data is stored in PipelineState
-                std::string vs_name_;
-                std::string ps_name_;
+                // std::string vs_name_;
+                // std::string ps_name_;
+                ResourceState current_state_ = ResourceState::Unknown;
+
                 Rendering::PipelineStateSharedPtr pipeline_state_;
 
                 // maybe layout like D3D11_INPUT_ELEMENT_DESC

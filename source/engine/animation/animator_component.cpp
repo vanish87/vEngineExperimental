@@ -63,6 +63,8 @@ namespace vEngine
 
                     // set bone's Transform to animated TRS
                     auto transform = node->Owner()->FirstOf<Core::TransformComponent>();
+                    CHECK_ASSERT(joints.find(node->name_) != joints.end());
+                    
                     JointSharedPtr j = joints[node->name_];
                     // if(transform == nullptr || j == nullptr) return true;
                     // auto j = joints[0];

@@ -29,11 +29,13 @@ Rename this file to lodepng.cpp to use it for C++, or to lodepng.c to use it for
 */
 
 #ifdef _MSC_VER
+    #pragma warning(push)
     #pragma warning(disable : 4334) 
     #pragma warning(disable : 4267)
 #endif
 
 #include <external/lodepng.h>
+
 
 #ifdef LODEPNG_COMPILE_DISK
 #include <limits.h> /* LONG_MAX */
@@ -6491,3 +6493,7 @@ unsigned encode(const std::string& filename,
 #endif /* LODEPNG_COMPILE_PNG */
 } /* namespace lodepng */
 #endif /*LODEPNG_COMPILE_CPP*/
+
+#ifdef _MSC_VER
+    #pragma warning(pop)
+#endif

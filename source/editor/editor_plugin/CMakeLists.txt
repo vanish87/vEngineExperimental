@@ -1,12 +1,12 @@
 # Set the project name
-project (editor_helper)
+project (editor_plugin)
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src sources)
 
 add_library(${PROJECT_NAME} 
 	${sources}
 )
-add_library(engine::editor_helper ALIAS ${PROJECT_NAME})
+add_library(engine::editor_plugin ALIAS ${PROJECT_NAME})
 
 set(HEADER_NAME ${PROJECT_NAME})
 string(TOUPPER ${HEADER_NAME} HEADER_NAME)

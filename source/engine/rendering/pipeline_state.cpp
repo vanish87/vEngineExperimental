@@ -25,21 +25,20 @@ namespace vEngine
             PRINT("PipelineState Base");
             this->descriptor_ = desc;
 
-            this->vs_shader_ = std::make_shared<Shader>(this->descriptor_.vs_name);
-            this->ps_shader_ = std::make_shared<Shader>(this->descriptor_.ps_name);
-            
-            this->Load(this->vs_shader_);
-            this->Load(this->ps_shader_);
+            for (const auto& shader : desc.shaders)
+            {
+                this->Load(shader.first, shader.second);
+            }
         }
-        PipelineState::~PipelineState() 
+        PipelineState::~PipelineState()
         {
             // PRINT("Destory Pipeline state");
         }
-        bool PipelineState::Load(ShaderSharedPtr shader)
+        bool PipelineState::Load(const ShaderType type, const std::filesystem::path path)
         {
             // std::ifstream fin(shader.name + ".hlsl", std::ios::binary);
             // std::ifstream fin(shader.name + ".hlsl");
-            std::ifstream fin(shader->name);
+            std::ifstream fin(path.string());
 
             if (!fin)
             {
@@ -55,7 +54,11 @@ namespace vEngine
             fin.read(shader_content.data(), size);
             fin.close();
 
+            CHECK_ASSERT(this->shaders_.find(type) == this->shaders_.end());
+
+            auto shader = std::make_shared<Shader>(path, type);
             shader->content = shader_content;
+            this->shaders_[type] = shader;
 
             return true;
         }

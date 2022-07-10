@@ -34,6 +34,8 @@ namespace vEngine
             Bone,
             Animator,
             Camera,
+
+            DefaultCube,
         };
         enum class ComponentType
         {

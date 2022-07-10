@@ -10,6 +10,7 @@
 
 #include <vengine/animation/skeleton.hpp>
 #include <vengine/core/game_node_factory.hpp>
+#include <vengine/core/game_object_factory.hpp>
 #include <vengine/core/transform_component.hpp>
 #include <vengine/core/asset_component.hpp>
 #include <vengine/core/camera_component.hpp>
@@ -17,6 +18,9 @@
 #include <vengine/animation/bone_component.hpp>
 #include <vengine/animation/skeleton_component.hpp>
 #include <vengine/animation/animator_component.hpp>
+#include <vengine/core/mesh_component.hpp>
+#include <vengine/core/mesh_renderer_component.hpp>
+#include <vengine/core/material.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -25,6 +29,7 @@ namespace vEngine
     namespace Core
     {
         using namespace Animation;
+        using namespace Rendering;
 
         /// A detailed function description, it
         /// should be 2 lines at least.
@@ -85,6 +90,21 @@ namespace vEngine
                     ComponentDescription cdesc;
                     ret->AttachComponent(Create<TransformComponent>(cdesc));
                     ret->AttachComponent(Create<CameraComponent>(cdesc));
+                }
+                break;
+                case GameNodeType::DefaultCube:
+                {
+                    ret = std::make_shared<GameNode>();
+                    ComponentDescription cdesc;
+                    ret->AttachComponent(Create<TransformComponent>(cdesc));
+
+                    auto mesh = Create<MeshComponent>(cdesc);
+                    mesh->Reset(GameObjectFactory::Default<Mesh>(MeshPrimitive::Cube));
+                    ret->AttachComponent(mesh);
+
+                    auto renderer = Create<MeshRendererComponent>(cdesc);
+                    renderer->GO()->material_ = GameObjectFactory::Default<Material>();
+                    ret->AttachComponent(renderer);
                 }
                 break;
 

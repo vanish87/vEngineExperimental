@@ -40,12 +40,12 @@ namespace vEngine
         template <typename T, typename U>
         U CeilToInt(const T& value)
         {
-            return static_cast<U>(value + 1);
+            return static_cast<U>(std::ceil(value));
         }
         template <typename T, typename U>
         U FloorToInt(const T& value)
         {
-            return static_cast<U>(value);
+            return static_cast<U>(std::floor(value));
         }
 
         template <typename T, int N>
@@ -147,7 +147,7 @@ namespace vEngine
             return ret;
         }
         template <typename T>
-        Quaternion<T> Multiply(const Quaternion<T>& lhs, const Quaternion<T >& rhs)
+        Quaternion<T> Multiply(const Quaternion<T>& lhs, const Quaternion<T>& rhs)
         {
             return Quaternion<T>(
                 lhs.x() * rhs.x() - lhs.y() * rhs.y() - lhs.z() * rhs.z() - lhs.w() * rhs.w(),
@@ -300,7 +300,7 @@ namespace vEngine
             // float m33 = f / (f - n);
 
             float m22 = f / (f - n);
-            float m32 = -(f*n) / (f - n);
+            float m32 = -(f * n) / (f - n);
 
             return Matrix<T, 4, 4>(
                 x_scale, 0, 0, 0, 
@@ -394,21 +394,31 @@ namespace vEngine
         }
 
         template <typename T, typename S>
-        const T Lerp(const T& x, const T& y, const S& s)
+        const T Lerp(const T& x, const T& y, const S& t)
         {
-            return x + (y - x) * s;
+            return x + (y - x) * t;
+            // or:
+            // return (1-t)*x + t*y;
         }
-        template<typename T>
-        Quaternion<T> NLerp(const Quaternion<T>& x, const Quaternion<T>& y, const float& s)
+        template <typename T>
+        const T Lerp(const T& x, const T& y, const T& s)
+        {
+            auto t = (s - x) / (y - x);
+            return Lerp(x, y, t);
+        }
+        template <typename T, typename S>
+        Quaternion<T> NLerp(const Quaternion<T>& x, const Quaternion<T>& y, const S& s)
         {
             auto ret = Lerp(x, y, s);
             return ret.Normalized();
         }
-        template<typename T, typename U>
-        Quaternion<T> SLerp(const Quaternion<T>& x, const Quaternion<T>& y, const U& s)
+        template<typename T, typename S>
+        Quaternion<T> SLerp(const Quaternion<T>& x, const Quaternion<T>& y, const S& s)
         {
-            auto theta = Math::ArcCos(Math::Dot(x, y));
-            return x * (Sin((1 - s) * theta) / Sin(theta)) +  y * (Sin(s * theta) / Sin(theta));
+            PRINT_AND_BREAK("Not verified");
+            
+            auto theta = ArcCos(Math::Dot(x, y));
+            return x * (Sin((1 - s) * theta) / Sin(theta)) + y * (Sin(s * theta) / Sin(theta));
         }
         template <typename T>
         T Norm(const T& value)

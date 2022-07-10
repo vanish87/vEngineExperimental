@@ -52,7 +52,7 @@ namespace vEngine
 
         ResourceLoader::ResourceLoader()
         {
-            this->loading_thread_.Create(nullptr);
+            this->loading_thread_.Create();
         }
         ResourceLoader::~ResourceLoader()
         {
@@ -60,9 +60,9 @@ namespace vEngine
             this->loading_thread_.Join();
         }
 
-        void ResourceLoader::LoadAsync(IResourceSharedPtr resource, const ResourceDescriptor& desc, std::function<void(IResourceSharedPtr user_data)> const& complete_callback /*= nullptr*/)
+        void ResourceLoader::LoadAsync(IResourceSharedPtr resource, const ResourceDescriptorSharedPtr desc)
         {
-            this->loading_thread_.AddToQueue(std::make_shared<ResourceLoadingJob>(resource, desc, complete_callback));
+            this->loading_thread_.AddToQueue(std::make_shared<ResourceLoadingJob>(resource, desc));
         }
 
         void ResourceLoader::AddSearchPath(const std::string path) 
@@ -86,11 +86,10 @@ namespace vEngine
             return nullptr;
         }
 
-        ResourceLoadingJob::ResourceLoadingJob(IResourceSharedPtr resource, const ResourceDescriptor& desc, std::function<void(IResourceSharedPtr user_data)> const& complete_callback /*= nullptr*/)
+        ResourceLoadingJob::ResourceLoadingJob(IResourceSharedPtr resource, const ResourceDescriptorSharedPtr desc)
         {
             this->desc_ = desc;
             this->resource_to_load_ = resource;
-            this->complete_call_back_ = complete_callback;
         }
 
         ResourceLoadingJob::~ResourceLoadingJob() {}
@@ -104,9 +103,9 @@ namespace vEngine
             // ModelLoad.Begin(Profiler::PE_FUNCTION_CALL);
             this->resource_to_load_->Load(this->desc_);
             // ModelLoad.End(Profiler::PE_FUNCTION_CALL, "ResourceLoadingJob::Load::" + this->object_to_load_->GetName());
-            if (this->complete_call_back_ != nullptr)
+            if (this->desc_->complete_call_back != nullptr)
             {
-                this->complete_call_back_(this->resource_to_load_);
+                this->desc_->complete_call_back(this->resource_to_load_);
             }
         }
 

@@ -15,10 +15,6 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
 #include <engine.hpp>
 #include <vengine/core/game_node.hpp>
 #include <vengine/core/iresource.hpp>
@@ -39,8 +35,7 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 Scene();
-                void LoadFile(const std::string file);
-                void ActiveScene();
+                void LoadFile(const std::filesystem::path file_path);
 
 				void Update();
 				void Flush();

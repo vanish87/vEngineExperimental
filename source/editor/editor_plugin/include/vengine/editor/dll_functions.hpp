@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <EDITOR_HELPER_API.h>
+#include <EDITOR_PLUGIN_API.h>
 
 #include <engine.hpp>
 #include <vengine/core/application.hpp>
@@ -23,9 +23,9 @@ namespace vEngine
 }  // namespace vEngine
 
 extern "C" {
-    EDITOR_HELPER_API void Context_Init(void* hwnd);
-    EDITOR_HELPER_API void Context_Update();
-    EDITOR_HELPER_API void Context_Deinit();
+    EDITOR_PLUGIN_API void Context_Init(void* hwnd);
+    EDITOR_PLUGIN_API void Context_Update();
+    EDITOR_PLUGIN_API void Context_Deinit();
 }
 
 #endif /* _VENGINE_EDITOR_DLL_FUNCTIONS_HPP */

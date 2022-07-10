@@ -30,7 +30,6 @@ namespace vEngine
 {
     namespace Core
     {
-        using namespace vEngine::Rendering;
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
@@ -48,12 +47,19 @@ namespace vEngine
             float4 bone_weight_1;
         };
 
+        enum class MeshPrimitive
+        {
+            Cube,
+            Sphere,
+        };
+
         template <typename T = Vertex>
         class Mesh_T : public GameObject, public IResource
         {
             // static_assert(std::is_base_of<IElement, T>::value, "T must derived from IElement");
         };
-        class VENGINE_API Mesh : public GameObject
+        // template <typename T = Vertex>
+        class VENGINE_API Mesh : public GameObject, public IResource
         {
             // static_assert(std::is_base_of<IElement, V>::value, "T must derived from IElement");
 
@@ -70,10 +76,14 @@ namespace vEngine
                 void UpdateGPUBuffer();
                 float4x4 AiMatrixToFloat4x4(aiMatrix4x4 mat);
 
+                bool Load(const ResourceDescriptorSharedPtr desc) override;
+                ResourceState CurrentState() override;
+                ResourceState current_state_ = ResourceState::Unknown;
+
                 // Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
 
-                GraphicsBufferSharedPtr vertex_buffer_;
-                GraphicsBufferSharedPtr index_buffer_;
+                Rendering::GraphicsBufferSharedPtr vertex_buffer_;
+                Rendering::GraphicsBufferSharedPtr index_buffer_;
 
                 std::vector<Vertex> vertex_data_;
                 std::vector<uint32_t> index_data_;
@@ -81,12 +91,13 @@ namespace vEngine
                 //GameObject usually does not contain a GameNode object
                 std::unordered_map<std::string, Animation::BoneComponentSharedPtr> bone_data_;
 
-                bool loaded = false;
+                // bool loaded = false;
                 //vertex
                 //index
 
                 public:
                 static void GenerateCube(MeshSharedPtr mesh);
+                static MeshSharedPtr Default(const MeshPrimitive primitive = MeshPrimitive::Cube, const int sub_div = 0);
 
         };
     }  // namespace Core

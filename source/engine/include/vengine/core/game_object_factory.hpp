@@ -34,7 +34,8 @@ namespace vEngine
             Material,
             Bone,
             Joint,
-            AnimationClip
+            AnimationClip,
+            Asset
         };
 
         struct GameObjectDescription
@@ -69,11 +70,12 @@ namespace vEngine
                     return gn;
                 }
 
-                template <typename T>
-                static std::shared_ptr<T> Default()
+                template <typename T, class... Args>
+                static std::shared_ptr<T> Default(Args&&... args)
                 {
-                    static auto go = std::make_shared<T>();
-                    return go;
+                    return T::Default(std::forward<Args>(args)...);
+                    // static auto go = std::make_shared<T>();
+                    // return go;
                 }
 
                 // static GameNodeSharedPtr Create(const GameNodeDescription& desc);

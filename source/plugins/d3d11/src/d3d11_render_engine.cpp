@@ -508,22 +508,7 @@ namespace vEngine
 
             this->d3d_imm_context_->VSSetShader(d3d_state->vs_.Get(), 0, 0);
             this->d3d_imm_context_->PSSetShader(d3d_state->ps_.Get(), 0, 0);
-
-            D3D11_INPUT_ELEMENT_DESC input_desc[] = {
-                {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-                {"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-                {"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-                {"COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-                {"BLENDINDICES", 0, DXGI_FORMAT_R32G32B32A32_SINT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-                {"BLENDWEIGHT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-                {"BLENDINDICES", 1, DXGI_FORMAT_R32G32B32A32_SINT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-                {"BLENDWEIGHT", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-            };
-
-            auto hr = this->d3d_device_->CreateInputLayout(input_desc, (UINT)array_length(input_desc), d3d_state->vs_blob_->GetBufferPointer(), d3d_state->vs_blob_->GetBufferSize(), &this->layout);
-            CHECK_ASSERT(hr == S_OK);
-
-            this->d3d_imm_context_->IASetInputLayout(this->layout);
+            this->d3d_imm_context_->IASetInputLayout(d3d_state->layout_.Get());
 
             this->d3d_imm_context_->RSSetState(d3d_state->rasterizer_state_.Get());
             this->d3d_imm_context_->OMSetDepthStencilState(d3d_state->depth_stencil_state_.Get(), 0);

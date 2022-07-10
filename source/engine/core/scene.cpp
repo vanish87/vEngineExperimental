@@ -27,6 +27,7 @@
 #include <vengine/core/mesh.hpp>
 #include <vengine/core/mesh_renderer_component.hpp>
 #include <vengine/core/resource_loader.hpp>
+#include <vengine/core/iresource.hpp>
 #include <vengine/core/transform_component.hpp>
 #include <vengine/core/asset_component.hpp>
 
@@ -37,6 +38,8 @@ namespace vEngine
 {
     namespace Core
     {
+        using namespace Rendering;
+
         /// constructor detailed defintion,
         /// should be 2 lines
         Scene::Scene() : GameNode()
@@ -46,65 +49,78 @@ namespace vEngine
             // this->state_ = ResourceState::Unknown;
             // this->root_ = std::make_shared<GameNode>();
         }
-        void Scene::LoadFile(const std::string file)
+        void Scene::LoadFile(const std::filesystem::path file_path)
         {
-            PRINT("Loading " << file);
+            PRINT("Loading " << file_path);
 
-            GameNodeDescription gndesc;
-            gndesc.type = GameNodeType::Asset;
-            auto gn = GameNodeFactory::Create(gndesc);
-            auto asset = gn->FirstOf<AssetComponent>();
-            ResourceDescriptor rdesc;
-            rdesc.file_path = file;
-            asset->GO()->Load(rdesc);
+            auto m = GameObjectFactory::Default<Mesh>(MeshPrimitive::Sphere, 32);
 
-            gn->AddChild(asset->GO()->GetRoot());
+            GameObjectDescription godesc;
+            godesc.type = GameObjectType::Asset;
+            auto asset = GameObjectFactory::Create<Asset>(godesc);
+            auto rdesc = std::make_shared<ResourceDescriptor>();
+            rdesc->file_path = file_path;
+            rdesc->complete_call_back = 
+            [&](IResourceSharedPtr c)
+            {
+                GameNodeDescription gndesc;
+                gndesc.type = GameNodeType::Asset;
+                auto asset_gn = GameNodeFactory::Create(gndesc);
+                auto asset_comp = asset_gn->FirstOf<AssetComponent>();
+                auto asset = std::dynamic_pointer_cast<Asset>(c);
+                asset_comp->Reset(asset);
 
-            this->AddChild(gn);
+                asset_gn->AddChild(asset->GetRoot());
+                this->AddChild(asset_gn);
+
+                auto main_camera = asset->GetCamera(0);
+                gndesc.type = GameNodeType::Camera;
+                auto camera_gn = GameNodeFactory::Create(gndesc);
+                camera_gn->FirstOf<CameraComponent>()->Reset(main_camera);
+                camera_gn->FirstOf<TransformComponent>()->GO()->Translate() = float3(0,100,-120);
+                this->AddChild(camera_gn);
+
+                gndesc.type = GameNodeType::Animator;
+                auto animator_gn = GameNodeFactory::Create(gndesc);
+                auto animator_comp = animator_gn->FirstOf<Animation::AnimatorComponent>();
+                animator_comp->GO()->SetAnimations(asset->GetAnimations());
+                animator_comp->SetAnimationRoot(asset->GetRoot());
+                this->AddChild(animator_gn);
+
+                auto rot90 = Math::RotateAngleAxis(Math::PI * 0.5f, float3(0, 0, 1));
+                asset->GetRoot()->FirstOf<TransformComponent>()->GO()->Rotation() = rot90;
+
+                asset_gn->TraverseAllChildren<IComponent>(
+                    [&](IComponentSharedPtr comp)
+                    {
+                        comp->SetEnable(true);
+                        return true;
+                    });
+                camera_gn->TraverseAllChildren<IComponent>(
+                    [&](IComponentSharedPtr comp)
+                    {
+                        comp->SetEnable(true);
+                        return true;
+                    });
+                animator_gn->TraverseAllChildren<IComponent>(
+                    [&](IComponentSharedPtr comp)
+                    {
+                        comp->SetEnable(true);
+                        return true;
+                    });
+            };
+
+            ResourceLoader::GetInstance().LoadAsync(asset, rdesc);
+
         }
-        void Scene::ActiveScene()
-        {
-            //find first available camera as main camera;
-            //link each animation to its mesh with newly created animator node
-            auto asset = this->FirstOf<AssetComponent>(1);
-
-            // asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Translate() = float3(0, 0, 5);
-            // auto s = 0.01f;
-            // asset->GO()->root_->FirstOf<TransformComponent>()->GO()->Scale() = float3(s,s,s);
-
-            auto main_camera = asset->GO()->GetCamera(0);
-            GameNodeDescription gndesc;
-            gndesc.type = GameNodeType::Camera;
-            auto camera_gn = GameNodeFactory::Create(gndesc);
-            camera_gn->FirstOf<CameraComponent>()->Reset(main_camera);
-            camera_gn->FirstOf<TransformComponent>()->GO()->Translate() = float3(0,100,-120);
-            this->AddChild(camera_gn);
-
-            gndesc.type = GameNodeType::Animator;
-            auto animator_gn = GameNodeFactory::Create(gndesc);
-            auto animator_comp = animator_gn->FirstOf<Animation::AnimatorComponent>();
-            animator_comp->GO()->SetAnimations(asset->GO()->GetAnimations());
-            animator_comp->SetAnimationRoot(asset->GO()->GetRoot());
-            this->AddChild(animator_gn);
-
-            this->TraverseAllChildren<IComponent>(
-                [&](IComponentSharedPtr comp)
-                {
-                    comp->SetEnable(true);
-                    return true;
-                });
-
-        }
-
         float timer = 0;
-
         void Scene::Update()
         {
-            timer += 0.001f;
-            auto asset = this->FirstOf<AssetComponent>(1);
-            auto rot90 = Math::RotateAngleAxis(Math::PI * 0.5f, float3(0,0,1));
-            auto rotanim = Math::RotateAngleAxis(timer, float3(1,0,0));
-            asset->GO()->GetRoot()->FirstOf<TransformComponent>()->GO()->Rotation() = rot90 * rotanim;
+            // timer += 0.001f;
+            // auto asset = this->FirstOf<AssetComponent>(1);
+            // auto rot90 = Math::RotateAngleAxis(Math::PI * 0.5f, float3(0,0,1));
+            // auto rotanim = Math::RotateAngleAxis(timer, float3(1,0,0));
+            // asset->GO()->GetRoot()->FirstOf<TransformComponent>()->GO()->Rotation() = rot90 * rotanim;
 
             this->TraverseAllChildren<Animation::AnimatorComponent>(
                 [&](Animation::AnimatorComponentSharedPtr node)
