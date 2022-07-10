@@ -66,7 +66,7 @@ namespace vEngine
                     UNUSED_PARAMETER(desc);
                     return nullptr;
                 }
-                void Clear(const FrameBufferSharedPtr frame_buffer, const color color = float4(0.0f, 0.2f, 0.4f, 1.0f))
+                void Clear(const FrameBufferSharedPtr frame_buffer, const color color = float4(0.0f, 0.2f, 0.4f, 1.0f)) override
                 {
                     UNUSED_PARAMETER(frame_buffer);
                     UNUSED_PARAMETER(color);

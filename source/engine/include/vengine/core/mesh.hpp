@@ -11,6 +11,7 @@
 #define _VENGINE_CORE_MESH_HPP
 
 #include <vector>
+#include <unordered_map>
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
