@@ -1,10 +1,12 @@
 
 #include <vengine/rendering/metal_render_engine.hpp>
+#include <vengine/core/context.hpp>
 
 namespace vEngine
 {
     namespace Rendering
     {
+        using namespace Core;
 
         void MetalRenderEngine::Init()
         {
@@ -62,7 +64,7 @@ namespace vEngine
             std::cout << "Resource Path: " << res_path->cString(NS::UTF8StringEncoding) << std::endl;
 
             NS::Error* pError = nullptr;
-            MTL::Library* pLibrary = device->newLibrary(NS::String::string(shaderSrc, UTF8StringEncoding), nullptr, &pError);
+            MTL::Library* pLibrary = device->newLibrary(NS::String::string(shaderSrc, NS::UTF8StringEncoding), nullptr, &pError);
             if (!pLibrary)
             {
                 std::count << pError->localizedDescription()->utf8String() << std::endl;
