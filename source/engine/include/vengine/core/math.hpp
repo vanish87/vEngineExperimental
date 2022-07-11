@@ -57,6 +57,7 @@ namespace vEngine
     /// with function reference \ref Abs and \ref IsNAN
     namespace Math
     {
+        //TODO Remove this
         using namespace vEngine::Core;
 
         /// \brief PI constant
