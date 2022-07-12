@@ -53,7 +53,7 @@ namespace vEngine
         {
             PRINT("Loading " << file_path);
 
-            auto m = GameObjectFactory::Default<Mesh>(MeshPrimitive::Sphere, 32);
+            // auto m = GameObjectFactory::Default<Mesh>(MeshPrimitive::Sphere, 32);
 
             GameObjectDescription godesc;
             godesc.type = GameObjectType::Asset;
