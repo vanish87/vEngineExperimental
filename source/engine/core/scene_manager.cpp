@@ -9,9 +9,10 @@
 /// \date xxxx-xx-xxx
 
 
+#include <vengine/core/scene_manager.hpp>
+
 #include <vengine/core/resource_loader.hpp>
 #include <vengine/core/scene.hpp>
-#include <vengine/core/scene_manager.hpp>
 /// A detailed namespace description, it
 /// should be 2 lines at least.
 namespace vEngine

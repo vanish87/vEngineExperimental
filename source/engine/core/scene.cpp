@@ -31,6 +31,42 @@
 #include <vengine/core/transform_component.hpp>
 #include <vengine/core/asset_component.hpp>
 
+namespace Json
+{
+    template <>
+    int& asAny<int>(Value& value)
+    {
+        return value.data.number;
+    }
+
+    template <>
+    const int& asAny<int>(const Value& value)
+    {
+        return value.data.number;
+    }
+    template <>
+    const std::string& asAny<std::string>(const Value& value)
+    {
+        return value.data.string;
+    }
+
+    template <>
+    std::string& asAny<std::string>(Value& value)
+    {
+        return value.data.string;
+    }
+    template <>
+    vEngine::Core::float4& asAny<vEngine::Core::float4>(Value& value)
+    {
+        return value.data.numberf;
+    }
+
+    template <>
+    const vEngine::Core::float4& asAny<vEngine::Core::float4>(const Value& value)
+    {
+        return value.data.numberf;
+    }
+}
 // #include <vengine/rendering/render_engine.hpp>
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -48,12 +84,17 @@ namespace vEngine
             // this->name_ = file_path;
             // this->state_ = ResourceState::Unknown;
             // this->root_ = std::make_shared<GameNode>();
+
+            auto d1 = Dog();
+            auto json = ::JsonFunction::toJson(d1);
+            auto d2 = ::JsonFunction::fromJson<Dog>(json);
+
         }
         void Scene::LoadFile(const std::filesystem::path file_path)
         {
             PRINT("Loading " << file_path);
 
-            // auto m = GameObjectFactory::Default<Mesh>(MeshPrimitive::Sphere, 32);
+            auto m = GameObjectFactory::Default<Mesh>(MeshPrimitive::Sphere, 32);
 
             GameObjectDescription godesc;
             godesc.type = GameObjectType::Asset;
