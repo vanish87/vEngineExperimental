@@ -20,6 +20,10 @@ namespace vEngine
 {
     namespace Data
     {
+        Interface ISerializable
+        {
+
+        };
 
         /// \brief A brief class description.
         ///
@@ -35,10 +39,12 @@ namespace vEngine
                 void Serialize(ISerializable data)
                 {
                     // data.setvalue<int>("x", x):
+                    UNUSED_PARAMETER(data);
                 }
                 void Deserialize(ISerializable data)
                 {
                     // this->x = data.getvalue<int>("x", x):
+                    UNUSED_PARAMETER(data);
                 }
 
             public:
