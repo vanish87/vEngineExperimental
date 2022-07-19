@@ -54,6 +54,14 @@ namespace vEngine
             auto d1 = Data::Dog();
             auto json = Data::JsonFunction::toJson(d1);
             auto d2 = Data::JsonFunction::fromJson<Data::Dog>(json);
+            auto d3 = Data::Dog();
+
+            auto a = d3.my_attribute_.Get();
+            d3.my_attribute_.Set(a);
+
+            // auto name = d3.Getname();
+
+
 
         }
         void Scene::LoadFile(const std::filesystem::path file_path)

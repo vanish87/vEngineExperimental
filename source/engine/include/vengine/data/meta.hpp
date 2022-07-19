@@ -80,6 +80,14 @@ namespace vEngine
 {
     namespace Data
     {
+        template<typename T>
+        struct DefaultGetter
+        {
+            static const T& Get(const T& value)
+            {
+                return value;
+            }
+        };
         // sequence for
         template <typename T, T... S, typename F>
         constexpr void for_sequence(std::integer_sequence<T, S...>, F&& f)
@@ -87,8 +95,8 @@ namespace vEngine
             using unpack_t = int[];
             (void)unpack_t{(static_cast<void>(f(std::integral_constant<T, S>{})), 0)..., 0};
         }
-        template <typename Class, typename T>
-        struct PropertyImpl
+        template <typename Class, typename T, class Getter = DefaultGetter<T>>
+        struct PropertyImpl : private Getter
         {
                 constexpr PropertyImpl(T Class::*aMember, const char* aName) : member{aMember}, name{aName} {}
 
@@ -96,6 +104,12 @@ namespace vEngine
 
                 T Class::*member;
                 const char* name;
+
+                public:
+                    operator const T&() const
+                    {
+                        return this->Get(this->*member);
+                    }
         };
 
         template <typename Class, typename T>
@@ -120,6 +134,7 @@ namespace vEngine
                                  {
                                      // get the property
                                      constexpr auto property = std::get<i>(T::properties());
+                                    //  property.Get(object);
 
                                      // set the value to the member
                                      data[property.name] = object.*(property.member);
@@ -153,7 +168,7 @@ namespace vEngine
                                      //  object.*(property.member) = JsonFunction::fromJson<Type>(data[property.name]);
                                      // Or using streaming
                                      // stream >> object.*(property.member);
-                                 });
+                                });
 
                     return object;
                 }
@@ -187,6 +202,31 @@ namespace vEngine
                 int GetVariable(int p1, float p2);
         };
 
+        template <typename T>
+        class Attribute
+        {
+            protected:
+                T value_;
+
+            public:
+                const T& Get()
+                {
+                    return this->value_;
+                }
+                void Set(const T& value)
+                {
+                    this->value_ = value;
+                }
+        };
+
+        #define PROPERTY(class, type, var) \
+        private: type _##var;\
+        public: type Get##var(){return _##var;}\
+        static constexpr auto _##var##_pro(){return property(&class::_##var, #var);}
+
+
+
+
         class Dog
         {
                 // template <typename Class, typename T>
@@ -194,19 +234,30 @@ namespace vEngine
 
                 friend class JsonFunction;
 
-                std::string barkType;
+                // std::string barkType;
                 std::string color;
                 int weight = 0;
                 vEngine::Core::float4 newWeight;
 
+                PROPERTY(Dog, std::string, barkType)
+
+            public:
+                Attribute<int> my_attribute_;
+
                 bool operator==(const Dog& rhs) const
                 {
-                    return std::tie(barkType, color, weight) == std::tie(rhs.barkType, rhs.color, rhs.weight);
+                    return std::tie(_barkType, color, weight) == std::tie(rhs._barkType, rhs.color, rhs.weight);
                 }
 
                 constexpr static auto properties()
                 {
-                    return std::make_tuple(property(&Dog::newWeight, "newWeight"), property(&Dog::barkType, "barkType"), property(&Dog::color, "color"), property(&Dog::weight, "weight"));
+                    return std::make_tuple(
+                        // property(&Dog::newWeight, "newWeight"), 
+                        _barkType_pro(),
+                        property(&Dog::_barkType, "barkType"), 
+                        property(&Dog::color, "color"), 
+                        property(&Dog::weight, "weight"));
+                        // property(&Dog::my_attribute_, "MyAttribute", ));
                 };
         };
     }  // namespace Data
