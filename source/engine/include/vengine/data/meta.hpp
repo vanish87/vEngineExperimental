@@ -92,6 +92,11 @@ namespace Json
                 data.numberf = value;
                 return *this;
             }
+            Value& operator=(vEngine::Data::Attribute<int> value)
+            {
+                data.attri.Set(value.Get());
+                return *this;
+            }
     };
 
     template <typename T>
@@ -134,13 +139,13 @@ namespace vEngine
         // using ref_setter_func_ptr_t = void (Class::*)(const T&);        
 
         template <typename Class, typename MemberType, typename T>
-        struct Property
+        struct PropertyA
         {
-                using member_type = MemberType;
+                using member_type = Attribute<T>;
                 // using ref_getter_func_ptr_t = const member_type& (Class::*)() const;
                 // using ref_setter_func_ptr_t = void (Class::*)(const member_type&);
 
-                constexpr Property(const char* aName, member_type Class::*aMember, attri_ref_getter_func_ptr<T> getter) : 
+                constexpr PropertyA(const char* aName, member_type Class::*aMember, attri_ref_getter_func_ptr<T> getter) : 
                 name{aName}, member{aMember}, refGetterPtr{getter} {}
 
                 // using Type = T;
@@ -157,11 +162,41 @@ namespace vEngine
                 //         return this->Get(this->*member);
                 //     }
         };
-
-        template <typename Class, typename A, typename T>
-        constexpr auto property(const char* name, A Class::*member, attri_ref_getter_func_ptr<T> getter)
+        template <typename Class, typename T>
+        struct Property
         {
-            return Property<Class, A, T>{name, member, getter};
+                using member_type = T;
+                // using ref_getter_func_ptr_t = const member_type& (Class::*)() const;
+                // using ref_setter_func_ptr_t = void (Class::*)(const member_type&);
+
+                constexpr Property(const char* aName, member_type Class::*aMember) : name{aName}, member{aMember} {}
+
+                // using Type = T;
+
+                member_type Class::*member;
+                const char* name;
+
+
+                // attri_ref_getter_func_ptr<T> refGetterPtr;
+                // ref_setter_func_ptr_t refSetterPtr;
+                // public:
+                //     operator const T&() const
+                //     {
+                //         return this->Get(this->*member);
+                //     }
+        };
+
+        template <typename Class, typename T>
+        constexpr auto property(const char* name, Attribute<T> Class::*member)
+        {
+            // UNUSED_PARAMETER(getter);
+            return PropertyA<Class, Attribute<T>, T>{name, member, &Attribute<T>::Get};
+        };
+        template <typename Class, typename T>
+        constexpr auto property(const char* name, T Class::*member)
+        {
+            // UNUSED_PARAMETER(getter);
+            return Property<Class, T>{name, member};
         };
         class JsonFunction
         {
@@ -183,7 +218,7 @@ namespace vEngine
                                     //  property.Get(object);
 
                                      // set the value to the member
-                                     data[property.name] = (object.*(property.member)).Get();
+                                     data[property.name] = (object.*(property.member));
                                      // Or using streaming
                                      // stream << object.*(property.member);
                                  });
@@ -260,6 +295,10 @@ namespace vEngine
 
 
 
+        class TexAttribute : public Attribute<std::string>
+        {
+
+        };
 
         class Dog
         {
@@ -278,6 +317,7 @@ namespace vEngine
 
                 public:
                     Attribute<int> my_attribute_;
+                    TexAttribute my_attribute_tex_;
 
                     bool operator==(const Dog& rhs) const
                     {
@@ -287,14 +327,15 @@ namespace vEngine
                 constexpr static auto properties()
                 {
                     return std::make_tuple(
-                        // property(&Dog::newWeight, "newWeight"), 
+                        // property(&Dog::newWeight, "newWeight"),
                         // _barkType_pro,
                         // property("barkType", &Dog::_bark_type, &Dog::Get_bark_type)
-                        property("barkType", &Dog::my_attribute_, &Attribute<int>::Get)
-                        // property(&Dog::color, "color"), 
+                        property("barkType", &Dog::my_attribute_),
+                        // property("tex", &Dog::my_attribute_tex_)
+                        property("color", &Dog::color)
                         // property(&Dog::weight, "weight")
-                        );
-                        // property(&Dog::my_attribute_, "MyAttribute", ));
+                    );
+                    // property(&Dog::my_attribute_, "MyAttribute", ));
                 };
         };
     }  // namespace Data
