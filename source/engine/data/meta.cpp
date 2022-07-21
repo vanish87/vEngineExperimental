@@ -62,6 +62,11 @@ namespace Json
     {
         return value.data.numberf;
     }
+    template <>
+    const vEngine::Data::Attribute<int>& asAny<vEngine::Data::Attribute<int>>(const Value& value)
+    {
+        return value.data.attri;
+    }
 
     template <>
     const vEngine::Core::float4& asAny<vEngine::Core::float4>(const Value& value)

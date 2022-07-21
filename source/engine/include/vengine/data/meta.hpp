@@ -17,6 +17,30 @@
 #include <map>
 #include <vengine/core/vector.hpp>
 
+namespace vEngine
+{
+    namespace Data
+    {
+        template <typename T>
+        class Attribute
+        {
+            protected:
+                T value_;
+
+            public:
+                const T& Get() const
+                {
+                    return this->value_;
+                }
+                void Set(const T& value)
+                {
+                    this->value_ = value;
+                }
+        };
+    }
+}
+
+
 // Sample implementation of a json-like data structure. It is only there for the example to compile and actually produce a testable output
 namespace Json
 {
@@ -28,6 +52,7 @@ namespace Json
             std::string string;
             int number = 0;
             vEngine::Core::float4 numberf;
+            vEngine::Data::Attribute<int> attri;
     };
 
     struct Value
@@ -95,27 +120,48 @@ namespace vEngine
             using unpack_t = int[];
             (void)unpack_t{(static_cast<void>(f(std::integral_constant<T, S>{})), 0)..., 0};
         }
-        template <typename Class, typename T, class Getter = DefaultGetter<T>>
-        struct PropertyImpl : private Getter
+        template <typename T>
+        using attri_ref_getter_func_ptr = const T& (Attribute<T>::*)() const;
+        // template <typename Class, typename T>
+        // using member_ptr_t = T Class::*;
+
+        // reference getter/setter func pointer type
+        template <typename Class, typename T>
+        using ref_getter_func_ptr = const T& (Class::*)() const;
+
+
+        // template <typename Class, typename T>
+        // using ref_setter_func_ptr_t = void (Class::*)(const T&);        
+
+        template <typename Class, typename MemberType, typename T>
+        struct Property
         {
-                constexpr PropertyImpl(T Class::*aMember, const char* aName) : member{aMember}, name{aName} {}
+                using member_type = MemberType;
+                // using ref_getter_func_ptr_t = const member_type& (Class::*)() const;
+                // using ref_setter_func_ptr_t = void (Class::*)(const member_type&);
 
-                using Type = T;
+                constexpr Property(const char* aName, member_type Class::*aMember, attri_ref_getter_func_ptr<T> getter) : 
+                name{aName}, member{aMember}, refGetterPtr{getter} {}
 
-                T Class::*member;
+                // using Type = T;
+
+                member_type Class::*member;
                 const char* name;
 
-                public:
-                    operator const T&() const
-                    {
-                        return this->Get(this->*member);
-                    }
+
+                attri_ref_getter_func_ptr<T> refGetterPtr;
+                // ref_setter_func_ptr_t refSetterPtr;
+                // public:
+                //     operator const T&() const
+                //     {
+                //         return this->Get(this->*member);
+                //     }
         };
 
-        template <typename Class, typename T>
-        constexpr auto property(T Class::*member, const char* name)
+        template <typename Class, typename A, typename T>
+        constexpr auto property(const char* name, A Class::*member, attri_ref_getter_func_ptr<T> getter)
         {
-            return PropertyImpl<Class, T>{member, name};
+            return Property<Class, A, T>{name, member, getter};
         };
         class JsonFunction
         {
@@ -137,7 +183,7 @@ namespace vEngine
                                     //  property.Get(object);
 
                                      // set the value to the member
-                                     data[property.name] = object.*(property.member);
+                                     data[property.name] = (object.*(property.member)).Get();
                                      // Or using streaming
                                      // stream << object.*(property.member);
                                  });
@@ -160,7 +206,7 @@ namespace vEngine
                                      constexpr auto property = std::get<i>(T::properties());
 
                                      // get the type of the property
-                                     using Type = typename decltype(property)::Type;
+                                     using Type = typename decltype(property)::member_type;
 
                                      // set the value to the member
                                      // you can also replace `asAny` by `fromJson` to recursively serialize
@@ -202,27 +248,15 @@ namespace vEngine
                 int GetVariable(int p1, float p2);
         };
 
-        template <typename T>
-        class Attribute
-        {
-            protected:
-                T value_;
 
-            public:
-                const T& Get()
-                {
-                    return this->value_;
-                }
-                void Set(const T& value)
-                {
-                    this->value_ = value;
-                }
-        };
-
-        #define PROPERTY(class, type, var) \
+        #define PROPERTY(type, var) \
         private: type _##var;\
-        public: type Get##var(){return _##var;}\
-        static constexpr auto _##var##_pro(){return property(&class::_##var, #var);}
+        public: const type& Get_##var()const {return _##var;} \
+        public: void Set_##var(const type& value){this->_##var = value;} \
+        // static constexpr Property<class, type> _##var##_pro{&class::_##var, #var};
+
+        // static constexpr property _##var##_pro(&class::_##var, #var);
+        // static constexpr auto _##var##_pro(){return property(&class::_##var, #var);}
 
 
 
@@ -230,33 +264,36 @@ namespace vEngine
         class Dog
         {
                 // template <typename Class, typename T>
-                // friend struct PropertyImpl;
+                // friend struct Property;
 
                 friend class JsonFunction;
+                // friend struct Property;
 
                 // std::string barkType;
                 std::string color;
                 int weight = 0;
                 vEngine::Core::float4 newWeight;
 
-                PROPERTY(Dog, std::string, barkType)
+                PROPERTY(std::string, bark_type);
 
-            public:
-                Attribute<int> my_attribute_;
+                public:
+                    Attribute<int> my_attribute_;
 
-                bool operator==(const Dog& rhs) const
-                {
-                    return std::tie(_barkType, color, weight) == std::tie(rhs._barkType, rhs.color, rhs.weight);
+                    bool operator==(const Dog& rhs) const
+                    {
+                        return std::tie(_bark_type, color, weight) == std::tie(rhs._bark_type, rhs.color, rhs.weight);
                 }
 
                 constexpr static auto properties()
                 {
                     return std::make_tuple(
                         // property(&Dog::newWeight, "newWeight"), 
-                        _barkType_pro(),
-                        property(&Dog::_barkType, "barkType"), 
-                        property(&Dog::color, "color"), 
-                        property(&Dog::weight, "weight"));
+                        // _barkType_pro,
+                        // property("barkType", &Dog::_bark_type, &Dog::Get_bark_type)
+                        property("barkType", &Dog::my_attribute_, &Attribute<int>::Get)
+                        // property(&Dog::color, "color"), 
+                        // property(&Dog::weight, "weight")
+                        );
                         // property(&Dog::my_attribute_, "MyAttribute", ));
                 };
         };

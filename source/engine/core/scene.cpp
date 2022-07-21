@@ -60,6 +60,8 @@ namespace vEngine
             d3.my_attribute_.Set(a);
 
             // auto name = d3.Getname();
+            auto bark = d3.Get_bark_type();
+            d3.Set_bark_type("Wang2");
 
 
 
