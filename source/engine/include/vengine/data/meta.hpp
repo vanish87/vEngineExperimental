@@ -37,6 +37,11 @@ namespace vEngine
                     this->value_ = value;
                 }
         };
+        class TexAttribute : public Attribute<std::string>
+        {
+
+        };
+
     }
 }
 
@@ -53,6 +58,8 @@ namespace Json
             int number = 0;
             vEngine::Core::float4 numberf;
             vEngine::Data::Attribute<int> attri;
+            vEngine::Data::Attribute<std::string> attri_tex;
+            vEngine::Data::TexAttribute tex;
     };
 
     struct Value
@@ -95,6 +102,11 @@ namespace Json
             Value& operator=(vEngine::Data::Attribute<int> value)
             {
                 data.attri.Set(value.Get());
+                return *this;
+            }
+            Value& operator=(vEngine::Data::TexAttribute value)
+            {
+                data.attri_tex.Set(value.Get());
                 return *this;
             }
     };
@@ -295,11 +307,6 @@ namespace vEngine
 
 
 
-        class TexAttribute : public Attribute<std::string>
-        {
-
-        };
-
         class Dog
         {
                 // template <typename Class, typename T>
@@ -331,7 +338,7 @@ namespace vEngine
                         // _barkType_pro,
                         // property("barkType", &Dog::_bark_type, &Dog::Get_bark_type)
                         property("barkType", &Dog::my_attribute_),
-                        // property("tex", &Dog::my_attribute_tex_)
+                        property("tex", &Dog::my_attribute_tex_),
                         property("color", &Dog::color)
                         // property(&Dog::weight, "weight")
                     );
