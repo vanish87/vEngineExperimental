@@ -52,6 +52,7 @@ namespace vEngine
             // this->root_ = std::make_shared<GameNode>();
 
             auto d1 = Data::Dog();
+            d1.my_attribute_tex_.Set("New Value");
             auto json = Data::JsonFunction::toJson(d1);
             auto d2 = Data::JsonFunction::fromJson<Data::Dog>(json);
             auto d3 = Data::Dog();

@@ -24,4 +24,9 @@ public:                                                \
         return Instance;                               \
     };
 
+#define PROPERTY(type, var) \
+private: type _##var;\
+public: const type& Get_##var()const {return _##var;} \
+public: void Set_##var(const type& value){this->_##var = value;} 
+
 #endif /* _ENGINE_MACROS_HPP */

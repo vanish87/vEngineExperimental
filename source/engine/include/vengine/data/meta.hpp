@@ -28,11 +28,11 @@ namespace vEngine
                 T value_;
 
             public:
-                const T& Get() const
+                virtual const T& Get() const
                 {
                     return this->value_;
                 }
-                void Set(const T& value)
+                virtual void Set(const T& value)
                 {
                     this->value_ = value;
                 }
@@ -41,7 +41,22 @@ namespace vEngine
         {
 
         };
-
+        template<typename T>
+        struct DefaultGetter
+        {
+            static const T& Get(const T& value)
+            {
+                return value;
+            }
+        };
+        template <typename T>
+        struct Setter
+        {
+                static void Set(T& value, const T& var)
+                {
+                    value = T(var);
+                }
+        };
     }
 }
 
@@ -106,7 +121,7 @@ namespace Json
             }
             Value& operator=(vEngine::Data::TexAttribute value)
             {
-                data.attri_tex.Set(value.Get());
+                data.tex.Set(value.Get());
                 return *this;
             }
     };
@@ -122,14 +137,6 @@ namespace vEngine
 {
     namespace Data
     {
-        template<typename T>
-        struct DefaultGetter
-        {
-            static const T& Get(const T& value)
-            {
-                return value;
-            }
-        };
         // sequence for
         template <typename T, T... S, typename F>
         constexpr void for_sequence(std::integer_sequence<T, S...>, F&& f)
@@ -137,51 +144,21 @@ namespace vEngine
             using unpack_t = int[];
             (void)unpack_t{(static_cast<void>(f(std::integral_constant<T, S>{})), 0)..., 0};
         }
-        template <typename T>
-        using attri_ref_getter_func_ptr = const T& (Attribute<T>::*)() const;
+        // template <typename T>
+        // using attri_ref_getter_func_ptr = const T& (Attribute<T>::*)() const;
         // template <typename Class, typename T>
         // using member_ptr_t = T Class::*;
 
-        // reference getter/setter func pointer type
-        template <typename Class, typename T>
-        using ref_getter_func_ptr = const T& (Class::*)() const;
 
-
-        // template <typename Class, typename T>
-        // using ref_setter_func_ptr_t = void (Class::*)(const T&);        
-
-        template <typename Class, typename MemberType, typename T>
+        template <typename Class, typename Member, typename Value>
         struct PropertyA
         {
-                using member_type = Attribute<T>;
+                using member_type = Member;
+                using data_type = Value;
                 // using ref_getter_func_ptr_t = const member_type& (Class::*)() const;
                 // using ref_setter_func_ptr_t = void (Class::*)(const member_type&);
 
-                constexpr PropertyA(const char* aName, member_type Class::*aMember, attri_ref_getter_func_ptr<T> getter) : 
-                name{aName}, member{aMember}, refGetterPtr{getter} {}
-
-                // using Type = T;
-
-                member_type Class::*member;
-                const char* name;
-
-
-                attri_ref_getter_func_ptr<T> refGetterPtr;
-                // ref_setter_func_ptr_t refSetterPtr;
-                // public:
-                //     operator const T&() const
-                //     {
-                //         return this->Get(this->*member);
-                //     }
-        };
-        template <typename Class, typename T>
-        struct Property
-        {
-                using member_type = T;
-                // using ref_getter_func_ptr_t = const member_type& (Class::*)() const;
-                // using ref_setter_func_ptr_t = void (Class::*)(const member_type&);
-
-                constexpr Property(const char* aName, member_type Class::*aMember) : name{aName}, member{aMember} {}
+                constexpr PropertyA(const char* aName, member_type Class::*aMember) : name{aName}, member{aMember} {}
 
                 // using Type = T;
 
@@ -197,12 +174,44 @@ namespace vEngine
                 //         return this->Get(this->*member);
                 //     }
         };
+        template <typename Class, typename Member>
+        struct Property
+        {
+                using class_type = Class;
+                using member_type = Member;
+                // using ref_getter_func_ptr_t = const member_type& (Class::*)() const;
+                // using ref_setter_func_ptr_t = void (Class::*)(const member_type&);
+
+                // reference getter/setter func pointer type
+                // template <typename Class, typename T>
+                using ref_getter_func_ptr = const member_type& (class_type::*)() const;
+                using ref_setter_func_ptr = void (class_type::*)(const member_type&);
+
+                constexpr Property(const char* aName, member_type class_type::*aMember)
+                 : name{aName}, member{aMember}, getter_ptr{nullptr}, setter_ptr{nullptr}{}
+
+                // using Type = T;
+
+                const char* name;
+                member_type class_type::*member;
+
+                ref_getter_func_ptr getter_ptr;
+                ref_setter_func_ptr setter_ptr;
+
+                // attri_ref_getter_func_ptr<T> refGetterPtr;
+                // ref_setter_func_ptr_t refSetterPtr;
+                // public:
+                //     operator const T&() const
+                //     {
+                //         return this->Get(this->*member);
+                //     }
+        };
 
         template <typename Class, typename T>
         constexpr auto property(const char* name, Attribute<T> Class::*member)
         {
             // UNUSED_PARAMETER(getter);
-            return PropertyA<Class, Attribute<T>, T>{name, member, &Attribute<T>::Get};
+            return PropertyA<Class, Attribute<T>, T>{name, member};
         };
         template <typename Class, typename T>
         constexpr auto property(const char* name, T Class::*member)
@@ -296,10 +305,6 @@ namespace vEngine
         };
 
 
-        #define PROPERTY(type, var) \
-        private: type _##var;\
-        public: const type& Get_##var()const {return _##var;} \
-        public: void Set_##var(const type& value){this->_##var = value;} \
         // static constexpr Property<class, type> _##var##_pro{&class::_##var, #var};
 
         // static constexpr property _##var##_pro(&class::_##var, #var);
