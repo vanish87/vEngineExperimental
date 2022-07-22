@@ -32,6 +32,7 @@
 #include <vengine/core/asset_component.hpp>
 
 #include <vengine/data/meta.hpp>
+#include <vengine/data/json.hpp>
 
 // #include <vengine/rendering/render_engine.hpp>
 /// A detailed namespace description, it
@@ -51,11 +52,14 @@ namespace vEngine
             // this->state_ = ResourceState::Unknown;
             // this->root_ = std::make_shared<GameNode>();
 
-            auto d1 = Data::Dog();
-            d1.my_attribute_tex_.Set("New Value");
-            auto json = Data::JsonFunction::toJson(d1);
-            auto d2 = Data::JsonFunction::fromJson<Data::Dog>(json);
-            auto d3 = Data::Dog();
+            auto d1 = Dog();
+            d1.my_string_.Set("New Value");
+            d1.my_attribute_.Set(100);
+            d1.my_float4_.Set(float4(1,2,3,4));
+            d1.newWeight = float4(5, 6, 7, 8);
+            auto json = JsonFunction::toJson(d1);
+            auto d2 = JsonFunction::fromJson<Dog>(json);
+            auto d3 = Dog();
 
             auto a = d3.my_attribute_.Get();
             d3.my_attribute_.Set(a);
@@ -64,7 +68,13 @@ namespace vEngine
             auto bark = d3.Get_bark_type();
             d3.Set_bark_type("Wang2");
 
+            nlohmann::json j;
+            ToJson(j, d1);
 
+            auto d4 = Dog();
+            FromJson(j, d4);
+
+            PRINT(j.dump());
 
         }
         void Scene::LoadFile(const std::filesystem::path file_path)

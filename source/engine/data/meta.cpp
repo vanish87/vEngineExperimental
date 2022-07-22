@@ -13,7 +13,7 @@
 /// should be 2 lines at least.
 namespace vEngine
 {
-    namespace Data
+    namespace Core
     {
 
         /// constructor detailed defintion,
@@ -62,13 +62,13 @@ namespace Json
     {
         return value.data.numberf;
     }
+    // template <typename T>
+    // const vEngine::Data::Attribute<T>& asAny<vEngine::Data::Attribute<int>>(const Value& value)
+    // {
+    //     return value.data.attri;
+    // }
     template <>
-    const vEngine::Data::Attribute<int>& asAny<vEngine::Data::Attribute<int>>(const Value& value)
-    {
-        return value.data.attri;
-    }
-    template <>
-    const vEngine::Data::TexAttribute& asAny<vEngine::Data::TexAttribute>(const Value& value)
+    const vEngine::Core::TexAttribute& asAny<vEngine::Core::TexAttribute>(const Value& value)
     {
         return value.data.tex;
     }

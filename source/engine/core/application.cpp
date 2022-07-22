@@ -1,4 +1,5 @@
 
+#define NOMINMAX
 #include <vengine/core/window.hpp>  //windows.h should include first in win32 platform
 // #include <memory>
 #include <vengine/core/application.hpp>

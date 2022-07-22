@@ -19,7 +19,7 @@
 
 namespace vEngine
 {
-    namespace Data
+    namespace Core
     {
         template <typename T>
         class Attribute
@@ -28,6 +28,8 @@ namespace vEngine
                 T value_;
 
             public:
+                Attribute() {}
+                Attribute(const T& v) : value_{v} {}
                 virtual const T& Get() const
                 {
                     return this->value_;
@@ -35,6 +37,23 @@ namespace vEngine
                 virtual void Set(const T& value)
                 {
                     this->value_ = value;
+                }
+                virtual Attribute<T>& operator=(const Attribute<T>& other) noexcept
+                {
+                    // 1.check self assignment
+                    if (this != &other)
+                    {
+                        // 2.allocate new object before-> to assure memory
+                        // before delete existing one
+                        this->value_ = other.value_;
+                    }
+                    return *this;
+                }
+                constexpr static auto properties()
+                {
+                    return std::make_tuple(
+                        property("value", &Attribute::value_)
+                    );
                 }
         };
         class TexAttribute : public Attribute<std::string>
@@ -72,9 +91,9 @@ namespace Json
             std::string string;
             int number = 0;
             vEngine::Core::float4 numberf;
-            vEngine::Data::Attribute<int> attri;
-            vEngine::Data::Attribute<std::string> attri_tex;
-            vEngine::Data::TexAttribute tex;
+            vEngine::Core::Attribute<int> attri;
+            vEngine::Core::Attribute<std::string> attri_tex;
+            vEngine::Core::TexAttribute tex;
     };
 
     struct Value
@@ -114,12 +133,17 @@ namespace Json
                 data.numberf = value;
                 return *this;
             }
-            Value& operator=(vEngine::Data::Attribute<int> value)
+            Value& operator=(vEngine::Core::Attribute<int> value)
             {
                 data.attri.Set(value.Get());
                 return *this;
             }
-            Value& operator=(vEngine::Data::TexAttribute value)
+            Value& operator=(vEngine::Core::Attribute<std::string> value)
+            {
+                data.attri_tex.Set(value.Get());
+                return *this;
+            }
+            Value& operator=(vEngine::Core::TexAttribute value)
             {
                 data.tex.Set(value.Get());
                 return *this;
@@ -135,7 +159,7 @@ namespace Json
 /// A brief namespace description.
 namespace vEngine
 {
-    namespace Data
+    namespace Core
     {
         // sequence for
         template <typename T, T... S, typename F>
@@ -151,34 +175,11 @@ namespace vEngine
 
 
         template <typename Class, typename Member, typename Value>
-        struct PropertyA
-        {
-                using member_type = Member;
-                using data_type = Value;
-                // using ref_getter_func_ptr_t = const member_type& (Class::*)() const;
-                // using ref_setter_func_ptr_t = void (Class::*)(const member_type&);
-
-                constexpr PropertyA(const char* aName, member_type Class::*aMember) : name{aName}, member{aMember} {}
-
-                // using Type = T;
-
-                member_type Class::*member;
-                const char* name;
-
-
-                // attri_ref_getter_func_ptr<T> refGetterPtr;
-                // ref_setter_func_ptr_t refSetterPtr;
-                // public:
-                //     operator const T&() const
-                //     {
-                //         return this->Get(this->*member);
-                //     }
-        };
-        template <typename Class, typename Member>
         struct Property
         {
                 using class_type = Class;
                 using member_type = Member;
+                using value_type = Value;
                 // using ref_getter_func_ptr_t = const member_type& (Class::*)() const;
                 // using ref_setter_func_ptr_t = void (Class::*)(const member_type&);
 
@@ -211,13 +212,13 @@ namespace vEngine
         constexpr auto property(const char* name, Attribute<T> Class::*member)
         {
             // UNUSED_PARAMETER(getter);
-            return PropertyA<Class, Attribute<T>, T>{name, member};
+            return Property<Class, Attribute<T>, T>{name, member};
         };
         template <typename Class, typename T>
         constexpr auto property(const char* name, T Class::*member)
         {
             // UNUSED_PARAMETER(getter);
-            return Property<Class, T>{name, member};
+            return Property<Class, T, T>{name, member};
         };
         class JsonFunction
         {
@@ -226,6 +227,7 @@ namespace vEngine
                 static Json::Value toJson(const T& object)
                 {
                     Json::Value data;
+                    UNUSED_PARAMETER(object);
 
                     // We first get the number of properties
                     constexpr auto nbProperties = std::tuple_size<decltype(T::properties())>::value;
@@ -239,7 +241,7 @@ namespace vEngine
                                     //  property.Get(object);
 
                                      // set the value to the member
-                                     data[property.name] = (object.*(property.member));
+                                    //  data[property.name] = (object.*(property.member));
                                      // Or using streaming
                                      // stream << object.*(property.member);
                                  });
@@ -250,6 +252,7 @@ namespace vEngine
                 static T fromJson(const Json::Value& data)
                 {
                     T object;
+                    UNUSED_PARAMETER(data);
 
                     // We first get the number of properties
                     constexpr auto nbProperties = std::tuple_size<decltype(T::properties())>::value;
@@ -262,11 +265,11 @@ namespace vEngine
                                      constexpr auto property = std::get<i>(T::properties());
 
                                      // get the type of the property
-                                     using Type = typename decltype(property)::member_type;
+                                     using Type = typename decltype(property)::value_type;
 
                                      // set the value to the member
                                      // you can also replace `asAny` by `fromJson` to recursively serialize
-                                     object.*(property.member) = ::Json::asAny<Type>(data[property.name]);
+                                    //  object.*(property.member) = ::Json::asAny<Type>(data[property.name]);
                                      //  object.*(property.member) = JsonFunction::fromJson<Type>(data[property.name]);
                                      // Or using streaming
                                      // stream >> object.*(property.member);
@@ -323,13 +326,17 @@ namespace vEngine
                 // std::string barkType;
                 std::string color;
                 int weight = 0;
+
+            public:
                 vEngine::Core::float4 newWeight;
 
                 PROPERTY(std::string, bark_type);
 
                 public:
                     Attribute<int> my_attribute_;
-                    TexAttribute my_attribute_tex_;
+                    Attribute<vEngine::Core::float4> my_float4_;
+                    Attribute<std::string> my_string_;
+                    // TexAttribute my_attribute_tex_;
 
                     bool operator==(const Dog& rhs) const
                     {
@@ -343,9 +350,11 @@ namespace vEngine
                         // _barkType_pro,
                         // property("barkType", &Dog::_bark_type, &Dog::Get_bark_type)
                         property("barkType", &Dog::my_attribute_),
-                        property("tex", &Dog::my_attribute_tex_),
-                        property("color", &Dog::color)
-                        // property(&Dog::weight, "weight")
+                        property("tex", &Dog::my_string_),
+                        property("color", &Dog::color),
+                        property("weight",&Dog::weight),
+                        property("weightn32",&Dog::newWeight),
+                        property("myforlaot4",&Dog::my_float4_)
                     );
                     // property(&Dog::my_attribute_, "MyAttribute", ));
                 };

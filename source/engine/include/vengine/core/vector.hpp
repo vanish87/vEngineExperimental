@@ -28,6 +28,12 @@ namespace vEngine
         template <typename T = float, int N = 4>
         class Vector final
         {
+            // public:
+            //     constexpr static auto properties()
+            //     {
+            //         return std::make_tuple(property("data", &Vector::data_));
+            //     }
+
             private:
                 typedef std::array<T, N> DataType;
 

@@ -4,7 +4,7 @@
 #include <vengine/core/vector.hpp>
 #include <vengine/data/meta.hpp>
 
-using namespace vEngine::Data;
+using namespace vEngine::Core;
 
 TEST(Meta, Construct)
 {
