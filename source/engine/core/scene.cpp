@@ -74,6 +74,12 @@ namespace vEngine
             auto d4 = Dog();
             FromJson(j, d4);
 
+            auto bd1 = BadDog();
+            ToJson(j, bd1);
+
+            auto bd2 = BadDog();
+            FromJson(j, bd2);
+
             PRINT(j.dump());
 
         }

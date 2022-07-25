@@ -44,11 +44,11 @@ namespace vEngine
             j = ToJson(obj);
         }
 
-        // template <>
-        // nlohmann::json ToJson(const bool& obj)
-        // {
-        //     return nlohmann::json(obj);
-        // }
+        template <>
+        nlohmann::json ToJson(const bool& obj)
+        {
+            return nlohmann::json(obj);
+        }
         template <>
         nlohmann::json ToJson(const int& obj)
         {
@@ -125,11 +125,11 @@ namespace vEngine
             // return object;
         }
 
-        // template<>
-        // void FromJson(const nlohmann::json& j, bool& obj)
-        // {
-        //     obj = j.get<bool>();
-        // }
+        template<>
+        void FromJson(const nlohmann::json& j, bool& obj)
+        {
+            obj = j.get<bool>();
+        }
         template<>
         void FromJson(const nlohmann::json& j, int& obj)
         {

@@ -362,6 +362,20 @@ namespace vEngine
                     // property(&Dog::my_attribute_, "MyAttribute", ));
                 };
         };
+        class BadDog : public Dog
+        {
+            public: Attribute<bool> bad_;
+            
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        Dog::properties(),
+                        std::make_tuple(property("bad",&BadDog::bad_))
+
+                    );
+                    // property(&Dog::my_attribute_, "MyAttribute", ));
+                };
+        };
     }  // namespace Data
 
 }  // namespace vEngine
