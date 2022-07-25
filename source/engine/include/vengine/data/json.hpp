@@ -20,7 +20,7 @@ namespace vEngine
     namespace Core
     {
         template <typename T>
-        nlohmann::json serialize(const T& obj)
+        nlohmann::json ToJson(const T& obj)
         {
             nlohmann::json value;
             constexpr auto nbProperties = std::tuple_size<decltype(T::properties())>::value;
@@ -31,44 +31,69 @@ namespace vEngine
                          {
                              // get the property
                              constexpr auto property = std::get<i>(T::properties());
-                             value[property.name] = serialize(obj.*(property.member));
+                             value[property.name] = ToJson(obj.*(property.member));
                              //  ToJson(v, obj.*(property.member));
                              // Or using streaming
                              // stream << object.*(property.member);
                          });
             return value;
         }
-
-        template <>
-        nlohmann::json serialize(const std::string& obj)
+        template <typename T>
+        void ToJson(nlohmann::json& j, const T& obj)
         {
-            return nlohmann::json(obj);
-        }
-        template <>
-        nlohmann::json serialize(const int& obj)
-        {
-            return nlohmann::json(obj);
+            j = ToJson(obj);
         }
 
         // template <>
-        template <typename T, int N>
-        nlohmann::json serialize(const std::array<T,N>& obj)
+        // nlohmann::json ToJson(const bool& obj)
+        // {
+        //     return nlohmann::json(obj);
+        // }
+        template <>
+        nlohmann::json ToJson(const int& obj)
         {
-            UNUSED_PARAMETER(obj);
-            return nlohmann::json();
+            return nlohmann::json(obj);
         }
-        template <typename T, int N>
-        nlohmann::json serialize(const Vector<T,N>& obj)
+        template <>
+        nlohmann::json ToJson(const float& obj)
         {
-            UNUSED_PARAMETER(obj);
-            return nlohmann::json();
+            return nlohmann::json(obj);
+        }
+        template <>
+        nlohmann::json ToJson(const std::string& obj)
+        {
+            return nlohmann::json(obj);
+        }
+        // template <typename T, int N>
+        // nlohmann::json ToJson(const std::array<T,N>& obj)
+        // {
+        //     static_assert(false, "Should used vengine data types for serializer")
+        //     UNUSED_PARAMETER(obj);
+        //     return nlohmann::json();
+        // }
+        template <typename T, int N>
+        nlohmann::json ToJson(const Vector<T,N>& vector)
+        {
+            nlohmann::json value;
+            auto id = 0;
+            for(const auto& e : vector)
+            {
+                value[id++] = e;
+            }
+            return value;
+        }
+        template <typename T, int M, int N>
+        nlohmann::json ToJson(const Matrix<T,M,N>& matrix)
+        {
+            nlohmann::json value;
+            auto id = 0;
+            for(const auto& row : matrix)
+            {
+                value[id++] = ToJson(row);
+            }
+            return value;
         }
 
-        template <typename T>
-        static void ToJson(nlohmann::json& j, const T& obj)
-        {
-            j = serialize(obj);
-        }
 
         template <typename T>
         static void FromJson(const nlohmann::json& j, T& object)
@@ -100,10 +125,20 @@ namespace vEngine
             // return object;
         }
 
+        // template<>
+        // void FromJson(const nlohmann::json& j, bool& obj)
+        // {
+        //     obj = j.get<bool>();
+        // }
         template<>
         void FromJson(const nlohmann::json& j, int& obj)
         {
             obj = j.get<int>();
+        }
+        template<>
+        void FromJson(const nlohmann::json& j, float& s)
+        {
+            s = j.get<float>();
         }
         template<>
         void FromJson(const nlohmann::json& j, std::string& s)
@@ -118,6 +153,12 @@ namespace vEngine
         // }
         template<typename T, int N>
         void FromJson(const nlohmann::json& j, Vector<T,N>& arr)
+        {
+            UNUSED_PARAMETER(j);
+            UNUSED_PARAMETER(arr);
+        }
+        template <typename T, int M, int N>
+        void FromJson(const nlohmann::json& j, Matrix<T, M, N>& arr)
         {
             UNUSED_PARAMETER(j);
             UNUSED_PARAMETER(arr);
@@ -141,5 +182,3 @@ namespace vEngine
 }
 
 #endif /* _VENGINE_DATA_JSON_HPP */
-
-

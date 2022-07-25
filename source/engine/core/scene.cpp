@@ -56,7 +56,7 @@ namespace vEngine
             d1.my_string_.Set("New Value");
             d1.my_attribute_.Set(100);
             d1.my_float4_.Set(float4(1,2,3,4));
-            d1.newWeight = float4(5, 6, 7, 8);
+            d1.newWeight = Math::LookAtLH(float3::Zero(), float3::One(), float3(0,1,0));
             auto json = JsonFunction::toJson(d1);
             auto d2 = JsonFunction::fromJson<Dog>(json);
             auto d3 = Dog();

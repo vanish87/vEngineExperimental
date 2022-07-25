@@ -16,6 +16,7 @@
 
 #include <map>
 #include <vengine/core/vector.hpp>
+#include <vengine/core/matrix.hpp>
 
 namespace vEngine
 {
@@ -52,7 +53,7 @@ namespace vEngine
                 constexpr static auto properties()
                 {
                     return std::make_tuple(
-                        property("value", &Attribute::value_)
+                        property("attribute_value", &Attribute::value_)
                     );
                 }
         };
@@ -326,9 +327,10 @@ namespace vEngine
                 // std::string barkType;
                 std::string color;
                 int weight = 0;
+                float num = 0.1f;
 
             public:
-                vEngine::Core::float4 newWeight;
+                vEngine::Core::float4x4 newWeight;
 
                 PROPERTY(std::string, bark_type);
 
@@ -354,7 +356,8 @@ namespace vEngine
                         property("color", &Dog::color),
                         property("weight",&Dog::weight),
                         property("weightn32",&Dog::newWeight),
-                        property("myforlaot4",&Dog::my_float4_)
+                        property("myforlaot4",&Dog::my_float4_),
+                        property("flaot",&Dog::num)
                     );
                     // property(&Dog::my_attribute_, "MyAttribute", ));
                 };
