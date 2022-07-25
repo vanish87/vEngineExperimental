@@ -15,6 +15,7 @@
 #include <VENGINE_API.hpp>
 
 #include <vengine/core/uuid.hpp>
+#include <vengine/data/meta.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -36,6 +37,13 @@ namespace vEngine
                 UUID uuid_;
                 std::string name_;
                 // type?
+                constexpr static auto properties()
+                {
+                    return std::make_tuple(
+                        property("uuid", &GameObject::uuid_),
+                        property("name", &GameObject::name_)
+                    );
+                }
         };
     }  // namespace Core
 }  // namespace vEngine

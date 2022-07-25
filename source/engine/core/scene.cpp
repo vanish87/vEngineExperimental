@@ -80,6 +80,28 @@ namespace vEngine
             auto bd2 = BadDog();
             FromJson(j, bd2);
 
+
+            auto go = GameObject();
+            go.name_ = "GO";
+            ToJson(j, go);
+
+            auto go1 = GameObject();
+            FromJson(j, go1);
+            
+            auto mesh = Mesh();
+            mesh.name_ = "GO";
+            auto v = Vertex();
+            v.pos = float3(1,2,3);
+            v.normal = float3(4,4,6);
+            v.uv = float2(1,0);
+            mesh.vertex_data_.push_back(v);
+            mesh.vertex_data_.push_back(v);
+            mesh.vertex_data_.push_back(v);
+            ToJson(j, mesh);
+
+            auto mesh1 = GameObject();
+            FromJson(j, mesh1);
+
             PRINT(j.dump());
 
         }
@@ -124,6 +146,11 @@ namespace vEngine
                 auto rot90 = Math::RotateAngleAxis(Math::PI * 0.5f, float3(0, 0, 1));
                 asset->GetRoot()->FirstOf<TransformComponent>()->GO()->Rotation() = rot90;
 
+                nlohmann::json j;
+                ToJson(j, asset);
+                FromJson(j, asset);
+                PRINT(j.dump());
+
                 asset_gn->TraverseAllChildren<IComponent>(
                     [&](IComponentSharedPtr comp)
                     {
@@ -142,6 +169,7 @@ namespace vEngine
                         comp->SetEnable(true);
                         return true;
                     });
+
             };
 
             ResourceLoader::GetInstance().LoadAsync(asset, rdesc);

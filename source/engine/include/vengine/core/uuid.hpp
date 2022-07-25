@@ -13,6 +13,7 @@
 #pragma once
 
 #include <engine.hpp>
+#include <vengine/data/meta.hpp>
 
 namespace vEngine
 {
@@ -90,6 +91,12 @@ namespace vEngine
                 bool operator!=(const UUID& rhs) const
                 {
                     return this->data_ != rhs.data_;
+                }
+                constexpr static auto properties()
+                {
+                    return std::make_tuple(
+                        property("value", &UUID::data_)
+                    );
                 }
 
             private:

@@ -12,6 +12,8 @@
 
 #pragma once
 
+#include <unordered_map>
+
 #include <engine.hpp>
 #include <external/json.hpp>
 
@@ -55,6 +57,16 @@ namespace vEngine
             return nlohmann::json(obj);
         }
         template <>
+        nlohmann::json ToJson(const uint32_t& obj)
+        {
+            return nlohmann::json(obj);
+        }
+        template <>
+        nlohmann::json ToJson(const uint64_t& obj)
+        {
+            return nlohmann::json(obj);
+        }
+        template <>
         nlohmann::json ToJson(const float& obj)
         {
             return nlohmann::json(obj);
@@ -63,6 +75,35 @@ namespace vEngine
         nlohmann::json ToJson(const std::string& obj)
         {
             return nlohmann::json(obj);
+        }
+        template <typename T>
+        nlohmann::json ToJson(const std::shared_ptr<T>& sptr)
+        {
+            //TODO Use context map for shared ptr
+            nlohmann::json value;
+            value = ToJson(*sptr.get());
+            return value;
+        }
+        template <typename T>
+        nlohmann::json ToJson(const std::vector<T>& vector)
+        {
+            nlohmann::json value;
+            auto id = 0;
+            for(const auto& e : vector)
+            {
+                value[id++] = ToJson(e);
+            }
+            return value;
+        }
+        template <typename T, typename S>
+        nlohmann::json ToJson(const std::unordered_map<T, S>& umap)
+        {
+            nlohmann::json value;
+            for(const auto& e : umap)
+            {
+                value[e.first] = ToJson(e.second);
+            }
+            return value;
         }
         // template <typename T, int N>
         // nlohmann::json ToJson(const std::array<T,N>& obj)
@@ -78,7 +119,7 @@ namespace vEngine
             auto id = 0;
             for(const auto& e : vector)
             {
-                value[id++] = e;
+                value[id++] = ToJson(e);
             }
             return value;
         }
@@ -135,6 +176,16 @@ namespace vEngine
         {
             obj = j.get<int>();
         }
+        // template<>
+        // void FromJson(const nlohmann::json& j, uint32_t& obj)
+        // {
+        //     obj = j.get<uint32_t>();
+        // }
+        template<>
+        void FromJson(const nlohmann::json& j, uint64_t& obj)
+        {
+            obj = j.get<uint64_t>();
+        }
         template<>
         void FromJson(const nlohmann::json& j, float& s)
         {
@@ -144,6 +195,29 @@ namespace vEngine
         void FromJson(const nlohmann::json& j, std::string& s)
         {
             s = j.get<std::string>();
+        }
+        template<typename T>
+        void FromJson(const nlohmann::json& j, std::shared_ptr<T> s)
+        {
+            auto v = new T();
+            FromJson(j, *v);
+            s.reset(v);
+        }
+        template<typename T>
+        void FromJson(const nlohmann::json& j, std::vector<T>& arr)
+        {
+            UNUSED_PARAMETER(j);
+            UNUSED_PARAMETER(arr);
+        }
+        template <typename T, typename S>
+        void FromJson(const nlohmann::json& j, std::unordered_map<T, S>& arr)
+        {
+            for (auto it = j.begin(); it != j.end(); ++it)
+            {
+                //TODO ToJson should cast key to string in order to recover it here
+                // std::string k = it.key();
+                // FromJson(it.value(), arr[stoi(it.key())]);
+            }
         }
         // template<>
         // void FromJson(const nlohmann::json& j, std::array<float,4>& arr)

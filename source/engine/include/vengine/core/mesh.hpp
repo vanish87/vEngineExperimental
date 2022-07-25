@@ -25,6 +25,8 @@
 #include <vengine/core/vector.hpp>
 #include <vengine/animation/bone.hpp>
 
+#include <vengine/data/meta.hpp>
+
 
 /// A brief namespace description.
 namespace vEngine
@@ -46,6 +48,14 @@ namespace vEngine
             float4 bone_weight_0;
             int4 bone_id_1;
             float4 bone_weight_1;
+            constexpr static auto properties()
+            {
+                return std::make_tuple(
+                    property("position", &Vertex::pos),
+                    property("normal", &Vertex::normal),
+                    property("uv", &Vertex::uv)
+                );
+            }
         };
 
         enum class MeshPrimitive
@@ -99,6 +109,17 @@ namespace vEngine
                 public:
                 static void GenerateCube(MeshSharedPtr mesh);
                 static MeshSharedPtr Default(const MeshPrimitive primitive = MeshPrimitive::Cube, const int sub_div = 0);
+
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        GameObject::properties(),
+                        std::make_tuple(
+                            property("vertices", &Mesh::vertex_data_),
+                            property("indices", &Mesh::index_data_)
+                            )
+                    );
+                }
 
         };
     }  // namespace Core
