@@ -17,6 +17,8 @@
 #include <engine.hpp>
 #include <external/json.hpp>
 
+#include <vengine/core/game_object.hpp>
+
 namespace vEngine
 {
     namespace Core
@@ -81,8 +83,18 @@ namespace vEngine
         nlohmann::json ToJson(const std::shared_ptr<T>& ptr)
         {
             // TODO Use context map for shared ptr
+            //save uuid and/or other necessary description with json value
+            //so that FromJson can find/create objects from xx factory class
             return ToJson(*ptr.get());
         }
+        // template <typename T, typename = std::enable_if_t<std::is_base_of<GameObject, T>::value, T>, typename = void, typename = void>
+        // nlohmann::json ToJson(const T& go)
+        // {
+        //     UNUSED_PARAMETER(go);
+        //     nlohmann::json value;
+        //     return value;
+        //     // return ToJson(ptr);
+        // }
         template <typename T>
         nlohmann::json ToJson(const std::vector<T>& vector)
         {
