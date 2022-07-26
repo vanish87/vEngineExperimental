@@ -1,5 +1,5 @@
-/// \file meta.hpp
-/// \brief Head file for Meta
+/// \file json.hpp
+/// \brief Head file for json
 ///
 /// A detailed file description.
 ///
@@ -21,6 +21,16 @@ namespace vEngine
 {
     namespace Core
     {
+        template <typename T, typename = std::enable_if_t<std::is_integral<T>::value, T>>
+        std::string ToString(const T& obj)
+        {
+            return std::to_string(obj);
+        }
+        template <typename T, typename = std::enable_if_t<std::is_integral<T>::value, T>>
+        const T FromString(const std::string& obj)
+        {
+            return std::stoi(obj);
+        }
         //public interface of ToJson
         template <typename T>
         static void ToJson(nlohmann::json& j, const T& obj)
@@ -58,10 +68,10 @@ namespace vEngine
             return value;
         }
         template <typename T>
-        nlohmann::json ToJson(const std::shared_ptr<T>& sptr)
+        nlohmann::json ToJson(const std::shared_ptr<T>& ptr)
         {
             //TODO Use context map for shared ptr
-            return ToJson(*sptr.get());
+            return ToJson(*ptr.get());
         }
         template <typename T>
         nlohmann::json ToJson(const std::vector<T>& vector)
@@ -80,17 +90,18 @@ namespace vEngine
             nlohmann::json value;
             for(const auto& e : umap)
             {
-                value[e.first] = ToJson(e.second);
+                value[ToString(e.first)] = ToJson(e.second);
             }
             return value;
         }
-        // template <typename T, int N>
-        // nlohmann::json ToJson(const std::array<T,N>& obj)
-        // {
-        //     static_assert(false, "Should used vengine data types for serializer")
-        //     UNUSED_PARAMETER(obj);
-        //     return nlohmann::json();
-        // }
+        template <typename T, int N>
+        nlohmann::json ToJson(const std::array<T,N>& obj)
+        {
+            NOT_IMPL_ASSERT;
+            static_assert(false, "Should used vengine data types for serializer")
+            UNUSED_PARAMETER(obj);
+            return nlohmann::json();
+        }
         template <typename T, int N>
         nlohmann::json ToJson(const Vector<T,N>& vector)
         {
@@ -117,12 +128,7 @@ namespace vEngine
         template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
         static void FromJson(const nlohmann::json& j, T& object)
         {
-            // T object;
-
-            // We first get the number of properties
             constexpr auto nbProperties = std::tuple_size<decltype(T::properties())>::value;
-
-            // We iterate on the index sequence of size `nbProperties`
             for_sequence(std::make_index_sequence<nbProperties>{},
                          [&](auto i)
                          {
@@ -140,8 +146,6 @@ namespace vEngine
                              // Or using streaming
                              // stream >> object.*(property.member);
                          });
-
-            // return object;
         }
 
         template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
@@ -149,28 +153,31 @@ namespace vEngine
         {
             obj = j.get<T>();
         }
-        template<typename T>
-        void FromJson(const nlohmann::json& j, std::shared_ptr<T> s)
+        template <typename T>
+        void FromJson(const nlohmann::json& j, std::shared_ptr<T>& ptr)
         {
             auto v = new T();
             FromJson(j, *v);
-            s.reset(v);
+            ptr.reset(v);
         }
         template<typename T>
-        void FromJson(const nlohmann::json& j, std::vector<T>& arr)
+        void FromJson(const nlohmann::json& j, std::vector<T>& vector)
         {
-            UNUSED_PARAMETER(j);
-            UNUSED_PARAMETER(arr);
+            for (auto it = j.begin(); it != j.end(); ++it)
+            {
+                T v;
+                FromJson(*it, v);
+                vector.push_back(v);
+            }
         }
         template <typename T, typename S>
-        void FromJson(const nlohmann::json& j, std::unordered_map<T, S>& arr)
+        void FromJson(const nlohmann::json& j, std::unordered_map<T, S>& map)
         {
-            UNUSED_PARAMETER(arr);
             for (auto it = j.begin(); it != j.end(); ++it)
             {
                 //TODO ToJson should cast key to string in order to recover it here
-                // std::string k = it.key();
-                // FromJson(it.value(), arr[stoi(it.key())]);
+                auto k = FromString<T>(it.key());
+                FromJson(it.value(), map[k]);
             }
         }
         // template<>
@@ -180,21 +187,30 @@ namespace vEngine
         //     UNUSED_PARAMETER(arr);
         // }
         template<typename T, int N>
-        void FromJson(const nlohmann::json& j, Vector<T,N>& arr)
+        void FromJson(const nlohmann::json& j, Vector<T,N>& vector)
         {
-            UNUSED_PARAMETER(j);
-            UNUSED_PARAMETER(arr);
+            auto idx = 0;
+            for (auto it = j.begin(); it != j.end(); ++it)
+            {
+                FromJson(*it, vector[idx++]);
+            }
         }
         template <typename T, int M, int N>
-        void FromJson(const nlohmann::json& j, Matrix<T, M, N>& arr)
+        void FromJson(const nlohmann::json& j, Matrix<T, M, N>& matrix)
         {
-            UNUSED_PARAMETER(j);
-            UNUSED_PARAMETER(arr);
+            auto idx = 0;
+            for (auto it = j.begin(); it != j.end(); ++it)
+            {
+                Vector<T, N> r;
+                FromJson(*it, r);
+                matrix[idx++] = r;
+            }
         }
 
         template<typename T, int N>
         void FromJson(const nlohmann::json& j, std::array<T,N>& arr)
         {
+            NOT_IMPL_ASSERT;
             UNUSED_PARAMETER(j);
             UNUSED_PARAMETER(arr);
         }
