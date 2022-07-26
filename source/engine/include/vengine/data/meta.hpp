@@ -80,83 +80,6 @@ namespace vEngine
     }
 }
 
-
-// Sample implementation of a json-like data structure. It is only there for the example to compile and actually produce a testable output
-namespace Json
-{
-    struct Value;
-
-    struct ValueData
-    {
-            std::map<std::string, Value> subObject;
-            std::string string;
-            int number = 0;
-            vEngine::Core::float4 numberf;
-            vEngine::Core::Attribute<int> attri;
-            vEngine::Core::Attribute<std::string> attri_tex;
-            vEngine::Core::TexAttribute tex;
-    };
-
-    struct Value
-    {
-            ValueData data;
-
-            Value& operator[](std::string name)
-            {
-                return data.subObject[std::move(name)];
-            }
-
-            const Value& operator[](std::string name) const
-            {
-                auto it = data.subObject.find(std::move(name));
-
-                if (it != data.subObject.end())
-                {
-                    return it->second;
-                }
-
-                throw;
-            }
-
-            Value& operator=(std::string value)
-            {
-                data.string = value;
-                return *this;
-            }
-
-            Value& operator=(int value)
-            {
-                data.number = value;
-                return *this;
-            }
-            Value& operator=(vEngine::Core::float4 value)
-            {
-                data.numberf = value;
-                return *this;
-            }
-            Value& operator=(vEngine::Core::Attribute<int> value)
-            {
-                data.attri.Set(value.Get());
-                return *this;
-            }
-            Value& operator=(vEngine::Core::Attribute<std::string> value)
-            {
-                data.attri_tex.Set(value.Get());
-                return *this;
-            }
-            Value& operator=(vEngine::Core::TexAttribute value)
-            {
-                data.tex.Set(value.Get());
-                return *this;
-            }
-    };
-
-    template <typename T>
-    T& asAny(Value&);
-    template <typename T>
-    const T& asAny(const Value&);
-
-}  // namespace Json
 /// A brief namespace description.
 namespace vEngine
 {
@@ -199,183 +122,19 @@ namespace vEngine
 
                 ref_getter_func_ptr getter_ptr;
                 ref_setter_func_ptr setter_ptr;
-
-                // attri_ref_getter_func_ptr<T> refGetterPtr;
-                // ref_setter_func_ptr_t refSetterPtr;
-                // public:
-                //     operator const T&() const
-                //     {
-                //         return this->Get(this->*member);
-                //     }
         };
 
         template <typename Class, typename T>
         constexpr auto property(const char* name, Attribute<T> Class::*member)
         {
-            // UNUSED_PARAMETER(getter);
             return Property<Class, Attribute<T>, T>{name, member};
         };
         template <typename Class, typename T>
         constexpr auto property(const char* name, T Class::*member)
         {
-            // UNUSED_PARAMETER(getter);
             return Property<Class, T, T>{name, member};
         };
-        class JsonFunction
-        {
-            public:
-                template <typename T>
-                static Json::Value toJson(const T& object)
-                {
-                    Json::Value data;
-                    UNUSED_PARAMETER(object);
 
-                    // We first get the number of properties
-                    constexpr auto nbProperties = std::tuple_size<decltype(T::properties())>::value;
-
-                    // We iterate on the index sequence of size `nbProperties`
-                    for_sequence(std::make_index_sequence<nbProperties>{},
-                                 [&](auto i)
-                                 {
-                                     // get the property
-                                     constexpr auto property = std::get<i>(T::properties());
-                                    //  property.Get(object);
-
-                                     // set the value to the member
-                                    //  data[property.name] = (object.*(property.member));
-                                     // Or using streaming
-                                     // stream << object.*(property.member);
-                                 });
-
-                    return data;
-                }
-                template <typename T>
-                static T fromJson(const Json::Value& data)
-                {
-                    T object;
-                    UNUSED_PARAMETER(data);
-
-                    // We first get the number of properties
-                    constexpr auto nbProperties = std::tuple_size<decltype(T::properties())>::value;
-
-                    // We iterate on the index sequence of size `nbProperties`
-                    for_sequence(std::make_index_sequence<nbProperties>{},
-                                 [&](auto i)
-                                 {
-                                     // get the property
-                                     constexpr auto property = std::get<i>(T::properties());
-
-                                     // get the type of the property
-                                     using Type = typename decltype(property)::value_type;
-
-                                     // set the value to the member
-                                     // you can also replace `asAny` by `fromJson` to recursively serialize
-                                    //  object.*(property.member) = ::Json::asAny<Type>(data[property.name]);
-                                     //  object.*(property.member) = JsonFunction::fromJson<Type>(data[property.name]);
-                                     // Or using streaming
-                                     // stream >> object.*(property.member);
-                                });
-
-                    return object;
-                }
-        };
-        /// \brief A brief class description.
-        ///
-        /// A detailed class description, it
-        /// should be 2 lines at least.
-        class Meta
-        {
-            public:
-                /// \brief brief constructor description.
-                Meta();
-                virtual ~Meta();
-
-                // void Serialize(ISerializable data)
-                // {
-                //     // data.setvalue<int>("x", x):
-                // }
-                // void Deserialize(ISerializable data)
-                // {
-                //     // this->x = data.getvalue<int>("x", x):
-                // }
-
-            public:
-                /// \brief A brief function description.
-                ///
-                /// \param p1 Description for p1.
-                /// \param p2 Description for p2.
-                /// \return Description for return value.
-                int GetVariable(int p1, float p2);
-        };
-
-
-        // static constexpr Property<class, type> _##var##_pro{&class::_##var, #var};
-
-        // static constexpr property _##var##_pro(&class::_##var, #var);
-        // static constexpr auto _##var##_pro(){return property(&class::_##var, #var);}
-
-
-
-        class Dog
-        {
-                // template <typename Class, typename T>
-                // friend struct Property;
-
-                friend class JsonFunction;
-                // friend struct Property;
-
-                // std::string barkType;
-                std::string color;
-                int weight = 0;
-                float num = 0.1f;
-
-            public:
-                vEngine::Core::float4x4 newWeight;
-
-                PROPERTY(std::string, bark_type);
-
-                public:
-                    Attribute<int> my_attribute_;
-                    Attribute<vEngine::Core::float4> my_float4_;
-                    Attribute<std::string> my_string_;
-                    // TexAttribute my_attribute_tex_;
-
-                    bool operator==(const Dog& rhs) const
-                    {
-                        return std::tie(_bark_type, color, weight) == std::tie(rhs._bark_type, rhs.color, rhs.weight);
-                }
-
-                constexpr static auto properties()
-                {
-                    return std::make_tuple(
-                        // property(&Dog::newWeight, "newWeight"),
-                        // _barkType_pro,
-                        // property("barkType", &Dog::_bark_type, &Dog::Get_bark_type)
-                        property("barkType", &Dog::my_attribute_),
-                        property("tex", &Dog::my_string_),
-                        property("color", &Dog::color),
-                        property("weight",&Dog::weight),
-                        property("weightn32",&Dog::newWeight),
-                        property("myforlaot4",&Dog::my_float4_),
-                        property("flaot",&Dog::num)
-                    );
-                    // property(&Dog::my_attribute_, "MyAttribute", ));
-                };
-        };
-        class BadDog : public Dog
-        {
-            public: Attribute<bool> bad_;
-            
-                constexpr static auto properties()
-                {
-                    return std::tuple_cat(
-                        Dog::properties(),
-                        std::make_tuple(property("bad",&BadDog::bad_))
-
-                    );
-                    // property(&Dog::my_attribute_, "MyAttribute", ));
-                };
-        };
     }  // namespace Data
 
 }  // namespace vEngine

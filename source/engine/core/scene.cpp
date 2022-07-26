@@ -51,59 +51,6 @@ namespace vEngine
             // this->name_ = file_path;
             // this->state_ = ResourceState::Unknown;
             // this->root_ = std::make_shared<GameNode>();
-
-            auto d1 = Dog();
-            d1.my_string_.Set("New Value");
-            d1.my_attribute_.Set(100);
-            d1.my_float4_.Set(float4(1,2,3,4));
-            d1.newWeight = Math::LookAtLH(float3::Zero(), float3::One(), float3(0,1,0));
-            auto json = JsonFunction::toJson(d1);
-            auto d2 = JsonFunction::fromJson<Dog>(json);
-            auto d3 = Dog();
-
-            auto a = d3.my_attribute_.Get();
-            d3.my_attribute_.Set(a);
-
-            // auto name = d3.Getname();
-            auto bark = d3.Get_bark_type();
-            d3.Set_bark_type("Wang2");
-
-            nlohmann::json j;
-            ToJson(j, d1);
-
-            auto d4 = Dog();
-            FromJson(j, d4);
-
-            auto bd1 = BadDog();
-            ToJson(j, bd1);
-
-            auto bd2 = BadDog();
-            FromJson(j, bd2);
-
-
-            auto go = GameObject();
-            go.name_ = "GO";
-            ToJson(j, go);
-
-            auto go1 = GameObject();
-            FromJson(j, go1);
-            
-            auto mesh = Mesh();
-            mesh.name_ = "GO";
-            auto v = Vertex();
-            v.pos = float3(1,2,3);
-            v.normal = float3(4,4,6);
-            v.uv = float2(1,0);
-            mesh.vertex_data_.push_back(v);
-            mesh.vertex_data_.push_back(v);
-            mesh.vertex_data_.push_back(v);
-            ToJson(j, mesh);
-
-            auto mesh1 = GameObject();
-            FromJson(j, mesh1);
-
-            PRINT(j.dump());
-
         }
         void Scene::LoadFile(const std::filesystem::path file_path)
         {
