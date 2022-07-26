@@ -72,6 +72,7 @@ namespace vEngine
                         GameObject::properties(),
                         std::make_tuple(
                         property("meshes", &Asset::meshes_))
+                        // property("textures", &Asset::textures_))
                     );
                 }
 
