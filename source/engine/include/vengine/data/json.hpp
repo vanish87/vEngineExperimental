@@ -21,7 +21,24 @@ namespace vEngine
 {
     namespace Core
     {
+        //public interface of ToJson
         template <typename T>
+        static void ToJson(nlohmann::json& j, const T& obj)
+        {
+            j = ToJson(obj);
+        }
+
+        template <typename T>
+        struct is_basic_json_type
+        {
+                static constexpr auto value = std::is_arithmetic<T>::value || std::is_same<T, std::string>::value;
+        };
+        template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
+        nlohmann::json ToJson(const T& obj)
+        {
+            return nlohmann::json(obj);
+        }
+        template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
         nlohmann::json ToJson(const T& obj)
         {
             nlohmann::json value;
@@ -41,48 +58,10 @@ namespace vEngine
             return value;
         }
         template <typename T>
-        void ToJson(nlohmann::json& j, const T& obj)
-        {
-            j = ToJson(obj);
-        }
-
-        template <>
-        nlohmann::json ToJson(const bool& obj)
-        {
-            return nlohmann::json(obj);
-        }
-        template <>
-        nlohmann::json ToJson(const int& obj)
-        {
-            return nlohmann::json(obj);
-        }
-        template <>
-        nlohmann::json ToJson(const uint32_t& obj)
-        {
-            return nlohmann::json(obj);
-        }
-        template <>
-        nlohmann::json ToJson(const uint64_t& obj)
-        {
-            return nlohmann::json(obj);
-        }
-        template <>
-        nlohmann::json ToJson(const float& obj)
-        {
-            return nlohmann::json(obj);
-        }
-        template <>
-        nlohmann::json ToJson(const std::string& obj)
-        {
-            return nlohmann::json(obj);
-        }
-        template <typename T>
         nlohmann::json ToJson(const std::shared_ptr<T>& sptr)
         {
             //TODO Use context map for shared ptr
-            nlohmann::json value;
-            value = ToJson(*sptr.get());
-            return value;
+            return ToJson(*sptr.get());
         }
         template <typename T>
         nlohmann::json ToJson(const std::vector<T>& vector)
@@ -135,8 +114,7 @@ namespace vEngine
             return value;
         }
 
-
-        template <typename T>
+        template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
         static void FromJson(const nlohmann::json& j, T& object)
         {
             // T object;
@@ -166,35 +144,10 @@ namespace vEngine
             // return object;
         }
 
-        template<>
-        void FromJson(const nlohmann::json& j, bool& obj)
+        template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
+        void FromJson(const nlohmann::json& j, T& obj)
         {
-            obj = j.get<bool>();
-        }
-        template<>
-        void FromJson(const nlohmann::json& j, int& obj)
-        {
-            obj = j.get<int>();
-        }
-        // template<>
-        // void FromJson(const nlohmann::json& j, uint32_t& obj)
-        // {
-        //     obj = j.get<uint32_t>();
-        // }
-        template<>
-        void FromJson(const nlohmann::json& j, uint64_t& obj)
-        {
-            obj = j.get<uint64_t>();
-        }
-        template<>
-        void FromJson(const nlohmann::json& j, float& s)
-        {
-            s = j.get<float>();
-        }
-        template<>
-        void FromJson(const nlohmann::json& j, std::string& s)
-        {
-            s = j.get<std::string>();
+            obj = j.get<T>();
         }
         template<typename T>
         void FromJson(const nlohmann::json& j, std::shared_ptr<T> s)
@@ -212,6 +165,7 @@ namespace vEngine
         template <typename T, typename S>
         void FromJson(const nlohmann::json& j, std::unordered_map<T, S>& arr)
         {
+            UNUSED_PARAMETER(arr);
             for (auto it = j.begin(); it != j.end(); ++it)
             {
                 //TODO ToJson should cast key to string in order to recover it here

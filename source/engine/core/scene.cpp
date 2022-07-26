@@ -149,6 +149,7 @@ namespace vEngine
                 nlohmann::json j;
                 ToJson(j, asset);
                 FromJson(j, asset);
+                // auto new_asset = FromJson<Asset>(j);
                 PRINT(j.dump());
 
                 asset_gn->TraverseAllChildren<IComponent>(
