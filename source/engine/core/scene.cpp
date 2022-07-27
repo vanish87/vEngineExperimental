@@ -34,6 +34,8 @@
 #include <vengine/data/meta.hpp>
 #include <vengine/data/json.hpp>
 
+#include <fstream>
+
 // #include <vengine/rendering/render_engine.hpp>
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -97,7 +99,10 @@ namespace vEngine
                 ToJson(j, asset);
                 FromJson(j, asset);
                 // auto new_asset = FromJson<Asset>(j);
-                PRINT(j.dump());
+                // PRINT(j.dump());
+                const char* file = "asset.json";
+                std::ofstream outfile(file);
+                outfile<<std::setw(4)<<j<<std::endl;
 
                 asset_gn->TraverseAllChildren<IComponent>(
                     [&](IComponentSharedPtr comp)

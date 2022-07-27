@@ -19,7 +19,7 @@
 #include <engine.hpp>
 // #include <vengine/core/matrix.hpp>
 // #include <vengine/core/transform_component.hpp>
-// #include <vengine/core/uuid.hpp>
+#include <vengine/data/meta.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -40,6 +40,13 @@ namespace vEngine
                 GameNode();
                 virtual ~GameNode();
 
+                constexpr static auto properties()
+                {
+                    return std::make_tuple(
+                        property("name", &GameNode::name_),
+                        property("children", &GameNode::children_)
+                    );
+                }
             public:
                 std::string name_;
 

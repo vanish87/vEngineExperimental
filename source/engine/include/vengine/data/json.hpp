@@ -60,11 +60,18 @@ namespace vEngine
         {
             return nlohmann::json(obj);
         }
+
+        template <typename T>
+        constexpr auto GetP()
+        {
+            return T::properties();
+        }
         template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
         nlohmann::json ToJson(const T& obj)
         {
             nlohmann::json value;
             constexpr auto nbProperties = std::tuple_size<decltype(T::properties())>::value;
+            //  using Type = typename decltype(property)::class_type;
 
             // We iterate on the index sequence of size `nbProperties`
             for_sequence(std::make_index_sequence<nbProperties>{},
@@ -72,6 +79,7 @@ namespace vEngine
                          {
                              // get the property
                              constexpr auto property = std::get<i>(T::properties());
+
                              value[property.name] = ToJson(obj.*(property.member));
                              //  ToJson(v, obj.*(property.member));
                              // Or using streaming
@@ -101,6 +109,17 @@ namespace vEngine
             nlohmann::json value;
             auto id = 0;
             for (const auto& e : vector)
+            {
+                value[id++] = ToJson(e);
+            }
+            return value;
+        }
+        template <typename T>
+        nlohmann::json ToJson(const std::list<T>& list)
+        {
+            nlohmann::json value;
+            auto id = 0;
+            for (const auto& e : list)
             {
                 value[id++] = ToJson(e);
             }
@@ -189,6 +208,16 @@ namespace vEngine
                 T v;
                 FromJson(*it, v);
                 vector.push_back(v);
+            }
+        }
+        template <typename T>
+        void FromJson(const nlohmann::json& j, std::list<T>& list)
+        {
+            for (auto it = j.begin(); it != j.end(); ++it)
+            {
+                T v;
+                FromJson(*it, v);
+                list.push_back(v);
             }
         }
         template <typename T, typename S>
