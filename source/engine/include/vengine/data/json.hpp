@@ -61,11 +61,6 @@ namespace vEngine
             return nlohmann::json(obj);
         }
 
-        template <typename T>
-        constexpr auto GetP()
-        {
-            return T::properties();
-        }
         template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
         nlohmann::json ToJson(const T& obj)
         {
@@ -87,12 +82,34 @@ namespace vEngine
                          });
             return value;
         }
+        template <std::size_t I, class T, typename Src>
+        auto GetByType(std::shared_ptr<Src> ptr)
+        {
+            using Type = std::tuple_element_t<I, T>;
+            return std::dynamic_pointer_cast<Type>(ptr);
+            // if (p != nullptr) return ToJson(*p.get());
+            // else return nlohmann::json();
+        }
         template <typename T>
         nlohmann::json ToJson(const std::shared_ptr<T>& ptr)
         {
+            using list = std::tuple<TransformComponent, Transform, Mesh, MeshComponent>;
+            constexpr auto nlist = std::tuple_size<list>::value;
+            nlohmann::json value;
+            for_sequence(std::make_index_sequence<nlist>{},
+                         [&](auto i)
+                         {
+                             auto p =GetByType<i, list>(ptr);
+                             //  auto p = Get<i, list, T>(ptr);
+                             if (p!= nullptr)
+                             {
+                                 value = ToJson(*p.get());
+                             }
+                         });
             // TODO Use context map for shared ptr
             //save uuid and/or other necessary description with json value
             //so that FromJson can find/create objects from xx factory class
+            if(!value.is_null()) return value;
             return ToJson(*ptr.get());
         }
         // template <typename T, typename = std::enable_if_t<std::is_base_of<GameObject, T>::value, T>, typename = void, typename = void>

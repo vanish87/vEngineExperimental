@@ -28,15 +28,15 @@ namespace vEngine
         class VENGINE_API TransformComponent : public Component<Transform>
         {
             public:
-                constexpr static auto properties()
-                {
-                    return std::tuple_cat(
-                        Component<Transform>::properties()
-                        // std::make_tuple(
-                        //     property("go", &TransformComponent::game_object_)
-                        // )
-                    );
-                }
+                // constexpr static auto properties()
+                // {
+                //     return std::tuple_cat(
+                //         Component<Transform>::properties()
+                //         // std::make_tuple(
+                //         //     property("go", &TransformComponent::game_object_)
+                //         // )
+                //     );
+                // }
             public:
                 /// \brief brief constructor description.
                 TransformComponent(){};

@@ -34,13 +34,14 @@ namespace vEngine
         {
                 static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
 
-            protected:
+            public:
                 constexpr static auto properties()
                 {
                     return std::tuple_cat(
                         GameNode::properties(),
                         std::make_tuple(
-                            property("enabled", &Component::enabled_)
+                            property("enabled", &Component::enabled_),
+                            property("go", &Component::game_object_)
                         )
                     );
                 }

@@ -15,6 +15,7 @@
 #include <engine.hpp>
 #include <vengine/core/vector.hpp>
 #include <vengine/core/math.hpp>
+// #include <vengine/data/meta.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -28,6 +29,11 @@ namespace vEngine
         template <typename T = float>
         class Quaternion final
         {
+            public:
+                constexpr static auto properties()
+                {
+                    return std::make_tuple(property("data", &Quaternion::data_));
+                };
             private:
                 typedef Vector<T, 4> DataType;
                 DataType data_;

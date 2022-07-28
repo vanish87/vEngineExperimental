@@ -71,7 +71,7 @@ namespace vEngine
                     return std::tuple_cat(
                         GameObject::properties(),
                         std::make_tuple(
-                        property("meshes", &Asset::meshes_),
+                        // property("meshes", &Asset::meshes_),
                         property("root", &Asset::root_))
                         // property("textures", &Asset::textures_))
                     );

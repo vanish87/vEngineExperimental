@@ -30,6 +30,17 @@ namespace vEngine
         class VENGINE_API Transform final : public GameObject
         {
             public:
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        GameObject::properties(),
+                        std::make_tuple(
+                            property("local_translate", &Transform::local_translate_),
+                            property("local_rotation", &Transform::local_rotation_),
+                            property("local_scale", &Transform::local_scale_)
+                        )
+                    );
+                }
                 /// \brief Constructor: use init list {} to initialize data
                 Transform() noexcept
                 {
