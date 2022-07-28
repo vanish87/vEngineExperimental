@@ -53,7 +53,12 @@ namespace vEngine
                 return std::make_tuple(
                     property("position", &Vertex::pos),
                     property("normal", &Vertex::normal),
-                    property("uv", &Vertex::uv)
+                    property("uv", &Vertex::uv),
+                    property("color", &Vertex::color),
+                    property("bone_id_0", &Vertex::bone_id_0),
+                    property("bone_id_1", &Vertex::bone_id_1),
+                    property("bone_weight_0", &Vertex::bone_weight_0),
+                    property("bone_weight_1", &Vertex::bone_weight_1)
                 );
             }
         };
