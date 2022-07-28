@@ -34,6 +34,16 @@ namespace vEngine
         class Material : public GameObject, public IResource
         {
             public:
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        GameObject::properties(),
+                        std::make_tuple(
+                            property("pipeline_state", &Material::pipeline_state_)
+                        )
+                    );
+                };
+            public:
                 static MaterialSharedPtr Default();
 
                 /// \brief brief constructor description.

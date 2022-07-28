@@ -31,6 +31,16 @@ namespace vEngine
         class VENGINE_API Renderer : public GameObject, public IRenderer
         {
             public:
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        GameObject::properties(),
+                        std::make_tuple(
+                            property("material", &Renderer::material_)
+                        )
+                    );
+                };
+            public:
                 /// \brief brief constructor description.
                 Renderer()
                 {

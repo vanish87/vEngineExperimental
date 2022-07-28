@@ -7,6 +7,9 @@
 #include <unordered_map>
 #include <filesystem>
 #include <vengine/rendering/data_format.hpp>
+
+#include <vengine/data/meta.hpp>
+
 namespace vEngine
 {
     namespace Rendering
@@ -182,6 +185,15 @@ namespace vEngine
 
         struct PipelineStateDescriptor
         {
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        // GameObject::properties(),
+                        std::make_tuple(
+                            Core::property("shaders", &PipelineStateDescriptor::shaders)
+                        )
+                    );
+                };
                 // similar design as https://docs.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_graphics_pipeline_state_desc
                 std::unordered_map<ShaderType, std::filesystem::path> shaders;
                 RasterizerDescriptor rasterizer_descriptor;

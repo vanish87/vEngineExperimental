@@ -18,6 +18,8 @@
 #include <external/json.hpp>
 
 #include <vengine/core/game_object.hpp>
+#include <vengine/rendering/data_struct.hpp>
+#include <vengine/rendering/pipeline_state.hpp>
 
 namespace vEngine
 {
@@ -48,6 +50,26 @@ namespace vEngine
         {
             return obj;
         }
+        template <typename T, typename = std::enable_if_t<std::is_same<T, Rendering::ShaderType>::value, T>>
+        std::string ToString(const Rendering::ShaderType& obj)
+        {
+            switch (obj)
+            {
+            case Rendering::ShaderType::VS: return "VS";
+            case Rendering::ShaderType::GS: return "GS";
+            case Rendering::ShaderType::PS: return "PS";
+            case Rendering::ShaderType::CS: return "CS";
+            default:
+                break;
+            }
+            NOT_IMPL_ASSERT;
+            return "NOT DEFINED";
+        }
+        // template <typename T, typename = std::enable_if_t<std::is_same<T, std::filesystem::path>::value, T>>
+        // std::string ToString(const std::filesystem::path& obj)
+        // {
+        //     return obj.string();
+        // }
         // public interface of ToJson
         template <typename T>
         static void ToJson(nlohmann::json& j, const T& obj)
@@ -97,7 +119,7 @@ namespace vEngine
         {
             nlohmann::json value;
 
-            using list = std::tuple<TransformComponent, Transform, Mesh, MeshComponent>;
+            using list = std::tuple<TransformComponent, Transform, Mesh, MeshComponent, MeshRenderer, MeshRendererComponent, Rendering::PipelineState>;
             constexpr auto nlist = std::tuple_size<list>::value;
             for_sequence(std::make_index_sequence<nlist>{},
                          [&](auto i)
@@ -126,6 +148,11 @@ namespace vEngine
         //     return value;
         //     // return ToJson(ptr);
         // }
+        template <>
+        nlohmann::json ToJson(const std::filesystem::path& path)
+        {
+            return nlohmann::json(path.string());
+        }
         template <typename T>
         nlohmann::json ToJson(const std::vector<T>& vector)
         {
