@@ -82,7 +82,7 @@ namespace vEngine
                 if(std::filesystem::exists(path)) return path;
             }
 
-            CHECK_ASSERT(false);
+            CHECK_AND_ASSERT(false, file_name);
             return nullptr;
         }
 

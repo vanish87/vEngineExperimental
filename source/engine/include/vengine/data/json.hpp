@@ -118,7 +118,7 @@ namespace vEngine
         {
             nlohmann::json value;
 
-            using type_list = std::tuple<TransformComponent, Transform, Mesh, MeshComponent, MeshRenderer, MeshRendererComponent, Camera, CameraComponent, Rendering::PipelineState>;
+            using type_list = std::tuple<TransformComponent, Transform, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera, CameraComponent, Rendering::PipelineState>;
             constexpr auto nlist = std::tuple_size<type_list>::value;
             for_sequence(std::make_index_sequence<nlist>{},
                          [&](auto i)

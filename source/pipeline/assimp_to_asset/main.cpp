@@ -40,6 +40,10 @@ int main(int argc, char* argv[])
         if(s == "-o") output = argv[i+1];
     }
     std::ifstream infile(input);
+    auto base_path = input.parent_path().parent_path().string();
+    ResourceLoader::GetInstance().AddSearchPath(base_path);
+    // ResourceLoader::GetInstance().AddSearchPath("resource");
+    ResourceLoader::GetInstance().AddSearchPath(base_path + "/shader");
 
     GameObjectDescription godesc;
     godesc.type = GameObjectType::Asset;
@@ -50,10 +54,15 @@ int main(int argc, char* argv[])
 
     };
 
-    ResourceLoader::GetInstance().LoadAsync(asset, rdesc);
+    asset->Load(rdesc);
+
+    nlohmann::json j;
+    ToJson(j, asset);
+
     std::ofstream outfile(output.string());
-    outfile<<input<<" will be compiled to "<<output<<std::endl;
-    outfile<<infile.rdbuf()<<std::endl;
+    outfile<<std::setw(2)<<j<<std::endl;
+    // outfile<<input<<" will be compiled to "<<output<<std::endl;
+    // outfile<<infile.rdbuf()<<std::endl;
     outfile.flush();
     outfile.close();
     return 0;

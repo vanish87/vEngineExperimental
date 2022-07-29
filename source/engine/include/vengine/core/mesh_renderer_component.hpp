@@ -32,7 +32,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class MeshRendererComponent : public Core::Component<MeshRenderer>
+        class VENGINE_API MeshRendererComponent : public Core::Component<MeshRenderer>
         {
             public:
                 /// \brief brief constructor description.
