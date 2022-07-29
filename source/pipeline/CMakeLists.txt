@@ -1,0 +1,2 @@
+
+add_subdirectory(smpl_to_json)
