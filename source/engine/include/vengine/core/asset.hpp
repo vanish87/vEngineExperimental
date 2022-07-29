@@ -33,7 +33,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Asset : public GameObject, public IResource
+        class VENGINE_API Asset : public GameObject, public IResource
         {
             public:
                 /// \brief brief constructor description.

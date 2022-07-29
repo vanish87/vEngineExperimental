@@ -22,6 +22,23 @@ foreach(SRC_FILE ${SMPL_SOURCE})
   )
 endforeach(SRC_FILE ${SMPL_SOURCE})
 
+file(GLOB ASSIMP_SOURCE "${RESOURCE_SRC}/boblamp/*.md5mesh")
+# file(GLOB SMPL_SOURCE "smpl/*.smpl")
+
+foreach(SRC_FILE ${ASSIMP_SOURCE})
+  get_filename_component(BIN_FILE ${SRC_FILE} NAME_WE)
+  set(BIN_FILE ${RESOURCE_BIN}/assimp/${BIN_FILE}.json)
+
+  set(BIN_FILES ${BIN_FILES} ${BIN_FILE})
+  add_custom_command(
+    OUTPUT ${BIN_FILE}
+    DEPENDS ${SRC_FILE} assimp_to_asset
+    COMMAND assimp_to_asset -i ${SRC_FILE} -o ${BIN_FILE}
+    COMMENT "Covert assimp ${SRC_FILE} to json ${BIN_FILE}"
+    # ${CMAKE_SOURCE_DIR}/resources
+    # $<TARGET_FILE_DIR:resource>/resources
+  )
+endforeach(SRC_FILE ${SMPL_SOURCE})
 # set(path_test ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/$<CONFIG:Debug>)
 # message(STATUS "${SMPL_SOURCE}")
 # message(STATUS "${BIN_FILES}")

@@ -60,7 +60,7 @@ namespace vEngine
                 IResourceSharedPtr resource_to_load_;
                 ResourceDescriptorSharedPtr desc_;
         };
-        class ResourceLoader
+        class VENGINE_API ResourceLoader
         {
                 SINGLETON_CLASS(ResourceLoader)
 
