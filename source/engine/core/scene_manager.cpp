@@ -26,11 +26,11 @@ namespace vEngine
         SceneManager::~SceneManager() {}
         void SceneManager::Init()
         {
-            ResourceLoader::GetInstance().AddSearchPath("resources");
-            ResourceLoader::GetInstance().AddSearchPath("resources/shader");
-            ResourceLoader::GetInstance().AddSearchPath("resources/sponza");
-            ResourceLoader::GetInstance().AddSearchPath("resources/bob");
-            ResourceLoader::GetInstance().AddSearchPath("resources/boblamp");
+            ResourceLoader::GetInstance().AddSearchPath("resource");
+            ResourceLoader::GetInstance().AddSearchPath("resource/shader");
+            ResourceLoader::GetInstance().AddSearchPath("resource/sponza");
+            ResourceLoader::GetInstance().AddSearchPath("resource/bob");
+            ResourceLoader::GetInstance().AddSearchPath("resource/boblamp");
 
             // auto file = ResourceLoader::GetInstance().GetFilePath("boblampclean.md5mesh");
             // auto file = ResourceLoader::GetInstance().GetFilePath("sponza.obj");

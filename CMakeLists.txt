@@ -96,16 +96,16 @@ if(VENGINE_BUILD_STATIC)
 endif()
 
 add_subdirectory(source)
-add_subdirectory(resources)
+add_subdirectory(resource)
 
 # message(STATUS "CMAKE_SOURCE_DIR= ${CMAKE_SOURCE_DIR}")
 # add_custom_target(COPY_RESOURCE ALL
 #     COMMAND ${CMAKE_COMMAND} -E copy_directory
-#     ${CMAKE_SOURCE_DIR}/resources
+#     ${CMAKE_SOURCE_DIR}/resource
 #     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
 # )
 # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 #         COMMAND ${CMAKE_COMMAND} -E copy_directory
-#         ${CMAKE_SOURCE_DIR}/resources
+#         ${CMAKE_SOURCE_DIR}/resource
 #         $<TARGET_FILE_DIR:${PROJECT_NAME}>/
 # )
