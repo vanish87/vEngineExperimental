@@ -96,6 +96,7 @@ if(VENGINE_BUILD_STATIC)
 endif()
 
 add_subdirectory(source)
+add_subdirectory(resources)
 
 # message(STATUS "CMAKE_SOURCE_DIR= ${CMAKE_SOURCE_DIR}")
 # add_custom_target(COPY_RESOURCE ALL
