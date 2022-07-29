@@ -35,7 +35,8 @@ namespace vEngine
                     return std::tuple_cat(
                         // GameObject::properties(),
                         std::make_tuple(
-                            Core::property("descriptor", &PipelineState::descriptor_)
+                            Core::property("descriptor", &PipelineState::descriptor_),
+                            Core::property("shaders", &PipelineState::shaders_)
                         )
                     );
                 };

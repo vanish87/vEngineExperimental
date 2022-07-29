@@ -102,7 +102,7 @@ namespace vEngine
                 // PRINT(j.dump());
                 const char* file = "asset.json";
                 std::ofstream outfile(file);
-                outfile<<std::setw(4)<<j<<std::endl;
+                outfile<<std::setw(2)<<j<<std::endl;
 
                 asset_gn->TraverseAllChildren<IComponent>(
                     [&](IComponentSharedPtr comp)

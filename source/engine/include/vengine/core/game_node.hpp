@@ -19,7 +19,7 @@
 #include <engine.hpp>
 // #include <vengine/core/matrix.hpp>
 // #include <vengine/core/transform_component.hpp>
-#include <vengine/data/meta.hpp>
+#include <vengine/core/game_object.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -33,7 +33,7 @@ namespace vEngine
         /// and constructs a tree struture that presents the game scene
         /// the child of GameNode could be a normal game node or
         /// a component that referenced to other game object class
-        class VENGINE_API GameNode : public std::enable_shared_from_this<GameNode>
+        class VENGINE_API GameNode : public GameObject, public std::enable_shared_from_this<GameNode>
         {
             public:
                 /// \brief brief constructor description.
@@ -42,13 +42,15 @@ namespace vEngine
 
                 constexpr static auto properties()
                 {
-                    return std::make_tuple(
-                        property("name", &GameNode::name_),
-                        property("children", &GameNode::children_)
+                    return std::tuple_cat(
+                        GameObject::properties(),
+                        std::make_tuple(
+                            // property("name", &GameNode::name_),
+                            property("children", &GameNode::children_))
                     );
                 }
             public:
-                std::string name_;
+                // std::string name_;
 
                 virtual void AddChild(const GameNodeSharedPtr game_node);
                 virtual void RemoveChild(const GameNodeSharedPtr game_node);

@@ -202,10 +202,21 @@ namespace vEngine
 
         struct Shader
         {
+            //TODO check if shader should use shared_ptr
+                constexpr static auto properties()
+                {
+                    return std::make_tuple(
+                        // GameObject::properties(),
+                        Core::property("path", &Shader::path), 
+                        Core::property("type", &Shader::type),
+                        Core::property("content", &Shader::content)
+                        );
+                };
                 std::filesystem::path path;
                 std::vector<char> content;
                 ShaderType type;
                 Shader(const std::filesystem::path path, const ShaderType type) : path{path}, type{type} {};
+                virtual ~Shader() {}
         };
     }  // namespace Rendering
 

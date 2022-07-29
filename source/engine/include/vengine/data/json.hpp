@@ -96,7 +96,6 @@ namespace vEngine
                          {
                              // get the property
                              constexpr auto property = std::get<i>(T::properties());
-
                              value[property.name] = ToJson(obj.*(property.member));
                              //  ToJson(v, obj.*(property.member));
                              // Or using streaming
@@ -119,12 +118,12 @@ namespace vEngine
         {
             nlohmann::json value;
 
-            using list = std::tuple<TransformComponent, Transform, Mesh, MeshComponent, MeshRenderer, MeshRendererComponent, Camera, CameraComponent, Rendering::PipelineState>;
-            constexpr auto nlist = std::tuple_size<list>::value;
+            using type_list = std::tuple<TransformComponent, Transform, Mesh, MeshComponent, MeshRenderer, MeshRendererComponent, Camera, CameraComponent, Rendering::PipelineState>;
+            constexpr auto nlist = std::tuple_size<type_list>::value;
             for_sequence(std::make_index_sequence<nlist>{},
                          [&](auto i)
                          {
-                             auto p = CastByType<i, list>(ptr);
+                             auto p = CastByType<i, type_list>(ptr);
                              if (value.is_null() && p != nullptr)
                              {
                                  value["data_type"] = GetTypeString(p);
@@ -153,6 +152,11 @@ namespace vEngine
         {
             return nlohmann::json(path.string());
         }
+        template <>
+        nlohmann::json ToJson(const Rendering::ShaderType& shader_type)
+        {
+            return nlohmann::json(ToString<Rendering::ShaderType>(shader_type));
+        }
         template <typename T>
         nlohmann::json ToJson(const std::vector<T>& vector)
         {
@@ -163,6 +167,11 @@ namespace vEngine
                 value[id++] = ToJson(e);
             }
             return value;
+        }
+        template <>
+        nlohmann::json ToJson(const std::vector<char>& vector)
+        {
+            return nlohmann::json(std::string(vector.begin(), vector.end()));
         }
         template <typename T>
         nlohmann::json ToJson(const std::list<T>& list)

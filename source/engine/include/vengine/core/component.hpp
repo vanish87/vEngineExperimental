@@ -41,7 +41,7 @@ namespace vEngine
                         GameNode::properties(),
                         std::make_tuple(
                             property("enabled", &Component::enabled_),
-                            property("go", &Component::game_object_)
+                            property("game_object", &Component::game_object_)
                         )
                     );
                 }
