@@ -53,7 +53,7 @@ namespace vEngine
                 std::vector<LightSharedPtr> lights_;
                 std::unordered_map<int, MeshSharedPtr> meshes_;
                 std::unordered_map<std::string, Rendering::TextureSharedPtr> textures_;
-                std::vector<MaterialSharedPtr> materials_;
+                std::vector<Rendering::MaterialSharedPtr> materials_;
                 std::vector<Animation::AnimationClipSharedPtr> animation_clips_;
 
                 GameNodeSharedPtr root_;

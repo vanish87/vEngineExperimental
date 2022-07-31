@@ -16,22 +16,23 @@
 #include <vengine/core/game_object.hpp>
 #include <vengine/core/iresource.hpp>
 #include <vengine/rendering/data_struct.hpp>
+#include <vengine/rendering/shader.hpp>
 
 /// A brief namespace description.
 namespace vEngine
 {
-    namespace Core
+    namespace Rendering
     {
-        struct MaterialResourceDesc : public ResourceDescriptor
+        struct MaterialResourceDesc : public Core::ResourceDescriptor
         {
-                std::unordered_map<Rendering::ShaderType, std::filesystem::path> shaders;
+                std::unordered_map<ShaderType, std::filesystem::path> shaders;
         };
 
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Material : public GameObject, public IResource
+        class Material : public Core::GameObject, public Core::IResource
         {
             public:
                 constexpr static auto properties()
@@ -51,8 +52,8 @@ namespace vEngine
                 ~Material();
                 // void SetShader(const std::filesystem::path path, const ShaderType type);
 
-                bool Load(const ResourceDescriptorSharedPtr descriptor) override;
-                ResourceState CurrentState() override;
+                bool Load(const Core::ResourceDescriptorSharedPtr descriptor) override;
+                Core::ResourceState CurrentState() override;
 
                 void UpdateGPUResource();
 
@@ -70,7 +71,7 @@ namespace vEngine
                 // all vs/ps related data is stored in PipelineState
                 // std::string vs_name_;
                 // std::string ps_name_;
-                ResourceState current_state_ = ResourceState::Unknown;
+                Core::ResourceState current_state_ = Core::ResourceState::Unknown;
 
                 Rendering::PipelineStateSharedPtr pipeline_state_;
 

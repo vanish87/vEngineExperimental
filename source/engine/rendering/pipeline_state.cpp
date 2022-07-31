@@ -10,6 +10,7 @@
 #include <fstream>
 #include <engine.hpp>
 #include <vengine/rendering/pipeline_state.hpp>
+#include <vengine/rendering/shader.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.

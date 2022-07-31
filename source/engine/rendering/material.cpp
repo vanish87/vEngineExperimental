@@ -8,7 +8,7 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/core/context.hpp>
-#include <vengine/core/material.hpp>
+#include <vengine/rendering/material.hpp>
 #include <vengine/rendering/render_engine.hpp>
 #include <vengine/core/resource_loader.hpp>
 
@@ -16,9 +16,8 @@
 /// should be 2 lines at least.
 namespace vEngine
 {
-    namespace Core
+    namespace Rendering
     {
-        using namespace Rendering;
         /// constructor detailed defintion,
         /// should be 2 lines
         Material::Material() {}

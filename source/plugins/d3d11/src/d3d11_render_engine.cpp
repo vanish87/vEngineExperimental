@@ -1,4 +1,5 @@
 #include <d3dcompiler.h>
+#include <dxcapi.h>
 
 #include <cstring>
 #include <filesystem>

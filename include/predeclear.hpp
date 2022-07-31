@@ -84,7 +84,6 @@ namespace vEngine
         class Application;
 
         CLASS_AND_SHARED_POINTER(GameObject)
-        CLASS_AND_SHARED_POINTER(Material)
         CLASS_AND_SHARED_POINTER(Camera)
         CLASS_AND_SHARED_POINTER(Light)
         CLASS_AND_SHARED_POINTER(Mesh)
@@ -117,7 +116,8 @@ namespace vEngine
         CLASS_AND_SHARED_POINTER(Texture)
         CLASS_AND_SHARED_POINTER(MeshRendererComponent)
 
-        STRUCT_AND_SHARED_POINTER(Shader)
+        CLASS_AND_SHARED_POINTER(Shader)
+        CLASS_AND_SHARED_POINTER(Material)
     }  // namespace Rendering
 
     namespace Animation

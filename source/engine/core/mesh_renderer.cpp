@@ -12,7 +12,7 @@
 #include <vengine/core/mesh_renderer.hpp>
 #include <vengine/core/mesh_renderer_component.hpp>
 #include <vengine/rendering/render_engine.hpp>
-#include <vengine/core/material.hpp>
+#include <vengine/rendering/material.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.

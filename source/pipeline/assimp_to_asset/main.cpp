@@ -17,7 +17,7 @@
 #include <vengine/animation/animation_clip.hpp>
 #include <vengine/animation/animator_component.hpp>
 #include <vengine/core/camera_component.hpp>
-#include <vengine/core/material.hpp>
+#include <vengine/rendering/material.hpp>
 #include <vengine/core/mesh.hpp>
 #include <vengine/core/mesh_renderer_component.hpp>
 #include <vengine/core/resource_loader.hpp>
@@ -29,6 +29,17 @@
 #include <vengine/data/json.hpp>
 int main(int argc, char* argv[])
 {
+    Configure configure;
+    configure.graphics_configure.width = 1280;
+    configure.graphics_configure.height = 720;
+    #ifdef VENGINE_PLATFORM_WINDOWS
+    configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
+    #else
+    configure.graphics_configure.render_plugin_name = "opengl_rendering_plugin";
+    #endif
+    Context::GetInstance().ConfigureWith(configure);
+    Context::GetInstance().GetRenderEngine().Init();
+
     UNUSED_PARAMETER(argc);
     UNUSED_PARAMETER(argv);
     std::filesystem::path input;
@@ -58,6 +69,8 @@ int main(int argc, char* argv[])
 
     nlohmann::json j;
     ToJson(j, asset);
+
+    PRINT("Save to"<<output.string());
 
     std::ofstream outfile(output.string());
     outfile<<std::setw(2)<<j<<std::endl;

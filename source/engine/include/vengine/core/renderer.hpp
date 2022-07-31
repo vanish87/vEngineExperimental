@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include <VENGINE_API.hpp>
+#include <engine.hpp>
 
 #include <vengine/core/game_object.hpp>
 #include <vengine/core/irenderer.hpp>
@@ -62,7 +62,7 @@ namespace vEngine
 
                 std::shared_ptr<T> renderable_;
                 // gpu buffer etc.
-                MaterialSharedPtr material_;
+                Rendering::MaterialSharedPtr material_;
         };
     }  // namespace Core
 }  // namespace vEngine
