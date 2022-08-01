@@ -12,6 +12,11 @@
 
 #pragma once
 
+#ifdef _MSC_VER
+    #pragma warning(push)
+    #pragma warning(disable : 4505) 
+#endif
+
 #include <unordered_map>
 
 #include <engine.hpp>
@@ -20,6 +25,11 @@
 #include <vengine/core/game_object.hpp>
 #include <vengine/rendering/data_struct.hpp>
 #include <vengine/rendering/pipeline_state.hpp>
+#include <vengine/core/mesh_renderer_component.hpp>
+#include <vengine/core/mesh_component.hpp>
+#include <vengine/core/camera_component.hpp>
+#include <vengine/core/transform_component.hpp>
+#include <vengine/rendering/material.hpp>
 
 namespace vEngine
 {
@@ -50,6 +60,16 @@ namespace vEngine
         {
             return obj;
         }
+        template <typename T, typename = std::enable_if_t<std::is_same<T, UUID>::value, T>>
+        std::string ToString(const UUID& uuid)
+        {
+            return ToString(uuid.AsUint());
+        }
+        template <typename T, typename = std::enable_if_t<std::is_same<T, UUID>::value, T>>
+        const UUID FromString(const std::string& obj)
+        {
+            return UUID(std::stoi(obj));
+        }
         template <typename T, typename = std::enable_if_t<std::is_same<T, Rendering::ShaderType>::value, T>>
         std::string ToString(const Rendering::ShaderType& obj)
         {
@@ -59,6 +79,21 @@ namespace vEngine
             case Rendering::ShaderType::GS: return "GS";
             case Rendering::ShaderType::PS: return "PS";
             case Rendering::ShaderType::CS: return "CS";
+            default:
+                break;
+            }
+            NOT_IMPL_ASSERT;
+            return "NOT DEFINED";
+        }
+        template <typename T, typename = std::enable_if_t<std::is_same<T, GameObjectType>::value, T>>
+        std::string ToString(const GameObjectType& obj)
+        {
+            switch (obj)
+            {
+            case GameObjectType::Raw: return "Raw";
+            case GameObjectType::Camera: return "Camera";
+            case GameObjectType::AnimationClip: return "AnimationClip";
+            case GameObjectType::Asset: return "Asset";
             default:
                 break;
             }
@@ -157,6 +192,11 @@ namespace vEngine
         {
             return nlohmann::json(ToString<Rendering::ShaderType>(shader_type));
         }
+        template <>
+        nlohmann::json ToJson(const GameObjectType& go_type)
+        {
+            return nlohmann::json(ToString<GameObjectType>(go_type));
+        }
         template <typename T>
         nlohmann::json ToJson(const std::vector<T>& vector)
         {
@@ -252,6 +292,14 @@ namespace vEngine
         {
             obj = j.get<T>();
         }
+        // template <typename T, typename = std::enable_if_t<std::is_same<T, GameObjectType>::value, T>, typename = void>
+        template <>
+        void FromJson(const nlohmann::json& j, GameObjectType& go_type)
+        {
+            UNUSED_PARAMETER(j);
+            UNUSED_PARAMETER(go_type);
+            // return nlohmann::json(ToString<GameObjectType>(go_type));
+        }
         template <typename T>
         void FromJson(const nlohmann::json& j, std::shared_ptr<T>& ptr)
         {
@@ -325,5 +373,9 @@ namespace vEngine
         }
     }  // namespace Core
 }  // namespace vEngine
+
+#ifdef _MSC_VER
+    #pragma warning(pop)
+#endif
 
 #endif /* _VENGINE_DATA_JSON_HPP */

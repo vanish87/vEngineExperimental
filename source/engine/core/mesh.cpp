@@ -53,11 +53,11 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Mesh::Mesh() : vertex_buffer_{nullptr}, index_buffer_{nullptr}
+        Mesh::Mesh() : GameObject(GameObjectType::Mesh), vertex_buffer_{nullptr}, index_buffer_{nullptr}
         {
             // PRINT("mesh object created");
         }
-        Mesh::Mesh(const aiMesh* mesh) : vertex_buffer_{nullptr}, index_buffer_{nullptr}
+        Mesh::Mesh(const aiMesh* mesh) : GameObject(GameObjectType::Mesh), vertex_buffer_{nullptr}, index_buffer_{nullptr}
         {
             this->Load(mesh);
             PRINT("Vertices count " << this->vertex_data_.size() << " indices count " << this->index_data_.size() << " joint count " << this->bone_data_.size());
@@ -95,7 +95,7 @@ namespace vEngine
             this->index_data_.clear();
             this->bone_data_.clear();
 
-            this->name_ = mesh->mName.data;
+            this->description_.name = mesh->mName.data;
 
             for (uint32_t i = 0; i < mesh->mNumVertices; ++i)
             {
@@ -136,8 +136,8 @@ namespace vEngine
                     bdesc.type = ComponentType::Bone;
                     auto comp = GameNodeFactory::Create<Animation::BoneComponent>(bdesc);
                     auto bone = comp->GO();
-                    bone->name_ = ai_bone->mName.data;
-                    comp->name_ = ai_bone->mName.data;
+                    bone->description_.name = ai_bone->mName.data;
+                    comp->description_.name = ai_bone->mName.data;
                     bone->id_ = b;
                     bone->inverse_bind_pose_matrix_ = this->AiMatrixToFloat4x4(ai_bone->mOffsetMatrix);
 
@@ -186,10 +186,10 @@ namespace vEngine
                         }
                     }
 
-                    CHECK_ASSERT(this->bone_data_.find(bone->name_) == this->bone_data_.end());
-                    this->bone_data_[bone->name_] = comp;
+                    CHECK_ASSERT(this->bone_data_.find(bone->description_.name) == this->bone_data_.end());
+                    this->bone_data_[bone->description_.name] = comp;
 
-                    PRINT("Bone " << bone->name_ << " id " << bone->id_);
+                    PRINT("Bone " << bone->description_.name << " id " << bone->id_);
                 }
                 auto max = 0;
                 for (auto& s : statics) max = Math::Max(max, s.second);

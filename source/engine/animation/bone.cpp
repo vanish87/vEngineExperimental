@@ -18,7 +18,7 @@ namespace vEngine
     {
         /// constructor detailed defintion,
         /// should be 2 lines
-        Bone::Bone() : id_(-1) {}
+        Bone::Bone() : GameObject(Core::GameObjectType::Bone),id_(-1) {}
 
         /// A detailed function description, it
         /// should be 2 lines at least.

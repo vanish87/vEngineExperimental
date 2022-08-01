@@ -24,24 +24,6 @@ namespace vEngine
     /// should be 2 lines at least.
     namespace Core
     {
-        enum class GameObjectType
-        {
-            Raw,
-            Transform,
-            Camera,
-            Mesh,
-            // Mesh_Cube,
-            Material,
-            Bone,
-            Joint,
-            AnimationClip,
-            Asset
-        };
-
-        struct GameObjectDescription
-        {
-                GameObjectType type;
-        };
 
         /// \brief To create component and call Init for it
         ///
@@ -49,24 +31,25 @@ namespace vEngine
         {
             public:
                 template <typename T, class... Args>
-                static std::shared_ptr<T> Create(const GameObjectDescription& desc, Args&&... args)
+                static std::shared_ptr<T> Create(Args&&... args)
                 {
-                    switch (desc.type)
-                    {
-                    case GameObjectType::Raw:
-                        break;
-                    // case GameObjectType::Mesh_Cube:
+                    // switch (desc.type)
                     // {
-                    //     static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
-                    //     auto gn = std::make_shared<T>(std::forward<Args>(args)...);
-                    // }
+                    // case GameObjectType::Raw:
                     //     break;
-                    default:
-                        break;
-                    }
+                    // // case GameObjectType::Mesh_Cube:
+                    // // {
+                    // //     static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
+                    // //     auto gn = std::make_shared<T>(std::forward<Args>(args)...);
+                    // // }
+                    // //     break;
+                    // default:
+                    //     break;
+                    // }
 
                     static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
                     auto gn = std::make_shared<T>(std::forward<Args>(args)...);
+                    //TODO Checking description type with T
                     return gn;
                 }
 

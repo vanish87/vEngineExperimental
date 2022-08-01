@@ -3,9 +3,11 @@
 
 #pragma once
 
-#include <VENGINE_API.hpp>
+#include <unordered_map>
 
 #include <engine.hpp>
+#include <vengine/core/game_object.hpp>
+#include <vengine/data/meta.hpp>
 #include <vengine/core/configure.hpp>
 #include <vengine/core/iruntime_module.hpp>
 
@@ -38,6 +40,10 @@ namespace vEngine
             private:
                 void LoadDll();
                 void FreeDll();
+                void LoadRuntimeObjects();
+                void SaveRuntimeObjects();
+                GameObjectSharedPtr Find(const UUID& uuid);
+                void Register(const GameObjectSharedPtr& go);
 
             private:
                 Configure configure_;
@@ -45,6 +51,14 @@ namespace vEngine
 
                 void* render_plugin_dll_handle_;
                 Rendering::RenderEngineUniquePtr render_engine_ptr_;
+
+                std::unordered_map<UUID, GameObjectSharedPtr> runtime_game_objects_;
+
+            public:
+                constexpr static auto properties()
+                {
+                    return std::make_tuple(property("context_objects", &Context::runtime_game_objects_));
+                }
         };
 
         void* LoadLibrary(const std::string lib_name);

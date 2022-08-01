@@ -60,9 +60,7 @@ namespace vEngine
 
             auto m = GameObjectFactory::Default<Mesh>(MeshPrimitive::Sphere, 32);
 
-            GameObjectDescription godesc;
-            godesc.type = GameObjectType::Asset;
-            auto asset = GameObjectFactory::Create<Asset>(godesc);
+            auto asset = GameObjectFactory::Create<Asset>();
             auto rdesc = std::make_shared<ResourceDescriptor>();
             rdesc->file_path = file_path;
             rdesc->complete_call_back = 
@@ -211,24 +209,24 @@ namespace vEngine
                 [&](GameNodeSharedPtr gn)
                 {
                     auto p = gn->Parent().lock();
-                    auto pname = p != nullptr ? p->name_ : "None";
+                    auto pname = p != nullptr ? p->description_.name : "None";
                     // auto name = gn->HasComponent<TransformComponent>()?"Transform":"Raw";
                     // auto cname = gn->HasComponent<CameraComponent>()?"Camera":"Raw";
                     // PRINT("Game Node " << name << " " << cname << " " << gn->name_ << " Parent " << pname);
                     auto comp = std::dynamic_pointer_cast<IComponent>(gn);
                     if (comp != nullptr) return true;
 
-                    PRINT("Game Node " << gn->name_ << " Parent " << pname);
+                    PRINT("Game Node " << gn->description_.name << " Parent " << pname);
                     gn->ForEachChild<IComponent>(
                         [&](IComponentSharedPtr child)
                         {
                             auto cn = std::dynamic_pointer_cast<TransformComponent>(child);
                             if (cn == nullptr) return;
                             auto bone = std::dynamic_pointer_cast<Animation::BoneComponent>(child);
-                            auto name = cn->name_;
+                            auto name = cn->description_.name;
                             if (bone != nullptr) name += " BoneComponent";
 
-                            PRINT("Game Node " << gn->name_ << " Has " << name);
+                            PRINT("Game Node " << gn->description_.name << " Has " << name);
 
                             auto pos = cn->GO()->Translate();
                             PRINT(pos.x() << " " << pos.y() << " " << pos.z());

@@ -32,7 +32,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Material : public Core::GameObject, public Core::IResource
+        class VENGINE_API Material : public Core::GameObject, public Core::IResource
         {
             public:
                 constexpr static auto properties()

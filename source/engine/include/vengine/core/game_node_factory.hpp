@@ -75,7 +75,7 @@ namespace vEngine
                     static_assert(std::is_base_of<IComponent, T>::value, "T must derived from IComponent");
                     auto gn = std::make_shared<T>(std::forward<Args>(args)...);
                     auto comp = std::dynamic_pointer_cast<GameNode>(gn);
-                    comp->name_ = typeid(T).name();
+                    comp->description_.name = typeid(T).name();
                     return gn;
                 }
 

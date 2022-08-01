@@ -53,7 +53,7 @@ namespace vEngine
         class UUID
         {
                 friend struct std::hash<vEngine::Core::UUID>;
-                // friend class GameObject;
+                friend struct GameObjectDescription;
                 // friend class DebugTracking;
 
             public:

@@ -21,10 +21,11 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        GameNode::GameNode()  //:   parent_{nullptr}
+        GameNode::GameNode() : GameObject(GameObjectType::GameNode)
         {
-            this->name_ = "Raw GameNode";
+            this->description_.name = "Raw GameNode";
         }
+        GameNode::GameNode(const GameObjectType type) : GameObject(type) {}
         GameNode::~GameNode() {}
 
         // TransformSharedPtr GameNode::Transform()

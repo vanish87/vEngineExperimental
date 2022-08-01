@@ -18,7 +18,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Camera::Camera() : fovy_{Math::PI/4}, aspect_{1}, zn_{0.01f}, zf_{1000}
+        Camera::Camera() : GameObject(GameObjectType::Camera), fovy_{Math::PI / 4}, aspect_{1}, zn_{0.01f}, zf_{1000}
         {
             this->proj_matrix_ = Math::PerspectiveFovLH(this->fovy_, this->aspect_, this->zn_, this->zf_);
         }

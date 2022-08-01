@@ -12,8 +12,7 @@
 
 #pragma once
 
-#include <VENGINE_API.hpp>
-
+#include <engine.hpp>
 #include <vengine/core/uuid.hpp>
 #include <vengine/data/meta.hpp>
 
@@ -22,6 +21,41 @@ namespace vEngine
 {
     namespace Core
     {
+        enum class GameObjectType
+        {
+            Raw,
+            GameNode,
+            Component,
+            Transform,
+            Camera,
+            Light,
+            Renderer,
+            Mesh,
+            // Mesh_Cube,
+            Material,
+            Bone,
+            Joint,
+            AnimationClip,
+            Animator,
+            Skeleton,
+            Asset,
+            Serializer,
+        };
+
+        struct GameObjectDescription
+        {
+                GameObjectType type;
+                UUID uuid;
+                std::string name;
+                constexpr static auto properties()
+                {
+                    return std::make_tuple(
+                        property("name", &GameObjectDescription::name),
+                        property("type", &GameObjectDescription::type),
+                        property("uuid", &GameObjectDescription::uuid)
+                    );
+                }
+        };
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
@@ -30,18 +64,16 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                GameObject();
+                GameObject(const GameObjectType type);
+                // GameObject(const GameObject& other);
+                // GameObject(const GameObject&& other);
                 virtual ~GameObject();
 
-                // uuid
-                UUID uuid_;
-                std::string name_;
-                // type?
+                GameObjectDescription description_;
                 constexpr static auto properties()
                 {
                     return std::make_tuple(
-                        property("uuid", &GameObject::uuid_),
-                        property("name", &GameObject::name_)
+                        property("description", &GameObject::description_)
                     );
                 }
         };

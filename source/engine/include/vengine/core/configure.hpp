@@ -18,6 +18,7 @@ namespace vEngine
         struct Configure
         {
                 std::string app_name;
+                std::string context_name;
                 GraphicsConfigure graphics_configure;
                 Configure() : app_name{"vEngine_Example"} {}
         };

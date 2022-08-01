@@ -25,6 +25,9 @@ namespace vEngine
             //prt.reset() does same thing as this->ProcessRenderEngine("DestoryRenderEngine");
             this->render_engine_ptr_.reset();
 
+            // nlohmann::json j;
+            // ToJson(j, this->runtime_game_objects_);
+
             this->FreeDll();
         }
         void Context::Update() {}
@@ -60,6 +63,29 @@ namespace vEngine
                 FreeLibrary(this->render_plugin_dll_handle_);
                 this->render_plugin_dll_handle_ = nullptr;
             }
+        }
+
+        void Context::LoadRuntimeObjects()
+        {
+
+        }
+        void Context::SaveRuntimeObjects()
+        {
+
+        }
+        GameObjectSharedPtr Context::Find(const UUID& uuid)
+        {
+            if (this->runtime_game_objects_.find(uuid) != this->runtime_game_objects_.end())
+            {
+                return this->runtime_game_objects_[uuid];
+            }
+            return nullptr;
+        }
+        void Context::Register(const GameObjectSharedPtr& go)
+        {
+            UNUSED_PARAMETER(go);
+            // CHECK_ASSERT(this->runtime_game_objects_.find(go->uuid_) != this->runtime_game_objects_.end());
+            // this->runtime_game_objects_[go->uuid_] = go;
         }
 
         /// Load Dll

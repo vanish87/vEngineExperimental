@@ -19,7 +19,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Skeleton::Skeleton() {}
+        Skeleton::Skeleton() :GameObject(Core::GameObjectType::Skeleton){}
 
         /// A detailed function description, it
         /// should be 2 lines at least.

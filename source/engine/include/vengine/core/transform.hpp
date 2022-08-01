@@ -42,7 +42,7 @@ namespace vEngine
                     );
                 }
                 /// \brief Constructor: use init list {} to initialize data
-                Transform() noexcept
+                Transform() : GameObject(GameObjectType::Transform)
                 {
                     this->local_translate_ = float3::Zero();
                     this->local_rotation_ = quaternion::Identity();
@@ -56,7 +56,7 @@ namespace vEngine
                 ///  1. ClassA a = b; -> declear and assignment \n
                 ///  2. Func(ClassA a) -> pass by value \n
                 ///  3. return temp; -> return by value \n
-                Transform(const Transform& other) noexcept
+                Transform(const Transform& other) : GameObject(other)
                 {
                     this->local_translate_ = other.local_translate_;
                     this->local_rotation_ = other.local_rotation_;
@@ -99,7 +99,7 @@ namespace vEngine
                 /// - Transfers ownership of the r-value object into the receiver \n
                 /// - Puts the r-value object into an 'empty' state. \n
                 /// - subclass must explicitly std::move the base class \n
-                Transform(Transform&& other) noexcept
+                Transform(Transform&& other):GameObject(other)
                 {
                     this->local_translate_ = std::move(other.local_translate_);
                     this->local_rotation_ = std::move(other.local_rotation_);
@@ -131,7 +131,9 @@ namespace vEngine
                 /// use {} to init data, \n
                 /// it will generate a compile error if
                 /// vector is initd with more parameter than it has
-                Transform(const float3& translate, const quaternion& rotation, const float3& scale) : local_translate_{translate}, local_rotation_{rotation}, local_scale_{scale} {}
+                Transform(const float3& translate, const quaternion& rotation, const float3& scale)
+                    : GameObject(GameObjectType::Transform), local_translate_{translate}, local_rotation_{rotation}, local_scale_{scale}
+                {}
 
                 const float3& Translate() const
                 {

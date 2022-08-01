@@ -42,7 +42,7 @@ namespace vEngine
                 };
             public:
                 /// \brief brief constructor description.
-                Renderer()
+                Renderer(): GameObject(GameObjectType::Renderer)
                 {
 
                 };

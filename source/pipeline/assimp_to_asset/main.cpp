@@ -56,9 +56,7 @@ int main(int argc, char* argv[])
     // ResourceLoader::GetInstance().AddSearchPath("resource");
     ResourceLoader::GetInstance().AddSearchPath(base_path + "/shader");
 
-    GameObjectDescription godesc;
-    godesc.type = GameObjectType::Asset;
-    auto asset = GameObjectFactory::Create<Asset>(godesc);
+    auto asset = GameObjectFactory::Create<Asset>();
     auto rdesc = std::make_shared<ResourceDescriptor>();
     rdesc->file_path = input;
     rdesc->complete_call_back = [&](IResourceSharedPtr c) {

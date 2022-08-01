@@ -47,13 +47,13 @@ namespace vEngine
                 }
             public:
                 /// \brief brief constructor description.
-                Component() : enabled_{false} {};
+                Component() : GameNode(GameObjectType::Component), enabled_{false} {};
                 virtual ~Component(){};
 
                 virtual void OnInit() override
                 {
                     // PRINT("Created "<< typeid(T).name() << " from component");
-                    this->name_ = std::string("Component ") + typeid(T).name();
+                    this->description_.name = std::string("Component ") + typeid(T).name();
                     // this->game_object_ = std::make_shared<T>();
                 }
                 virtual bool Enabled() const override
@@ -70,8 +70,7 @@ namespace vEngine
             public:
                 std::shared_ptr<T> GO()
                 {
-                    GameObjectDescription desc;
-                    if (this->game_object_ == nullptr) this->game_object_ = GameObjectFactory::Create<T>(desc);
+                    if (this->game_object_ == nullptr) this->game_object_ = GameObjectFactory::Create<T>();
                     return this->game_object_;
                 }
 

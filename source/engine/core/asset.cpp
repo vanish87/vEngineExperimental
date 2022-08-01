@@ -45,7 +45,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Asset::Asset() {}
+        Asset::Asset() : GameObject(GameObjectType::Asset) {}
         Asset::~Asset() {}
         const GameNodeSharedPtr Asset::GetRoot() const
         {
@@ -72,7 +72,7 @@ namespace vEngine
             this->HandleAnimations(scene);
 
             this->root_ = this->HandleNode(scene->mRootNode, scene);
-            this->root_->name_ = "Assimp File: " + f;
+            this->root_->description_.name = "Assimp File: " + f;
             // this->AddChild(root);
             this->current_state_ = ResourceState::Loaded;
             return true;
@@ -89,7 +89,7 @@ namespace vEngine
 
             this->HandleBoneNode(node, gn);
 
-            gn->name_ = node->mName.data;
+            gn->description_.name = node->mName.data;
             // set transformation here
             auto transform = node->mTransformation;
             // parent->AddChild(game_node);
@@ -162,9 +162,7 @@ namespace vEngine
             for (uint32_t mid = 0; mid < scene->mNumMaterials; ++mid)
             {
                 auto ai_mat = scene->mMaterials[mid];
-                GameObjectDescription desc;
-                desc.type = GameObjectType::Material;
-                auto mat = GameObjectFactory::Create<Material>(desc);
+                auto mat = GameObjectFactory::Create<Material>();
                 auto rdesc = std::make_shared<MaterialResourceDesc>();
                 rdesc->shaders[ShaderType::VS] = vs_file;
                 rdesc->shaders[ShaderType::PS] = ps_file;
@@ -248,10 +246,7 @@ namespace vEngine
             for (uint32_t mid = 0; mid < scene->mNumMeshes; ++mid)
             {
                 auto mesh = scene->mMeshes[mid];
-
-                GameObjectDescription desc;
-                desc.type = GameObjectType::Mesh;
-                auto mesh_go = GameObjectFactory::Create<Mesh>(desc, mesh);
+                auto mesh_go = GameObjectFactory::Create<Mesh>(mesh);
                 this->meshes_[mid] = mesh_go;
             }
 
@@ -262,17 +257,15 @@ namespace vEngine
         {
             for (uint32_t i = 0; i < scene->mNumAnimations; ++i)
             {
-                GameObjectDescription desc;
-                desc.type = GameObjectType::AnimationClip;
-                auto animation = GameObjectFactory::Create<AnimationClip>(desc);
+                auto animation = GameObjectFactory::Create<AnimationClip>();
                 // each animation is an AnimationClip
                 auto anim = scene->mAnimations[i];
 
-                animation->name_ = anim->mName.data;
+                animation->description_.name = anim->mName.data;
                 animation->Duration() = static_cast<float>(anim->mDuration);
                 animation->TicksPerSecond() = static_cast<float>(anim->mTicksPerSecond);
                 animation->TotalFrame() = Math::FloorToInt(anim->mDuration * anim->mTicksPerSecond);
-                PRINT("handling " << animation->name_ << " animation with " << animation->TotalFrame() << " frames")
+                PRINT("handling " << animation->description_.name << " animation with " << animation->TotalFrame() << " frames")
                 for (uint32_t c = 0; c < anim->mNumChannels; ++c)
                 {
                     // Each channel defines node/bone it controls
@@ -282,9 +275,8 @@ namespace vEngine
                     auto node = anim->mChannels[c];
                     PRINT("channel " << node->mNodeName.data << " has " << node->mNumPositionKeys << " Key values");
 
-                    desc.type = GameObjectType::Joint;
-                    auto joint = GameObjectFactory::Create<Joint>(desc);
-                    joint->name_ = node->mNodeName.data;
+                    auto joint = GameObjectFactory::Create<Joint>();
+                    joint->description_.name = node->mNodeName.data;
 
                     uint32_t k = 0;
                     for (k = 0; k < node->mNumPositionKeys; ++k)
@@ -304,7 +296,7 @@ namespace vEngine
                     }
 
                     // TODO: use unordered_map for fast access
-                    animation->AddJoint(joint->name_, joint);
+                    animation->AddJoint(joint->description_.name, joint);
                 }
 
                 this->animation_clips_.push_back(animation);

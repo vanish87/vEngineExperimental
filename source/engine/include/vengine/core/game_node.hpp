@@ -38,6 +38,7 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 GameNode();
+                GameNode(const GameObjectType type);
                 virtual ~GameNode();
 
                 constexpr static auto properties()
