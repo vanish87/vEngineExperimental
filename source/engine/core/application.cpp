@@ -48,7 +48,7 @@ namespace vEngine
         }
         void Application::Deinit()
         {
-            this->OnDestory();
+            this->OnDestroy();
 
             SceneManager::GetInstance().Deinit();
 
@@ -108,7 +108,7 @@ namespace vEngine
 
         void Application::OnCreate() {}
         void Application::OnUpdate() {}
-        void Application::OnDestory() {}
+        void Application::OnDestroy() {}
         void Application::Quit(bool quit)
         {
             this->shouldQuit = quit;

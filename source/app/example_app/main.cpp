@@ -37,7 +37,7 @@ namespace Example
             {
             }
             /// \brief user function for destory
-            void OnDestory() override
+            void OnDestroy() override
             {
                 PRINT("User Destory");
             }

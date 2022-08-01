@@ -62,7 +62,7 @@ namespace vEngine
 
         };
         template<typename T>
-        struct DefaultGetter
+        struct Getter
         {
             static const T& Get(const T& value)
             {

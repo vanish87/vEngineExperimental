@@ -23,7 +23,7 @@ namespace vEngine
         class UUIDGenerator
         {
             private:
-                explicit UUIDGenerator() : currentid_(0){};
+                explicit UUIDGenerator() : current_id_(0){};
                 UUIDGenerator(const UUIDGenerator& rhs)
                 {
                     UNUSED_PARAMETER(rhs);
@@ -36,7 +36,7 @@ namespace vEngine
                 };
                 virtual ~UUIDGenerator(){};
 
-                uint64_t currentid_;
+                uint64_t current_id_;
 
             public:
                 static UUIDGenerator& GetInstance()
@@ -46,18 +46,23 @@ namespace vEngine
                 }
                 uint64_t Generate()
                 {
-                    return ++this->currentid_;
+                    return ++this->current_id_;
                 }
         };
 
         class UUID
         {
                 friend struct std::hash<vEngine::Core::UUID>;
-                friend class GameObject;
-                friend class DebugTracking;
+                // friend class GameObject;
+                // friend class DebugTracking;
 
             public:
                 virtual ~UUID(void){};
+
+                const uint64_t AsUint() const
+                {
+                    return this->data_;
+                }
 
             private:
                 UUID() : data_(0)
@@ -66,9 +71,9 @@ namespace vEngine
                 }
 
             private:
-                explicit UUID(uint64_t uuid)
+                explicit UUID(const uint64_t uuid)
                 {
-                    UNUSED_PARAMETER(uuid);
+                    this->data_ = uuid;
                 }
 
             public:

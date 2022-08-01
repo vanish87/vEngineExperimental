@@ -12,6 +12,8 @@
 #include <interface.hpp>
 #include <predeclear.hpp>
 
+#include <VENGINE_API.hpp>
+
 // #include <vengine/rendering/data_format.hpp>
 // #include <vengine/rendering/data_struct.hpp>
 // #include <vengine/rendering/shared/data_cbuffer.hpp>

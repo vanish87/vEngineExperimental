@@ -35,7 +35,7 @@ namespace vEngine
             private:
                 virtual void OnCreate();
                 virtual void OnUpdate();
-                virtual void OnDestory();
+                virtual void OnDestroy();
 
                 virtual void InitInternal(void* wnd);
                 bool shouldQuit;
