@@ -1,6 +1,6 @@
 
 add_subdirectory(smpl_to_json)
-add_subdirectory(assimp_to_asset)
+add_subdirectory(assimp_to_json)
 
 # add_custom_target(resource)
 

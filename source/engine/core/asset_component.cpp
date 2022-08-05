@@ -18,7 +18,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        AssetComponent::AssetComponent() {}
+        AssetComponent::AssetComponent() : Component(GameObjectType::Asset) {}
         AssetComponent::~AssetComponent() {}
 
         /// A detailed function description, it

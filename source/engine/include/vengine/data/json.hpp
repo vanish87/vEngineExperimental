@@ -12,10 +12,10 @@
 
 #pragma once
 
-#ifdef _MSC_VER
-    #pragma warning(push)
-    #pragma warning(disable : 4505) 
-#endif
+// #ifdef _MSC_VER
+//     #pragma warning(push)
+//     #pragma warning(disable : 4505) 
+// #endif
 
 #include <unordered_map>
 
@@ -91,13 +91,15 @@ namespace vEngine
             switch (obj)
             {
             case GameObjectType::Raw: return "Raw";
+            case GameObjectType::GameNode: return "GameNode";
+            case GameObjectType::Component: return "Component";
             case GameObjectType::Camera: return "Camera";
             case GameObjectType::AnimationClip: return "AnimationClip";
             case GameObjectType::Asset: return "Asset";
             default:
                 break;
             }
-            NOT_IMPL_ASSERT;
+            // NOT_IMPL_ASSERT;
             return "NOT DEFINED";
         }
         // template <typename T, typename = std::enable_if_t<std::is_same<T, std::filesystem::path>::value, T>>
@@ -161,8 +163,9 @@ namespace vEngine
                              auto p = CastByType<i, type_list>(ptr);
                              if (value.is_null() && p != nullptr)
                              {
-                                 value["data_type"] = GetTypeString(p);
-                                 value["data"] = ToJson(*p.get());
+                                //  value["data_type"] = GetTypeString(p);
+                                //  value["data"] = ToJson(*p.get());
+                                 value = ToJson(*p.get());
                              }
                          });
             // TODO Use context map for shared ptr
@@ -170,8 +173,9 @@ namespace vEngine
             // so that FromJson can find/create objects from xx factory class
             if (!value.is_null()) return value;
 
-            value["data_type"] = GetTypeString(ptr);
-            value["data"] = ToJson(*ptr.get());
+            // value["data_type"] = GetTypeString(ptr);
+            // value["data"] = ToJson(*ptr.get());
+            value = ToJson(*ptr.get());
             return value;
         }
         // template <typename T, typename = std::enable_if_t<std::is_base_of<GameObject, T>::value, T>, typename = void, typename = void>
@@ -303,8 +307,13 @@ namespace vEngine
         template <typename T>
         void FromJson(const nlohmann::json& j, std::shared_ptr<T>& ptr)
         {
+            auto desc = GameObjectDescription();
+            // FromJson(j["data"], *v);
+
+            FromJson(j["description"], desc);
+
             auto v = new T();
-            FromJson(j["data"], *v);
+            FromJson(j, *v);
             ptr.reset(v);
         }
         template <typename T>
@@ -374,8 +383,8 @@ namespace vEngine
     }  // namespace Core
 }  // namespace vEngine
 
-#ifdef _MSC_VER
-    #pragma warning(pop)
-#endif
+// #ifdef _MSC_VER
+//     #pragma warning(pop)
+// #endif
 
 #endif /* _VENGINE_DATA_JSON_HPP */

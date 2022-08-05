@@ -12,6 +12,7 @@
 #include <vengine/core/context.hpp>
 #include <vengine/rendering/d3d11_pipeline_state.hpp>
 #include <vengine/rendering/d3d11_render_engine.hpp>
+#include <vengine/rendering/shader.hpp>
 // #include <vengine/rendering/d3d11_texture.hpp>
 
 /// A detailed namespace description, it

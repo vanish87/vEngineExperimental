@@ -1,8 +1,8 @@
 
-project(assimp_to_asset)
+project(assimp_to_json)
 
 # Create the executable
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} assimp_to_json_main.cpp)
 
 # Link the static library from subproject1 using its alias sub::lib1
 # Link the header only library from subproject2 using its alias sub::lib2

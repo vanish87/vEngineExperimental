@@ -47,7 +47,7 @@ namespace vEngine
                 }
             public:
                 /// \brief brief constructor description.
-                Component() : GameNode(GameObjectType::Component), enabled_{false} {};
+                Component(const GameObjectType gt) : GameNode(gt), enabled_{false} {};
                 virtual ~Component(){};
 
                 virtual void OnInit() override
