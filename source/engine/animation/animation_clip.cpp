@@ -25,7 +25,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        AnimationClip::AnimationClip() : GameObject(Core::GameObjectType::AnimationClip), duration_{0}, ticks_per_second_{0}, total_frame_{0}
+        AnimationClip::AnimationClip() : duration_{0}, ticks_per_second_{0}, total_frame_{0}
         {
             // this->duration_ = 0;
             // this->current_joint_ = std::make_shared<Joint>();

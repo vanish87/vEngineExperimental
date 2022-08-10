@@ -18,7 +18,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Serializer::Serializer() : GameObject(Core::GameObjectType::Serializer) {}
+        Serializer::Serializer() {}
         Serializer::~Serializer() {}
 
         /// A detailed function description, it

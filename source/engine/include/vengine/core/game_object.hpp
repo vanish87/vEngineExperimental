@@ -64,7 +64,8 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                GameObject(const GameObjectType type);
+                GameObject();
+                // GameObject(const GameObjectType type);
                 // GameObject(const GameObject& other);
                 // GameObject(const GameObject&& other);
                 virtual ~GameObject();

@@ -33,20 +33,17 @@ namespace vEngine
             public:
                 constexpr static auto properties()
                 {
-                    return std::tuple_cat(
-                        GameObject::properties(),
-                        std::make_tuple(
-                            property("material", &Renderer::material_)
-                        )
-                    );
+                    return std::tuple_cat(GameObject::properties(), std::make_tuple(property("material", &Renderer::material_)));
                 };
+
             public:
                 /// \brief brief constructor description.
-                Renderer(): GameObject(GameObjectType::Renderer)
-                {
+                Renderer()
 
-                };
-                
+                    {
+
+                    };
+
                 virtual bool UpdateRenderable()
                 {
                     return false;

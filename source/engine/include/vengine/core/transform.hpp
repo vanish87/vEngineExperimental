@@ -42,7 +42,7 @@ namespace vEngine
                     );
                 }
                 /// \brief Constructor: use init list {} to initialize data
-                Transform() : GameObject(GameObjectType::Transform)
+                Transform()
                 {
                     this->local_translate_ = float3::Zero();
                     this->local_rotation_ = quaternion::Identity();

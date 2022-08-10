@@ -20,7 +20,7 @@ namespace vEngine
     {
         /// constructor detailed defintion,
         /// should be 2 lines
-        Material::Material() : GameObject(GameObjectType::Material) {}
+        Material::Material() {}
         Material::~Material() {}
 
         MaterialSharedPtr Material::Default()

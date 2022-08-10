@@ -29,9 +29,9 @@ namespace vEngine
         // }
         /// constructor detailed defintion,
         /// should be 2 lines
-        GameObject::GameObject(const GameObjectType type)
+        GameObject::GameObject()
         {
-            this->description_.type = type;
+            // this->description_.type = type;
         }
         GameObject::~GameObject() {}
     }  // namespace Core

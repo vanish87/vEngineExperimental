@@ -53,11 +53,11 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Mesh::Mesh() : GameObject(GameObjectType::Mesh), vertex_buffer_{nullptr}, index_buffer_{nullptr}
+        Mesh::Mesh() : vertex_buffer_{nullptr}, index_buffer_{nullptr}
         {
             // PRINT("mesh object created");
         }
-        Mesh::Mesh(const aiMesh* mesh) : GameObject(GameObjectType::Mesh), vertex_buffer_{nullptr}, index_buffer_{nullptr}
+        Mesh::Mesh(const aiMesh* mesh) : vertex_buffer_{nullptr}, index_buffer_{nullptr}
         {
             this->Load(mesh);
             PRINT("Vertices count " << this->vertex_data_.size() << " indices count " << this->index_data_.size() << " joint count " << this->bone_data_.size());

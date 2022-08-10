@@ -21,7 +21,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Animator::Animator() : GameObject(Core::GameObjectType::Animator), current_time_{0} {}
+        Animator::Animator() : current_time_{0} {}
         void Animator::SetAnimations(const std::vector<AnimationClipSharedPtr> animations)
         {
             // this->skeleton_ = skeleton;
