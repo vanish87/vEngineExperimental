@@ -23,11 +23,6 @@ namespace vEngine
     namespace Animation
     {
 
-		struct VertexWeight
-		{
-			uint32_t index;
-			float weight;
-		};
 		
         /// \brief A brief class description.
         ///
@@ -41,7 +36,7 @@ namespace vEngine
 
                 /// class variable description
                 int id_;
-				std::vector<VertexWeight> weights;
+				// std::vector<VertexWeight> weights;
 				Core::float4x4 inverse_bind_pose_matrix_;
             public:
                 /// \brief A brief function description.

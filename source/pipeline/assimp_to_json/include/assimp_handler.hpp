@@ -15,9 +15,9 @@
 #include <engine.hpp>
 #include <filesystem>
 
-
-struct aiNode;
-struct aiScene;
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 namespace vEngine
 {
@@ -29,6 +29,7 @@ namespace vEngine
                 Core::SceneSharedPtr LoadFromAssimp(const std::filesystem::path path);
 
             private:
+                Core::float4x4 AiMatrixToFloat4x4(aiMatrix4x4 mat);
                 void HandleCameras(Core::SceneSharedPtr scene, const aiScene* ai_scene);
                 void HandleMaterials(Core::SceneSharedPtr scene, const aiScene* ai_scene);
                 void HandleMeshes(Core::SceneSharedPtr scene, const aiScene* ai_scene);

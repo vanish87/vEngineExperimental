@@ -1,15 +1,12 @@
 
 #include <assimp_handler.hpp>
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
 #include <external/lodepng.h>
 #include <external/tga.h>
 
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/core/scene.hpp>
+#include <vengine/core/mesh.hpp>
 
 namespace vEngine
 {
@@ -25,13 +22,11 @@ namespace vEngine
             auto ai_scene = importer.ReadFile(path.string(), aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
             auto scene = GameObjectFactory::Create<Scene>();
 
-
-
-            // this->HandleMeshes(scene, ai_scene);
-            // this->HandleMaterials(scene, ai_scene);
+            this->HandleMeshes(scene, ai_scene);
+            this->HandleMaterials(scene, ai_scene);
             // // this->CreateTextures(scene);
-            // this->HandleCameras(scene, ai_scene);
-            // this->HandleAnimations(scene, ai_scene);
+            this->HandleCameras(scene, ai_scene);
+            this->HandleAnimations(scene, ai_scene);
 
             // this->root_ = this->HandleNode(scene->mRootNode, scene);
 
@@ -59,8 +54,10 @@ namespace vEngine
 
             // PRINT("num of cameras: " << this->cameras_.size());
         }
-        void AssimpHandler::HandleMaterials(const aiScene* scene)
+        void AssimpHandler::HandleMaterials(Core::SceneSharedPtr scene, const aiScene* ai_scene)
         {
+            UNUSED_PARAMETER(scene);
+            UNUSED_PARAMETER(ai_scene);
             // for (uint32_t mid = 0; mid < scene->mNumMaterials; ++mid)
             // {
             //     auto ai_mat = scene->mMaterials[mid];
@@ -142,7 +139,84 @@ namespace vEngine
             // }
             // PRINT("num of materials: " << this->materials_.size());
         }
-        void HandleMeshes(SceneSharedPtr scene, const aiScene* ai_scene) {}
-        void HandleAnimations(SceneSharedPtr scene, const aiScene* ai_scene) {}
+        float4x4 AssimpHandler::AiMatrixToFloat4x4(aiMatrix4x4 mat)
+        {
+            return Math::Transpose(float4x4(mat[0][0], mat[0][1], mat[0][2], mat[0][3], mat[1][0], mat[1][1], mat[1][2], mat[1][3], mat[2][0], mat[2][1], mat[2][2], mat[2][3], mat[3][0], mat[3][1],
+                                            mat[3][2], mat[3][3]));
+        }
+        void AssimpHandler::HandleMeshes(SceneSharedPtr scene, const aiScene* ai_scene)
+        {
+            CHECK_ASSERT_NOT_NULL(scene);
+            CHECK_ASSERT_NOT_NULL(ai_scene);
+
+            for (uint32_t mid = 0; mid < ai_scene->mNumMeshes; ++mid)
+            {
+                auto ai_mesh = ai_scene->mMeshes[mid];
+                auto mesh = GameObjectFactory::Create<Mesh>();
+
+                std::vector<Vertex> vertices;
+                std::vector<uint32_t> indices;
+
+                auto hasPos = ai_mesh->HasPositions();
+                auto hasUV = ai_mesh->HasTextureCoords(0);
+                auto hasNormal = ai_mesh->HasNormals();
+                for (uint32_t i = 0; i < ai_mesh->mNumVertices; ++i)
+                {
+                    Vertex v;
+                    v.pos = hasPos ? float3(ai_mesh->mVertices[i].x, ai_mesh->mVertices[i].y, ai_mesh->mVertices[i].z) : float3(0, 0, 0);
+                    // v.pos *= 0.2f;
+                    // v.pos.z() = 0;
+                    v.normal = hasNormal ? float3(ai_mesh->mNormals[i].x, ai_mesh->mNormals[i].y, ai_mesh->mNormals[i].z) : float3(0, 0, 0);
+                    v.uv = hasUV ? float2(ai_mesh->mTextureCoords[0][i].x, ai_mesh->mTextureCoords[0][i].y) : float2(0, 0);
+                    v.color = float4(1, 1, 1, 1);
+
+                    v.bone_id_0 = v.bone_id_1 = int4(-1, -1, -1, -1);
+                    v.bone_weight_0 = v.bone_weight_1 = float4::Zero();
+
+                    vertices.emplace_back(v);
+                }
+                for (uint32_t i = 0; i < ai_mesh->mNumFaces; ++i)
+                {
+                    auto f = ai_mesh->mFaces[i];
+                    for (uint32_t fi = 0; fi < f.mNumIndices; ++fi)
+                    {
+                        indices.emplace_back(f.mIndices[fi]);
+                    }
+                }
+
+                mesh->SetVertexData(vertices, indices);
+
+                for (uint32_t b = 0; b < ai_mesh->mNumBones; ++b)
+                {
+                    // mesh->mBones[b]->mOffsetMatrix will transform vertex from model space to pose/joint local space;
+                    // aiBone's document is confusing
+                    // https://learnopengl.com/Guest-Articles/2020/Skeletal-Animation is CORRECT
+                    auto ai_bone = ai_mesh->mBones[b];
+
+                    auto name = ai_bone->mName.data;
+                    auto id = b;
+                    auto offset = this->AiMatrixToFloat4x4(ai_bone->mOffsetMatrix);
+                    auto weights = std::vector<VertexWeight>();
+
+                    PRINT(ai_mesh->mName.data << " has bones/joint " << name << " with " << ai_bone->mNumWeights);
+
+                    for (uint32_t wid = 0; wid < ai_bone->mNumWeights; ++wid)
+                    {
+                        auto aiWeight = ai_bone->mWeights[wid];
+                        VertexWeight w;
+                        w.index = aiWeight.mVertexId;
+                        w.weight = aiWeight.mWeight;
+                        weights.emplace_back(w);
+                    }
+
+                    mesh->SetBoneData(name, id, weights, offset);
+                }
+            }
+        }
+        void AssimpHandler::HandleAnimations(Core::SceneSharedPtr scene, const aiScene* ai_scene)
+        {
+            UNUSED_PARAMETER(scene);
+            UNUSED_PARAMETER(ai_scene);
+        }
     }  // namespace Pipeline
 }  // namespace vEngine

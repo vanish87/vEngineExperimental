@@ -13,10 +13,6 @@
 #include <vector>
 #include <unordered_map>
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
 #include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
@@ -62,6 +58,11 @@ namespace vEngine
                 );
             }
         };
+		struct VertexWeight
+		{
+			uint32_t index;
+			float weight;
+		};
 
         enum class MeshPrimitive
         {
@@ -75,7 +76,7 @@ namespace vEngine
             // static_assert(std::is_base_of<IElement, T>::value, "T must derived from IElement");
         };
         // template <typename T = Vertex>
-        class VENGINE_API Mesh : public GameObject, public IResource
+        class VENGINE_API Mesh : public GameObject
         {
             // static_assert(std::is_base_of<IElement, V>::value, "T must derived from IElement");
 
@@ -83,18 +84,11 @@ namespace vEngine
                 /// \brief Construct a new empty Mesh object
                 ///
                 Mesh();
-                /// \brief Construct a new Mesh object with aiMesh
-                /// 
-                /// \param mesh aiMesh to load
-                Mesh(const aiMesh* mesh);
                 virtual ~Mesh();
-                void Load(const aiMesh* mesh);
                 void UpdateGPUBuffer();
-                float4x4 AiMatrixToFloat4x4(aiMatrix4x4 mat);
 
-                bool Load(const ResourceDescriptorSharedPtr desc) override;
-                ResourceState CurrentState() override;
-                ResourceState current_state_ = ResourceState::Unknown;
+                void SetVertexData(const std::vector<Vertex> vertices, const std::vector<uint32_t> indices);
+                void SetBoneData(const std::string name, const int id, std::vector<VertexWeight> weights, float4x4 inverse_bind_pose_matrix_);
 
                 // Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
 

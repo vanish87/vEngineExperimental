@@ -238,12 +238,13 @@ namespace vEngine
 
         void Scene::HandleMeshes(const aiScene* scene)
         {
-            for (uint32_t mid = 0; mid < scene->mNumMeshes; ++mid)
-            {
-                auto mesh = scene->mMeshes[mid];
-                auto mesh_go = GameObjectFactory::Create<Mesh>(mesh);
-                this->meshes_[mid] = mesh_go;
-            }
+            UNUSED_PARAMETER(scene);
+            // for (uint32_t mid = 0; mid < scene->mNumMeshes; ++mid)
+            // {
+            //     // auto mesh = scene->mMeshes[mid];
+            //     // auto mesh_go = GameObjectFactory::Create<Mesh>(mesh);
+            //     // this->meshes_[mid] = mesh_go;
+            // }
 
             PRINT("num of meshes: " << this->meshes_.size());
         }

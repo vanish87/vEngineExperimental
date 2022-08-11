@@ -24,31 +24,23 @@ namespace vEngine
 
         MeshSharedPtr Mesh::Default(const MeshPrimitive primitive, const int sub_div)
         {
-            // UNUSED_PARAMETER(primitive);
+            UNUSED_PARAMETER(primitive);
             UNUSED_PARAMETER(sub_div);
             static auto m = std::make_shared<Mesh>();
-            if (m->CurrentState() != ResourceState::Loaded)
-            {
-                switch (primitive)
-                {
-                    case MeshPrimitive::Cube:
-                        GenerateCube(m);
-                        break;
+            // if (m->CurrentState() != ResourceState::Loaded)
+            // {
+            //     switch (primitive)
+            //     {
+            //         case MeshPrimitive::Cube:
+            //             GenerateCube(m);
+            //             break;
 
-                    default:
-                        NOT_IMPL_ASSERT;
-                        break;
-                }
-            }
+            //         default:
+            //             NOT_IMPL_ASSERT;
+            //             break;
+            //     }
+            // }
             return m;
-        }
-        bool Mesh::Load(const ResourceDescriptorSharedPtr desc)
-        {
-            return false;
-        }
-        ResourceState Mesh::CurrentState()
-        {
-            return this->current_state_;
         }
 
         /// constructor detailed defintion,
@@ -56,11 +48,6 @@ namespace vEngine
         Mesh::Mesh() : vertex_buffer_{nullptr}, index_buffer_{nullptr}
         {
             // PRINT("mesh object created");
-        }
-        Mesh::Mesh(const aiMesh* mesh) : vertex_buffer_{nullptr}, index_buffer_{nullptr}
-        {
-            this->Load(mesh);
-            PRINT("Vertices count " << this->vertex_data_.size() << " indices count " << this->index_data_.size() << " joint count " << this->bone_data_.size());
         }
 
         Mesh::~Mesh()
@@ -76,132 +63,68 @@ namespace vEngine
             return m;
         }
 
-        float4x4 Mesh::AiMatrixToFloat4x4(aiMatrix4x4 mat)
+        void Mesh::SetVertexData(const std::vector<Vertex> vertices, const std::vector<uint32_t> indices)
         {
-            return Math::Transpose(float4x4(mat[0][0], mat[0][1], mat[0][2], mat[0][3], mat[1][0], mat[1][1], mat[1][2], mat[1][3], mat[2][0], mat[2][1], mat[2][2], mat[2][3], mat[3][0], mat[3][1],
-                                            mat[3][2], mat[3][3]));
+            this->vertex_data_ = vertices;
+            this->index_data_ = indices;
         }
-
-        void Mesh::Load(const aiMesh* mesh)
+        void Mesh::SetBoneData(const std::string name, const int id, std::vector<VertexWeight> weights, float4x4 inverse_bind_pose_matrix)
         {
-            CHECK_ASSERT_NOT_NULL(mesh);
+            auto bone = GameObjectFactory::Create<Animation::BoneComponent>();
+            bone->description_.name = name;
+            auto go = bone->GO();
+            go->id_ = id;
+            go->inverse_bind_pose_matrix_ = inverse_bind_pose_matrix;
 
-            auto hasPos = mesh->HasPositions();
-            auto hasUV = mesh->HasTextureCoords(0);
-            auto hasNormal = mesh->HasNormals();
-            // auto hasBones = mesh->HasBones();
-
-            this->vertex_data_.clear();
-            this->index_data_.clear();
-            this->bone_data_.clear();
-
-            this->description_.name = mesh->mName.data;
-
-            for (uint32_t i = 0; i < mesh->mNumVertices; ++i)
+            for (auto& w : weights)
             {
-                Vertex v;
-                v.pos = hasPos ? float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z) : float3(0, 0, 0);
-                // v.pos *= 0.2f;
-                // v.pos.z() = 0;
-                v.normal = hasNormal ? float3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z) : float3(0, 0, 0);
-                v.uv = hasUV ? float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y) : float2(0, 0);
-                v.color = float4(1, 1, 1, 1);
+                auto vid = w.index;
+                auto vweight = w.weight;
 
-                v.bone_id_0 = v.bone_id_1 = int4(-1, -1, -1, -1);
-                v.bone_weight_0 = v.bone_weight_1 = float4::Zero();
+                auto& v = this->vertex_data_[vid];
+                // statics[vid]++;
+                // CHECK_ASSERT(statics[vid] < 8);
 
-                this->vertex_data_.emplace_back(v);
-            }
-
-            for (uint32_t i = 0; i < mesh->mNumFaces; ++i)
-            {
-                auto f = mesh->mFaces[i];
-                for (uint32_t fi = 0; fi < f.mNumIndices; ++fi)
+                for (uint32_t vcount = 0; vcount < 8; ++vcount)
                 {
-                    this->index_data_.emplace_back(f.mIndices[fi]);
-                }
-            }
-            // if (hasBones)
-            {
-                std::unordered_map<int, int> statics;
-                for (uint32_t b = 0; b < mesh->mNumBones; ++b)
-                {
-                    PRINT(mesh->mName.data << " has bones/joint " << mesh->mBones[b]->mName.data << " with " << mesh->mBones[b]->mNumWeights << " weights");
-                    // mesh->mBones[b]->mOffsetMatrix will transform vertex from model space to pose/joint local space;
-                    // aiBone's document is confusing
-                    // https://learnopengl.com/Guest-Articles/2020/Skeletal-Animation is CORRECT
-                    auto ai_bone = mesh->mBones[b];
-
-                    auto comp = GameObjectFactory::Create<Animation::BoneComponent>();
-                    auto bone = comp->GO();
-                    bone->description_.name = ai_bone->mName.data;
-                    comp->description_.name = ai_bone->mName.data;
-                    bone->id_ = b;
-                    bone->inverse_bind_pose_matrix_ = this->AiMatrixToFloat4x4(ai_bone->mOffsetMatrix);
-
-                    for (uint32_t wid = 0; wid < ai_bone->mNumWeights; ++wid)
+                    if (vcount < 4)
                     {
-                        auto aiWeight = ai_bone->mWeights[wid];
-                        Animation::VertexWeight w;
-                        w.index = aiWeight.mVertexId;
-                        w.weight = aiWeight.mWeight;
-                        bone->weights.emplace_back(w);
-
-                        auto vid = w.index;
-                        auto vweight = w.weight;
-
-                        auto& v = this->vertex_data_[vid];
-                        statics[vid]++;
-                        CHECK_ASSERT(statics[vid] < 8);
-
-                        for (uint32_t vcount = 0; vcount < 8; ++vcount)
+                        if (v.bone_id_0[vcount] != -1)
                         {
-                            if (vcount < 4)
-                            {
-                                if (v.bone_id_0[vcount] != -1)
-                                {
-                                    // CHECK_ASSERT(vcount < 3);
-                                    continue;
-                                }
-
-                                v.bone_id_0[vcount] = b;
-                                v.bone_weight_0[vcount] = vweight;
-                                break;
-                            }
-                            else
-                            {
-                                auto index = vcount % 4;
-                                if (v.bone_id_1[index] != -1)
-                                {
-                                    // CHECK_ASSERT(vcount < 3);
-                                    continue;
-                                }
-
-                                v.bone_id_1[index] = b;
-                                v.bone_weight_1[index] = vweight;
-                                break;
-                            }
+                            // CHECK_ASSERT(vcount < 3);
+                            continue;
                         }
+
+                        v.bone_id_0[vcount] = id;
+                        v.bone_weight_0[vcount] = vweight;
+                        break;
                     }
+                    else
+                    {
+                        auto index = vcount % 4;
+                        if (v.bone_id_1[index] != -1)
+                        {
+                            // CHECK_ASSERT(vcount < 3);
+                            continue;
+                        }
 
-                    CHECK_ASSERT(this->bone_data_.find(bone->description_.name) == this->bone_data_.end());
-                    this->bone_data_[bone->description_.name] = comp;
-
-                    PRINT("Bone " << bone->description_.name << " id " << bone->id_);
+                        v.bone_id_1[index] = id;
+                        v.bone_weight_1[index] = vweight;
+                        break;
+                    }
                 }
-                auto max = 0;
-                for (auto& s : statics) max = Math::Max(max, s.second);
-                PRINT("max vertex count for blend " << max);
             }
+            CHECK_ASSERT(this->bone_data_.find(bone->description_.name) == this->bone_data_.end());
+            this->bone_data_[bone->description_.name] = bone;
 
-            this->current_state_ = ResourceState::Loaded;
+            PRINT("Bone " << bone->description_.name << " id " << id);
         }
 
         /// Create GPU related buffer
         /// ie. Index/Vertice buffer for rendering
         void Mesh::UpdateGPUBuffer()
         {
-            if (this->vertex_buffer_ == nullptr && this->CurrentState() == ResourceState::Loaded)
+            if (this->vertex_buffer_ == nullptr)
             {
                 // PRINT("Create mesh vertex Buffer");
                 GraphicsBufferDescriptor desc;
@@ -225,7 +148,7 @@ namespace vEngine
                 this->vertex_buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
             }
 
-            if (this->index_buffer_ == nullptr && this->CurrentState() == ResourceState::Loaded)
+            if (this->index_buffer_ == nullptr)
             {
                 // PRINT("Create mesh index Buffer");
                 GraphicsBufferDescriptor desc;
@@ -342,7 +265,6 @@ namespace vEngine
             mesh->index_data_.push_back(7);
             mesh->index_data_.push_back(6);
 
-            mesh->current_state_ = ResourceState::Loaded;
         }
     }  // namespace Core
 
