@@ -15,6 +15,7 @@
 #include <engine.hpp>
 #include <filesystem>
 
+
 struct aiNode;
 struct aiScene;
 
@@ -25,13 +26,13 @@ namespace vEngine
         class AssimpHandler
         {
             public:
-                SceneSharedPtr LoadFromAssimp(const std::filesystem::path path);
+                Core::SceneSharedPtr LoadFromAssimp(const std::filesystem::path path);
 
             private:
-                void HandleCameras(const aiScene* scene);
-                void HandleMaterials(const aiScene* scene);
-                void HandleMeshes(const aiScene* scene);
-                void HandleAnimations(const aiScene* scene);
+                void HandleCameras(Core::SceneSharedPtr scene, const aiScene* ai_scene);
+                void HandleMaterials(Core::SceneSharedPtr scene, const aiScene* ai_scene);
+                void HandleMeshes(Core::SceneSharedPtr scene, const aiScene* ai_scene);
+                void HandleAnimations(Core::SceneSharedPtr scene, const aiScene* ai_scene);
         };
     }  // namespace Pipeline
 }  // namespace vEngine
