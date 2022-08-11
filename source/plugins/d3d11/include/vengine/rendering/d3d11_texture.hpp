@@ -30,6 +30,8 @@ namespace vEngine
                 D3D11Texture(const TextureDescriptor& desc);
                 D3D11Texture(ComPtr<ID3D11Texture2D> backBuffer);
 
+                void PrepareData() override;
+
                 ComPtr<ID3D11RenderTargetView> AsRTV();
                 ComPtr<ID3D11ShaderResourceView> AsSRV();
                 ComPtr<ID3D11DepthStencilView> AsDSV();

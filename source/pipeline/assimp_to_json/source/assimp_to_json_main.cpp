@@ -56,19 +56,21 @@ int main(int argc, char* argv[])
     // ResourceLoader::GetInstance().AddSearchPath("resource");
     ResourceLoader::GetInstance().AddSearchPath(base_path + "/shader");
 
-    auto asset = GameObjectFactory::Create<Scene>();
+    auto scene = GameObjectFactory::Create<Scene>();
     auto rdesc = std::make_shared<ResourceDescriptor>();
     rdesc->file_path = input;
     rdesc->complete_call_back = [&](IResourceSharedPtr c) {
 
     };
 
-    asset->Load(rdesc);
+    scene->Load(rdesc);
 
     nlohmann::json j;
-    ToJson(j, asset);
+    ToJson(j, scene);
 
     PRINT("Save to"<<output.string());
+
+    FromJson(j, scene);
 
     std::ofstream outfile(output.string());
     outfile<<std::setw(2)<<j<<std::endl;

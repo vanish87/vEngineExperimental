@@ -23,27 +23,23 @@ namespace vEngine
 {
     namespace Rendering
     {
-        struct MaterialResourceDesc : public Core::ResourceDescriptor
-        {
-                std::unordered_map<ShaderType, std::filesystem::path> shaders;
-        };
-
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class VENGINE_API Material : public Core::GameObject, public Core::IResource
+        class VENGINE_API Material : public Core::GameObject
         {
             public:
                 constexpr static auto properties()
                 {
                     return std::tuple_cat(
-                        GameObject::properties(),
+                        GameObject::properties(), 
                         std::make_tuple(
-                            property("pipeline_state", &Material::pipeline_state_)
-                        )
-                    );
+                            property("pipeline_state", &Material::pipeline_state_), 
+                            property("textures", &Material::textures_)
+                            ));
                 };
+
             public:
                 static MaterialSharedPtr Default();
 
@@ -52,11 +48,9 @@ namespace vEngine
                 ~Material();
                 // void SetShader(const std::filesystem::path path, const ShaderType type);
 
-                bool Load(const Core::ResourceDescriptorSharedPtr descriptor) override;
-                Core::ResourceState CurrentState() override;
-
                 void UpdateGPUResource();
-
+                void BindShader(const ShaderType type, const ShaderSharedPtr shader);
+                void BindTexture(const std::string name, const TextureSharedPtr texture);
 
                 // color
                 // parameter
@@ -71,14 +65,13 @@ namespace vEngine
                 // all vs/ps related data is stored in PipelineState
                 // std::string vs_name_;
                 // std::string ps_name_;
-                Core::ResourceState current_state_ = Core::ResourceState::Unknown;
 
                 Rendering::PipelineStateSharedPtr pipeline_state_;
 
                 // maybe layout like D3D11_INPUT_ELEMENT_DESC
 
                 Rendering::GraphicsBufferSharedPtr constant_buffer_;
-                std::vector<Rendering::TextureSharedPtr> textures_;
+                std::unordered_map<std::string, Rendering::TextureSharedPtr> textures_;
 
                 // parameter example
                 // template <typename T>
@@ -97,7 +90,7 @@ namespace vEngine
                 // typedef ParameterMap<float3> Normal;
                 // typedef ParameterMap<float> Parameter;
         };
-    }  // namespace Core
+    }  // namespace Rendering
 }  // namespace vEngine
 
 #endif /* _VENGINE_CORE_MATERIAL_HPP */

@@ -97,6 +97,15 @@ namespace vEngine
 
         struct RasterizerDescriptor
         {
+                constexpr static auto properties()
+                {
+                    return std::make_tuple(
+                        // Core::property("shaders", &PipelineStateDescriptor::shaders)
+                        // Core::property("rasterizer", &RasterizerDescriptor::fill_mode),
+                        // Core::property("depth_stencil", &RasterizerDescriptor::cull_mode)
+                        Core::property("depth_bias", &RasterizerDescriptor::depth_bias)
+                    );
+                };
                 FillMode fill_mode = FillMode::Solid;
                 CullMode cull_mode = CullMode::Back;
                 FrontFacingDirection front_facing = FrontFacingDirection::Clockwise;
@@ -111,6 +120,15 @@ namespace vEngine
 
         struct DepthStencilDescriptor
         {
+                constexpr static auto properties()
+                {
+                    return std::make_tuple(
+                        // Core::property("shaders", &PipelineStateDescriptor::shaders)
+                        // Core::property("rasterizer", &RasterizerDescriptor::fill_mode),
+                        // Core::property("depth_stencil", &RasterizerDescriptor::cull_mode)
+                        Core::property("depth_enabled", &DepthStencilDescriptor::depth_enabled)
+                    );
+                };
                 bool depth_enabled = true;
                 DepthWriteMask depth_write_mask = DepthWriteMask::All;
                 ComparisonFunc comparison_func = ComparisonFunc::Less;
@@ -131,6 +149,14 @@ namespace vEngine
         };
         struct TextureDescriptor
         {
+                constexpr static auto properties()
+                {
+                    return std::make_tuple(
+                        Core::property("width", &TextureDescriptor::width),
+                        Core::property("height", &TextureDescriptor::height),
+                        Core::property("raw_data", &TextureDescriptor::raw_data)
+                    );
+                };
                 TextureDimension dimension;
                 uint32_t width;
                 uint32_t height;
@@ -141,6 +167,8 @@ namespace vEngine
 
                 GPUSubResource resource;
                 GraphicsBufferSlot slot;
+
+                std::vector<byte> raw_data;
 
                 static const TextureDescriptor& Default()
                 {
@@ -190,12 +218,14 @@ namespace vEngine
                     return std::tuple_cat(
                         // GameObject::properties(),
                         std::make_tuple(
-                            Core::property("shaders", &PipelineStateDescriptor::shaders)
+                            // Core::property("shaders", &PipelineStateDescriptor::shaders)
+                            Core::property("rasterizer", &PipelineStateDescriptor::rasterizer_descriptor),
+                            Core::property("depth_stencil", &PipelineStateDescriptor::depth_stencil_descriptor)
                         )
                     );
                 };
                 // similar design as https://docs.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_graphics_pipeline_state_desc
-                std::unordered_map<ShaderType, std::filesystem::path> shaders;
+                // std::unordered_map<ShaderType, std::filesystem::path> shaders;
                 RasterizerDescriptor rasterizer_descriptor;
                 DepthStencilDescriptor depth_stencil_descriptor;
         };

@@ -31,6 +31,8 @@ namespace vEngine
                 /// \brief brief constructor description.
                 D3D11PipelineState(const PipelineStateDescriptor& desc);
 
+                void PrepareData() override;
+
                 ComPtr<ID3D11VertexShader> vs_;
                 ComPtr<ID3D11PixelShader> ps_;
                 ComPtr<ID3D11InputLayout> layout_;

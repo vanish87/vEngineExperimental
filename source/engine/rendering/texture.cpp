@@ -15,6 +15,7 @@ namespace vEngine
 {
     namespace Rendering
     {
+        using namespace Core;
 
         /// constructor detailed defintion,
         /// should be 2 lines
@@ -23,6 +24,21 @@ namespace vEngine
             this->descriptor_ = desc;
         }
         Texture::~Texture() {}
+
+        void Texture::PrepareData() {}
+
+        ResourceState Texture::CurrentState()
+        {
+            return this->current_state_;
+        }
+        bool Texture::Load(const ResourceDescriptorSharedPtr descriptor)
+        {
+            UNUSED_PARAMETER(descriptor);
+            // auto path = descriptor->file_path;
+
+            // std::ifstream fin(path.string());
+            return false;
+        }
 
         /// A detailed function description, it
         /// should be 2 lines at least.

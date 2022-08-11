@@ -30,6 +30,7 @@
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/transform_component.hpp>
 #include <vengine/rendering/material.hpp>
+#include <vengine/rendering/texture.hpp>
 
 namespace vEngine
 {

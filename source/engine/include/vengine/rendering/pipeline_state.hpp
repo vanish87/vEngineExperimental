@@ -16,6 +16,7 @@
 #include <engine.hpp>
 #include <vengine/rendering/data_struct.hpp>
 #include <vengine/data/meta.hpp>
+#include <vengine/core/game_object.hpp>
 
 namespace vEngine
 {
@@ -27,13 +28,13 @@ namespace vEngine
         /// constant buffer.
         /// It could be used in cpu and/or gpu
         // template<typename T>
-        class VENGINE_API PipelineState
+        class VENGINE_API PipelineState: public Core::GameObject
         {
             public:
                 constexpr static auto properties()
                 {
                     return std::tuple_cat(
-                        // GameObject::properties(),
+                        Core::GameObject::properties(),
                         std::make_tuple(
                             Core::property("descriptor", &PipelineState::descriptor_),
                             Core::property("shaders", &PipelineState::shaders_)
@@ -44,10 +45,8 @@ namespace vEngine
                 /// \brief brief constructor description.
                 PipelineState(const PipelineStateDescriptor& desc);
                 virtual ~PipelineState();
-                bool Load(ShaderType type, std::filesystem::path path);
 
-                /// class variable description
-                // int public_variable_;
+                virtual void PrepareData();
 
                 PipelineStateDescriptor descriptor_;
                 std::unordered_map<ShaderType, ShaderSharedPtr> shaders_;

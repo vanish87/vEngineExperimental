@@ -16,6 +16,9 @@
 #include <engine.hpp>
 #include <vengine/rendering/data_struct.hpp>
 #include <vengine/rendering/data_format.hpp>
+#include <vengine/core/game_object.hpp>
+#include <vengine/core/iresource.hpp>
+#include <vengine/data/meta.hpp>
 
 namespace vEngine
 {
@@ -27,12 +30,29 @@ namespace vEngine
 		/// constant buffer.
 		/// It could be used in cpu and/or gpu
 		// template<typename T>
-        class VENGINE_API Texture
+        class VENGINE_API Texture: public Core::GameObject, public Core::IResource
         {
             public:
+
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        Core::GameObject::properties(),
+                        std::make_tuple(
+                            Core::property("descriptor", &Texture::descriptor_)
+                        )
+                    );
+                };
                 /// \brief brief constructor description.
                 Texture(const TextureDescriptor& desc);
                 virtual ~Texture();
+
+                bool Load(const Core::ResourceDescriptorSharedPtr descriptor) override;
+                Core::ResourceState CurrentState() override;
+
+                Core::ResourceState current_state_ = Core::ResourceState::Unknown;
+
+                virtual void PrepareData();
 
                 /// class variable description
                 // int public_variable_;

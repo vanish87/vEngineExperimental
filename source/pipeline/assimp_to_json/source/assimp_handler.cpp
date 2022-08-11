@@ -7,6 +7,12 @@
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/core/scene.hpp>
 #include <vengine/core/mesh.hpp>
+#include <vengine/core/resource_loader.hpp>
+#include <vengine/rendering/shader.hpp>
+#include <vengine/rendering/material.hpp>
+
+#include <vengine/core/context.hpp>
+#include <vengine/rendering/render_engine.hpp>
 
 namespace vEngine
 {
@@ -58,79 +64,91 @@ namespace vEngine
         {
             UNUSED_PARAMETER(scene);
             UNUSED_PARAMETER(ai_scene);
-            // for (uint32_t mid = 0; mid < scene->mNumMaterials; ++mid)
-            // {
-            //     auto ai_mat = scene->mMaterials[mid];
-            //     auto mat = GameObjectFactory::Create<Material>();
-            //     auto rdesc = std::make_shared<MaterialResourceDesc>();
-            //     rdesc->shaders[ShaderType::VS] = vs_file;
-            //     rdesc->shaders[ShaderType::PS] = ps_file;
-            //     mat->Load(rdesc);
-            //     this->materials_.emplace_back(mat);
-            //     aiString szPath;
-            //     if (AI_SUCCESS == ai_mat->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), szPath))
-            //     {
-            //         auto texture_path = std::filesystem::path(ResourceLoader::GetInstance().GetFilePath(szPath.data));
-            //         if (this->textures_.find(texture_path.string()) == this->textures_.end())
-            //         {
-            //             std::vector<byte> out;
+            auto vs = GameObjectFactory::Create<Shader>();
+            auto vs_desc = std::make_shared<ResourceDescriptor>();
+            vs_desc->file_path = ResourceLoader::GetInstance().GetFilePath("vs.hlsl");
+            vs->Load(vs_desc);
 
-            //             uint32_t width = 0;
-            //             uint32_t height = 0;
-            //             auto format = DataFormat::RGBA32;
-            //             if (texture_path.extension() == ".png")
-            //             {
-            //                 auto error = lodepng::decode(out, width, height, texture_path.string());
-            //                 CHECK_ASSERT(error == 0);
-            //             }
-            //             else if (texture_path.extension() == ".tga")
-            //             {
-            //                 FILE* f;
-            //                 auto error = fopen_s(&f, texture_path.string().c_str(), "rb");
-            //                 CHECK_ASSERT(error == 0);
+            auto ps = GameObjectFactory::Create<Shader>();
+            auto ps_desc = std::make_shared<ResourceDescriptor>();
+            ps_desc->file_path = ResourceLoader::GetInstance().GetFilePath("ps.hlsl");
+            ps->Load(ps_desc);
 
-            //                 tga::StdioFileInterface file(f);
-            //                 tga::Decoder decoder(&file);
-            //                 tga::Header header;
-            //                 if (!decoder.readHeader(header)) CHECK_ASSERT(false);
+            for (uint32_t mid = 0; mid < ai_scene->mNumMaterials; ++mid)
+            {
+                auto ai_mat = ai_scene->mMaterials[mid];
+                auto mat = GameObjectFactory::Create<Material>();
+                mat->BindShader(ShaderType::VS, vs);
+                mat->BindShader(ShaderType::PS, ps);
 
-            //                 tga::Image image;
-            //                 image.bytesPerPixel = header.bytesPerPixel();
-            //                 image.rowstride = header.width * header.bytesPerPixel();
+                scene->AddMaterial(mat);
+                
+                aiString szPath;
+                if (AI_SUCCESS == ai_mat->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), szPath))
+                {
+                    auto texture_path = ResourceLoader::GetInstance().GetFilePath(szPath.data);
+                    if (!scene->HasTexture(texture_path.string()))
+                    {
+                        std::vector<byte> out;
 
-            //                 out.resize(image.rowstride * header.height);
-            //                 image.pixels = &out[0];
+                        uint32_t width = 0;
+                        uint32_t height = 0;
+                        auto format = DataFormat::RGBA32;
+                        if (texture_path.extension() == ".png")
+                        {
+                            auto error = lodepng::decode(out, width, height, texture_path.string());
+                            CHECK_ASSERT(error == 0);
+                        }
+                        else if (texture_path.extension() == ".tga")
+                        {
+                            FILE* f;
+                            auto error = fopen_s(&f, texture_path.string().c_str(), "rb");
+                            CHECK_ASSERT(error == 0);
 
-            //                 if (!decoder.readImage(header, image, nullptr)) CHECK_ASSERT(false);
+                            tga::StdioFileInterface file(f);
+                            tga::Decoder decoder(&file);
+                            tga::Header header;
+                            if (!decoder.readHeader(header)) CHECK_ASSERT(false);
 
-            //                 width = header.width;
-            //                 height = header.height;
-            //             }
-            //             else
-            //             {
-            //                 PRINT_AND_BREAK("texture file " << texture_path << " not supported");
-            //             }
+                            tga::Image image;
+                            image.bytesPerPixel = header.bytesPerPixel();
+                            image.rowstride = header.width * header.bytesPerPixel();
 
-            //             TextureDescriptor tdesc;
-            //             tdesc.width = width;
-            //             tdesc.height = height;
-            //             tdesc.depth = 1;
-            //             tdesc.format = format;
-            //             tdesc.dimension = TextureDimension::TD_2D;
-            //             tdesc.type = GraphicsResourceType::TextureR;
-            //             tdesc.usage = GraphicsResourceUsage::GPU_Read_Only;
-            //             tdesc.resource.data = out.data();
-            //             tdesc.resource.pitch = sizeof(byte) * GetByteSize(format) * width;
-            //             tdesc.slot = GraphicsBufferSlot::Slot0;
+                            out.resize(image.rowstride * header.height);
+                            image.pixels = &out[0];
 
-            //             auto tex = Context::GetInstance().GetRenderEngine().Create(tdesc);
-            //             this->textures_[texture_path.string()] = tex;
-            //             PRINT(texture_path.relative_path().string() << " Loaded");
-            //         }
+                            if (!decoder.readImage(header, image, nullptr)) CHECK_ASSERT(false);
 
-            //         mat->textures_.push_back(this->textures_[texture_path.string()]);
-            //     }
-            // }
+                            width = header.width;
+                            height = header.height;
+                        }
+                        else
+                        {
+                            PRINT_AND_BREAK("texture file " << texture_path << " not supported");
+                        }
+
+                        TextureDescriptor tdesc;
+                        tdesc.raw_data = out;
+                        tdesc.width = width;
+                        tdesc.height = height;
+                        tdesc.depth = 1;
+                        tdesc.format = format;
+                        tdesc.dimension = TextureDimension::TD_2D;
+                        tdesc.type = GraphicsResourceType::TextureR;
+                        tdesc.usage = GraphicsResourceUsage::GPU_Read_Only;
+                        tdesc.resource.data = out.data();
+                        tdesc.resource.pitch = sizeof(byte) * GetByteSize(format) * width;
+                        tdesc.slot = GraphicsBufferSlot::Slot0;
+
+                        auto tex = Context::GetInstance().GetRenderEngine().Create(tdesc);
+                        scene->SetTexture(texture_path.string(), tex);
+
+                        PRINT(texture_path.relative_path().string() << " Loaded");
+                    }
+
+                    mat->BindTexture("Difuse", scene->GetTexture(texture_path.string()));
+                }
+            }
             // if (this->materials_.size() == 0)
             // {
             //     PRINT("no materials for scene, add a default material");
@@ -164,8 +182,6 @@ namespace vEngine
                 {
                     Vertex v;
                     v.pos = hasPos ? float3(ai_mesh->mVertices[i].x, ai_mesh->mVertices[i].y, ai_mesh->mVertices[i].z) : float3(0, 0, 0);
-                    // v.pos *= 0.2f;
-                    // v.pos.z() = 0;
                     v.normal = hasNormal ? float3(ai_mesh->mNormals[i].x, ai_mesh->mNormals[i].y, ai_mesh->mNormals[i].z) : float3(0, 0, 0);
                     v.uv = hasUV ? float2(ai_mesh->mTextureCoords[0][i].x, ai_mesh->mTextureCoords[0][i].y) : float2(0, 0);
                     v.color = float4(1, 1, 1, 1);
@@ -186,15 +202,14 @@ namespace vEngine
 
                 mesh->SetVertexData(vertices, indices);
 
-                for (uint32_t b = 0; b < ai_mesh->mNumBones; ++b)
+                for (uint32_t bid = 0; bid < ai_mesh->mNumBones; ++bid)
                 {
                     // mesh->mBones[b]->mOffsetMatrix will transform vertex from model space to pose/joint local space;
                     // aiBone's document is confusing
                     // https://learnopengl.com/Guest-Articles/2020/Skeletal-Animation is CORRECT
-                    auto ai_bone = ai_mesh->mBones[b];
+                    auto ai_bone = ai_mesh->mBones[bid];
 
                     auto name = ai_bone->mName.data;
-                    auto id = b;
                     auto offset = this->AiMatrixToFloat4x4(ai_bone->mOffsetMatrix);
                     auto weights = std::vector<VertexWeight>();
 
@@ -209,9 +224,11 @@ namespace vEngine
                         weights.emplace_back(w);
                     }
 
-                    mesh->SetBoneData(name, id, weights, offset);
+                    mesh->SetBoneData(name, bid, weights, offset);
                 }
+                scene->SetMesh(mid, mesh);
             }
+
         }
         void AssimpHandler::HandleAnimations(Core::SceneSharedPtr scene, const aiScene* ai_scene)
         {

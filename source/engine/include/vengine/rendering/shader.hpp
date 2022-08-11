@@ -14,6 +14,8 @@
 #include <vector>
 #include <engine.hpp>
 #include <vengine/rendering/data_struct.hpp>
+#include <vengine/core/iresource.hpp>
+#include <vengine/core/game_object.hpp>
 
 namespace vEngine
 {
@@ -23,34 +25,42 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class VENGINE_API Shader
+        class VENGINE_API Shader : public Core::GameObject, public Core::IResource
         {
+            public:
+
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        Core::GameObject::properties(),
+                        std::make_tuple(
+                            Core::property("path", &Shader::path), 
+                            Core::property("type", &Shader::type), 
+                            Core::property("content", &Shader::content)
+                        )
+                    );
+                };
             public:
                 /// \brief brief constructor description.
                 Shader();
-                Shader(const std::filesystem::path path, const ShaderType type) : path{path}, type{type} {};
                 virtual ~Shader() {}
 
-            //TODO check if shader should use shared_ptr
-                constexpr static auto properties()
-                {
-                    return std::make_tuple(
-                        // GameObject::properties(),
-                        Core::property("path", &Shader::path), 
-                        Core::property("type", &Shader::type),
-                        Core::property("content", &Shader::content)
-                        );
-                };
+                bool Load(const Core::ResourceDescriptorSharedPtr descriptor) override;
+                Core::ResourceState CurrentState() override;
+
+                Core::ResourceState current_state_ = Core::ResourceState::Unknown;
+
                 std::filesystem::path path;
                 std::vector<char> content;
                 ShaderType type;
-        public:
-            /// \brief A brief function description.
-            ///
-            /// \param p1 Description for p1.
-            /// \param p2 Description for p2.
-            /// \return Description for return value.
-            int GetVariable(int p1, float p2);
+
+            public:
+                /// \brief A brief function description.
+                ///
+                /// \param p1 Description for p1.
+                /// \param p2 Description for p2.
+                /// \return Description for return value.
+                int GetVariable(int p1, float p2);
         };
     }  // namespace Rendering
 }  // namespace vEngine

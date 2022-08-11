@@ -52,6 +52,8 @@ namespace vEngine
 
                 void SetMesh(const int id, const MeshSharedPtr mesh);
                 void SetTexture(const std::string path, const Rendering::TextureSharedPtr texture);
+                bool HasTexture(const std::string path);
+                Rendering::TextureSharedPtr GetTexture(const std::string path);
 
             public:
                 ResourceState current_state_;
