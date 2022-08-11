@@ -7,7 +7,12 @@
 /// \author author_name
 /// \version version_number
 /// \date xxxx-xx-xxx
+
 #include <vengine/core/scene.hpp>
+
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 #include <external/lodepng.h>
 #include <external/tga.h>
@@ -27,106 +32,295 @@
 #include <vengine/core/mesh.hpp>
 #include <vengine/core/mesh_renderer_component.hpp>
 #include <vengine/core/resource_loader.hpp>
-#include <vengine/core/iresource.hpp>
 #include <vengine/core/transform_component.hpp>
-#include <vengine/core/asset_component.hpp>
 
-#include <vengine/data/meta.hpp>
-#include <vengine/data/json.hpp>
-
-#include <fstream>
-
-// #include <vengine/rendering/render_engine.hpp>
 /// A detailed namespace description, it
 /// should be 2 lines at least.
 namespace vEngine
 {
     namespace Core
     {
+        using namespace Animation;
         using namespace Rendering;
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Scene::Scene() : GameNode()
+        Scene::Scene() {}
+        Scene::~Scene() {}
+        const GameNodeSharedPtr Scene::GetRoot() const
         {
-            // this->file_path_ = file_path;
-            // this->name_ = file_path;
-            // this->state_ = ResourceState::Unknown;
-            // this->root_ = std::make_shared<GameNode>();
+            return this->root_;
         }
-        void Scene::LoadFile(const std::filesystem::path file_path)
+        const CameraSharedPtr Scene::GetCamera(const uint32_t index) const
         {
-            PRINT("Loading " << file_path);
+            return this->cameras_[index];
+        }
+        const std::vector<AnimationClipSharedPtr> Scene::GetAnimations() const
+        {
+            return this->animation_clips_;
+        }
+        bool Scene::Load(const ResourceDescriptorSharedPtr descriptor)
+        {
+            auto f = descriptor->file_path.string();
+            Assimp::Importer importer;
+            auto scene = importer.ReadFile(f, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
 
-            auto m = GameObjectFactory::Default<Mesh>(MeshPrimitive::Sphere, 32);
+            this->HandleMeshes(scene);
+            this->HandleMaterials(scene);
+            // this->CreateTextures(scene);
+            this->HandleCameras(scene);
+            this->HandleAnimations(scene);
 
-            auto asset = GameObjectFactory::Create<Asset>();
-            auto rdesc = std::make_shared<ResourceDescriptor>();
-            rdesc->file_path = file_path;
-            rdesc->complete_call_back = 
-            [&](IResourceSharedPtr c)
+            this->root_ = this->HandleNode(scene->mRootNode, scene);
+            this->root_->description_.name = "Assimp File: " + f;
+            // this->AddChild(root);
+            this->current_state_ = ResourceState::Loaded;
+            return true;
+        }
+        ResourceState Scene::CurrentState()
+        {
+            return this->current_state_;
+        }
+        GameNodeSharedPtr Scene::HandleNode(const aiNode* node, const aiScene* scene)
+        {
+            auto gn = GameObjectFactory::Create<TransformComponent>();
+
+            this->HandleBoneNode(node, gn);
+
+            gn->description_.name = node->mName.data;
+            // set transformation here
+            auto transform = node->mTransformation;
+            // parent->AddChild(game_node);
+            std::string parentName = "None";
+            if (node->mParent != nullptr) parentName = node->mParent->mName.data;
+            PRINT("aiNode " << node->mName.data << " parent :" << parentName);
+
+            for (uint32_t i = 0; i < node->mNumMeshes; ++i)
             {
-                GameNodeDescription gndesc;
-                gndesc.type = GameNodeType::Asset;
-                auto asset_gn = GameNodeFactory::Create(gndesc);
-                auto asset_comp = asset_gn->FirstOf<AssetComponent>();
-                auto asset = std::dynamic_pointer_cast<Asset>(c);
-                asset_comp->Reset(asset);
+                auto mesh_node = GameObjectFactory::Create<GameNode>();
+                // scene_meshes_ contains same mesh data as they are in aiScene
+                auto scene_mesh_id = node->mMeshes[i];
 
-                asset_gn->AddChild(asset->GetRoot());
-                this->AddChild(asset_gn);
+                auto ai_mesh = scene->mMeshes[scene_mesh_id];
+                auto mesh = this->meshes_[scene_mesh_id];
+                PRINT("aiNode " << node->mName.data << " with ai mesh name " << ai_mesh->mName.data);
 
-                auto main_camera = asset->GetCamera(0);
-                gndesc.type = GameNodeType::Camera;
-                auto camera_gn = GameNodeFactory::Create(gndesc);
-                camera_gn->FirstOf<CameraComponent>()->Reset(main_camera);
-                camera_gn->FirstOf<TransformComponent>()->GO()->Translate() = float3(0,100,-120);
-                this->AddChild(camera_gn);
+                auto mesh_component = GameObjectFactory::Create<MeshComponent>();
+                mesh_component->Reset(mesh);
+                mesh_node->AttachComponent(mesh_component);
 
-                gndesc.type = GameNodeType::Animator;
-                auto animator_gn = GameNodeFactory::Create(gndesc);
-                auto animator_comp = animator_gn->FirstOf<Animation::AnimatorComponent>();
-                animator_comp->GO()->SetAnimations(asset->GetAnimations());
-                animator_comp->SetAnimationRoot(asset->GetRoot());
-                this->AddChild(animator_gn);
+                auto mesh_renderer = GameObjectFactory::Create<MeshRendererComponent>();
+                mesh_node->AttachComponent(mesh_renderer);
 
-                auto rot90 = Math::RotateAngleAxis(Math::PI * 0.5f, float3(0, 0, 1));
-                asset->GetRoot()->FirstOf<TransformComponent>()->GO()->Rotation() = rot90;
+                auto mat = this->materials_[ai_mesh->mMaterialIndex];
+                mesh_renderer->GO()->material_ = mat;
 
-                nlohmann::json j;
-                ToJson(j, asset);
-                FromJson(j, asset);
-                // auto new_asset = FromJson<Asset>(j);
-                // PRINT(j.dump());
-                const char* file = "asset.json";
-                std::ofstream outfile(file);
-                outfile<<std::setw(2)<<j<<std::endl;
+                gn->AddChild(mesh_node);
+            }
 
-                asset_gn->TraverseAllChildren<IComponent>(
-                    [&](IComponentSharedPtr comp)
-                    {
-                        comp->SetEnable(true);
-                        return true;
-                    });
-                camera_gn->TraverseAllChildren<IComponent>(
-                    [&](IComponentSharedPtr comp)
-                    {
-                        comp->SetEnable(true);
-                        return true;
-                    });
-                animator_gn->TraverseAllChildren<IComponent>(
-                    [&](IComponentSharedPtr comp)
-                    {
-                        comp->SetEnable(true);
-                        return true;
-                    });
+            for (uint32_t c = 0; c < node->mNumChildren; ++c)
+            {
+                auto child = this->HandleNode(node->mChildren[c], scene);
+                gn->AddChild(child);
+            }
 
-            };
-
-            ResourceLoader::GetInstance().LoadAsync(asset, rdesc);
-
+            return gn;
         }
-        float timer = 0;
+
+        void Scene::HandleCameras(const aiScene* scene)
+        {
+            UNUSED_PARAMETER(scene);
+            // ComponentDescription desc;
+            // auto camera = GameNodeFactory::Create<CameraComponent>(desc);
+            // camera->GO()->target = Context::GetInstance().GetRenderEngine().back_buffer_;
+
+            // GameNodeDescription gndesc;
+            // gndesc.type = GameNodeType::Transform;
+            // auto gn = GameNodeFactory::Create(gndesc);
+            // gn->AttachComponent(camera);
+            // this->cameras_.emplace_back(gn);
+            if (this->cameras_.size() == 0)
+            {
+                auto cam = GameObjectFactory::Default<Camera>();
+                cam->target = Context::GetInstance().GetRenderEngine().back_buffer_;
+                this->cameras_.emplace_back(cam);
+            }
+
+            PRINT("num of cameras: " << this->cameras_.size());
+        };
+
+        void Scene::HandleMaterials(const aiScene* scene)
+        {
+            auto vs_file = ResourceLoader::GetInstance().GetFilePath("vs.hlsl");
+            auto ps_file = ResourceLoader::GetInstance().GetFilePath("ps.hlsl");
+            auto current_path = std::string();
+            for (uint32_t mid = 0; mid < scene->mNumMaterials; ++mid)
+            {
+                auto ai_mat = scene->mMaterials[mid];
+                auto mat = GameObjectFactory::Create<Material>();
+                auto rdesc = std::make_shared<MaterialResourceDesc>();
+                rdesc->shaders[ShaderType::VS] = vs_file;
+                rdesc->shaders[ShaderType::PS] = ps_file;
+                mat->Load(rdesc);
+                this->materials_.emplace_back(mat);
+                aiString szPath;
+                if (AI_SUCCESS == ai_mat->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), szPath))
+                {
+                    auto texture_path = std::filesystem::path(ResourceLoader::GetInstance().GetFilePath(szPath.data));
+                    if (this->textures_.find(texture_path.string()) == this->textures_.end())
+                    {
+                        std::vector<byte> out;
+
+                        uint32_t width = 0;
+                        uint32_t height = 0;
+                        auto format = DataFormat::RGBA32;
+                        if (texture_path.extension() == ".png")
+                        {
+                            auto error = lodepng::decode(out, width, height, texture_path.string());
+                            CHECK_ASSERT(error == 0);
+                        }
+                        else if (texture_path.extension() == ".tga")
+                        {
+                            FILE* f;
+                            auto error = fopen_s(&f, texture_path.string().c_str(), "rb");
+                            CHECK_ASSERT(error == 0);
+
+                            tga::StdioFileInterface file(f);
+                            tga::Decoder decoder(&file);
+                            tga::Header header;
+                            if (!decoder.readHeader(header)) CHECK_ASSERT(false);
+
+                            tga::Image image;
+                            image.bytesPerPixel = header.bytesPerPixel();
+                            image.rowstride = header.width * header.bytesPerPixel();
+
+                            out.resize(image.rowstride * header.height);
+                            image.pixels = &out[0];
+
+                            if (!decoder.readImage(header, image, nullptr)) CHECK_ASSERT(false);
+
+                            width = header.width;
+                            height = header.height;
+                        }
+                        else
+                        {
+                            PRINT_AND_BREAK("texture file " << texture_path << " not supported");
+                        }
+
+                        TextureDescriptor tdesc;
+                        tdesc.width = width;
+                        tdesc.height = height;
+                        tdesc.depth = 1;
+                        tdesc.format = format;
+                        tdesc.dimension = TextureDimension::TD_2D;
+                        tdesc.type = GraphicsResourceType::TextureR;
+                        tdesc.usage = GraphicsResourceUsage::GPU_Read_Only;
+                        tdesc.resource.data = out.data();
+                        tdesc.resource.pitch = sizeof(byte) * GetByteSize(format) * width;
+                        tdesc.slot = GraphicsBufferSlot::Slot0;
+
+                        auto tex = Context::GetInstance().GetRenderEngine().Create(tdesc);
+                        this->textures_[texture_path.string()] = tex;
+                        PRINT(texture_path.relative_path().string() << " Loaded");
+                    }
+
+                    mat->textures_.push_back(this->textures_[texture_path.string()]);
+                }
+            }
+            if (this->materials_.size() == 0)
+            {
+                PRINT("no materials for scene, add a default material");
+                auto mat = GameObjectFactory::Default<Material>();
+                this->materials_.emplace_back(mat);
+            }
+            PRINT("num of materials: " << this->materials_.size());
+        }
+
+        void Scene::HandleMeshes(const aiScene* scene)
+        {
+            for (uint32_t mid = 0; mid < scene->mNumMeshes; ++mid)
+            {
+                auto mesh = scene->mMeshes[mid];
+                auto mesh_go = GameObjectFactory::Create<Mesh>(mesh);
+                this->meshes_[mid] = mesh_go;
+            }
+
+            PRINT("num of meshes: " << this->meshes_.size());
+        }
+
+        void Scene::HandleAnimations(const aiScene* scene)
+        {
+            for (uint32_t i = 0; i < scene->mNumAnimations; ++i)
+            {
+                auto animation = GameObjectFactory::Create<AnimationClip>();
+                // each animation is an AnimationClip
+                auto anim = scene->mAnimations[i];
+
+                animation->description_.name = anim->mName.data;
+                animation->Duration() = static_cast<float>(anim->mDuration);
+                animation->TicksPerSecond() = static_cast<float>(anim->mTicksPerSecond);
+                animation->TotalFrame() = Math::FloorToInt(anim->mDuration * anim->mTicksPerSecond);
+                PRINT("handling " << animation->description_.name << " animation with " << animation->TotalFrame() << " frames")
+                for (uint32_t c = 0; c < anim->mNumChannels; ++c)
+                {
+                    // Each channel defines node/bone it controls
+                    // for example
+                    // node->mNodeName = "Torso" contains key frames data for "Torso" Node/Bone in the scene
+                    // mNodeName could be aiNode or aiBone
+                    auto node = anim->mChannels[c];
+                    PRINT("channel " << node->mNodeName.data << " has " << node->mNumPositionKeys << " Key values");
+
+                    auto joint = GameObjectFactory::Create<Joint>();
+                    joint->description_.name = node->mNodeName.data;
+
+                    uint32_t k = 0;
+                    for (k = 0; k < node->mNumPositionKeys; ++k)
+                    {
+                        auto pos = node->mPositionKeys[k];
+                        joint->position_keys_.emplace_back((float)pos.mTime, float3(pos.mValue.x, pos.mValue.y, pos.mValue.z));
+                    }
+                    for (k = 0; k < node->mNumRotationKeys; ++k)
+                    {
+                        auto rotation = node->mRotationKeys[k];
+                        joint->rotation_keys_.emplace_back((float)rotation.mTime, quaternion(rotation.mValue.w, rotation.mValue.x, rotation.mValue.y, rotation.mValue.z));
+                    }
+                    for (k = 0; k < node->mNumScalingKeys; ++k)
+                    {
+                        auto scale = node->mScalingKeys[k];
+                        joint->scale_keys_.emplace_back((float)scale.mTime, float3(scale.mValue.x, scale.mValue.y, scale.mValue.z));
+                    }
+
+                    // TODO: use unordered_map for fast access
+                    animation->AddJoint(joint->description_.name, joint);
+                }
+
+                this->animation_clips_.push_back(animation);
+            }
+        }
+        void Scene::HandleBoneNode(const aiNode* node, const GameNodeSharedPtr game_node)
+        {
+            if (node == nullptr) return;
+
+            auto bone_name = node->mName.data;
+            for (const auto& m : this->meshes_)
+            {
+                if (m.second->bone_data_.find(bone_name) != m.second->bone_data_.end())
+                {
+                    // TODO Add init/bind pose pos/rotation/scale to bone_comp
+                    auto bone_comp = m.second->bone_data_[bone_name];
+                    game_node->AttachComponent(bone_comp);
+                }
+            }
+        }
+
+        /// A detailed function description, it
+        /// should be 2 lines at least.
+        int Scene::GetVariable(int p1, float p2)
+        {
+            UNUSED_PARAMETER(p1);
+            UNUSED_PARAMETER(p2);
+            return 1;
+        }
         void Scene::Update()
         {
             // timer += 0.001f;
@@ -135,8 +329,8 @@ namespace vEngine
             // auto rotanim = Math::RotateAngleAxis(timer, float3(1,0,0));
             // asset->GO()->GetRoot()->FirstOf<TransformComponent>()->GO()->Rotation() = rot90 * rotanim;
 
-            this->TraverseAllChildren<Animation::AnimatorComponent>(
-                [&](Animation::AnimatorComponentSharedPtr node)
+            this->TraverseAllChildren<AnimatorComponent>(
+                [&](AnimatorComponentSharedPtr node)
                 {
                     node->OnUpdate();
                     return true;
@@ -182,63 +376,6 @@ namespace vEngine
                     return true;
                 });
         }
-        void Scene::AddTestNode() {}
-        void Scene::AddToSceneNode(const GameNodeSharedPtr new_node, const GameNodeSharedPtr game_node /*= nullptr*/)
-        {
-            // if (game_node == nullptr)
-            // {
-            //     this->AddChild(new_node);
-            // }
-            // else
-            // {
-            // this->Traverse<GameNode>(
-            //     [&](GameNodeSharedPtr n)
-            //     {
-            //         if (n == game_node)
-            //         {
-            //             n->AddChild(new_node);
-            //             return false;
-            //         }
-            //         return true;
-            //     });
-            // }
-        }
-        void Scene::Print()
-        {
-            this->TraverseAllChildren<GameNode>(
-                [&](GameNodeSharedPtr gn)
-                {
-                    auto p = gn->Parent().lock();
-                    auto pname = p != nullptr ? p->description_.name : "None";
-                    // auto name = gn->HasComponent<TransformComponent>()?"Transform":"Raw";
-                    // auto cname = gn->HasComponent<CameraComponent>()?"Camera":"Raw";
-                    // PRINT("Game Node " << name << " " << cname << " " << gn->name_ << " Parent " << pname);
-                    auto comp = std::dynamic_pointer_cast<IComponent>(gn);
-                    if (comp != nullptr) return true;
 
-                    PRINT("Game Node " << gn->description_.name << " Parent " << pname);
-                    gn->ForEachChild<IComponent>(
-                        [&](IComponentSharedPtr child)
-                        {
-                            auto cn = std::dynamic_pointer_cast<TransformComponent>(child);
-                            if (cn == nullptr) return;
-                            auto bone = std::dynamic_pointer_cast<Animation::BoneComponent>(child);
-                            auto name = cn->description_.name;
-                            if (bone != nullptr) name += " BoneComponent";
-
-                            PRINT("Game Node " << gn->description_.name << " Has " << name);
-
-                            auto pos = cn->GO()->Translate();
-                            PRINT(pos.x() << " " << pos.y() << " " << pos.z());
-                            auto mat = cn->GO()->LocalToWorldTransform();
-                            PRINT("Global " << mat[3][0] << " " << mat[3][1] << " " << mat[3][2]);
-                            // PRINT(typeid(gn).name());
-                            // return true;
-                        });
-
-                    return true;
-                });
-        }
     }  // namespace Core
-
 }  // namespace vEngine

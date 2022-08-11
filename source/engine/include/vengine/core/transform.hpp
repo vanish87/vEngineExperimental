@@ -132,7 +132,7 @@ namespace vEngine
                 /// it will generate a compile error if
                 /// vector is initd with more parameter than it has
                 Transform(const float3& translate, const quaternion& rotation, const float3& scale)
-                    : GameObject(GameObjectType::Transform), local_translate_{translate}, local_rotation_{rotation}, local_scale_{scale}
+                    : local_translate_{translate}, local_rotation_{rotation}, local_scale_{scale}
                 {}
 
                 const float3& Translate() const

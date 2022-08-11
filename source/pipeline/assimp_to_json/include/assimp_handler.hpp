@@ -12,10 +12,8 @@
 
 #pragma once
 
-#include <vector>
-#include <unordered_map>
-
 #include <engine.hpp>
+#include <filesystem>
 
 struct aiNode;
 struct aiScene;
@@ -26,19 +24,15 @@ namespace vEngine
     {
         class AssimpHandler
         {
-                std::vector<Core::CameraSharedPtr> cameras_;
-                std::vector<Core::LightSharedPtr> lights_;
-                std::unordered_map<int, Core::MeshSharedPtr> meshes_;
-                std::unordered_map<std::string, Rendering::TextureSharedPtr> textures_;
-                std::vector<Rendering::MaterialSharedPtr> materials_;
-                std::vector<Animation::AnimationClipSharedPtr> animation_clips_;
             public:
+                SceneSharedPtr LoadFromAssimp(const std::filesystem::path path);
+
+            private:
                 void HandleCameras(const aiScene* scene);
                 void HandleMaterials(const aiScene* scene);
                 void HandleMeshes(const aiScene* scene);
                 void HandleAnimations(const aiScene* scene);
-        }
-
+        };
     }  // namespace Pipeline
 }  // namespace vEngine
 

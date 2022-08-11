@@ -13,7 +13,7 @@
 #pragma once
 
 #include <engine.hpp>
-#include <vengine/core/asset.hpp>
+#include <vengine/core/scene.hpp>
 #include <vengine/core/component.hpp>
 
 /// A brief namespace description.
@@ -26,7 +26,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class AssetComponent : public Component<Asset>
+        class AssetComponent : public Component<Scene>
         {
             public:
                 /// \brief brief constructor description.

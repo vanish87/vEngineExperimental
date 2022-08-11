@@ -132,9 +132,7 @@ namespace vEngine
                     // https://learnopengl.com/Guest-Articles/2020/Skeletal-Animation is CORRECT
                     auto ai_bone = mesh->mBones[b];
 
-                    ComponentDescription bdesc;
-                    bdesc.type = ComponentType::Bone;
-                    auto comp = GameNodeFactory::Create<Animation::BoneComponent>(bdesc);
+                    auto comp = GameObjectFactory::Create<Animation::BoneComponent>();
                     auto bone = comp->GO();
                     bone->description_.name = ai_bone->mName.data;
                     comp->description_.name = ai_bone->mName.data;

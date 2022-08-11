@@ -42,7 +42,7 @@ namespace vEngine
             // this->scene_ = std::make_shared<Scene>("bunny.obj");
             this->scene_ = std::make_shared<Scene>();
             auto file = ResourceLoader::GetInstance().GetFilePath("boblampclean.md5mesh");
-            this->scene_->LoadFile(file);
+            // this->scene_->LoadFile(file);
             // file = ResourceLoader::GetInstance().GetFilePath("boblampclean.md5anim");
             // this->scene_->LoadFile(file.string());
             // this->scene_->ActiveScene();

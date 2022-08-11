@@ -8,6 +8,9 @@
 #include <external/lodepng.h>
 #include <external/tga.h>
 
+#include <vengine/core/game_object_factory.hpp>
+#include <vengine/core/scene.hpp>
+
 namespace vEngine
 {
     namespace Pipeline
@@ -16,9 +19,28 @@ namespace vEngine
         using namespace Rendering;
         using namespace Animation;
 
-        void AssimpHandler::HandleCameras(const aiScene* scene)
+        SceneSharedPtr AssimpHandler::LoadFromAssimp(const std::filesystem::path file_path)
+        {
+            Assimp::Importer importer;
+            auto ai_scene = importer.ReadFile(file_path.string(), aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
+            auto scene = GameObjectFactory::Create<Scene>();
+
+
+
+            this->HandleMeshes(scene, ai_scene);
+            this->HandleMaterials(scene, ai_scene);
+            // this->CreateTextures(scene);
+            this->HandleCameras(scene, ai_scene);
+            this->HandleAnimations(scene, ai_scene);
+
+            this->root_ = this->HandleNode(scene->mRootNode, scene);
+
+            return scene;
+        }
+        void AssimpHandler::HandleCameras(SceneSharedPtr scene, const aiScene* ai_scene)
         {
             UNUSED_PARAMETER(scene);
+            UNUSED_PARAMETER(ai_scene);
             // ComponentDescription desc;
             // auto camera = GameNodeFactory::Create<CameraComponent>(desc);
             // camera->GO()->target = Context::GetInstance().GetRenderEngine().back_buffer_;
@@ -28,7 +50,7 @@ namespace vEngine
             // auto gn = GameNodeFactory::Create(gndesc);
             // gn->AttachComponent(camera);
             // this->cameras_.emplace_back(gn);
-            if (this->cameras_.size() == 0)
+            if (scene->cameras_.size() == 0)
             {
                 // auto cam = GameObjectFactory::Default<Camera>();
                 // cam->target = Context::GetInstance().GetRenderEngine().back_buffer_;
@@ -37,7 +59,7 @@ namespace vEngine
 
             PRINT("num of cameras: " << this->cameras_.size());
         }
-        void HandleMaterials(const aiScene* scene)
+        void AssimpHandler::HandleMaterials(const aiScene* scene)
         {
             for (uint32_t mid = 0; mid < scene->mNumMaterials; ++mid)
             {

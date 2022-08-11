@@ -60,26 +60,26 @@ namespace vEngine
         class GameNodeFactory
         {
             public:
-                template <typename T, class... Args>
-                static std::shared_ptr<T> Create(const ComponentDescription& desc, Args&&... args)
-                {
-                    switch (desc.type)
-                    {
-                        case ComponentType::Transform:
-                            break;
+                // template <typename T, class... Args>
+                // static std::shared_ptr<T> Create(const ComponentDescription& desc, Args&&... args)
+                // {
+                //     switch (desc.type)
+                //     {
+                //         case ComponentType::Transform:
+                //             break;
 
-                        default:
-                            break;
-                    }
+                //         default:
+                //             break;
+                //     }
 
-                    static_assert(std::is_base_of<IComponent, T>::value, "T must derived from IComponent");
-                    auto gn = std::make_shared<T>(std::forward<Args>(args)...);
-                    auto comp = std::dynamic_pointer_cast<GameNode>(gn);
-                    comp->description_.name = typeid(T).name();
-                    return gn;
-                }
+                //     static_assert(std::is_base_of<IComponent, T>::value, "T must derived from IComponent");
+                //     auto gn = std::make_shared<T>(std::forward<Args>(args)...);
+                //     auto comp = std::dynamic_pointer_cast<GameNode>(gn);
+                //     comp->description_.name = typeid(T).name();
+                //     return gn;
+                // }
 
-                static GameNodeSharedPtr Create(const GameNodeDescription& desc);
+                // static GameNodeSharedPtr Create(const GameNodeDescription& desc);
                 // static TransformNodeSharedPtr Create();
         };
 
