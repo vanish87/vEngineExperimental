@@ -23,6 +23,9 @@ freely, subject to the following restrictions:
     distribution.
 */
 
+#ifndef _INCLUDE_EXTERNAL_LODEPNG_H
+#define _INCLUDE_EXTERNAL_LODEPNG_H
+
 #ifndef LODEPNG_H
 #define LODEPNG_H
 
@@ -2018,3 +2021,6 @@ Account: lode dot vandevenne.
 
 Copyright (c) 2005-2022 Lode Vandevenne
 */
+
+
+#endif /* _INCLUDE_EXTERNAL_LODEPNG_H */

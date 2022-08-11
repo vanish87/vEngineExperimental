@@ -2,9 +2,13 @@
 project(assimp_to_json)
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/source source)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/source/external external_source)
 
 # Create the executable
-add_executable(${PROJECT_NAME} ${source})
+add_executable(${PROJECT_NAME} 
+    ${source}
+    ${external_source}
+)
 
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include

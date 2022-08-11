@@ -14,8 +14,8 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include <external/lodepng.h>
-#include <external/tga.h>
+// #include <external/lodepng.h>
+// #include <external/tga.h>
 
 #include <vengine/core/game_node_factory.hpp>
 #include <vengine/core/game_object_factory.hpp>
@@ -59,6 +59,10 @@ namespace vEngine
         {
             return this->animation_clips_;
         }
+        void Scene::AddMaterial(const Rendering::MaterialSharedPtr material)
+        {
+            UNUSED_PARAMETER(material);
+        }
         void Scene::SetMesh(const int id, const MeshSharedPtr mesh)
         {
             CHECK_ASSERT(this->meshes_.find(id) == this->meshes_.end());
@@ -82,20 +86,21 @@ namespace vEngine
         }
         bool Scene::Load(const ResourceDescriptorSharedPtr descriptor)
         {
-            auto f = descriptor->file_path.string();
-            Assimp::Importer importer;
-            auto scene = importer.ReadFile(f, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
+            UNUSED_PARAMETER(descriptor);
+            // auto f = descriptor->file_path.string();
+            // Assimp::Importer importer;
+            // auto scene = importer.ReadFile(f, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
 
-            this->HandleMeshes(scene);
-            this->HandleMaterials(scene);
-            // this->CreateTextures(scene);
-            this->HandleCameras(scene);
-            this->HandleAnimations(scene);
+            // this->HandleMeshes(scene);
+            // this->HandleMaterials(scene);
+            // // this->CreateTextures(scene);
+            // this->HandleCameras(scene);
+            // this->HandleAnimations(scene);
 
-            this->root_ = this->HandleNode(scene->mRootNode, scene);
-            this->root_->description_.name = "Assimp File: " + f;
-            // this->AddChild(root);
-            this->current_state_ = ResourceState::Loaded;
+            // this->root_ = this->HandleNode(scene->mRootNode, scene);
+            // this->root_->description_.name = "Assimp File: " + f;
+            // // this->AddChild(root);
+            // this->current_state_ = ResourceState::Loaded;
             return true;
         }
         ResourceState Scene::CurrentState()

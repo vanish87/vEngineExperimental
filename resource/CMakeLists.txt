@@ -32,8 +32,8 @@ foreach(SRC_FILE ${ASSIMP_SOURCE})
   set(BIN_FILES ${BIN_FILES} ${BIN_FILE})
   add_custom_command(
     OUTPUT ${BIN_FILE}
-    DEPENDS ${SRC_FILE} assimp_to_asset
-    COMMAND assimp_to_asset -i ${SRC_FILE} -o ${BIN_FILE}
+    DEPENDS ${SRC_FILE} assimp_to_json
+    COMMAND assimp_to_json -i ${SRC_FILE} -o ${BIN_FILE}
     COMMENT "Covert assimp ${SRC_FILE} to json ${BIN_FILE}"
     # ${CMAKE_SOURCE_DIR}/resources
     # $<TARGET_FILE_DIR:resource>/resources
