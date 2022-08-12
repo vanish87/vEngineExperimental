@@ -153,8 +153,8 @@ namespace vEngine
                 {
                     return std::make_tuple(
                         Core::property("width", &TextureDescriptor::width),
-                        Core::property("height", &TextureDescriptor::height),
-                        Core::property("raw_data", &TextureDescriptor::raw_data)
+                        Core::property("height", &TextureDescriptor::height)
+                        // Core::property("raw_data", &TextureDescriptor::raw_data)
                     );
                 };
                 TextureDimension dimension;

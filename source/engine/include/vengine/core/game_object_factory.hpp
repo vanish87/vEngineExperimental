@@ -14,6 +14,7 @@
 
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
+#include <vengine/core/context.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -47,9 +48,15 @@ namespace vEngine
                     //     break;
                     // }
 
+
                     static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
                     auto gn = std::make_shared<T>(std::forward<Args>(args)...);
+                    auto go = std::dynamic_pointer_cast<GameObject>(gn);
+                    go->description_.type = typeid(T).name();
                     //TODO Checking description type with T
+
+                    Context::GetInstance().Register(go);
+
                     return gn;
                 }
 

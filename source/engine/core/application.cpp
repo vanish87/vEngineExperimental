@@ -14,6 +14,11 @@ namespace vEngine
 {
     namespace Core
     {
+        Application::Application() {}
+        Application::~Application()
+        {
+            this->Deinit();
+        }
         vEngineWindowPtr Application::CurrentWindow()
         {
             return this->window_;

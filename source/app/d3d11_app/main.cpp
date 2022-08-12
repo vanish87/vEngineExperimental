@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
     configure.graphics_configure.height = 720;
     configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
 
-    Context::GetInstance().ConfigureWith(configure);
+    Context::GetInstance().Init(configure);
 
     Example::D3D11App myapp;
     myapp.Init();

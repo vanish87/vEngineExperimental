@@ -47,10 +47,6 @@ namespace vEngine
         /// should be 2 lines
         Scene::Scene() {}
         Scene::~Scene() {}
-        const GameNodeSharedPtr Scene::GetRoot() const
-        {
-            return this->root_;
-        }
         const CameraSharedPtr Scene::GetCamera(const uint32_t index) const
         {
             return this->cameras_[index];

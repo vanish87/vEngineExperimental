@@ -11,6 +11,10 @@
 #include <vengine/rendering/render_engine.hpp>
 #include <vengine/core/resource_loader.hpp>
 
+#include <vengine/data/meta.hpp>
+#include <vengine/data/json.hpp>
+#include <fstream>
+
 namespace vEngine
 {
     namespace Core
@@ -32,15 +36,18 @@ namespace vEngine
             this->LoadDll();
 
             ResourceLoader::GetInstance().Init();
-            ResourceLoader::GetInstance().AddSearchPath("resource");
-            ResourceLoader::GetInstance().AddSearchPath("resource/shader");
-            ResourceLoader::GetInstance().AddSearchPath("resource/sponza");
-            ResourceLoader::GetInstance().AddSearchPath("resource/bob");
-            ResourceLoader::GetInstance().AddSearchPath("resource/boblamp");
+            ResourceLoader::GetInstance().AddSearchPath(configure.resource_root);
+            // ResourceLoader::GetInstance().AddSearchFolder("resource");
+            ResourceLoader::GetInstance().AddSearchFolder("shader");
+            ResourceLoader::GetInstance().AddSearchFolder("sponza");
+            ResourceLoader::GetInstance().AddSearchFolder("bob");
+            ResourceLoader::GetInstance().AddSearchFolder("boblamp");
         }
 
         void Context::Deinit()
         {
+            this->SaveRuntimeObjects();
+
             ResourceLoader::GetInstance().Deinit();
             // prt.reset() does same thing as this->ProcessRenderEngine("DestoryRenderEngine");
             this->render_engine_ptr_.reset();
@@ -56,20 +63,20 @@ namespace vEngine
         {
             if (this->render_engine_ptr_ == nullptr)
             {
-#ifdef VENGINE_PLATFORM_APPLE_STATIC
+                #ifdef VENGINE_PLATFORM_APPLE_STATIC
                 CreateRenderEngine(this->render_engine_ptr_);
-#else
+                #else
                 ProcessSharedFunction<Rendering::RenderEngine, HandleRenderEngine>("CreateRenderEngine", this->render_plugin_dll_handle_, this->render_engine_ptr_);
-#endif
+                #endif
             }
             return *this->render_engine_ptr_;
         }
 
         void Context::LoadDll()
         {
-#ifdef VENGINE_PLATFORM_APPLE_STATIC
+            #ifdef VENGINE_PLATFORM_APPLE_STATIC
             return;
-#endif
+            #endif
             this->FreeDll();
 
             auto render_dll_name = this->configure_.graphics_configure.render_plugin_name;
@@ -85,7 +92,19 @@ namespace vEngine
         }
 
         void Context::LoadRuntimeObjects() {}
-        void Context::SaveRuntimeObjects() {}
+        void Context::SaveRuntimeObjects() 
+        {
+            auto config = this->CurrentConfigure();
+            auto output = config.resource_root / (config.context_name + ".json");
+
+            nlohmann::json j;
+            ToJson(j, this->runtime_game_objects_);
+            PRINT("Save to " << output.string());
+            std::ofstream outfile(output.string());
+            outfile << std::setw(2) << j << std::endl;
+            outfile.flush();
+            outfile.close();
+        }
         GameObjectSharedPtr Context::Find(const UUID& uuid)
         {
             if (this->runtime_game_objects_.find(uuid) != this->runtime_game_objects_.end())
@@ -96,9 +115,10 @@ namespace vEngine
         }
         void Context::Register(const GameObjectSharedPtr& go)
         {
-            UNUSED_PARAMETER(go);
-            // CHECK_ASSERT(this->runtime_game_objects_.find(go->uuid_) != this->runtime_game_objects_.end());
-            // this->runtime_game_objects_[go->uuid_] = go;
+            // UNUSED_PARAMETER(go);
+            const auto& uuid = go->description_.uuid;
+            CHECK_ASSERT(this->runtime_game_objects_.find(uuid) == this->runtime_game_objects_.end());
+            this->runtime_game_objects_[uuid] = go;
         }
 
         void Context::RegisterAppInstance(Application* app)

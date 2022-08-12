@@ -44,7 +44,7 @@ namespace vEngine
 
         struct GameObjectDescription
         {
-                GameObjectType type;
+                std::string type;
                 UUID uuid;
                 std::string name;
                 constexpr static auto properties()

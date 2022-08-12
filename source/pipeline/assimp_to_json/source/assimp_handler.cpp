@@ -24,6 +24,8 @@ namespace vEngine
 
         SceneSharedPtr AssimpHandler::LoadFromAssimp(const std::filesystem::path path)
         {
+            ResourceLoader::GetInstance().DumpCurrentPath();
+
             Assimp::Importer importer;
             auto ai_scene = importer.ReadFile(path.string(), aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
             auto scene = GameObjectFactory::Create<Scene>();
@@ -68,11 +70,13 @@ namespace vEngine
             auto vs_desc = std::make_shared<ResourceDescriptor>();
             vs_desc->file_path = ResourceLoader::GetInstance().GetFilePath("vs.hlsl");
             vs->Load(vs_desc);
+            vs->type = ShaderType::VS;
 
             auto ps = GameObjectFactory::Create<Shader>();
             auto ps_desc = std::make_shared<ResourceDescriptor>();
             ps_desc->file_path = ResourceLoader::GetInstance().GetFilePath("ps.hlsl");
             ps->Load(ps_desc);
+            ps->type = ShaderType::PS;
 
             for (uint32_t mid = 0; mid < ai_scene->mNumMaterials; ++mid)
             {

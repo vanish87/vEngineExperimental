@@ -14,8 +14,8 @@ namespace vEngine
         class VENGINE_API Application
         {
             public:
-                Application(){};
-                virtual ~Application(){};
+                Application();
+                virtual ~Application();
 
             public:
                 virtual void Init(void* wnd = nullptr);

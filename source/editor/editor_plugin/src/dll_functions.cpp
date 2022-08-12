@@ -29,7 +29,7 @@ extern "C" {
 
         Configure configure;
         configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
-        Context::GetInstance().ConfigureWith(configure);
+        Context::GetInstance().Init(configure);
 
         editor_app.Init(hwnd);
     }

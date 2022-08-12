@@ -2,8 +2,6 @@
 
 #include <vengine/core/iresource.hpp>
 
-
-
 namespace vEngine
 {
     namespace Core
@@ -15,7 +13,7 @@ namespace vEngine
 
         int ResourceLoadingThread::Main(void* para)
         {
-			UNUSED_PARAMETER(para);
+            UNUSED_PARAMETER(para);
 
             auto ret = 0;
             while (!this->should_quit_)
@@ -65,25 +63,41 @@ namespace vEngine
             this->loading_thread_.AddToQueue(std::make_shared<ResourceLoadingJob>(resource, desc));
         }
 
-        void ResourceLoader::AddSearchPath(const std::string path) 
+        void ResourceLoader::AddSearchPath(const std::filesystem::path path)
         {
-            std::filesystem::path p = path;
-            if(p.is_relative()) p = std::filesystem::absolute(p);
+            auto p = path;
+            if (p.is_relative()) p = std::filesystem::absolute(p);
 
-            if(std::filesystem::exists(p) == false) return;
+            if (std::filesystem::exists(p) == false)
+            {
+                PRINT(p.string() << " Not Found");
+                return;
+            }
 
             this->search_paths_[p.string()] = p;
         }
+        void ResourceLoader::AddSearchFolder(const std::string folder)
+        {
+            this->AddSearchPath(this->GetFilePath(folder));
+        }
         std::filesystem::path ResourceLoader::GetFilePath(const std::string file_name)
         {
-            for(auto p = this->search_paths_.begin(); p != this->search_paths_.end(); ++p)
+            for (const auto& p : this->search_paths_)
             {
-                const auto path = p->second / file_name;
-                if(std::filesystem::exists(path)) return path;
+                const auto path = p.second / file_name;
+                if (std::filesystem::exists(path)) return path;
             }
 
-            CHECK_AND_ASSERT(false, file_name);
+            CHECK_AND_ASSERT(false, "Cannot find file " << file_name);
             return nullptr;
+        }
+        void ResourceLoader::DumpCurrentPath()
+        {
+            PRINT("Current Searching Path: ");
+            for (auto& p : this->search_paths_)
+            {
+                PRINT(p.second.string());
+            }
         }
 
         ResourceLoadingJob::ResourceLoadingJob(IResourceSharedPtr resource, const ResourceDescriptorSharedPtr desc)

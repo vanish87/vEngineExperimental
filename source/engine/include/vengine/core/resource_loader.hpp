@@ -16,7 +16,8 @@
 #include <queue>
 #include <functional>
 
-#include <unordered_map>
+// #include <unordered_map>
+#include <unordered_set>
 
 #include <VENGINE_API.hpp>
 #include <engine.hpp>
@@ -75,7 +76,10 @@ namespace vEngine
                 // void AddSync();
 
                 std::filesystem::path GetFilePath(const std::string file_name);
-                void AddSearchPath(const std::string path);
+                void AddSearchFolder(const std::string path);
+                void AddSearchPath(const std::filesystem::path path);
+
+                void DumpCurrentPath();
             private:
                 ResourceLoadingThread loading_thread_;
 

@@ -60,7 +60,7 @@ int main(int argc, char* argv[])
     configure.graphics_configure.render_plugin_name = "opengl_rendering_plugin";
     #endif
 
-    Context::GetInstance().ConfigureWith(configure);
+    Context::GetInstance().Init(configure);
 
     Example::ExampleApp app;
     app.Init();

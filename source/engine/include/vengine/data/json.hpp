@@ -12,10 +12,10 @@
 
 #pragma once
 
-// #ifdef _MSC_VER
-//     #pragma warning(push)
-//     #pragma warning(disable : 4505) 
-// #endif
+#ifdef _MSC_VER
+    #pragma warning(push)
+    #pragma warning(disable : 4505) 
+#endif
 
 #include <unordered_map>
 
@@ -156,7 +156,7 @@ namespace vEngine
         {
             nlohmann::json value;
 
-            using type_list = std::tuple<TransformComponent, Transform, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera, CameraComponent, Rendering::PipelineState>;
+            using type_list = std::tuple<Rendering::Shader, Rendering::Material, Transform, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera, CameraComponent, Rendering::PipelineState>;
             constexpr auto nlist = std::tuple_size<type_list>::value;
             for_sequence(std::make_index_sequence<nlist>{},
                          [&](auto i)

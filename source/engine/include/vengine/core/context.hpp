@@ -17,6 +17,7 @@ namespace vEngine
     {
         class VENGINE_API Context
         {
+                friend class GameObjectFactory;
                 SINGLETON_CLASS(Context)
 
             public:

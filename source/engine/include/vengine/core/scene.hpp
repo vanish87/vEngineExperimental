@@ -38,11 +38,12 @@ namespace vEngine
                 constexpr static auto properties()
                 {
                     return std::tuple_cat(
-                        GameObject::properties(),
+                        GameNode::properties(),
                         std::make_tuple(
-                        // property("meshes", &Asset::meshes_),
-                        property("root", &Scene::root_))
-                        // property("textures", &Asset::textures_))
+                            property("meshes", &Scene::meshes_)
+                            // property("materials", &Scene::materials_),
+                            // property("textures", &Scene::textures_)
+                        )
                     );
                 }
             public:
@@ -52,7 +53,6 @@ namespace vEngine
                 bool Load(const ResourceDescriptorSharedPtr descriptor) override;
                 ResourceState CurrentState() override;
 
-                const GameNodeSharedPtr GetRoot() const;
                 const CameraSharedPtr GetCamera(const uint32_t index = 0) const;
                 const std::vector<Animation::AnimationClipSharedPtr> GetAnimations() const;
 
@@ -75,8 +75,6 @@ namespace vEngine
                 std::unordered_map<std::string, Rendering::TextureSharedPtr> textures_;
                 std::vector<Rendering::MaterialSharedPtr> materials_;
                 std::vector<Animation::AnimationClipSharedPtr> animation_clips_;
-
-                GameNodeSharedPtr root_;
 
                 GameNodeSharedPtr HandleNode(const aiNode* node, const aiScene* scene);
                 void HandleCameras(const aiScene* scene);
