@@ -40,16 +40,12 @@ namespace vEngine
                 /// \brief traverse all camera and render them
                 void Update() override;
 
-                /// \brief only render all objects
-                void Flush();
-
                 void BeginScene();
+                void EndScene();
 
-
+                void Load(const std::string scene_path);
 
                 SceneSharedPtr scene_;
-
-
         };
     }  // namespace Core
 }  // namespace vEngine

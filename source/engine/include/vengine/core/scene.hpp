@@ -35,6 +35,17 @@ namespace vEngine
         class VENGINE_API Scene : public GameNode, public IResource
         {
             public:
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        GameObject::properties(),
+                        std::make_tuple(
+                        // property("meshes", &Asset::meshes_),
+                        property("root", &Scene::root_))
+                        // property("textures", &Asset::textures_))
+                    );
+                }
+            public:
                 /// \brief brief constructor description.
                 Scene();
                 virtual ~Scene();
@@ -76,19 +87,10 @@ namespace vEngine
 
             public:
                 void Update();
+
+            private:
                 void Flush();
                 
-                constexpr static auto properties()
-                {
-                    return std::tuple_cat(
-                        GameObject::properties(),
-                        std::make_tuple(
-                        // property("meshes", &Asset::meshes_),
-                        property("root", &Scene::root_))
-                        // property("textures", &Asset::textures_))
-                    );
-                }
-
             private:
             public:
                 /// \brief A brief function description.

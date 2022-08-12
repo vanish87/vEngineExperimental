@@ -21,6 +21,7 @@
 #include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <vengine/core/thread.hpp>
+#include <vengine/core/iruntime_module.hpp>
 #include <vengine/core/iresource.hpp>
 
 namespace vEngine
@@ -60,12 +61,16 @@ namespace vEngine
                 IResourceSharedPtr resource_to_load_;
                 ResourceDescriptorSharedPtr desc_;
         };
-        class VENGINE_API ResourceLoader
+        class VENGINE_API ResourceLoader: public IRuntimeModule
         {
                 SINGLETON_CLASS(ResourceLoader)
 
             public:
+                void Init() override{};
+                void Deinit() override{};
+                void Update() override{};
 
+            public:
                 void LoadAsync(IResourceSharedPtr resource, const ResourceDescriptorSharedPtr desc);
                 // void AddSync();
 

@@ -59,7 +59,6 @@ namespace vEngine
             // update other context module
             //  Context::Update();
             SceneManager::GetInstance().Update();
-            SceneManager::GetInstance().Flush();
             // call here or PAINT event in Window Class
             // Context::GetInstance().GetRenderEngine().Update();
         }
