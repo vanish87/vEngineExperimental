@@ -45,9 +45,6 @@ namespace vEngine
 
                 void BeginScene();
 
-                // GameNodeSharedPtr root_;
-
-                std::queue<IRendererSharedPtr> render_queue_;
 
 
                 SceneSharedPtr scene_;

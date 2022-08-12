@@ -18,30 +18,15 @@ namespace vEngine
         {
             return this->window_;
         }
-        void Application::Init()
-        {
-            this->InitInternal(nullptr);
-        }
         void Application::Init(void* wnd)
         {
-            this->InitInternal(wnd);
-        }
-
-        void Application::InitInternal(void* wnd)
-        {
             Context::GetInstance().RegisterAppInstance(this);
-
-            auto configure = Context::GetInstance().CurrentConfigure();
-            // Load Dll etc.
-            Context::GetInstance().ConfigureWith(configure);
-
             // Make window
             // Platform dependent
             this->window_ = std::make_shared<Window>();
             this->window_->Init(wnd);
 
             Context::GetInstance().GetRenderEngine().Init();
-            
             SceneManager::GetInstance().Init();
 
             this->OnCreate();
@@ -50,16 +35,15 @@ namespace vEngine
         {
             this->OnDestroy();
 
+            // Destroy RenderEngine etc;
             SceneManager::GetInstance().Deinit();
-
-            // Destory RenderEngine etc;
             Context::GetInstance().GetRenderEngine().Deinit();
 
-            // Destory Window
+            // Destroy Window
             this->window_->Deinit();
             this->window_.reset();
 
-            // Destory Context
+            // Destroy Context
             Context::GetInstance().Deinit();
         }
         void Application::Update()
@@ -75,6 +59,9 @@ namespace vEngine
             // update other context module
             //  Context::Update();
             SceneManager::GetInstance().Update();
+            SceneManager::GetInstance().Flush();
+            // call here or PAINT event in Window Class
+            // Context::GetInstance().GetRenderEngine().Update();
         }
         void Application::Run()
         {
@@ -93,16 +80,12 @@ namespace vEngine
 
                 // Update in constant rate
                 // may be changed later
-                while (lag >= TIME_PER_UPDATE)
+                while (lag >= TIME_PER_UPDATE && !this->shouldQuit)
                 {
                     this->Update();
                     lag -= TIME_PER_UPDATE;
                 }
-
-                // call here or PAINT event in Winodw Class
-                // Context::GetInstance().GetRenderEngine().Update();
             }
-
             this->Deinit();
         }
 

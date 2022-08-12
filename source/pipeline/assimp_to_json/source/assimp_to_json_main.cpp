@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
     #else
     configure.graphics_configure.render_plugin_name = "opengl_rendering_plugin";
     #endif
-    Context::GetInstance().ConfigureWith(configure);
+    Context::GetInstance().Init(configure);
     Context::GetInstance().GetRenderEngine().Init();
 
     UNUSED_PARAMETER(argc);

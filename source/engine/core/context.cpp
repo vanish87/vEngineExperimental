@@ -19,7 +19,6 @@ namespace vEngine
         Context::Context() : app_instance_{nullptr} {}
         Context::~Context() {}
 
-        void Context::Init() {}
         void Context::Deinit()
         {
             //prt.reset() does same thing as this->ProcessRenderEngine("DestoryRenderEngine");
@@ -39,7 +38,7 @@ namespace vEngine
                 #ifdef VENGINE_PLATFORM_APPLE_STATIC
                 CreateRenderEngine(this->render_engine_ptr_);
                 #else
-                ProcessSharedFunction("CreateRenderEngine", this->render_plugin_dll_handle_, this->render_engine_ptr_);
+                ProcessSharedFunction<Rendering::RenderEngine, HandleRenderEngine>("CreateRenderEngine", this->render_plugin_dll_handle_, this->render_engine_ptr_);
                 #endif
             }
             return *this->render_engine_ptr_;
@@ -90,7 +89,7 @@ namespace vEngine
 
         /// Load Dll
         /// Create Redering
-        void Context::ConfigureWith(const Configure& configure)
+        void Context::Init(const Configure& configure)
         {
             this->configure_ = configure;
             this->LoadDll();
@@ -141,11 +140,11 @@ namespace vEngine
             #endif
         }
 
-        template <typename T>
+        template <typename T, typename F>
         void ProcessSharedFunction(const std::string func_name, void* handle, std::unique_ptr<T>& ptr)
         {
             #ifdef VENGINE_PLATFORM_WINDOWS
-            auto function = reinterpret_cast<HandleRenderEngine>(::GetProcAddress(reinterpret_cast<HMODULE>(handle), func_name.c_str()));
+            auto function = reinterpret_cast<F>(::GetProcAddress(reinterpret_cast<HMODULE>(handle), func_name.c_str()));
             #elif VENGINE_PLATFORM_UNIX
             // reset errors
             dlerror();

@@ -11,17 +11,16 @@ namespace vEngine
 {
     namespace Core
     {
-        class VENGINE_API Application : public IRuntimeModule
+        class VENGINE_API Application
         {
             public:
                 Application(){};
                 virtual ~Application(){};
 
             public:
-                virtual void Init(void* wnd);
-                virtual void Init() override;
-                virtual void Update() override;
-                virtual void Deinit() override;
+                virtual void Init(void* wnd = nullptr);
+                virtual void Update();
+                virtual void Deinit();
                 
                 virtual void Run();
                 virtual void Quit(bool quit);
@@ -37,7 +36,6 @@ namespace vEngine
                 virtual void OnUpdate();
                 virtual void OnDestroy();
 
-                virtual void InitInternal(void* wnd);
                 bool shouldQuit;
         };
     }  // namespace Core

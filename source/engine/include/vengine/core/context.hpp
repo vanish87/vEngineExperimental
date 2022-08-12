@@ -15,14 +15,13 @@ namespace vEngine
 {
     namespace Core
     {
-        class VENGINE_API Context : public IRuntimeModule
+        class VENGINE_API Context
         {
                 SINGLETON_CLASS(Context)
 
             public:
                 /// \brief Load all factories that create resource
                 ///
-                void ConfigureWith(const Configure& configure);
                 const Configure CurrentConfigure() const;
 
                 void RegisterAppInstance(Application* app);
@@ -33,9 +32,9 @@ namespace vEngine
                 Rendering::RenderEngine & GetRenderEngine();
 
             public:
-                void Init() override;
-                void Deinit() override;
-                void Update() override;
+                void Init(const Configure& configure);
+                void Deinit();
+                void Update();
 
             private:
                 void LoadDll();
@@ -57,13 +56,14 @@ namespace vEngine
             public:
                 constexpr static auto properties()
                 {
-                    return std::make_tuple(property("context_objects", &Context::runtime_game_objects_));
+                    return std::make_tuple(
+                        property("context_objects", &Context::runtime_game_objects_));
                 }
         };
 
         void* LoadLibrary(const std::string lib_name);
         void  FreeLibrary(void* handle);
-        template <typename T>
+        template <typename T, typename F>
         void ProcessSharedFunction(const std::string func_name, void* handle, std::unique_ptr<T>& ptr);
 
     }  // namespace Core
