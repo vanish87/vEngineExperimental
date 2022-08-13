@@ -30,7 +30,7 @@ namespace vEngine
 
         MaterialSharedPtr Material::Default()
         {
-            static auto mat = std::make_shared<Material>();
+            static auto mat = GameObjectFactory::Create<Material>();
             return mat;
         }
         void Material::BindShader(const ShaderType type, const ShaderSharedPtr shader)

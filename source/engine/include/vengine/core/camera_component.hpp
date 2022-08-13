@@ -29,6 +29,17 @@ namespace vEngine
         class VENGINE_API CameraComponent : public Component<Camera>
         {
             public:
+                // constexpr static auto properties()
+                // {
+                //     return std::tuple_cat(
+                //         Component::properties()
+                //         // std::make_tuple(
+                //         //     property("enabled", &Component::enabled_),
+                //         //     property("game_object", &Component::game_object_)
+                //         // )
+                //     );
+                // }
+            public:
                 /// \brief brief constructor description.
                 CameraComponent();
 

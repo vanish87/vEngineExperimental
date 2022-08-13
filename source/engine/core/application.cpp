@@ -15,10 +15,7 @@ namespace vEngine
     namespace Core
     {
         Application::Application() {}
-        Application::~Application()
-        {
-            this->Deinit();
-        }
+        Application::~Application() {}
         vEngineWindowPtr Application::CurrentWindow()
         {
             return this->window_;
@@ -48,8 +45,6 @@ namespace vEngine
             this->window_->Deinit();
             this->window_.reset();
 
-            // Destroy Context
-            Context::GetInstance().Deinit();
         }
         void Application::Update()
         {

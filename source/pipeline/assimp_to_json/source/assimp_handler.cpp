@@ -7,6 +7,8 @@
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/core/scene.hpp>
 #include <vengine/core/mesh.hpp>
+#include <vengine/core/camera_component.hpp>
+#include <vengine/core/transform_component.hpp>
 #include <vengine/core/resource_loader.hpp>
 #include <vengine/rendering/shader.hpp>
 #include <vengine/rendering/material.hpp>
@@ -43,18 +45,23 @@ namespace vEngine
         }
         void AssimpHandler::HandleCameras(SceneSharedPtr scene, const aiScene* ai_scene)
         {
-            UNUSED_PARAMETER(scene);
+            // UNUSED_PARAMETER(scene);
             UNUSED_PARAMETER(ai_scene);
-            // ComponentDescription desc;
-            // auto camera = GameNodeFactory::Create<CameraComponent>(desc);
-            // camera->GO()->target = Context::GetInstance().GetRenderEngine().back_buffer_;
 
-            // GameNodeDescription gndesc;
-            // gndesc.type = GameNodeType::Transform;
-            // auto gn = GameNodeFactory::Create(gndesc);
-            // gn->AttachComponent(camera);
-            // this->cameras_.emplace_back(gn);
-            if (scene->cameras_.size() == 0)
+            auto gn = GameObjectFactory::Create<GameNode>();
+
+            auto camera = GameObjectFactory::Create<CameraComponent>();
+            camera->GO()->target = Context::GetInstance().GetRenderEngine().back_buffer_;
+
+            auto transform = GameObjectFactory::Create<TransformComponent>();
+
+            gn->AttachComponent(camera);
+            gn->AttachComponent(transform);
+
+            scene->AddChild(gn);
+
+            // scene->AddCamera(camera);
+            // if (scene->cameras_.size() == 0)
             {
                 // auto cam = GameObjectFactory::Default<Camera>();
                 // cam->target = Context::GetInstance().GetRenderEngine().back_buffer_;
@@ -122,7 +129,6 @@ namespace vEngine
                         }
 
                         TextureDescriptor tdesc;
-                        // tdesc.raw_data = out;
                         tdesc.width = width;
                         tdesc.height = height;
                         tdesc.depth = 1;

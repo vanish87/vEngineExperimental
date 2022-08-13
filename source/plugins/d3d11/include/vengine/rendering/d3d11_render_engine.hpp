@@ -18,6 +18,9 @@ namespace vEngine
                 ~D3D11RenderEngine()
                 {
                     PRINT("Destructor D3D11");
+                    // this->d3d_swap_chain_.Reset();
+                    // this->d3d_device_.Reset();
+                    // this->d3d_imm_context_.Reset();
                 }
                 void Init() override;
                 void InitDebug();

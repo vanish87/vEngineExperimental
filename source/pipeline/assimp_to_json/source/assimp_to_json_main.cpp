@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 {
     std::filesystem::path input;
     std::filesystem::path output;
-    std::filesystem::path resource;
+    std::filesystem::path resource = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource";
     for(auto i = 0; i < argc; ++i)
     {
         auto s = std::string(argv[i]);
@@ -34,8 +34,8 @@ int main(int argc, char* argv[])
     #endif
     Context::GetInstance().Init(configure);
 
-    // input = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource/boblamp/boblampclean.md5mesh";
-    // output = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin/assimp/boblampclean.json";
+    input = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource/boblamp/boblampclean.md5mesh";
+    output = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin/assimp/boblampclean.json";
 
     PRINT(resource.string());
 
@@ -46,6 +46,8 @@ int main(int argc, char* argv[])
 
     nlohmann::json j;
     ToJson(j, scene);
+    scene.reset();
+    
     PRINT("Save to "<<output.string());
     // FromJson(j, scene);
     std::ofstream outfile(output.string());
@@ -55,7 +57,9 @@ int main(int argc, char* argv[])
     outfile.flush();
     outfile.close();
 
-    
+    handler.Deinit();
+    Context::GetInstance().Deinit();
+
     return 0;
     // std::ifstream infile(input);
     // auto base_path = input.parent_path().parent_path().string();

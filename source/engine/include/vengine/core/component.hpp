@@ -18,8 +18,6 @@
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/core/icomponent.hpp>
 
-
-
 /// A brief namespace description.
 namespace vEngine
 {
@@ -37,17 +35,16 @@ namespace vEngine
             public:
                 constexpr static auto properties()
                 {
-                    return std::tuple_cat(
-                        GameNode::properties(),
-                        std::make_tuple(
-                            property("enabled", &Component::enabled_),
-                            property("game_object", &Component::game_object_)
-                        )
-                    );
+                    return std::tuple_cat(GameNode::properties(), std::make_tuple(property("enabled", &Component::enabled_), property("game_object", &Component::game_object_)));
                 }
+
             public:
                 /// \brief brief constructor description.
-                Component() : enabled_{false} {};
+                Component()
+                    : enabled_{false},
+                      game_object_{GameObjectFactory::Create<T>()} {
+
+                      };
                 virtual ~Component(){};
 
                 virtual void OnInit() override
@@ -62,15 +59,14 @@ namespace vEngine
                 }
                 virtual void SetEnable(const bool enable) override
                 {
-                    if(enable && !this->enabled_) this->OnEnable();
-                    if(!enable && this->enabled_) this->OnDisable();
+                    if (enable && !this->enabled_) this->OnEnable();
+                    if (!enable && this->enabled_) this->OnDisable();
                     this->enabled_ = enable;
                 }
 
             public:
                 std::shared_ptr<T> GO()
                 {
-                    if (this->game_object_ == nullptr) this->game_object_ = GameObjectFactory::Create<T>();
                     return this->game_object_;
                 }
 

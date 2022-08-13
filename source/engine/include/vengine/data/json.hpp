@@ -159,8 +159,8 @@ namespace vEngine
 
             if(!as_reference)
             {
-                using type_list = std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera, CameraComponent,
-                                             Rendering::PipelineState, Rendering::Texture>;
+                using type_list = std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, TransformComponent, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera,
+                                             CameraComponent, Rendering::PipelineState, Rendering::Texture, GameNode>;
                 constexpr auto nlist = std::tuple_size<type_list>::value;
                 for_sequence(std::make_index_sequence<nlist>{},
                              [&](auto i)

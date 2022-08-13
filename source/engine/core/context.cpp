@@ -110,6 +110,7 @@ namespace vEngine
                 outfile.close();
 
             }
+            this->runtime_game_objects_.clear();
         }
         GameObjectSharedPtr Context::Find(const UUID& uuid)
         {
