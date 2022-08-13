@@ -10,6 +10,7 @@
 #include <vengine/core/resource_loader.hpp>
 #include <vengine/rendering/shader.hpp>
 #include <vengine/rendering/material.hpp>
+#include <vengine/rendering/texture.hpp>
 
 #include <vengine/core/context.hpp>
 #include <vengine/rendering/render_engine.hpp>
@@ -132,7 +133,7 @@ namespace vEngine
                         }
 
                         TextureDescriptor tdesc;
-                        tdesc.raw_data = out;
+                        // tdesc.raw_data = out;
                         tdesc.width = width;
                         tdesc.height = height;
                         tdesc.depth = 1;
@@ -145,12 +146,13 @@ namespace vEngine
                         tdesc.slot = GraphicsBufferSlot::Slot0;
 
                         auto tex = Context::GetInstance().GetRenderEngine().Create(tdesc);
+                        tex->SetRawData(out);
                         scene->SetTexture(texture_path.string(), tex);
 
                         PRINT(texture_path.relative_path().string() << " Loaded");
                     }
 
-                    mat->BindTexture("Difuse", scene->GetTexture(texture_path.string()));
+                    mat->BindTexture("diffuse", scene->GetTexture(texture_path.string()));
                 }
             }
             // if (this->materials_.size() == 0)

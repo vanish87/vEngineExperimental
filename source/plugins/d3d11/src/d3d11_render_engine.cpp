@@ -9,6 +9,7 @@
 #include <vengine/core/context.hpp>
 #include <vengine/core/vector.hpp>
 #include <vengine/core/window.hpp>
+#include <vengine/core/game_object_factory.hpp>
 #include <vengine/rendering/d3d11_frame_buffer.hpp>
 #include <vengine/rendering/d3d11_graphics_buffer.hpp>
 #include <vengine/rendering/d3d11_pipeline_state.hpp>
@@ -542,11 +543,11 @@ namespace vEngine
 
         PipelineStateSharedPtr D3D11RenderEngine::OnRegister(const PipelineStateDescriptor& pipeline_desc)
         {
-            return std::make_shared<D3D11PipelineState>(pipeline_desc);
+            return GameObjectFactory::Create<D3D11PipelineState>(pipeline_desc);
         }
         TextureSharedPtr D3D11RenderEngine::Create(const TextureDescriptor& desc)
         {
-            return std::make_shared<D3D11Texture>(desc);
+            return GameObjectFactory::Create<D3D11Texture>(desc);
         }
         FrameBufferSharedPtr D3D11RenderEngine::Create(const FrameBufferDescriptor& desc)
         {

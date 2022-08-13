@@ -42,12 +42,12 @@ int main(int argc, char* argv[])
 
     vEngine::Pipeline::AssimpHandler handler;
     handler.Init();
-    auto scene = handler.LoadFromAssimp(std::filesystem::path(input));
+    auto scene = handler.LoadFromAssimp(input);
 
     nlohmann::json j;
     ToJson(j, scene);
     PRINT("Save to "<<output.string());
-    FromJson(j, scene);
+    // FromJson(j, scene);
     std::ofstream outfile(output.string());
     outfile<<std::setw(2)<<j<<std::endl;
     // outfile<<input<<" will be compiled to "<<output<<std::endl;

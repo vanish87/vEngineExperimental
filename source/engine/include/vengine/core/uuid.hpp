@@ -97,12 +97,12 @@ namespace vEngine
                 {
                     return this->data_ != rhs.data_;
                 }
-                constexpr static auto properties()
-                {
-                    return std::make_tuple(
-                        property("value", &UUID::data_)
-                    );
-                }
+                // constexpr static auto properties()
+                // {
+                //     return std::make_tuple(
+                //         property("value", &UUID::data_)
+                //     );
+                // }
 
             private:
                 uint64_t data_;

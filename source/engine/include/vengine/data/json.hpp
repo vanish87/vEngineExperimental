@@ -29,6 +29,7 @@
 #include <vengine/core/mesh_component.hpp>
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/transform_component.hpp>
+#include <vengine/core/scene.hpp>
 #include <vengine/rendering/material.hpp>
 #include <vengine/rendering/texture.hpp>
 
@@ -61,15 +62,15 @@ namespace vEngine
         {
             return obj;
         }
-        template <typename T, typename = std::enable_if_t<std::is_same<T, UUID>::value, T>>
-        std::string ToString(const UUID& uuid)
+        template <typename T, typename = std::enable_if_t<std::is_same<T, Core::UUID>::value, T>>
+        std::string ToString(const Core::UUID& uuid)
         {
             return ToString(uuid.AsUint());
         }
-        template <typename T, typename = std::enable_if_t<std::is_same<T, UUID>::value, T>>
-        const UUID FromString(const std::string& obj)
+        template <typename T, typename = std::enable_if_t<std::is_same<T, Core::UUID>::value, T>>
+        const Core::UUID FromString(const std::string& obj)
         {
-            return UUID(std::stoi(obj));
+            return Core::UUID(std::stoi(obj));
         }
         template <typename T, typename = std::enable_if_t<std::is_same<T, Rendering::ShaderType>::value, T>>
         std::string ToString(const Rendering::ShaderType& obj)
@@ -152,31 +153,39 @@ namespace vEngine
             return typeid(T).name();
         }
         template <typename T>
-        nlohmann::json ToJson(const std::shared_ptr<T>& ptr)
+        nlohmann::json ToJson(const std::shared_ptr<T>& ptr, bool as_reference = true)
         {
             nlohmann::json value;
 
-            using type_list = std::tuple<Rendering::Shader, Rendering::Material, Transform, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera, CameraComponent, Rendering::PipelineState>;
-            constexpr auto nlist = std::tuple_size<type_list>::value;
-            for_sequence(std::make_index_sequence<nlist>{},
-                         [&](auto i)
-                         {
-                             auto p = CastByType<i, type_list>(ptr);
-                             if (value.is_null() && p != nullptr)
+            if(!as_reference)
+            {
+                using type_list = std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera, CameraComponent,
+                                             Rendering::PipelineState, Rendering::Texture>;
+                constexpr auto nlist = std::tuple_size<type_list>::value;
+                for_sequence(std::make_index_sequence<nlist>{},
+                             [&](auto i)
                              {
-                                //  value["data_type"] = GetTypeString(p);
-                                //  value["data"] = ToJson(*p.get());
-                                 value = ToJson(*p.get());
-                             }
-                         });
+                                 auto p = CastByType<i, type_list>(ptr);
+                                 if (value.is_null() && p != nullptr)
+                                 {
+                                     //  value["data_type"] = GetTypeString(p);
+                                     //  value["data"] = ToJson(*p.get());
+                                     value = ToJson(*p.get());
+                                 }
+                             });
+            }
+            if (!value.is_null()) return value;
+
+
+            auto go = std::dynamic_pointer_cast<GameObject>(ptr);
+
             // TODO Use context map for shared ptr
             // save uuid and/or other necessary description with json value
             // so that FromJson can find/create objects from xx factory class
-            if (!value.is_null()) return value;
 
             // value["data_type"] = GetTypeString(ptr);
             // value["data"] = ToJson(*ptr.get());
-            value = ToJson(*ptr.get());
+            value = ToJson(*go.get());
             return value;
         }
         // template <typename T, typename = std::enable_if_t<std::is_base_of<GameObject, T>::value, T>, typename = void, typename = void>
@@ -191,6 +200,11 @@ namespace vEngine
         nlohmann::json ToJson(const std::filesystem::path& path)
         {
             return nlohmann::json(path.string());
+        }
+        template <>
+        nlohmann::json ToJson(const UUID& uuid)
+        {
+            return nlohmann::json(uuid.AsUint());
         }
         template <>
         nlohmann::json ToJson(const Rendering::ShaderType& shader_type)

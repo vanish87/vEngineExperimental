@@ -40,9 +40,9 @@ namespace vEngine
                     return std::tuple_cat(
                         GameNode::properties(),
                         std::make_tuple(
-                            property("meshes", &Scene::meshes_)
-                            // property("materials", &Scene::materials_),
-                            // property("textures", &Scene::textures_)
+                            property("meshes", &Scene::meshes_),
+                            property("materials", &Scene::materials_),
+                            property("textures", &Scene::textures_)
                         )
                     );
                 }

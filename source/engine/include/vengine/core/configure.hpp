@@ -18,7 +18,7 @@ namespace vEngine
         struct Configure
         {
                 std::string app_name = "vEngineApp";
-                std::string context_name = "DefaultContext";
+                std::string context_name = "default_context";
                 std::filesystem::path resource_root;
                 GraphicsConfigure graphics_configure;
         };

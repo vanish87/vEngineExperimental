@@ -95,15 +95,21 @@ namespace vEngine
         void Context::SaveRuntimeObjects() 
         {
             auto config = this->CurrentConfigure();
-            auto output = config.resource_root / (config.context_name + ".json");
+            auto context_path =config.resource_root / config.context_name;
+            if (!std::filesystem::exists(context_path)) std::filesystem::create_directory(context_path);
 
-            nlohmann::json j;
-            ToJson(j, this->runtime_game_objects_);
-            PRINT("Save to " << output.string());
-            std::ofstream outfile(output.string());
-            outfile << std::setw(2) << j << std::endl;
-            outfile.flush();
-            outfile.close();
+            for(const auto& go : this->runtime_game_objects_)
+            {
+                nlohmann::json j;
+                auto output = context_path / (std::to_string(go.first.AsUint()) + ".json");
+                j = ToJson(go.second, false);
+                PRINT("Save to " << output.string());
+                std::ofstream outfile(output.string());
+                outfile << std::setw(2) << j << std::endl;
+                outfile.flush();
+                outfile.close();
+
+            }
         }
         GameObjectSharedPtr Context::Find(const UUID& uuid)
         {

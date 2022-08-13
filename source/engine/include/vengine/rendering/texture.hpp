@@ -39,13 +39,19 @@ namespace vEngine
                     return std::tuple_cat(
                         Core::GameObject::properties(),
                         std::make_tuple(
-                            Core::property("descriptor", &Texture::descriptor_)
+                            Core::property("descriptor", &Texture::descriptor_),
+                            Core::property("raw_data", &Texture::raw_data_)
                         )
                     );
                 };
                 /// \brief brief constructor description.
                 Texture(const TextureDescriptor& desc);
                 virtual ~Texture();
+
+                void SetRawData(const std::vector<byte> data)
+                {
+                    this->raw_data_ = data;
+                }
 
                 bool Load(const Core::ResourceDescriptorSharedPtr descriptor) override;
                 Core::ResourceState CurrentState() override;
@@ -58,6 +64,7 @@ namespace vEngine
                 // int public_variable_;
 
 				TextureDescriptor descriptor_;
+                std::vector<byte> raw_data_;
 
             public:
                 /// \brief A brief function description.
