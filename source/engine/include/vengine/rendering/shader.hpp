@@ -16,6 +16,8 @@
 #include <vengine/rendering/data_struct.hpp>
 #include <vengine/core/iresource.hpp>
 #include <vengine/core/game_object.hpp>
+#include <vengine/core/resource_loader.hpp>
+#include <vengine/core/game_object_factory.hpp>
 
 namespace vEngine
 {
@@ -40,6 +42,38 @@ namespace vEngine
                         )
                     );
                 };
+
+                static ShaderSharedPtr Default(ShaderType type)
+                {
+                    switch (type)
+                    {
+                    case ShaderType::VS:
+                    {
+                        static auto vs = Core::GameObjectFactory::Create<Shader>();
+                        auto desc = std::make_shared<Core::ResourceDescriptor>();
+                        desc->file_path = Core::ResourceLoader::GetInstance().GetFilePath("vs.hlsl");
+                        vs->Load(desc);
+                        vs->type = type;
+                        return vs;
+                    }
+                    case ShaderType::PS:
+                    {
+                        static auto ps = Core::GameObjectFactory::Create<Shader>();
+                        auto desc = std::make_shared<Core::ResourceDescriptor>();
+                        desc->file_path = Core::ResourceLoader::GetInstance().GetFilePath("ps.hlsl");
+                        ps->Load(desc);
+                        ps->type = type;
+                        return ps;
+                    }
+                    default:
+                        break;
+                    }
+
+                    NOT_IMPL_ASSERT;
+
+                    return nullptr;
+                }
+
             public:
                 /// \brief brief constructor description.
                 Shader();

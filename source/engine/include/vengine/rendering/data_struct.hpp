@@ -168,7 +168,7 @@ namespace vEngine
                 GPUSubResource resource;
                 GraphicsBufferSlot slot;
 
-                std::vector<byte> raw_data;
+                // std::vector<byte> raw_data;
 
                 static const TextureDescriptor& Default()
                 {

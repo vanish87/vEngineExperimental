@@ -65,19 +65,8 @@ namespace vEngine
         }
         void AssimpHandler::HandleMaterials(Core::SceneSharedPtr scene, const aiScene* ai_scene)
         {
-            UNUSED_PARAMETER(scene);
-            UNUSED_PARAMETER(ai_scene);
-            auto vs = GameObjectFactory::Create<Shader>();
-            auto vs_desc = std::make_shared<ResourceDescriptor>();
-            vs_desc->file_path = ResourceLoader::GetInstance().GetFilePath("vs.hlsl");
-            vs->Load(vs_desc);
-            vs->type = ShaderType::VS;
-
-            auto ps = GameObjectFactory::Create<Shader>();
-            auto ps_desc = std::make_shared<ResourceDescriptor>();
-            ps_desc->file_path = ResourceLoader::GetInstance().GetFilePath("ps.hlsl");
-            ps->Load(ps_desc);
-            ps->type = ShaderType::PS;
+            auto vs = GameObjectFactory::Default<Shader>(ShaderType::VS);
+            auto ps = GameObjectFactory::Default<Shader>(ShaderType::PS);
 
             for (uint32_t mid = 0; mid < ai_scene->mNumMaterials; ++mid)
             {
@@ -219,7 +208,7 @@ namespace vEngine
                     auto offset = this->AiMatrixToFloat4x4(ai_bone->mOffsetMatrix);
                     auto weights = std::vector<VertexWeight>();
 
-                    PRINT(ai_mesh->mName.data << " has bones/joint " << name << " with " << ai_bone->mNumWeights);
+                    PRINT(ai_mesh->mName.data << " has bones/joint " << name << " with weight count" << ai_bone->mNumWeights);
 
                     for (uint32_t wid = 0; wid < ai_bone->mNumWeights; ++wid)
                     {
