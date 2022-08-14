@@ -46,7 +46,7 @@ namespace vEngine
                     return std::tuple_cat(
                         GameObject::properties(),
                         std::make_tuple(
-                            // property("name", &GameNode::name_),
+                            property("parent", &GameNode::parent_),
                             property("children", &GameNode::children_))
                     );
                 }

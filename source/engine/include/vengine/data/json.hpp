@@ -157,6 +157,13 @@ namespace vEngine
             return typeid(T).name();
         }
         template <typename T>
+        nlohmann::json ToJson(const std::weak_ptr<T>& ptr, bool as_reference = true)
+        {
+            auto shared = ptr.lock();
+            if(shared != nullptr) return ToJson(shared, as_reference);
+            return nlohmann::json();
+        }
+        template <typename T>
         nlohmann::json ToJson(const std::shared_ptr<T>& ptr, bool as_reference = true)
         {
             nlohmann::json value;
