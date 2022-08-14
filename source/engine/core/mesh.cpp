@@ -11,7 +11,6 @@
 #include <vengine/core/mesh.hpp>
 #include <vengine/core/resource_loader.hpp>
 #include <vengine/rendering/render_engine.hpp>
-#include <vengine/core/game_node_factory.hpp>
 #include <vengine/animation/bone_component.hpp>
 
 /// A detailed namespace description, it

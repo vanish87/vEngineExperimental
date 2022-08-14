@@ -17,7 +17,6 @@
 // #include <external/lodepng.h>
 // #include <external/tga.h>
 
-#include <vengine/core/game_node_factory.hpp>
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/animation/bone.hpp>
 #include <vengine/animation/bone_component.hpp>
