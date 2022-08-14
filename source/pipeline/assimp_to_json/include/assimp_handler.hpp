@@ -12,13 +12,13 @@
 
 #pragma once
 
-#include <engine.hpp>
 #include <filesystem>
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#include <engine.hpp>
 #include <vengine/core/application.hpp>
 
 namespace vEngine
@@ -36,6 +36,8 @@ namespace vEngine
                 void HandleMaterials(Core::SceneSharedPtr scene, const aiScene* ai_scene);
                 void HandleMeshes(Core::SceneSharedPtr scene, const aiScene* ai_scene);
                 void HandleAnimations(Core::SceneSharedPtr scene, const aiScene* ai_scene);
+                Core::GameNodeSharedPtr HandleNode(Core::SceneSharedPtr scene, const aiNode* ai_node, const aiScene* ai_scene);
+                void HandleBoneNode(Core::SceneSharedPtr scene, const aiNode* ai_node, const Core::GameNodeSharedPtr game_node);
         };
     }  // namespace Pipeline
 }  // namespace vEngine

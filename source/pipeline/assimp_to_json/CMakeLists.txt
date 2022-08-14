@@ -12,7 +12,7 @@ add_executable(${PROJECT_NAME}
 
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include
-    PUBLIC ${ASSIMP_INCLUDE_DIR}
+    # PUBLIC ${ASSIMP_INCLUDE_DIR}
 )
 
 # Link the static library from subproject1 using its alias sub::lib1
@@ -20,5 +20,5 @@ target_include_directories( ${PROJECT_NAME}
 # This will cause the include directories for that target to be added to this project
 target_link_libraries(${PROJECT_NAME}
     engine::core
-	${ASSIMP_LIBRARIES}
+	# ${ASSIMP_LIBRARIES}
 )

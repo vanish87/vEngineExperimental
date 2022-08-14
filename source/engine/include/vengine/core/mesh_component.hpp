@@ -26,7 +26,7 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                MeshComponent();
+                // MeshComponent();
                 // MeshComponent(const MeshSharedPtr mesh);
         };
     }  // namespace Core

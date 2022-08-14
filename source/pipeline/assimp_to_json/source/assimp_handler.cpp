@@ -6,9 +6,10 @@
 
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/core/scene.hpp>
-#include <vengine/core/mesh.hpp>
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/transform_component.hpp>
+#include <vengine/core/mesh_component.hpp>
+#include <vengine/core/mesh_renderer_component.hpp>
 #include <vengine/core/resource_loader.hpp>
 #include <vengine/rendering/shader.hpp>
 #include <vengine/rendering/material.hpp>
@@ -39,7 +40,7 @@ namespace vEngine
             this->HandleCameras(scene, ai_scene);
             this->HandleAnimations(scene, ai_scene);
 
-            // this->root_ = this->HandleNode(scene->mRootNode, scene);
+            auto root_ = this->HandleNode(scene, ai_scene->mRootNode, ai_scene);
 
             return scene;
         }
@@ -70,7 +71,7 @@ namespace vEngine
 
             // PRINT("num of cameras: " << this->cameras_.size());
         }
-        void AssimpHandler::HandleMaterials(Core::SceneSharedPtr scene, const aiScene* ai_scene)
+        void AssimpHandler::HandleMaterials(SceneSharedPtr scene, const aiScene* ai_scene)
         {
             auto vs = GameObjectFactory::Default<Shader>(ShaderType::VS);
             auto ps = GameObjectFactory::Default<Shader>(ShaderType::PS);
@@ -231,10 +232,76 @@ namespace vEngine
             }
 
         }
-        void AssimpHandler::HandleAnimations(Core::SceneSharedPtr scene, const aiScene* ai_scene)
+        void AssimpHandler::HandleAnimations(SceneSharedPtr scene, const aiScene* ai_scene)
         {
             UNUSED_PARAMETER(scene);
             UNUSED_PARAMETER(ai_scene);
+        }
+
+        void AssimpHandler::HandleBoneNode(SceneSharedPtr scene, const aiNode* ai_node, const GameNodeSharedPtr game_node)
+        {
+            if (ai_node == nullptr) return;
+
+            auto bone_name = ai_node->mName.data;
+            for (const auto& m : scene->meshes_)
+            {
+                if (m.second->bone_data_.find(bone_name) != m.second->bone_data_.end())
+                {
+                    // TODO Add init/bind pose pos/rotation/scale to bone_comp
+                    auto bone_comp = m.second->bone_data_[bone_name];
+                    game_node->AttachComponent(bone_comp);
+                }
+            }
+
+        }
+        GameNodeSharedPtr AssimpHandler::HandleNode(SceneSharedPtr scene, const aiNode* ai_node, const aiScene* ai_scene)
+        {
+            auto node = GameObjectFactory::Create<GameNode>();
+            auto transform = GameObjectFactory::Create<TransformComponent>();
+            node->AttachComponent(transform);
+
+            this->HandleBoneNode(scene, ai_node, node);
+
+            node->description_.name = ai_node->mName.data;
+            // set transformation here
+            // auto transform = ai_node->mTransformation;
+            // parent->AddChild(game_node);
+            std::string parentName = "None";
+            if (ai_node->mParent != nullptr) parentName = ai_node->mParent->mName.data;
+            PRINT("aiNode " << ai_node->mName.data << " parent :" << parentName);
+
+            for (uint32_t i = 0; i < ai_node->mNumMeshes; ++i)
+            {
+                auto mesh_node = GameObjectFactory::Create<GameNode>();
+                auto mesh_transform = GameObjectFactory::Create<TransformComponent>();
+                mesh_node->AttachComponent(mesh_transform);
+                // scene_meshes_ contains same mesh data as they are in aiScene
+                auto scene_mesh_id = ai_node->mMeshes[i];
+
+                auto ai_mesh = ai_scene->mMeshes[scene_mesh_id];
+                auto mesh = scene->meshes_[scene_mesh_id];
+                PRINT("aiNode " << ai_node->mName.data << " with ai mesh name " << ai_mesh->mName.data);
+
+                auto mesh_component = GameObjectFactory::Create<MeshComponent>();
+                mesh_component->Reset(mesh);
+                mesh_node->AttachComponent(mesh_component);
+
+                auto mesh_renderer = GameObjectFactory::Create<MeshRendererComponent>();
+                mesh_node->AttachComponent(mesh_renderer);
+
+                auto mat = scene->materials_[ai_mesh->mMaterialIndex];
+                mesh_renderer->GO()->material_ = mat;
+
+                node->AddChild(mesh_node);
+            }
+
+            for (uint32_t c = 0; c < ai_node->mNumChildren; ++c)
+            {
+                auto child = this->HandleNode(scene, ai_node->mChildren[c], ai_scene);
+                node->AddChild(child);
+            }
+
+            return node;
         }
     }  // namespace Pipeline
 }  // namespace vEngine

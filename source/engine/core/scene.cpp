@@ -55,9 +55,9 @@ namespace vEngine
         {
             return this->animation_clips_;
         }
-        void Scene::AddMaterial(const Rendering::MaterialSharedPtr material)
+        void Scene::AddMaterial(const MaterialSharedPtr material)
         {
-            UNUSED_PARAMETER(material);
+            this->materials_.push_back(material);
         }
         void Scene::SetMesh(const int id, const MeshSharedPtr mesh)
         {
@@ -66,7 +66,7 @@ namespace vEngine
             this->meshes_[id] = mesh;
         }
 
-        void Scene::SetTexture(const std::string path, const Rendering::TextureSharedPtr texture)
+        void Scene::SetTexture(const std::string path, const TextureSharedPtr texture)
         {
             CHECK_ASSERT(!this->HasTexture(path));
             this->textures_[path] = texture;
@@ -75,7 +75,7 @@ namespace vEngine
         {
             return this->textures_.find(path) != this->textures_.end();
         }
-        Rendering::TextureSharedPtr Scene::GetTexture(const std::string path)
+        TextureSharedPtr Scene::GetTexture(const std::string path)
         {
             CHECK_ASSERT(this->HasTexture(path));
             return this->textures_[path];

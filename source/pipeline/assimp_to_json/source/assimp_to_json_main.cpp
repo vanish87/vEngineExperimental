@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 {
     std::filesystem::path input;
     std::filesystem::path output;
-    std::filesystem::path resource = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource";
+    std::filesystem::path resource;
     for(auto i = 0; i < argc; ++i)
     {
         auto s = std::string(argv[i]);
@@ -21,6 +21,9 @@ int main(int argc, char* argv[])
         if(s == "-o") output = argv[i+1];
         if(s == "-r") resource = argv[i+1];
     }
+    // input = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource/boblamp/boblampclean.md5mesh";
+    // output = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin/assimp/boblampclean.json";
+    // resource = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource";
 
     Configure configure;
     configure.graphics_configure.width = 320;
@@ -34,8 +37,6 @@ int main(int argc, char* argv[])
     #endif
     Context::GetInstance().Init(configure);
 
-    input = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource/boblamp/boblampclean.md5mesh";
-    output = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin/assimp/boblampclean.json";
 
     PRINT(resource.string());
 
@@ -47,7 +48,7 @@ int main(int argc, char* argv[])
     nlohmann::json j;
     ToJson(j, scene);
     scene.reset();
-    
+
     PRINT("Save to "<<output.string());
     // FromJson(j, scene);
     std::ofstream outfile(output.string());
