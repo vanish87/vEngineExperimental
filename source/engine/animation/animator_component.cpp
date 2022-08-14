@@ -11,7 +11,6 @@
 #include <vengine/animation/animator_component.hpp>
 #include <vengine/core/constants.hpp>
 #include <vengine/core/transform_component.hpp>
-#include <vengine/animation/skeleton_component.hpp>
 #include <vengine/animation/bone_component.hpp>
 #include <vengine/animation/joint.hpp>
 

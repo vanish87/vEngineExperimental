@@ -20,7 +20,6 @@
 #include <vengine/core/context.hpp>
 #include <vengine/rendering/render_engine.hpp>
 #include <vengine/rendering/shared/data_cbuffer.hpp>
-#include <vengine/animation/skeleton_component.hpp>
 #include <vengine/animation/bone_component.hpp>
 
 /// A brief namespace description.

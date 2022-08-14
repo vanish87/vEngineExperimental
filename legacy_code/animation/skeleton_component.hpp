@@ -26,7 +26,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class SkeletonComponent : public Core::Component<Skeleton>
+        class VENGINE_API SkeletonComponent : public Core::Component<Skeleton>
         {
             public:
                 /// \brief brief constructor description.

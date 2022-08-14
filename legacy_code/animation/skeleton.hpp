@@ -7,8 +7,8 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#ifndef _VENGINE_ANIMATION_SKELETON_HPP
-#define _VENGINE_ANIMATION_SKELETON_HPP
+#ifndef _LEGACY_CODE_ANIMATION_SKELETON_HPP
+#define _LEGACY_CODE_ANIMATION_SKELETON_HPP
 
 #pragma once
 
@@ -25,7 +25,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Skeleton : public Core::GameObject
+        class VENGINE_API Skeleton : public Core::GameObject
         {
             public:
                 /// \brief brief constructor description.
@@ -52,4 +52,4 @@ namespace vEngine
 
 }  // namespace vEngine
 
-#endif /* _VENGINE_ANIMATION_SKELETON_HPP */
+#endif /* _LEGACY_CODE_ANIMATION_SKELETON_HPP */
