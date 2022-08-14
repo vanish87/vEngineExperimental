@@ -25,7 +25,8 @@ int main(int argc, char* argv[])
     }
     // input = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource/boblamp/boblampclean.md5mesh";
     // output = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin/assimp/boblampclean.json";
-    // resource = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource";
+    // resource_src = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource";
+    // resource_bin = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin";
 
     Configure configure;
     configure.graphics_configure.width = 320;
