@@ -15,6 +15,12 @@
 #include <vengine/rendering/material.hpp>
 #include <vengine/rendering/texture.hpp>
 
+#include <vengine/animation/bone_component.hpp>
+#include <vengine/animation/joint.hpp>
+#include <vengine/animation/joint_component.hpp>
+#include <vengine/animation/animation_clip.hpp>
+#include <vengine/animation/animator_component.hpp>
+
 #include <vengine/core/context.hpp>
 #include <vengine/rendering/render_engine.hpp>
 
@@ -40,7 +46,8 @@ namespace vEngine
             this->HandleCameras(scene, ai_scene);
             this->HandleAnimations(scene, ai_scene);
 
-            auto root_ = this->HandleNode(scene, ai_scene->mRootNode, ai_scene);
+            auto root = this->HandleNode(scene, ai_scene->mRootNode, ai_scene);
+            scene->AddChild(root);
 
             return scene;
         }
@@ -234,8 +241,52 @@ namespace vEngine
         }
         void AssimpHandler::HandleAnimations(SceneSharedPtr scene, const aiScene* ai_scene)
         {
-            UNUSED_PARAMETER(scene);
-            UNUSED_PARAMETER(ai_scene);
+            for (uint32_t i = 0; i < ai_scene->mNumAnimations; ++i)
+            {
+                auto animation = GameObjectFactory::Create<AnimationClip>();
+                // each animation is an AnimationClip
+                auto anim = ai_scene->mAnimations[i];
+
+                animation->description_.name = anim->mName.data;
+                animation->Duration() = static_cast<float>(anim->mDuration);
+                animation->TicksPerSecond() = static_cast<float>(anim->mTicksPerSecond);
+                animation->TotalFrame() = Math::FloorToInt(anim->mDuration * anim->mTicksPerSecond);
+                PRINT("handling " << animation->description_.name << " animation with " << animation->TotalFrame() << " frames")
+                for (uint32_t c = 0; c < anim->mNumChannels; ++c)
+                {
+                    // Each channel defines node/bone it controls
+                    // for example
+                    // node->mNodeName = "Torso" contains key frames data for "Torso" Node/Bone in the scene
+                    // mNodeName could be aiNode or aiBone
+                    auto node = anim->mChannels[c];
+                    PRINT("channel " << node->mNodeName.data << " has " << node->mNumPositionKeys << " Key values");
+
+                    auto joint = GameObjectFactory::Create<Joint>();
+                    joint->description_.name = node->mNodeName.data;
+
+                    uint32_t k = 0;
+                    for (k = 0; k < node->mNumPositionKeys; ++k)
+                    {
+                        auto pos = node->mPositionKeys[k];
+                        joint->position_keys_.emplace_back((float)pos.mTime, float3(pos.mValue.x, pos.mValue.y, pos.mValue.z));
+                    }
+                    for (k = 0; k < node->mNumRotationKeys; ++k)
+                    {
+                        auto rotation = node->mRotationKeys[k];
+                        joint->rotation_keys_.emplace_back((float)rotation.mTime, quaternion(rotation.mValue.w, rotation.mValue.x, rotation.mValue.y, rotation.mValue.z));
+                    }
+                    for (k = 0; k < node->mNumScalingKeys; ++k)
+                    {
+                        auto scale = node->mScalingKeys[k];
+                        joint->scale_keys_.emplace_back((float)scale.mTime, float3(scale.mValue.x, scale.mValue.y, scale.mValue.z));
+                    }
+
+                    // TODO: use unordered_map for fast access
+                    animation->AddJoint(joint->description_.name, joint);
+                }
+
+                scene->AddAnimation(animation);
+            }
         }
 
         void AssimpHandler::HandleBoneNode(SceneSharedPtr scene, const aiNode* ai_node, const GameNodeSharedPtr game_node)
@@ -259,6 +310,7 @@ namespace vEngine
             auto node = GameObjectFactory::Create<GameNode>();
             auto transform = GameObjectFactory::Create<TransformComponent>();
             node->AttachComponent(transform);
+            node->description_.name = ai_node->mName.data;
 
             this->HandleBoneNode(scene, ai_node, node);
 

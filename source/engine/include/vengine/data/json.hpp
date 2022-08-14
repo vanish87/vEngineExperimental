@@ -33,6 +33,10 @@
 #include <vengine/rendering/material.hpp>
 #include <vengine/rendering/texture.hpp>
 
+#include <vengine/animation/animation_clip.hpp>
+#include <vengine/animation/animator.hpp>
+#include <vengine/animation/joint.hpp>
+
 namespace vEngine
 {
     namespace Core
@@ -160,7 +164,7 @@ namespace vEngine
             if(!as_reference)
             {
                 using type_list = std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, TransformComponent, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera,
-                                             CameraComponent, Rendering::PipelineState, Rendering::Texture, GameNode>;
+                                             CameraComponent, Rendering::PipelineState, Rendering::Texture, Animation::AnimationClip, Animation::Joint, GameNode>;
                 constexpr auto nlist = std::tuple_size<type_list>::value;
                 for_sequence(std::make_index_sequence<nlist>{},
                              [&](auto i)

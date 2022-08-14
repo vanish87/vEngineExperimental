@@ -27,8 +27,22 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class AnimationClip : public Core::GameObject
+        class VENGINE_API AnimationClip : public Core::GameObject
         {
+            public:
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        GameObject::properties(),
+                        std::make_tuple(
+                            // property("name", &GameNode::name_),
+                            property("duration", &AnimationClip::duration_),
+                            property("ticks_per_second", &AnimationClip::ticks_per_second_),
+                            property("total_frame", &AnimationClip::total_frame_),
+                            property("joints", &AnimationClip::joints_)
+                            )
+                    );
+                }
             public:
                 /// \brief brief constructor description.
                 AnimationClip();

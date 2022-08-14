@@ -42,7 +42,8 @@ namespace vEngine
                         std::make_tuple(
                             property("meshes", &Scene::meshes_),
                             property("materials", &Scene::materials_),
-                            property("textures", &Scene::textures_)
+                            property("textures", &Scene::textures_),
+                            property("animations", &Scene::animation_clips_)
                         )
                     );
                 }

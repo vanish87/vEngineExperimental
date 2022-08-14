@@ -59,6 +59,10 @@ namespace vEngine
         {
             this->materials_.push_back(material);
         }
+        void Scene::AddAnimation(const AnimationClipSharedPtr animation_clip)
+        {
+            this->animation_clips_.push_back(animation_clip);
+        }
         void Scene::SetMesh(const int id, const MeshSharedPtr mesh)
         {
             CHECK_ASSERT(this->meshes_.find(id) == this->meshes_.end());

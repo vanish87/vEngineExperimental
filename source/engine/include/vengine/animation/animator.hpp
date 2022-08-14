@@ -26,7 +26,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Animator : public Core::GameObject
+        class VENGINE_API Animator : public Core::GameObject
         {
             public:
                 /// \brief brief constructor description.

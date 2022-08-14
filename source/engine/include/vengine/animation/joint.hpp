@@ -15,6 +15,7 @@
 #include <engine.hpp>
 #include <vector>
 #include <vengine/core/game_object.hpp>
+#include <vengine/core/quaternion.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -22,8 +23,17 @@ namespace vEngine
     namespace Animation
     {
         template <typename T>
-        struct JointKey
+        struct VENGINE_API JointKey
         {
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        std::make_tuple(
+                            property("time", &JointKey::time),
+                            property("value", &JointKey::value)
+                        )
+                    );
+                }
                 float time;
                 T value;
                 JointKey(float t, const T& val) : time{t}, value{val} {};
@@ -32,8 +42,20 @@ namespace vEngine
         ///
         /// Joint is for animation clip
         /// Bone is for pose-vertex binding
-        class Joint : public Core::GameObject
+        class VENGINE_API Joint : public Core::GameObject
         {
+            public:
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        GameObject::properties(),
+                        std::make_tuple(
+                            property("position_keys", &Joint::position_keys_),
+                            property("rotation_keys", &Joint::rotation_keys_),
+                            property("scale_keys", &Joint::scale_keys_)
+                        )
+                    );
+                }
             public:
                 /// \brief brief constructor description.
                 Joint();
