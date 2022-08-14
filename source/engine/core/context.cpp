@@ -36,12 +36,6 @@ namespace vEngine
             this->LoadDll();
 
             ResourceLoader::GetInstance().Init();
-            ResourceLoader::GetInstance().AddSearchPath(configure.resource_root);
-            // ResourceLoader::GetInstance().AddSearchFolder("resource");
-            ResourceLoader::GetInstance().AddSearchFolder("shader");
-            ResourceLoader::GetInstance().AddSearchFolder("sponza");
-            ResourceLoader::GetInstance().AddSearchFolder("bob");
-            ResourceLoader::GetInstance().AddSearchFolder("boblamp");
         }
 
         void Context::Deinit()
@@ -95,13 +89,18 @@ namespace vEngine
         void Context::SaveRuntimeObjects() 
         {
             auto config = this->CurrentConfigure();
-            auto context_path =config.resource_root / config.context_name;
+            auto context_path =config.resource_bin / config.context_name;
             if (!std::filesystem::exists(context_path)) std::filesystem::create_directory(context_path);
 
             for(const auto& go : this->runtime_game_objects_)
             {
                 nlohmann::json j;
-                auto output = context_path / (std::to_string(go.first.AsUint()) + ".json");
+                auto name = go.second->description_.name;
+                auto type = go.second->description_.type;
+                std::replace(type.begin(), type.end(), ' ', '_');
+                std::replace(type.begin(), type.end(), ':', '_');
+                auto file_name = std::to_string(go.first.AsUint()) + "_" + name + "_" + type + ".json";
+                auto output = context_path / file_name;
                 j = ToJson(go.second, false);
                 PRINT("Save to " << output.string());
                 std::ofstream outfile(output.string());

@@ -31,6 +31,17 @@ namespace vEngine
         class Bone : public Core::GameObject
         {
             public:
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        GameObject::properties(),
+                        std::make_tuple(
+                            property("id", &Bone::id_),
+                            property("inverse_bind_pose_matrix", &Bone::inverse_bind_pose_matrix_)
+                        )
+                    );
+                }
+            public:
                 /// \brief brief constructor description.
                 Bone();
 

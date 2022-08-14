@@ -88,7 +88,7 @@ namespace vEngine
                 if (std::filesystem::exists(path)) return path;
             }
 
-            CHECK_AND_ASSERT(false, "Cannot find file " << file_name);
+            CHECK_AND_ASSERT(false, "Cannot find file/folder " << file_name);
             return nullptr;
         }
         void ResourceLoader::DumpCurrentPath()

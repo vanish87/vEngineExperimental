@@ -13,13 +13,15 @@ int main(int argc, char* argv[])
 {
     std::filesystem::path input;
     std::filesystem::path output;
-    std::filesystem::path resource;
+    std::filesystem::path resource_src;
+    std::filesystem::path resource_bin;
     for(auto i = 0; i < argc; ++i)
     {
         auto s = std::string(argv[i]);
         if(s == "-i") input = argv[i+1];
         if(s == "-o") output = argv[i+1];
-        if(s == "-r") resource = argv[i+1];
+        if(s == "-r") resource_src = argv[i+1];
+        if(s == "-b") resource_bin = argv[i+1];
     }
     // input = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource/boblamp/boblampclean.md5mesh";
     // output = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin/assimp/boblampclean.json";
@@ -28,7 +30,8 @@ int main(int argc, char* argv[])
     Configure configure;
     configure.graphics_configure.width = 320;
     configure.graphics_configure.height = 240;
-    configure.resource_root = resource;
+    configure.resource_src = resource_src;
+    configure.resource_bin = resource_bin;
 
     #ifdef VENGINE_PLATFORM_WINDOWS
     configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
@@ -36,9 +39,15 @@ int main(int argc, char* argv[])
     configure.graphics_configure.render_plugin_name = "opengl_rendering_plugin";
     #endif
     Context::GetInstance().Init(configure);
+    ResourceLoader::GetInstance().AddSearchPath(configure.resource_src);
+    // ResourceLoader::GetInstance().AddSearchFolder("resource");
+    ResourceLoader::GetInstance().AddSearchFolder("shader");
+    ResourceLoader::GetInstance().AddSearchFolder("sponza");
+    ResourceLoader::GetInstance().AddSearchFolder("bob");
+    ResourceLoader::GetInstance().AddSearchFolder("boblamp");
 
-
-    PRINT(resource.string());
+    PRINT(resource_src.string());
+    PRINT(resource_bin.string());
 
 
     vEngine::Pipeline::AssimpHandler handler;

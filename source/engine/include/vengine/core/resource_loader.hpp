@@ -76,7 +76,7 @@ namespace vEngine
                 // void AddSync();
 
                 std::filesystem::path GetFilePath(const std::string file_name);
-                void AddSearchFolder(const std::string path);
+                void AddSearchFolder(const std::string folder);
                 void AddSearchPath(const std::filesystem::path path);
 
                 void DumpCurrentPath();
