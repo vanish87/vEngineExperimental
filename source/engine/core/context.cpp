@@ -92,14 +92,20 @@ namespace vEngine
             auto context_path =config.resource_bin / config.context_name;
             if (!std::filesystem::exists(context_path)) std::filesystem::create_directory(context_path);
 
+            std::string illegal = ":\"\'<>%$*&+ ";
+
             for(const auto& go : this->runtime_game_objects_)
             {
                 nlohmann::json j;
                 auto name = go.second->description_.name;
                 auto type = go.second->description_.type;
-                std::replace(type.begin(), type.end(), ' ', '_');
-                std::replace(type.begin(), type.end(), ':', '_');
+
                 auto file_name = std::to_string(go.first.AsUint()) + "_" + name + "_" + type + ".json";
+                for(auto c : illegal)
+                {
+                    std::replace(file_name.begin(), file_name.end(), c, '_');
+                }
+
                 auto output = context_path / file_name;
                 j = ToJson(go.second, false);
                 PRINT("Save to " << output.string());
