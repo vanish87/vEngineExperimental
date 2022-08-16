@@ -80,6 +80,7 @@ namespace vEngine
                 void AddSearchPath(const std::filesystem::path path);
 
                 void DumpCurrentPath();
+
             private:
                 ResourceLoadingThread loading_thread_;
 

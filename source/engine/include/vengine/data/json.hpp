@@ -18,6 +18,7 @@
 #endif
 
 #include <unordered_map>
+#include <fstream>
 
 #include <engine.hpp>
 #include <external/json.hpp>
@@ -171,7 +172,7 @@ namespace vEngine
             if(!as_reference)
             {
                 using type_list = std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, TransformComponent, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera,
-                                             CameraComponent, Rendering::PipelineState, Rendering::Texture, Animation::AnimationClip, Animation::Joint, Animation::Bone, GameNode>;
+                                             CameraComponent, Rendering::PipelineState, Rendering::Texture, Animation::AnimationClip, Animation::Joint, Animation::Bone, GameNode, UUIDGenerator>;
                 constexpr auto nlist = std::tuple_size<type_list>::value;
                 for_sequence(std::make_index_sequence<nlist>{},
                              [&](auto i)
@@ -294,6 +295,14 @@ namespace vEngine
             return value;
         }
 
+        static auto ParseJson(const std::filesystem::path path)
+        {
+            std::ifstream file(path.string());
+            auto j = nlohmann::json::parse(file);
+            file.close();
+            return j;
+        }
+
         template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
         static void FromJson(const nlohmann::json& j, T& object)
         {
@@ -322,6 +331,12 @@ namespace vEngine
         {
             obj = j.get<T>();
         }
+        template <>
+        void FromJson(const nlohmann::json& j, UUID& uuid)
+        {
+            auto id = j.get<uint64_t>();
+            uuid.Set(id);
+        }
         // template <typename T, typename = std::enable_if_t<std::is_same<T, GameObjectType>::value, T>, typename = void>
         template <>
         void FromJson(const nlohmann::json& j, GameObjectType& go_type)
@@ -330,17 +345,37 @@ namespace vEngine
             UNUSED_PARAMETER(go_type);
             // return nlohmann::json(ToString<GameObjectType>(go_type));
         }
+
+        GameObject CreateByTypeString(const std::string type)
+        {
+        }
+        template <typename T>
+        void FromJson(const nlohmann::json& j, std::weak_ptr<T>& ptr)
+        {
+            UNUSED_PARAMETER(j);
+            UNUSED_PARAMETER(ptr);
+
+        }
         template <typename T>
         void FromJson(const nlohmann::json& j, std::shared_ptr<T>& ptr)
         {
-            auto desc = GameObjectDescription();
+            GameObjectDescription desc;
             // FromJson(j["data"], *v);
 
             FromJson(j["description"], desc);
 
-            auto v = new T();
-            FromJson(j, *v);
-            ptr.reset(v);
+            if(desc.type == "class vEngine::Core::CameraComponent")
+            {
+                GameObject* g = new CameraComponent();
+                FromJson(j, *g);
+                ptr.reset(g);
+            }
+            else
+            {
+                auto v = new T();
+                FromJson(j, *v);
+                ptr.reset(v);
+            }
         }
         template <typename T>
         void FromJson(const nlohmann::json& j, std::vector<T>& vector)

@@ -36,6 +36,8 @@ namespace vEngine
             this->LoadDll();
 
             ResourceLoader::GetInstance().Init();
+
+            this->LoadRuntimeObjects();
         }
 
         void Context::Deinit()
@@ -85,7 +87,35 @@ namespace vEngine
             }
         }
 
-        void Context::LoadRuntimeObjects() {}
+        void Context::LoadRuntimeObjects() 
+        {
+            auto config = this->CurrentConfigure();
+            auto context_path =config.resource_bin / config.context_name;
+            auto uuid_path = context_path / "uuid.json";
+            auto j = ParseJson(uuid_path);
+
+            FromJson(j, UUIDGenerator::GetInstance());
+
+            std::unordered_map<uint64_t, nlohmann::json> json_map;
+
+            for(const auto& file : std::filesystem::directory_iterator(context_path))
+            {
+                auto name = file.path().filename().string();
+                if (name == "uuid") continue;
+                if(file.is_regular_file())
+                {
+                    auto uuid = std::stoi(name.substr(0, name.find('_')));
+                    json_map[uuid] = ParseJson(file.path());
+                }
+            }
+            for(auto& json : json_map)
+            {
+                GameObjectSharedPtr go;
+                FromJson(json.second, go);
+                this->runtime_game_objects_[go->description_.uuid] = go;
+            }
+
+        }
         void Context::SaveRuntimeObjects() 
         {
             auto config = this->CurrentConfigure();
@@ -93,6 +123,13 @@ namespace vEngine
             if (!std::filesystem::exists(context_path)) std::filesystem::create_directory(context_path);
 
             std::string illegal = ":\"\'<>%$*&+ ";
+
+            auto uuid = ToJson(UUIDGenerator::GetInstance());
+            auto uuid_path = context_path / "uuid.json";
+            std::ofstream uuid_file(uuid_path.string());
+            uuid_file << std::setw(2) << uuid << std::endl;
+            uuid_file.flush();
+            uuid_file.close();
 
             for(const auto& go : this->runtime_game_objects_)
             {
@@ -123,6 +160,8 @@ namespace vEngine
             {
                 return this->runtime_game_objects_[uuid];
             }
+            else
+            {}
             return nullptr;
         }
         void Context::Register(const GameObjectSharedPtr& go)
