@@ -46,7 +46,7 @@ namespace vEngine
         {
                 std::string type;
                 UUID uuid;
-                std::string name;
+                std::string name = "GameObject";
                 constexpr static auto properties()
                 {
                     return std::make_tuple(

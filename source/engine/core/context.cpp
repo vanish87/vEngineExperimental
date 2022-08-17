@@ -37,12 +37,12 @@ namespace vEngine
 
             ResourceLoader::GetInstance().Init();
 
-            this->LoadRuntimeObjects();
+            // this->LoadRuntimeObjects();
         }
 
         void Context::Deinit()
         {
-            this->SaveRuntimeObjects();
+            // this->SaveRuntimeObjects();
 
             ResourceLoader::GetInstance().Deinit();
             // prt.reset() does same thing as this->ProcessRenderEngine("DestoryRenderEngine");
@@ -94,7 +94,7 @@ namespace vEngine
             auto uuid_path = context_path / "uuid.json";
             auto j = ParseJson(uuid_path);
 
-            FromJson(j, UUIDGenerator::GetInstance());
+            // FromJson(j, UUIDGenerator::GetInstance());
 
             std::unordered_map<uint64_t, nlohmann::json> json_map;
 
@@ -124,12 +124,12 @@ namespace vEngine
 
             std::string illegal = ":\"\'<>%$*&+ ";
 
-            auto uuid = ToJson(UUIDGenerator::GetInstance());
-            auto uuid_path = context_path / "uuid.json";
-            std::ofstream uuid_file(uuid_path.string());
-            uuid_file << std::setw(2) << uuid << std::endl;
-            uuid_file.flush();
-            uuid_file.close();
+            // auto uuid = ToJson(UUIDGenerator::GetInstance());
+            // auto uuid_path = context_path / "uuid.json";
+            // std::ofstream uuid_file(uuid_path.string());
+            // uuid_file << std::setw(2) << uuid << std::endl;
+            // uuid_file.flush();
+            // uuid_file.close();
 
             for(const auto& go : this->runtime_game_objects_)
             {
@@ -144,7 +144,7 @@ namespace vEngine
                 }
 
                 auto output = context_path / file_name;
-                j = ToJson(go.second, false);
+                j = ToJson(go.second);
                 PRINT("Save to " << output.string());
                 std::ofstream outfile(output.string());
                 outfile << std::setw(2) << j << std::endl;

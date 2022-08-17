@@ -42,6 +42,12 @@ namespace vEngine
 {
     namespace Core
     {
+        template <class T>
+        struct is_shared_ptr : std::false_type { };
+
+        template <class T>
+        struct is_shared_ptr<std::shared_ptr<T>> : std::true_type { };
+
         template <typename T>
         struct is_basic_json_type
         {
@@ -157,47 +163,82 @@ namespace vEngine
         {
             return typeid(T).name();
         }
+
         template <typename T>
-        nlohmann::json ToJson(const std::weak_ptr<T>& ptr, bool as_reference = true)
+        nlohmann::json ToJson(const std::weak_ptr<T>& ptr)
         {
             auto shared = ptr.lock();
-            if(shared != nullptr) return ToJson(shared, as_reference);
+            auto go = std::dynamic_pointer_cast<GameObject>(shared);
+            if (go != nullptr)
+            {
+                return ToJson(*go.get());
+            }
             return nlohmann::json();
         }
-        template <typename T>
-        nlohmann::json ToJson(const std::shared_ptr<T>& ptr, bool as_reference = true)
+
+        void SaveJson(const nlohmann::json& j, const std::filesystem::path& path)
         {
-            nlohmann::json value;
+            std::ofstream outfile(path.string());
+            outfile << std::setw(2) << j << std::endl;
+            outfile.flush();
+            outfile.close();
+        }
+        // template<typename T>
+        std::filesystem::path GameObjectToPath(const GameObjectSharedPtr& go)
+        {
+            auto config = Context::GetInstance().CurrentConfigure();
+            auto path = config.resource_bin;
+            auto context_name = config.context_name;
+            // auto gn = std::dynamic_pointer_cast<GameNode>(go);
+            // if(gn != nullptr)
+            // {
+            //     while(gn != nullptr)
+            //     {
+            //         path /= gn->description_.name;
+            //     }
+            // }
 
-            if(!as_reference)
+            auto name = go->description_.name;
+            auto type = go->description_.type;
+
+            auto file_name = std::to_string(go->description_.uuid.AsUint()) + "_" + name + "_" + type + ".json";
+
+            std::string illegal = ":\"\'<>%$*&+ ";
+            for (auto c : illegal)
             {
-                using type_list = std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, TransformComponent, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera,
-                                             CameraComponent, Rendering::PipelineState, Rendering::Texture, Animation::AnimationClip, Animation::Joint, Animation::Bone, GameNode, UUIDGenerator>;
-                constexpr auto nlist = std::tuple_size<type_list>::value;
-                for_sequence(std::make_index_sequence<nlist>{},
-                             [&](auto i)
-                             {
-                                 auto p = CastByType<i, type_list>(ptr);
-                                 if (value.is_null() && p != nullptr)
-                                 {
-                                     //  value["data_type"] = GetTypeString(p);
-                                     //  value["data"] = ToJson(*p.get());
-                                     value = ToJson(*p.get());
-                                 }
-                             });
+                std::replace(file_name.begin(), file_name.end(), c, '_');
             }
-            if (!value.is_null()) return value;
 
+            return path / context_name / file_name;
+        }
+        template <typename T>
+        nlohmann::json ToJson(const std::shared_ptr<T>& ptr)
+        {
+            auto content_saved = false;
 
+            using type_list = std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, TransformComponent, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera,
+                                            CameraComponent, Rendering::PipelineState, Rendering::Texture, Animation::AnimationClip, Animation::Joint, Animation::Bone, GameNode>;
+            constexpr auto nlist = std::tuple_size<type_list>::value;
+            for_sequence(std::make_index_sequence<nlist>{},
+                            [&](auto i)
+                            {
+                                auto p = CastByType<i, type_list>(ptr);
+                                if (!content_saved && p != nullptr)
+                                {
+                                    content_saved = true;
+
+                                    auto value = ToJson(*p.get());
+                                    auto path = GameObjectToPath(p);
+                                    SaveJson(value, path);
+                                }
+                            });
+
+            // if (!value.is_null()) return value;
+            // NOT_IMPL_ASSERT;
+
+            //only return GameObject info here
             auto go = std::dynamic_pointer_cast<GameObject>(ptr);
-
-            // TODO Use context map for shared ptr
-            // save uuid and/or other necessary description with json value
-            // so that FromJson can find/create objects from xx factory class
-
-            // value["data_type"] = GetTypeString(ptr);
-            // value["data"] = ToJson(*ptr.get());
-            value = ToJson(*go.get());
+            auto value = ToJson(*go.get());
             return value;
         }
         // template <typename T, typename = std::enable_if_t<std::is_base_of<GameObject, T>::value, T>, typename = void, typename = void>
@@ -346,9 +387,10 @@ namespace vEngine
             // return nlohmann::json(ToString<GameObjectType>(go_type));
         }
 
-        GameObject CreateByTypeString(const std::string type)
-        {
-        }
+        // GameObject CreateByTypeString(const std::string type)
+        // {
+        //     return ;
+        // }
         template <typename T>
         void FromJson(const nlohmann::json& j, std::weak_ptr<T>& ptr)
         {
