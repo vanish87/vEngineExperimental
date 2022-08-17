@@ -98,6 +98,16 @@ namespace vEngine
             NOT_IMPL_ASSERT;
             return "NOT DEFINED";
         }
+        template <typename T, typename = std::enable_if_t<std::is_same<T, Rendering::ShaderType>::value, T>>
+        const Rendering::ShaderType FromString(const std::string& obj)
+        {
+            if (obj == "VS") return Rendering::ShaderType::VS;
+            // case Rendering::ShaderType::GS: return "GS";
+            // case Rendering::ShaderType::PS: return "PS";
+            // case Rendering::ShaderType::CS: return "CS";
+            NOT_IMPL_ASSERT;
+            return Rendering::ShaderType::VS;
+        }
         template <typename T, typename = std::enable_if_t<std::is_same<T, GameObjectType>::value, T>>
         std::string ToString(const GameObjectType& obj)
         {
@@ -344,6 +354,12 @@ namespace vEngine
             return j;
         }
 
+        template <typename T>
+        static void FromJson(const std::filesystem::path path, T& object)
+        {
+            auto j = ParseJson(path);
+            FromJson(j, object);
+        }
         template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
         static void FromJson(const nlohmann::json& j, T& object)
         {
@@ -406,18 +422,24 @@ namespace vEngine
 
             FromJson(j["description"], desc);
 
+            //1. find by uuid
+            //if found use it
+            //if not found
+                //load json file
+                //create a new one
+
             if(desc.type == "class vEngine::Core::CameraComponent")
             {
-                GameObject* g = new CameraComponent();
+                auto g = new CameraComponent();
                 FromJson(j, *g);
-                ptr.reset(g);
+                auto go = dynamic_cast<T*>(g);
+                ptr.reset(go);
             }
-            else
-            {
-                auto v = new T();
-                FromJson(j, *v);
-                ptr.reset(v);
-            }
+            // else
+            // {
+                // ptr = GameObjectFactory::Create<T>();
+                // FromJson(j, *ptr.get());
+            // }
         }
         template <typename T>
         void FromJson(const nlohmann::json& j, std::vector<T>& vector)

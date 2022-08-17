@@ -31,6 +31,8 @@
 #include <vengine/core/resource_loader.hpp>
 #include <vengine/core/transform_component.hpp>
 
+#include <vengine/data/json.hpp>
+
 /// A detailed namespace description, it
 /// should be 2 lines at least.
 namespace vEngine
@@ -83,8 +85,10 @@ namespace vEngine
         }
         bool Scene::Load(const ResourceDescriptorSharedPtr descriptor)
         {
-            UNUSED_PARAMETER(descriptor);
-            // auto f = descriptor->file_path.string();
+            // UNUSED_PARAMETER(descriptor);
+            auto f = descriptor->file_path;
+            FromJson(f, *this);
+
             // Assimp::Importer importer;
             // auto scene = importer.ReadFile(f, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
 

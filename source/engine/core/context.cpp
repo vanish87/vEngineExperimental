@@ -11,8 +11,8 @@
 #include <vengine/rendering/render_engine.hpp>
 #include <vengine/core/resource_loader.hpp>
 
-#include <vengine/data/meta.hpp>
-#include <vengine/data/json.hpp>
+// #include <vengine/data/meta.hpp>
+// #include <vengine/data/json.hpp>
 #include <fstream>
 
 namespace vEngine
@@ -89,70 +89,70 @@ namespace vEngine
 
         void Context::LoadRuntimeObjects() 
         {
-            auto config = this->CurrentConfigure();
-            auto context_path =config.resource_bin / config.context_name;
-            auto uuid_path = context_path / "uuid.json";
-            auto j = ParseJson(uuid_path);
+            // auto config = this->CurrentConfigure();
+            // auto context_path =config.resource_bin / config.context_name;
+            // auto uuid_path = context_path / "uuid.json";
+            // auto j = ParseJson(uuid_path);
 
-            // FromJson(j, UUIDGenerator::GetInstance());
+            // // FromJson(j, UUIDGenerator::GetInstance());
 
-            std::unordered_map<uint64_t, nlohmann::json> json_map;
+            // std::unordered_map<uint64_t, nlohmann::json> json_map;
 
-            for(const auto& file : std::filesystem::directory_iterator(context_path))
-            {
-                auto name = file.path().filename().string();
-                if (name == "uuid") continue;
-                if(file.is_regular_file())
-                {
-                    auto uuid = std::stoi(name.substr(0, name.find('_')));
-                    json_map[uuid] = ParseJson(file.path());
-                }
-            }
-            for(auto& json : json_map)
-            {
-                GameObjectSharedPtr go;
-                FromJson(json.second, go);
-                this->runtime_game_objects_[go->description_.uuid] = go;
-            }
+            // for(const auto& file : std::filesystem::directory_iterator(context_path))
+            // {
+            //     auto name = file.path().filename().string();
+            //     if (name == "uuid") continue;
+            //     if(file.is_regular_file())
+            //     {
+            //         auto uuid = std::stoi(name.substr(0, name.find('_')));
+            //         json_map[uuid] = ParseJson(file.path());
+            //     }
+            // }
+            // for(auto& json : json_map)
+            // {
+            //     GameObjectSharedPtr go;
+            //     FromJson(json.second, go);
+            //     this->runtime_game_objects_[go->description_.uuid] = go;
+            // }
 
         }
         void Context::SaveRuntimeObjects() 
         {
-            auto config = this->CurrentConfigure();
-            auto context_path =config.resource_bin / config.context_name;
-            if (!std::filesystem::exists(context_path)) std::filesystem::create_directory(context_path);
+            // auto config = this->CurrentConfigure();
+            // auto context_path =config.resource_bin / config.context_name;
+            // if (!std::filesystem::exists(context_path)) std::filesystem::create_directory(context_path);
 
-            std::string illegal = ":\"\'<>%$*&+ ";
+            // std::string illegal = ":\"\'<>%$*&+ ";
 
-            // auto uuid = ToJson(UUIDGenerator::GetInstance());
-            // auto uuid_path = context_path / "uuid.json";
-            // std::ofstream uuid_file(uuid_path.string());
-            // uuid_file << std::setw(2) << uuid << std::endl;
-            // uuid_file.flush();
-            // uuid_file.close();
+            // // auto uuid = ToJson(UUIDGenerator::GetInstance());
+            // // auto uuid_path = context_path / "uuid.json";
+            // // std::ofstream uuid_file(uuid_path.string());
+            // // uuid_file << std::setw(2) << uuid << std::endl;
+            // // uuid_file.flush();
+            // // uuid_file.close();
 
-            for(const auto& go : this->runtime_game_objects_)
-            {
-                nlohmann::json j;
-                auto name = go.second->description_.name;
-                auto type = go.second->description_.type;
+            // for(const auto& go : this->runtime_game_objects_)
+            // {
+            //     nlohmann::json j;
+            //     auto name = go.second->description_.name;
+            //     auto type = go.second->description_.type;
 
-                auto file_name = std::to_string(go.first.AsUint()) + "_" + name + "_" + type + ".json";
-                for(auto c : illegal)
-                {
-                    std::replace(file_name.begin(), file_name.end(), c, '_');
-                }
+            //     auto file_name = std::to_string(go.first.AsUint()) + "_" + name + "_" + type + ".json";
+            //     for(auto c : illegal)
+            //     {
+            //         std::replace(file_name.begin(), file_name.end(), c, '_');
+            //     }
 
-                auto output = context_path / file_name;
-                j = ToJson(go.second);
-                PRINT("Save to " << output.string());
-                std::ofstream outfile(output.string());
-                outfile << std::setw(2) << j << std::endl;
-                outfile.flush();
-                outfile.close();
+            //     auto output = context_path / file_name;
+            //     j = ToJson(go.second);
+            //     PRINT("Save to " << output.string());
+            //     std::ofstream outfile(output.string());
+            //     outfile << std::setw(2) << j << std::endl;
+            //     outfile.flush();
+            //     outfile.close();
 
-            }
-            this->runtime_game_objects_.clear();
+            // }
+            // this->runtime_game_objects_.clear();
         }
         GameObjectSharedPtr Context::Find(const UUID& uuid)
         {
