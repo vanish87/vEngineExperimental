@@ -86,8 +86,9 @@ namespace vEngine
         bool Scene::Load(const ResourceDescriptorSharedPtr descriptor)
         {
             // UNUSED_PARAMETER(descriptor);
-            auto f = descriptor->file_path;
-            FromJson(f, *this);
+            auto j = ParseJson(descriptor->file_path);
+            auto go = this->shared_from_this();
+            FromJson(j, go);
 
             // Assimp::Importer importer;
             // auto scene = importer.ReadFile(f, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);

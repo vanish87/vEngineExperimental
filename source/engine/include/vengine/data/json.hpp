@@ -354,12 +354,12 @@ namespace vEngine
             return j;
         }
 
-        template <typename T>
-        static void FromJson(const std::filesystem::path path, T& object)
-        {
-            auto j = ParseJson(path);
-            FromJson(j, object);
-        }
+        // template <typename T>
+        // static void FromJson(const std::filesystem::path path, T& object)
+        // {
+        //     auto j = ParseJson(path);
+        //     FromJson(j, object);
+        // }
         template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
         static void FromJson(const nlohmann::json& j, T& object)
         {
@@ -433,6 +433,7 @@ namespace vEngine
 
             FromJson(j["description"], desc);
 
+            PRINT("Load " << desc.uuid.AsUint() << " " << desc.type);
             // 1. find by uuid
             auto go = GameObjectFactory::FindOrCreate<T>(desc);
             CHECK_ASSERT_NOT_NULL(go);

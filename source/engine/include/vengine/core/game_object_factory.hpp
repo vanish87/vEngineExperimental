@@ -76,6 +76,7 @@ namespace vEngine
                     if(go != nullptr) return std::dynamic_pointer_cast<T>(go);
 
                     go = CreateByTypeString(desc.type);
+                    CHECK_ASSERT_NOT_NULL(go);
                     return std::dynamic_pointer_cast<T>(go);
                 }
 
