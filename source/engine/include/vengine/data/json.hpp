@@ -433,14 +433,17 @@ namespace vEngine
 
             FromJson(j["description"], desc);
 
-            PRINT("Load " << desc.uuid.AsUint() << " " << desc.type);
+            // PRINT("Deserialize " << desc.uuid.AsUint() << " " << desc.type);
+
             // 1. find by uuid
             auto go = GameObjectFactory::FindOrCreate<T>(desc);
             CHECK_ASSERT_NOT_NULL(go);
             ptr = go;
 
             auto json = ParseJson(GameObjectToPath(desc));
-            FromJson(j, *ptr.get());
+            FromJson(json, *ptr.get());
+            
+            PRINT("Load " << go->description_.uuid.AsUint() << " " << desc.type);
         }
         template <typename T>
         void FromJson(const nlohmann::json& j, std::vector<T>& vector)
