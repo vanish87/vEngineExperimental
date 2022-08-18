@@ -8,6 +8,7 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/core/game_object_factory.hpp>
+#include <vengine/core/camera_component.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -16,6 +17,11 @@ namespace vEngine
     namespace Core
     {
 
+        GameObjectSharedPtr GameObjectFactory::CreateByTypeString(const std::string type)
+        {
+            if (type == "class vEngine::Core::CameraComponent") return std::dynamic_pointer_cast<GameObject>(Create<CameraComponent>());
+            return nullptr;
+        }
         /// A detailed function description, it
         /// should be 2 lines at least.
         // TransformNodeSharedPtr GameNodeFactory::Create()

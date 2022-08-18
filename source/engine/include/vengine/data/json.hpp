@@ -194,7 +194,7 @@ namespace vEngine
             outfile.close();
         }
         // template<typename T>
-        std::filesystem::path GameObjectToPath(const GameObjectSharedPtr& go)
+        std::filesystem::path GameObjectToPath(const GameObjectDescription& desc)
         {
             auto config = Context::GetInstance().CurrentConfigure();
             auto path = config.resource_bin;
@@ -208,10 +208,10 @@ namespace vEngine
             //     }
             // }
 
-            auto name = go->description_.name;
-            auto type = go->description_.type;
+            auto name = desc.name;
+            auto type = desc.type;
 
-            auto file_name = std::to_string(go->description_.uuid.AsUint()) + "_" + name + "_" + type + ".json";
+            auto file_name = std::to_string(desc.uuid.AsUint()) + "_" + name + "_" + type + ".json";
 
             std::string illegal = ":\"\'<>%$*&+ ";
             for (auto c : illegal)
@@ -238,7 +238,7 @@ namespace vEngine
                                     content_saved = true;
 
                                     auto value = ToJson(*p.get());
-                                    auto path = GameObjectToPath(p);
+                                    auto path = GameObjectToPath(p->description_);
                                     SaveJson(value, path);
                                 }
                             });
@@ -394,19 +394,30 @@ namespace vEngine
             auto id = j.get<uint64_t>();
             uuid.Set(id);
         }
+        template <>
+        void FromJson(const nlohmann::json& j, std::filesystem::path& path)
+        {
+            auto data = j.get<std::string>();
+            path = data;
+        }
         // template <typename T, typename = std::enable_if_t<std::is_same<T, GameObjectType>::value, T>, typename = void>
         template <>
         void FromJson(const nlohmann::json& j, GameObjectType& go_type)
         {
+            NOT_IMPL_ASSERT;
             UNUSED_PARAMETER(j);
             UNUSED_PARAMETER(go_type);
             // return nlohmann::json(ToString<GameObjectType>(go_type));
         }
+        template <>
+        void FromJson(const nlohmann::json& j, Rendering::ShaderType& shader_type)
+        {
+            NOT_IMPL_ASSERT;
+            UNUSED_PARAMETER(j);
+            UNUSED_PARAMETER(shader_type);
+            // return nlohmann::json(ToString<GameObjectType>(go_type));
+        }
 
-        // GameObject CreateByTypeString(const std::string type)
-        // {
-        //     return ;
-        // }
         template <typename T>
         void FromJson(const nlohmann::json& j, std::weak_ptr<T>& ptr)
         {
@@ -422,24 +433,13 @@ namespace vEngine
 
             FromJson(j["description"], desc);
 
-            //1. find by uuid
-            //if found use it
-            //if not found
-                //load json file
-                //create a new one
+            // 1. find by uuid
+            auto go = GameObjectFactory::FindOrCreate<T>(desc);
+            CHECK_ASSERT_NOT_NULL(go);
+            ptr = go;
 
-            if(desc.type == "class vEngine::Core::CameraComponent")
-            {
-                auto g = new CameraComponent();
-                FromJson(j, *g);
-                auto go = dynamic_cast<T*>(g);
-                ptr.reset(go);
-            }
-            // else
-            // {
-                // ptr = GameObjectFactory::Create<T>();
-                // FromJson(j, *ptr.get());
-            // }
+            auto json = ParseJson(GameObjectToPath(desc));
+            FromJson(j, *ptr.get());
         }
         template <typename T>
         void FromJson(const nlohmann::json& j, std::vector<T>& vector)

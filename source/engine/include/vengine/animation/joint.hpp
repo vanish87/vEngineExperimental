@@ -37,6 +37,7 @@ namespace vEngine
                 float time;
                 T value;
                 JointKey(float t, const T& val) : time{t}, value{val} {};
+                JointKey() : time{0} {};
         };
         /// \brief A brief class description.
         ///

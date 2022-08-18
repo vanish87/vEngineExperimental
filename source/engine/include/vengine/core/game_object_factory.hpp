@@ -28,7 +28,7 @@ namespace vEngine
 
         /// \brief To create component and call Init for it
         ///
-        class GameObjectFactory
+        class VENGINE_API GameObjectFactory
         {
             public:
                 template <typename T, class... Args>
@@ -66,6 +66,17 @@ namespace vEngine
                     return T::Default(std::forward<Args>(args)...);
                     // static auto go = std::make_shared<T>();
                     // return go;
+                }
+                static GameObjectSharedPtr CreateByTypeString(const std::string type);
+
+                template <typename T, class... Args>
+                static std::shared_ptr<T> FindOrCreate(const GameObjectDescription& desc, Args&&... args)
+                {
+                    auto go = Context::GetInstance().Find(desc.uuid);
+                    if(go != nullptr) return std::dynamic_pointer_cast<T>(go);
+
+                    go = CreateByTypeString(desc.type);
+                    return std::dynamic_pointer_cast<T>(go);
                 }
 
                 // static GameNodeSharedPtr Create(const GameNodeDescription& desc);
