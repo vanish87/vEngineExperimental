@@ -40,8 +40,6 @@ namespace vEngine
             private:
                 void LoadDll();
                 void FreeDll();
-                void LoadRuntimeObjects();
-                void SaveRuntimeObjects();
                 GameObjectSharedPtr Find(const UUID& uuid);
                 void Register(const GameObjectSharedPtr& go);
 
