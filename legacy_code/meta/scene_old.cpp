@@ -63,7 +63,7 @@ namespace vEngine
             auto asset = GameObjectFactory::Create<Asset>();
             auto rdesc = std::make_shared<ResourceDescriptor>();
             rdesc->file_path = file_path;
-            rdesc->complete_call_back = 
+            rdesc->on_complete_call_back = 
             [&](IResourceSharedPtr c)
             {
                 GameNodeDescription gndesc;

@@ -23,15 +23,12 @@ namespace vEngine
         /// constructor detailed defintion,
         /// should be 2 lines
         Shader::Shader() {}
-        ResourceState Shader::CurrentState()
+        ShaderSharedPtr Shader::Load(const std::filesystem::path path)
         {
-            return this->current_state_;
-        }
-        bool Shader::Load(const ResourceDescriptorSharedPtr descriptor)
-        {
-            this->path = descriptor->file_path;
+            auto shader = GameObjectFactory::Create<Shader>();
+            shader->path = path;
 
-            std::ifstream fin(this->path.string());
+            std::ifstream fin(shader->path.string());
 
             if (!fin)
             {
@@ -42,12 +39,12 @@ namespace vEngine
             fin.seekg(0, std::ios_base::end);
             auto size = fin.tellg();
             fin.seekg(0, std::ios_base::beg);
-            this->content.resize(size);
+            shader->content.resize(size);
 
-            fin.read(this->content.data(), size);
+            fin.read(shader->content.data(), size);
             fin.close();
 
-            return true;
+            return shader;
         }
 
         /// A detailed function description, it

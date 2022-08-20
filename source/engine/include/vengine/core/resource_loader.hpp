@@ -51,7 +51,7 @@ namespace vEngine
         class ResourceLoadingJob : public ThreadJob
         {
             public:
-                ResourceLoadingJob(IResourceSharedPtr resource, const ResourceDescriptorSharedPtr desc);
+                ResourceLoadingJob(const ResourceDescriptor& desc);
                 ~ResourceLoadingJob();
 
             public:
@@ -59,8 +59,7 @@ namespace vEngine
 
             private:
                 ResourceLoadingJob(){};
-                IResourceSharedPtr resource_to_load_;
-                ResourceDescriptorSharedPtr desc_;
+                ResourceDescriptor desc_;
         };
         class VENGINE_API ResourceLoader: public IRuntimeModule
         {
@@ -72,7 +71,8 @@ namespace vEngine
                 void Update() override{};
 
             public:
-                void LoadAsync(IResourceSharedPtr resource, const ResourceDescriptorSharedPtr desc);
+                void LoadAsync(const ResourceDescriptor& desc);
+                void Load(const ResourceDescriptor& desc);
                 // void AddSync();
 
                 std::filesystem::path GetFilePath(const std::string file_name);

@@ -30,7 +30,7 @@ namespace vEngine
 		/// constant buffer.
 		/// It could be used in cpu and/or gpu
 		// template<typename T>
-        class VENGINE_API Texture: public Core::GameObject, public Core::IResource
+        class VENGINE_API Texture: public Core::GameObject
         {
             public:
 
@@ -52,11 +52,6 @@ namespace vEngine
                 {
                     this->raw_data_ = data;
                 }
-
-                bool Load(const Core::ResourceDescriptorSharedPtr descriptor) override;
-                Core::ResourceState CurrentState() override;
-
-                Core::ResourceState current_state_ = Core::ResourceState::Unknown;
 
                 virtual void PrepareData();
 

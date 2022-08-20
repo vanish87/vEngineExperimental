@@ -32,7 +32,7 @@ namespace vEngine
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
-        class VENGINE_API Scene : public GameNode, public IResource
+        class VENGINE_API Scene : public GameNode
         {
             public:
                 constexpr static auto properties()
@@ -47,12 +47,11 @@ namespace vEngine
                         )
                     );
                 }
+                static SceneSharedPtr Load(const std::filesystem::path path);
             public:
                 /// \brief brief constructor description.
                 Scene();
                 virtual ~Scene();
-                bool Load(const ResourceDescriptorSharedPtr descriptor) override;
-                ResourceState CurrentState() override;
 
                 const CameraSharedPtr GetCamera(const uint32_t index = 0) const;
                 const std::vector<Animation::AnimationClipSharedPtr> GetAnimations() const;
@@ -68,7 +67,6 @@ namespace vEngine
                 Rendering::TextureSharedPtr GetTexture(const std::string path);
 
             public:
-                ResourceState current_state_;
 
                 std::vector<CameraSharedPtr> cameras_;
                 std::vector<LightSharedPtr> lights_;

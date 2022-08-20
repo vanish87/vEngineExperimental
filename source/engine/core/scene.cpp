@@ -42,6 +42,16 @@ namespace vEngine
         using namespace Animation;
         using namespace Rendering;
 
+        SceneSharedPtr Scene::Load(const std::filesystem::path path) 
+        {
+            //just a place holder;
+            //From json will overwrite this scene variable
+            auto scene = std::make_shared<Scene>();
+            auto j = ParseJson(path);
+            FromJson(j, scene);
+            return scene;
+        }
+
         /// constructor detailed defintion,
         /// should be 2 lines
         Scene::Scene() {}
@@ -83,32 +93,28 @@ namespace vEngine
             CHECK_ASSERT(this->HasTexture(path));
             return this->textures_[path];
         }
-        bool Scene::Load(const ResourceDescriptorSharedPtr descriptor)
-        {
-            // UNUSED_PARAMETER(descriptor);
-            auto j = ParseJson(descriptor->file_path);
-            auto go = this->shared_from_this();
-            FromJson(j, go);
+        // bool Scene::Load(const ResourceDescriptorSharedPtr descriptor)
+        // {
+        //     // UNUSED_PARAMETER(descriptor);
+        //     auto j = ParseJson(descriptor->file_path);
+        //     auto go = this->shared_from_this();
+        //     FromJson(j, go);
 
-            // Assimp::Importer importer;
-            // auto scene = importer.ReadFile(f, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
+        //     // Assimp::Importer importer;
+        //     // auto scene = importer.ReadFile(f, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
 
-            // this->HandleMeshes(scene);
-            // this->HandleMaterials(scene);
-            // // this->CreateTextures(scene);
-            // this->HandleCameras(scene);
-            // this->HandleAnimations(scene);
+        //     // this->HandleMeshes(scene);
+        //     // this->HandleMaterials(scene);
+        //     // // this->CreateTextures(scene);
+        //     // this->HandleCameras(scene);
+        //     // this->HandleAnimations(scene);
 
-            // this->root_ = this->HandleNode(scene->mRootNode, scene);
-            // this->root_->description_.name = "Assimp File: " + f;
-            // // this->AddChild(root);
-            // this->current_state_ = ResourceState::Loaded;
-            return true;
-        }
-        ResourceState Scene::CurrentState()
-        {
-            return this->current_state_;
-        }
+        //     // this->root_ = this->HandleNode(scene->mRootNode, scene);
+        //     // this->root_->description_.name = "Assimp File: " + f;
+        //     // // this->AddChild(root);
+        //     // this->current_state_ = ResourceState::Loaded;
+        //     return true;
+        // }
         GameNodeSharedPtr Scene::HandleNode(const aiNode* node, const aiScene* scene)
         {
             auto gn = GameObjectFactory::Create<TransformComponent>();

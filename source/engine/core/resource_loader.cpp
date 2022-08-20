@@ -58,9 +58,13 @@ namespace vEngine
             this->loading_thread_.Join();
         }
 
-        void ResourceLoader::LoadAsync(IResourceSharedPtr resource, const ResourceDescriptorSharedPtr desc)
+        void ResourceLoader::LoadAsync(const ResourceDescriptor& desc)
         {
-            this->loading_thread_.AddToQueue(std::make_shared<ResourceLoadingJob>(resource, desc));
+            this->loading_thread_.AddToQueue(std::make_shared<ResourceLoadingJob>(desc));
+        }
+        void ResourceLoader::Load(const ResourceDescriptor& desc)
+        {
+            desc.on_load_call_back();
         }
 
         void ResourceLoader::AddSearchPath(const std::filesystem::path path)
@@ -100,10 +104,9 @@ namespace vEngine
             }
         }
 
-        ResourceLoadingJob::ResourceLoadingJob(IResourceSharedPtr resource, const ResourceDescriptorSharedPtr desc)
+        ResourceLoadingJob::ResourceLoadingJob(const ResourceDescriptor& desc)
         {
             this->desc_ = desc;
-            this->resource_to_load_ = resource;
         }
 
         ResourceLoadingJob::~ResourceLoadingJob() {}
@@ -115,12 +118,15 @@ namespace vEngine
             // ModelLoad.SetEnable(true);
             // ModelLoad.RegisterEventHandler(&ResPro);
             // ModelLoad.Begin(Profiler::PE_FUNCTION_CALL);
-            this->resource_to_load_->Load(this->desc_);
-            // ModelLoad.End(Profiler::PE_FUNCTION_CALL, "ResourceLoadingJob::Load::" + this->object_to_load_->GetName());
-            if (this->desc_->complete_call_back != nullptr)
+            if (this->desc_.on_load_call_back != nullptr)
             {
-                this->desc_->complete_call_back(this->resource_to_load_);
+                this->desc_.on_load_call_back();
             }
+            // ModelLoad.End(Profiler::PE_FUNCTION_CALL, "ResourceLoadingJob::Load::" + this->object_to_load_->GetName());
+            // if (this->desc_.on_complete_call_back != nullptr)
+            // {
+            //     this->desc_.on_complete_call_back(ptr);
+            // }
         }
 
     }  // namespace Core

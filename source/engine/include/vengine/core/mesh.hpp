@@ -71,7 +71,7 @@ namespace vEngine
         };
 
         template <typename T = Vertex>
-        class Mesh_T : public GameObject, public IResource
+        class Mesh_T : public GameObject
         {
             // static_assert(std::is_base_of<IElement, T>::value, "T must derived from IElement");
         };

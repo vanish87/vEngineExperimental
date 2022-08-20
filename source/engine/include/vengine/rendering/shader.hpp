@@ -27,7 +27,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class VENGINE_API Shader : public Core::GameObject, public Core::IResource
+        class VENGINE_API Shader : public Core::GameObject
         {
             public:
 
@@ -43,26 +43,23 @@ namespace vEngine
                     );
                 };
 
+                static ShaderSharedPtr Load(const std::filesystem::path path);
                 static ShaderSharedPtr Default(ShaderType type)
                 {
                     switch (type)
                     {
                     case ShaderType::VS:
                     {
-                        static auto vs = Core::GameObjectFactory::Create<Shader>();
-                        auto desc = std::make_shared<Core::ResourceDescriptor>();
-                        desc->file_path = Core::ResourceLoader::GetInstance().GetFilePath("vs.hlsl");
-                        vs->Load(desc);
-                        vs->type = type;
+                        auto path = Core::ResourceLoader::GetInstance().GetFilePath("vs.hlsl");
+                        static auto vs = Shader::Load(path);
+                        vs->type = ShaderType::VS;
                         return vs;
                     }
                     case ShaderType::PS:
                     {
-                        static auto ps = Core::GameObjectFactory::Create<Shader>();
-                        auto desc = std::make_shared<Core::ResourceDescriptor>();
-                        desc->file_path = Core::ResourceLoader::GetInstance().GetFilePath("ps.hlsl");
-                        ps->Load(desc);
-                        ps->type = type;
+                        auto path = Core::ResourceLoader::GetInstance().GetFilePath("ps.hlsl");
+                        static auto ps = Shader::Load(path);
+                        ps->type = ShaderType::PS;
                         return ps;
                     }
                     default:
@@ -79,14 +76,10 @@ namespace vEngine
                 Shader();
                 virtual ~Shader() {}
 
-                bool Load(const Core::ResourceDescriptorSharedPtr descriptor) override;
-                Core::ResourceState CurrentState() override;
-
-                Core::ResourceState current_state_ = Core::ResourceState::Unknown;
-
                 std::filesystem::path path;
                 std::vector<char> content;
                 ShaderType type;
+
 
             public:
                 /// \brief A brief function description.

@@ -11,25 +11,17 @@ namespace vEngine
 {
     namespace Core
     {
-        enum class ResourceState
-        {
-            Unknown,
-            Loading,
-            Loaded,
-        };
         struct ResourceDescriptor
         {
-                virtual ~ResourceDescriptor() {}
-                std::filesystem::path file_path;
-                std::function<void(IResourceSharedPtr resource_loaded)> complete_call_back;
+                std::function<GameObjectSharedPtr()> on_load_call_back;
         };
 
-        Interface VENGINE_API IResource
-        {
-        public:
-            virtual bool Load(const ResourceDescriptorSharedPtr descriptor) = 0;
-            virtual ResourceState CurrentState() = 0;
-        };
+        // Interface VENGINE_API IResource
+        // {
+        // public:
+            // virtual bool Load(const ResourceDescriptorSharedPtr descriptor) = 0;
+            // virtual ResourceState CurrentState() = 0;
+        // };
     }  // namespace Core
 }  // namespace vEngine
 
