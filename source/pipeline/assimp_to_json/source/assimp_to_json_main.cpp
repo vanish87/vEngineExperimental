@@ -9,6 +9,8 @@
 
 #include <assimp_handler.hpp>
 
+#include <class_foo.hpp>
+
 int main(int argc, char* argv[])
 {
     std::filesystem::path input;
@@ -23,10 +25,10 @@ int main(int argc, char* argv[])
         if(s == "-r") resource_src = argv[i+1];
         if(s == "-b") resource_bin = argv[i+1];
     }
-    // input = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource/boblamp/boblampclean.md5mesh";
-    // output = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin/assimp/boblampclean.json";
-    // resource_src = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource";
-    // resource_bin = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin";
+    input = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource/boblamp/boblampclean.md5mesh";
+    output = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin/assimp/boblampclean.json";
+    resource_src = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource";
+    resource_bin = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin";
 
     Configure configure;
     configure.graphics_configure.width = 320;
@@ -53,11 +55,11 @@ int main(int argc, char* argv[])
 
     vEngine::Pipeline::AssimpHandler handler;
     handler.Init();
-    auto scene = handler.LoadFromAssimp(input);
+    // auto scene = handler.LoadFromAssimp(input);
 
-    nlohmann::json j;
-    ToJson(j, scene);
-    scene.reset();
+    GameObjectSharedPtr base_class = GameObjectFactory::Create<ClassFoo>();
+    auto j = ToJson(base_class);
+
 
     PRINT("Save to "<<output.string());
     // FromJson(j, scene);
@@ -81,7 +83,7 @@ int main(int argc, char* argv[])
     // auto scene = GameObjectFactory::Create<Scene>();
     // auto rdesc = std::make_shared<ResourceDescriptor>();
     // rdesc->file_path = input;
-    // rdesc->complete_call_back = [&](IResourceSharedPtr c) {
+    // rdesc->on_complete_call_back = [&](IResourceSharedPtr c) {
 
     // };
 
