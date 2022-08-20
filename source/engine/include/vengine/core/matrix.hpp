@@ -25,7 +25,7 @@ namespace vEngine
         /// \tparam M number of row elements
         /// \tparam N number of col elements
         template <typename T = float, int M = 4, int N = 4>
-        class Matrix final
+        class VENGINE_API Matrix final
         {
             private:
                 typedef Vector<Vector<T, M>, N> DataType;

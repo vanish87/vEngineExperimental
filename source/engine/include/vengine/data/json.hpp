@@ -484,17 +484,16 @@ namespace vEngine
         template <typename T, int N>
         void FromJson(const nlohmann::json& j, Vector<T, N>& vector)
         {
-            auto idx = 0;
-            for (auto it = j.begin(); it != j.end(); ++it)
+            for (auto& i : vector)
             {
-                FromJson(*it, vector[idx++]);
+                FromJson(j, i);
             }
         }
         template <typename T, int M, int N>
         void FromJson(const nlohmann::json& j, Matrix<T, M, N>& matrix)
         {
             auto idx = 0;
-            for (auto it = j.begin(); it != j.end(); ++it)
+            for (const auto& row : matrix)
             {
                 Vector<T, N> r;
                 FromJson(*it, r);
