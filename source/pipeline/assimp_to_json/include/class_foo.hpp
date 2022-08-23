@@ -24,8 +24,7 @@ namespace vEngine
                         std::make_tuple(
                             property("pos", &ClassFoo::pos),
                             property("content", &ClassFoo::content),
-                            property("my_vector", &ClassFoo::vector),
-                            type<ClassFoo>()
+                            property("my_vector", &ClassFoo::vector)
                             )
                     );
                 }

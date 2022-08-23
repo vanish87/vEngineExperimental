@@ -301,7 +301,9 @@ namespace vEngine
     }  // namespace Core
 }  // namespace vEngine
 
-#include <vengine/data/json.inc>
+#include <vengine/data/from_json.inc>
+#include <vengine/data/to_json.inc>
+#include <vengine/data/from_to_string.inc>
 
 #ifdef _MSC_VER
     #pragma warning(pop)
