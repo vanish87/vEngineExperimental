@@ -25,12 +25,27 @@ namespace vEngine
     /// should be 2 lines at least.
     namespace Core
     {
+        template <typename T>
+        class go_shared_ptr : public std::shared_ptr<T>
+        {
+            using go_type = T;
+        };
 
         /// \brief To create component and call Init for it
         ///
         class VENGINE_API GameObjectFactory
         {
             public:
+                template <typename T, class... Args>
+                go_shared_ptr<T> go_make_shared(Args&&... args)
+                {
+                    static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
+                    auto go = new T(std::forward<Args>(args)...);
+                    go_shared_ptr<T> go_ptr;
+                    go_ptr.reset(go);
+                    return go_ptr;
+                }
+
                 template <typename T, class... Args>
                 static std::shared_ptr<T> Create(Args&&... args)
                 {
@@ -48,12 +63,11 @@ namespace vEngine
                     //     break;
                     // }
 
-
                     static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
                     auto gn = std::make_shared<T>(std::forward<Args>(args)...);
                     auto go = std::dynamic_pointer_cast<GameObject>(gn);
                     go->description_.type = typeid(T).name();
-                    //TODO Checking description type with T
+                    // TODO Checking description type with T
 
                     Context::GetInstance().Register(go);
 
@@ -73,7 +87,7 @@ namespace vEngine
                 static std::shared_ptr<T> FindOrCreate(const GameObjectDescription& desc, Args&&... args)
                 {
                     auto go = Context::GetInstance().Find(desc.uuid);
-                    if(go != nullptr) return std::dynamic_pointer_cast<T>(go);
+                    if (go != nullptr) return std::dynamic_pointer_cast<T>(go);
 
                     PRINT("Not found, create new one " << desc.type);
                     go = CreateByTypeString(desc.type);
@@ -90,4 +104,3 @@ namespace vEngine
 }  // namespace vEngine
 
 #endif /* _VENGINE_CORE_GAME_OBJECT_FACTORY_HPP */
-

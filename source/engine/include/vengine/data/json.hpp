@@ -84,14 +84,6 @@ namespace vEngine
         template <class T>
         struct is_shared_ptr<std::shared_ptr<T>> : std::true_type { };
 
-        template< typename T>
-        class go_shared_ptr : public std::shared_ptr<T>
-        {
-
-        };
-
-        template <typename T, class... Args>
-        go_shared_ptr<T> go_make_shared(Args&&... args);
 
         template <typename T>
         struct is_basic_json_type

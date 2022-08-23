@@ -3,15 +3,6 @@ namespace vEngine
 {
     namespace Core
     {
-        template <typename T, class... Args>
-        go_shared_ptr<T> go_make_shared(Args&&... args)
-        {
-            static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
-            auto go = new T(std::forward<Args>(args)...);
-            go_shared_ptr<T> go_ptr;
-            go_ptr.reset(go);
-            return go_ptr;
-        }
         template <typename T, typename, typename>
         nlohmann::json ToJson(const T& obj)
         {
