@@ -42,9 +42,111 @@ namespace vEngine
 {
     namespace Core
     {
-        void SaveJson(const nlohmann::json& j, const std::filesystem::path& path);
+        using json = nlohmann::json;
+        
+        template <class T>
+        struct is_shared_ptr : std::false_type { };
+
+        template <class T>
+        struct is_shared_ptr<std::shared_ptr<T>> : std::true_type { };
+
+        template <typename T>
+        struct is_basic_json_type
+        {
+                static constexpr auto value = std::is_arithmetic<T>::value || std::is_same<T, std::string>::value;
+        };
+
+        template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
+        json ToJson(const T& obj);
+
+        template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
+        json ToJson(const T& obj);
+
+        template <typename T>
+        json ToJson(const std::weak_ptr<T>& ptr);
+
+        template <typename T>
+        json ToJson(const std::shared_ptr<T>& ptr);
+
+        template <>
+        json ToJson(const std::filesystem::path& path);
+
+        template <>
+        json ToJson(const UUID& uuid);
+
+        template <>
+        json ToJson(const Rendering::ShaderType& shader_type);
+
+        template <>
+        json ToJson(const GameObjectType& go_type);
+
+        template <typename T>
+        json ToJson(const std::vector<T>& vector);
+
+        template <>
+        json ToJson(const std::vector<char>& vector);
+
+        template <typename T>
+        json ToJson(const std::list<T>& list);
+
+        template <typename T, typename S>
+        json ToJson(const std::unordered_map<T, S>& umap);
+
+        template <typename T, int N>
+        json ToJson(const std::array<T, N>& obj);
+
+        template <typename T, int N>
+        json ToJson(const Vector<T, N>& vector);
+
+        template <typename T, int M, int N>
+        json ToJson(const Matrix<T, M, N>& matrix);
+
+        template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
+        void FromJson(const json& j, T& obj);
+
+        template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
+        void FromJson(const json& j, T& object);
+
+        template <>
+        void FromJson(const json& j, UUID& uuid);
+
+        template <>
+        void FromJson(const json& j, std::filesystem::path& path);
+
+        template <>
+        void FromJson(const json& j, GameObjectType& go_type);
+
+        template <>
+        void FromJson(const json& j, Rendering::ShaderType& shader_type);
+
+        template <typename T>
+        void FromJson(const json& j, std::weak_ptr<T>& ptr);
+
+        template <typename T>
+        void FromJson(const json& j, std::shared_ptr<T>& ptr);
+
+        template <typename T>
+        void FromJson(const json& j, std::vector<T>& vector);
+
+        template <typename T>
+        void FromJson(const json& j, std::list<T>& list);
+
+        template <typename T, typename S>
+        void FromJson(const json& j, std::unordered_map<T, S>& map);
+
+        template <typename T, int N>
+        void FromJson(const json& j, Vector<T, N>& vector);
+
+        template <typename T, int M, int N>
+        void FromJson(const json& j, Matrix<T, M, N>& matrix);
+
+        template <typename T, int N>
+        void FromJson(const json& j, std::array<T, N>& arr);
+
+
+        void SaveJson(const json& j, const std::filesystem::path& path);
         std::filesystem::path GameObjectToPath(const GameObjectDescription& desc);
-        nlohmann::json ParseJson(const std::filesystem::path path);
+        json ParseJson(const std::filesystem::path path);
         template <std::size_t I, class T, typename Src>
         auto CastByType(std::shared_ptr<Src> ptr);
 
@@ -77,106 +179,6 @@ namespace vEngine
 
         template <typename T, typename = std::enable_if_t<std::is_same<T, GameObjectType>::value, T>>
         std::string ToString(const GameObjectType& obj);
-
-        template <class T>
-        struct is_shared_ptr : std::false_type { };
-
-        template <class T>
-        struct is_shared_ptr<std::shared_ptr<T>> : std::true_type { };
-
-
-        template <typename T>
-        struct is_basic_json_type
-        {
-                static constexpr auto value = std::is_arithmetic<T>::value || std::is_same<T, std::string>::value;
-        };
-
-        template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
-        nlohmann::json ToJson(const T& obj);
-
-        template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
-        nlohmann::json ToJson(const T& obj);
-
-        template <typename T>
-        nlohmann::json ToJson(const std::weak_ptr<T>& ptr);
-
-        template <typename T>
-        nlohmann::json ToJson(const std::shared_ptr<T>& ptr);
-
-        template <>
-        nlohmann::json ToJson(const std::filesystem::path& path);
-
-        template <>
-        nlohmann::json ToJson(const UUID& uuid);
-
-        template <>
-        nlohmann::json ToJson(const Rendering::ShaderType& shader_type);
-
-        template <>
-        nlohmann::json ToJson(const GameObjectType& go_type);
-
-        template <typename T>
-        nlohmann::json ToJson(const std::vector<T>& vector);
-
-        template <>
-        nlohmann::json ToJson(const std::vector<char>& vector);
-
-        template <typename T>
-        nlohmann::json ToJson(const std::list<T>& list);
-
-        template <typename T, typename S>
-        nlohmann::json ToJson(const std::unordered_map<T, S>& umap);
-
-        template <typename T, int N>
-        nlohmann::json ToJson(const std::array<T, N>& obj);
-
-        template <typename T, int N>
-        nlohmann::json ToJson(const Vector<T, N>& vector);
-
-        template <typename T, int M, int N>
-        nlohmann::json ToJson(const Matrix<T, M, N>& matrix);
-
-        template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
-        void FromJson(const nlohmann::json& j, T& obj);
-
-        template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
-        void FromJson(const nlohmann::json& j, T& object);
-
-        template <>
-        void FromJson(const nlohmann::json& j, UUID& uuid);
-
-        template <>
-        void FromJson(const nlohmann::json& j, std::filesystem::path& path);
-
-        template <>
-        void FromJson(const nlohmann::json& j, GameObjectType& go_type);
-
-        template <>
-        void FromJson(const nlohmann::json& j, Rendering::ShaderType& shader_type);
-
-        template <typename T>
-        void FromJson(const nlohmann::json& j, std::weak_ptr<T>& ptr);
-
-        template <typename T>
-        void FromJson(const nlohmann::json& j, std::shared_ptr<T>& ptr);
-
-        template <typename T>
-        void FromJson(const nlohmann::json& j, std::vector<T>& vector);
-
-        template <typename T>
-        void FromJson(const nlohmann::json& j, std::list<T>& list);
-
-        template <typename T, typename S>
-        void FromJson(const nlohmann::json& j, std::unordered_map<T, S>& map);
-
-        template <typename T, int N>
-        void FromJson(const nlohmann::json& j, Vector<T, N>& vector);
-
-        template <typename T, int M, int N>
-        void FromJson(const nlohmann::json& j, Matrix<T, M, N>& matrix);
-
-        template <typename T, int N>
-        void FromJson(const nlohmann::json& j, std::array<T, N>& arr);
     }  // namespace Core
 }  // namespace vEngine
 

@@ -4,14 +4,14 @@ namespace vEngine
     namespace Core
     {
         template <typename T, typename, typename>
-        nlohmann::json ToJson(const T& obj)
+        json ToJson(const T& obj)
         {
-            return nlohmann::json(obj);
+            return json(obj);
         }
         template <typename T, typename>
-        nlohmann::json ToJson(const T& obj)
+        json ToJson(const T& obj)
         {
-            nlohmann::json value;
+            json value;
             constexpr auto nbProperties = std::tuple_size<decltype(T::properties())>::value;
             //  using Type = typename decltype(property)::class_type;
 
@@ -29,7 +29,7 @@ namespace vEngine
             return value;
         }
         template <typename T>
-        nlohmann::json ToJson(const std::weak_ptr<T>& ptr)
+        json ToJson(const std::weak_ptr<T>& ptr)
         {
             auto shared = ptr.lock();
             auto go = std::dynamic_pointer_cast<GameObject>(shared);
@@ -37,10 +37,10 @@ namespace vEngine
             {
                 return ToJson(*go.get());
             }
-            return nlohmann::json();
+            return json();
         }
         template <typename T>
-        nlohmann::json ToJson(const std::shared_ptr<T>& ptr)
+        json ToJson(const std::shared_ptr<T>& ptr)
         {
             auto content_saved = false;
 
@@ -70,29 +70,29 @@ namespace vEngine
             return value;
         }
         template <>
-        nlohmann::json ToJson(const std::filesystem::path& path)
+        json ToJson(const std::filesystem::path& path)
         {
-            return nlohmann::json(path.string());
+            return json(path.string());
         }
         template <>
-        nlohmann::json ToJson(const UUID& uuid)
+        json ToJson(const UUID& uuid)
         {
-            return nlohmann::json(uuid.AsUint());
+            return json(uuid.AsUint());
         }
         template <>
-        nlohmann::json ToJson(const Rendering::ShaderType& shader_type)
+        json ToJson(const Rendering::ShaderType& shader_type)
         {
-            return nlohmann::json(ToString<Rendering::ShaderType>(shader_type));
+            return json(ToString<Rendering::ShaderType>(shader_type));
         }
         template <>
-        nlohmann::json ToJson(const GameObjectType& go_type)
+        json ToJson(const GameObjectType& go_type)
         {
-            return nlohmann::json(ToString<GameObjectType>(go_type));
+            return json(ToString<GameObjectType>(go_type));
         }
         template <typename T>
-        nlohmann::json ToJson(const std::vector<T>& vector)
+        json ToJson(const std::vector<T>& vector)
         {
-            nlohmann::json value;
+            json value;
             auto id = 0;
             for (const auto& e : vector)
             {
@@ -101,14 +101,14 @@ namespace vEngine
             return value;
         }
         template <>
-        nlohmann::json ToJson(const std::vector<char>& vector)
+        json ToJson(const std::vector<char>& vector)
         {
-            return nlohmann::json(std::string(vector.begin(), vector.end()));
+            return json(std::string(vector.begin(), vector.end()));
         }
         template <typename T>
-        nlohmann::json ToJson(const std::list<T>& list)
+        json ToJson(const std::list<T>& list)
         {
-            nlohmann::json value;
+            json value;
             auto id = 0;
             for (const auto& e : list)
             {
@@ -117,9 +117,9 @@ namespace vEngine
             return value;
         }
         template <typename T, typename S>
-        nlohmann::json ToJson(const std::unordered_map<T, S>& umap)
+        json ToJson(const std::unordered_map<T, S>& umap)
         {
-            nlohmann::json value;
+            json value;
             for (const auto& e : umap)
             {
                 value[ToString<T>(e.first)] = ToJson(e.second);
@@ -127,16 +127,16 @@ namespace vEngine
             return value;
         }
         template <typename T, int N>
-        nlohmann::json ToJson(const std::array<T, N>& obj)
+        json ToJson(const std::array<T, N>& obj)
         {
             NOT_IMPL_ASSERT;
             static_assert(false, "Should used vengine data types for serializer") UNUSED_PARAMETER(obj);
-            return nlohmann::json();
+            return json();
         }
         template <typename T, int N>
-        nlohmann::json ToJson(const Vector<T, N>& vector)
+        json ToJson(const Vector<T, N>& vector)
         {
-            nlohmann::json value;
+            json value;
             auto id = 0;
             for (const auto& e : vector)
             {
@@ -145,9 +145,9 @@ namespace vEngine
             return value;
         }
         template <typename T, int M, int N>
-        nlohmann::json ToJson(const Matrix<T, M, N>& matrix)
+        json ToJson(const Matrix<T, M, N>& matrix)
         {
-            nlohmann::json value;
+            json value;
             auto id = 0;
             for (const auto& row : matrix)
             {
