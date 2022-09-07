@@ -23,6 +23,8 @@ namespace vEngine
             if (type == "class vEngine::Core::CameraComponent") return Create<CameraComponent>();
             if (type == "class vEngine::Core::Scene") return Create<Scene>();
             if (type == "class vEngine::Core::GameNode") return Create<GameNode>();
+
+            NOT_IMPL_ASSERT;
             return nullptr;
         }
         /// A detailed function description, it

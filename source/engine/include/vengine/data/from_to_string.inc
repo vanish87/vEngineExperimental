@@ -2,8 +2,8 @@ namespace vEngine
 {
     namespace Core
     {
-        template <std::size_t I, class T, typename Src>
-        auto CastByType(std::shared_ptr<Src> ptr)
+        template <std::size_t I, class T, typename S>
+        auto CastByType(std::shared_ptr<S> ptr)
         {
             return std::dynamic_pointer_cast<std::tuple_element_t<I, T>>(ptr);
         }
@@ -133,10 +133,10 @@ namespace vEngine
 
             return path / context_name / file_name;
         }
-        nlohmann::json ParseJson(const std::filesystem::path path)
+        json ParseJson(const std::filesystem::path path)
         {
             std::ifstream file(path.string());
-            auto j = nlohmann::json::parse(file);
+            auto j = json::parse(file);
             file.close();
             return j;
         }
