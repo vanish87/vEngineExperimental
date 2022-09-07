@@ -56,94 +56,6 @@ namespace vEngine
                 static constexpr auto value = std::is_arithmetic<T>::value || std::is_same<T, std::string>::value;
         };
 
-        template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
-        json ToJson(const T& obj);
-
-        template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
-        json ToJson(const T& obj);
-
-        template <typename T>
-        json ToJson(const std::weak_ptr<T>& ptr);
-
-        template <typename T>
-        json ToJson(const std::shared_ptr<T>& ptr);
-
-        template <>
-        json ToJson(const std::filesystem::path& path);
-
-        template <>
-        json ToJson(const UUID& uuid);
-
-        template <>
-        json ToJson(const Rendering::ShaderType& shader_type);
-
-        template <>
-        json ToJson(const GameObjectType& go_type);
-
-        template <typename T>
-        json ToJson(const std::vector<T>& vector);
-
-        template <>
-        json ToJson(const std::vector<char>& vector);
-
-        template <typename T>
-        json ToJson(const std::list<T>& list);
-
-        template <typename T, typename S>
-        json ToJson(const std::unordered_map<T, S>& umap);
-
-        template <typename T, int N>
-        json ToJson(const std::array<T, N>& obj);
-
-        template <typename T, int N>
-        json ToJson(const Vector<T, N>& vector);
-
-        template <typename T, int M, int N>
-        json ToJson(const Matrix<T, M, N>& matrix);
-
-        template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
-        void FromJson(const json& j, T& obj);
-
-        template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
-        void FromJson(const json& j, T& object);
-
-        template <>
-        void FromJson(const json& j, UUID& uuid);
-
-        template <>
-        void FromJson(const json& j, std::filesystem::path& path);
-
-        template <>
-        void FromJson(const json& j, GameObjectType& go_type);
-
-        template <>
-        void FromJson(const json& j, Rendering::ShaderType& shader_type);
-
-        template <typename T>
-        void FromJson(const json& j, std::weak_ptr<T>& ptr);
-
-        template <typename T>
-        void FromJson(const json& j, std::shared_ptr<T>& ptr);
-
-        template <typename T>
-        void FromJson(const json& j, std::vector<T>& vector);
-
-        template <typename T>
-        void FromJson(const json& j, std::list<T>& list);
-
-        template <typename T, typename S>
-        void FromJson(const json& j, std::unordered_map<T, S>& map);
-
-        template <typename T, int N>
-        void FromJson(const json& j, Vector<T, N>& vector);
-
-        template <typename T, int M, int N>
-        void FromJson(const json& j, Matrix<T, M, N>& matrix);
-
-        template <typename T, int N>
-        void FromJson(const json& j, std::array<T, N>& arr);
-
-
         void SaveJson(const json& j, const std::filesystem::path& path);
         std::filesystem::path GameObjectToPath(const GameObjectDescription& desc);
         json ParseJson(const std::filesystem::path path);
@@ -182,8 +94,8 @@ namespace vEngine
     }  // namespace Core
 }  // namespace vEngine
 
-#include <vengine/data/from_json.inc>
 #include <vengine/data/to_json.inc>
+#include <vengine/data/from_json.inc>
 #include <vengine/data/from_to_string.inc>
 
 #ifdef _MSC_VER

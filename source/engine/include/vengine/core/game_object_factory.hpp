@@ -83,14 +83,18 @@ namespace vEngine
                 }
                 static GameObjectSharedPtr CreateByTypeString(const std::string type);
 
-                template <typename T, class... Args>
-                static std::shared_ptr<T> FindOrCreate(const GameObjectDescription& desc, Args&&... args)
+                template <typename T>
+                static std::shared_ptr<T> Find(const GameObjectDescription& desc)
                 {
                     auto go = Context::GetInstance().Find(desc.uuid);
                     if (go != nullptr) return std::dynamic_pointer_cast<T>(go);
+                    return nullptr;
+                }
 
-                    PRINT("Not found, create new one " << desc.type);
-                    go = CreateByTypeString(desc.type);
+                template <typename T, class... Args>
+                static std::shared_ptr<T> CreateByDesc(const GameObjectDescription& desc, Args&&... args)
+                {
+                    auto go = CreateByTypeString(desc.type);
                     CHECK_ASSERT_NOT_NULL(go);
                     return std::dynamic_pointer_cast<T>(go);
                 }

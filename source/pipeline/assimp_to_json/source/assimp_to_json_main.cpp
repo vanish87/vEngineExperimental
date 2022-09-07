@@ -10,6 +10,7 @@
 #include <assimp_handler.hpp>
 
 #include <class_foo.hpp>
+#include <vengine/data/json_test.hpp>
 
 int main(int argc, char* argv[])
 {
@@ -57,8 +58,19 @@ int main(int argc, char* argv[])
     handler.Init();
     // auto scene = handler.LoadFromAssimp(input);
 
-    GameObjectSharedPtr base_class = GameObjectFactory::Create<ClassFoo>();
-    auto j = ToJson(base_class);
+    auto base_class = GameObjectFactory::Create<ClassFoo>();
+    // auto j = ToJson(base_class);
+    auto j = ToJsonTest(base_class);
+    // auto j = ToJsonTest(base_class);
+
+    int i = 2;
+    auto ji = ToJsonTest(i);
+
+    std::shared_ptr<ClassFoo> foo_ptr;
+    base_class = foo_ptr;
+
+    GameObjectSharedPtr new_base_class;
+    FromJson(j, new_base_class);
 
 
     PRINT("Save to "<<output.string());

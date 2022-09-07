@@ -44,9 +44,9 @@ namespace vEngine
 
         struct GameObjectDescription
         {
-                std::string type;
                 UUID uuid;
                 std::string name = "GameObject";
+                std::string type;
                 constexpr static auto properties()
                 {
                     return std::make_tuple(
@@ -69,6 +69,7 @@ namespace vEngine
                 // GameObject(const GameObject& other);
                 // GameObject(const GameObject&& other);
                 virtual ~GameObject();
+
 
                 GameObjectDescription description_;
                 constexpr static auto properties()

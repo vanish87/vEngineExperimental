@@ -24,7 +24,8 @@ namespace vEngine
                         std::make_tuple(
                             property("pos", &ClassFoo::pos),
                             property("content", &ClassFoo::content),
-                            property("my_vector", &ClassFoo::vector)
+                            property("my_vector", &ClassFoo::vector),
+                            property("my_path", &ClassFoo::file_path)
                             )
                     );
                 }
@@ -42,6 +43,7 @@ namespace vEngine
                 float4 pos;
                 std::string content = "MyContent";
                 std::vector<std::shared_ptr<ClassBar>> vector;
+                std::filesystem::path file_path;
         };
     }  // namespace Core
 }  // namespace vEngine

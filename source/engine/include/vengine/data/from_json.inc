@@ -3,13 +3,13 @@ namespace vEngine
 {
     namespace Core
     {
-        template <typename T, typename, typename>
+        template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
         void FromJson(const json& j, T& obj)
         {
             obj = j.get<T>();
         }
 
-        template <typename T, typename>
+        template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
         void FromJson(const json& j, T& object)
         {
             constexpr auto nbProperties = std::tuple_size<decltype(T::properties())>::value;
@@ -79,7 +79,7 @@ namespace vEngine
             // PRINT("Deserialize " << desc.uuid.AsUint() << " " << desc.type);
 
             // 1. find by uuid
-            auto go = GameObjectFactory::FindOrCreate<T>(desc);
+            auto go = GameObjectFactory::Find<T>(desc);
             CHECK_ASSERT_NOT_NULL(go);
             ptr = go;
 

@@ -3,12 +3,12 @@ namespace vEngine
 {
     namespace Core
     {
-        template <typename T, typename, typename>
+        template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
         json ToJson(const T& obj)
         {
             return json(obj);
         }
-        template <typename T, typename>
+        template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
         json ToJson(const T& obj)
         {
             json value;
