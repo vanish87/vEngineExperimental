@@ -56,15 +56,12 @@ int main(int argc, char* argv[])
 
     vEngine::Pipeline::AssimpHandler handler;
     handler.Init();
-    // auto scene = handler.LoadFromAssimp(input);
+    auto scene = handler.LoadFromAssimp(input);
 
     auto base_class = GameObjectFactory::Create<ClassFoo>();
-    // auto j = ToJson(base_class);
-    auto j = ToJsonTest(base_class);
+    auto j = ToJson(base_class);
     // auto j = ToJsonTest(base_class);
-
-    int i = 2;
-    auto ji = ToJsonTest(i);
+    // auto j = ToJsonTest(base_class);
 
     std::shared_ptr<ClassFoo> foo_ptr;
     base_class = foo_ptr;
@@ -74,7 +71,7 @@ int main(int argc, char* argv[])
 
 
     PRINT("Save to "<<output.string());
-    // FromJson(j, scene);
+    j = ToJson(scene);
     std::ofstream outfile(output.string());
     outfile<<std::setw(2)<<j<<std::endl;
     // outfile<<input<<" will be compiled to "<<output<<std::endl;
