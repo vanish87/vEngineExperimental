@@ -136,7 +136,7 @@ namespace vEngine
 
             return path / context_name / file_name;
         }
-        json ParseJson(const std::filesystem::path path)
+        json LoadJson(const std::filesystem::path path)
         {
             std::ifstream file(path.string());
             auto j = json::parse(file);

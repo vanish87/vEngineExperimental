@@ -28,6 +28,8 @@ namespace Example
                 // // auto mp = std::make_shared<MeshComponent>();
                 // SceneManager::GetInstance().AddToSceneRoot(mp);
 
+                // SceneManager::GetInstance().Load()
+
             }
             /// \brief user function for update
             ///

@@ -37,11 +37,17 @@ namespace vEngine
                 void Deinit();
                 void Update();
 
+                void Clear()
+                {
+                    this->runtime_game_objects_.clear();
+                }
+
             private:
                 void LoadDll();
                 void FreeDll();
                 GameObjectSharedPtr Find(const UUID& uuid);
                 void Register(const GameObjectSharedPtr& go);
+
 
             private:
                 Configure configure_;

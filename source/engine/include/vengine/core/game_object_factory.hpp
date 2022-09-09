@@ -96,6 +96,7 @@ namespace vEngine
                 {
                     auto go = CreateByTypeString(desc.type);
                     CHECK_ASSERT_NOT_NULL(go);
+                    PRINT(typeid(T).name());
                     return std::dynamic_pointer_cast<T>(go);
                 }
 

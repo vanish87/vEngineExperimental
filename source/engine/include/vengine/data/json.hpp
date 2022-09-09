@@ -58,7 +58,7 @@ namespace vEngine
 
         void SaveJson(const json& j, const std::filesystem::path& path);
         std::filesystem::path GameObjectToPath(const GameObjectDescription& desc);
-        json ParseJson(const std::filesystem::path path);
+        json LoadJson(const std::filesystem::path path);
         template <std::size_t I, class T, typename Src>
         auto CastByType(std::shared_ptr<Src> ptr);
 

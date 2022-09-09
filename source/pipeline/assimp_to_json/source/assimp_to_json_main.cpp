@@ -9,8 +9,8 @@
 
 #include <assimp_handler.hpp>
 
-#include <class_foo.hpp>
 #include <vengine/data/json_test.hpp>
+#include <vengine/data/class_foo.hpp>
 
 int main(int argc, char* argv[])
 {
@@ -18,13 +18,13 @@ int main(int argc, char* argv[])
     std::filesystem::path output;
     std::filesystem::path resource_src;
     std::filesystem::path resource_bin;
-    for(auto i = 0; i < argc; ++i)
+    for (auto i = 0; i < argc; ++i)
     {
         auto s = std::string(argv[i]);
-        if(s == "-i") input = argv[i+1];
-        if(s == "-o") output = argv[i+1];
-        if(s == "-r") resource_src = argv[i+1];
-        if(s == "-b") resource_bin = argv[i+1];
+        if (s == "-i") input = argv[i + 1];
+        if (s == "-o") output = argv[i + 1];
+        if (s == "-r") resource_src = argv[i + 1];
+        if (s == "-b") resource_bin = argv[i + 1];
     }
     input = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource/boblamp/boblampclean.md5mesh";
     output = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin/assimp/boblampclean.json";
@@ -37,11 +37,11 @@ int main(int argc, char* argv[])
     configure.resource_src = resource_src;
     configure.resource_bin = resource_bin;
 
-    #ifdef VENGINE_PLATFORM_WINDOWS
+#ifdef VENGINE_PLATFORM_WINDOWS
     configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
-    #else
+#else
     configure.graphics_configure.render_plugin_name = "opengl_rendering_plugin";
-    #endif
+#endif
     Context::GetInstance().Init(configure);
     ResourceLoader::GetInstance().AddSearchPath(configure.resource_src);
     // ResourceLoader::GetInstance().AddSearchFolder("resource");
@@ -53,48 +53,40 @@ int main(int argc, char* argv[])
     PRINT(resource_src.string());
     PRINT(resource_bin.string());
 
-
     vEngine::Pipeline::AssimpHandler handler;
     handler.Init();
-    auto scene = handler.LoadFromAssimp(input);
 
-    auto base_class = GameObjectFactory::Create<ClassFoo>();
-    auto j = ToJson(base_class);
-    // auto j = ToJsonTest(base_class);
-    // auto j = ToJsonTest(base_class);
+    // auto scene = handler.LoadFromAssimp(input);
+    // PRINT("Save to " << output.string());
+    // auto j = ToJson(scene);
+    // std::ofstream outfile(output.string());
+    // outfile << std::setw(2) << j << std::endl;
+    // outfile.flush();
+    // outfile.close();
 
-    std::shared_ptr<ClassFoo> foo_ptr;
-    base_class = foo_ptr;
+    GameObjectSharedPtr foo_class = GameObjectFactory::Create<ClassFoo>();
+    auto foo = std::dynamic_pointer_cast<ClassFoo>(foo_class);
+    foo->pos = float4(1, 2, 3, 4);
 
-    GameObjectSharedPtr new_base_class;
-    FromJson(j, new_base_class);
+    auto j = ToJson(foo_class);
 
-
-    PRINT("Save to "<<output.string());
-    j = ToJson(scene);
     std::ofstream outfile(output.string());
-    outfile<<std::setw(2)<<j<<std::endl;
-    // outfile<<input<<" will be compiled to "<<output<<std::endl;
-    // outfile<<infile.rdbuf()<<std::endl;
+    outfile << std::setw(2) << j << std::endl;
     outfile.flush();
     outfile.close();
+
+    Context::GetInstance().Clear();
+    GameObjectSharedPtr foo_ptr;
+    j = LoadJson(output);
+    FromJson(j, foo_ptr);
+
+    // auto path = ResourceLoader::GetInstance().GetFilePath("boblampclean.json");
+    // Context::GetInstance().Clear();
+    // auto path = output;
+    // auto new_scene = Scene::Load(path);
 
     handler.Deinit();
     Context::GetInstance().Deinit();
 
     return 0;
-    // std::ifstream infile(input);
-    // auto base_path = input.parent_path().parent_path().string();
-    // ResourceLoader::GetInstance().AddSearchPath(base_path);
-    // // ResourceLoader::GetInstance().AddSearchPath("resource");
-    // ResourceLoader::GetInstance().AddSearchPath(base_path + "/shader");
-
-    // auto scene = GameObjectFactory::Create<Scene>();
-    // auto rdesc = std::make_shared<ResourceDescriptor>();
-    // rdesc->file_path = input;
-    // rdesc->on_complete_call_back = [&](IResourceSharedPtr c) {
-
-    // };
-
-    // scene->Load(rdesc);
 }

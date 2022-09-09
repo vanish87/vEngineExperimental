@@ -72,8 +72,6 @@ namespace vEngine
         void FromJson(const json& j, std::shared_ptr<T>& ptr)
         {
             GameObjectDescription desc;
-            // FromJson(j["data"], *v);
-
             FromJson(j["description"], desc);
 
             // PRINT("Deserialize " << desc.uuid.AsUint() << " " << desc.type);
@@ -85,7 +83,7 @@ namespace vEngine
             ptr = GameObjectFactory::CreateByDesc<T>(desc);
             CHECK_ASSERT_NOT_NULL(ptr);
 
-            auto json = ParseJson(GameObjectToPath(desc));
+            auto json = LoadJson(GameObjectToPath(desc));
             FromJson(json, *ptr.get());
 
             PRINT("Load " << ptr->description_.uuid.AsUint() << " " << desc.type);

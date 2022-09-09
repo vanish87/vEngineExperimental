@@ -30,9 +30,8 @@ namespace vEngine
             desc.on_load_call_back = [&]()
             {
                 auto path = ResourceLoader::GetInstance().GetFilePath(scene_name);
-                auto scene =  Scene::Load(path);
-                this->scene_ = scene;
-                return scene;
+                this->scene_ = Scene::Load(path);;
+                return this->scene_;
             };             
             ResourceLoader::GetInstance().LoadAsync(desc);
 
@@ -54,7 +53,7 @@ namespace vEngine
         }
         void SceneManager::Update()
         {
-            this->scene_->Update();
+            if (this->scene_ != nullptr) this->scene_->Update();
         }
 
     }  // namespace Core

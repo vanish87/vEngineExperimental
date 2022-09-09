@@ -47,7 +47,7 @@ namespace vEngine
             //just a place holder;
             //From json will overwrite this scene variable
             auto scene = std::make_shared<Scene>();
-            auto j = ParseJson(path);
+            auto j = LoadJson(path);
             FromJson(j, scene);
             return scene;
         }
@@ -96,7 +96,7 @@ namespace vEngine
         // bool Scene::Load(const ResourceDescriptorSharedPtr descriptor)
         // {
         //     // UNUSED_PARAMETER(descriptor);
-        //     auto j = ParseJson(descriptor->file_path);
+        //     auto j = LoadJson(descriptor->file_path);
         //     auto go = this->shared_from_this();
         //     FromJson(j, go);
 

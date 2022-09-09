@@ -8,7 +8,7 @@
 #include <vengine/data/meta.hpp>
 #include <vengine/core/game_object.hpp>
 #include <vengine/core/game_object_factory.hpp>
-#include <class_bar.hpp>
+#include <vengine/data/class_bar.hpp>
 
 namespace vEngine
 {
@@ -39,7 +39,7 @@ namespace vEngine
                 }
                 virtual ~ClassFoo() {}
 
-            private:
+            public:
                 float4 pos;
                 std::string content = "MyContent";
                 std::vector<std::shared_ptr<ClassBar>> vector;

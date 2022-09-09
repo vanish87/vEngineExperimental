@@ -1,5 +1,5 @@
-#ifndef _ASSIMP_TO_JSON_INCLUDE_CLASS_BAR_HPP
-#define _ASSIMP_TO_JSON_INCLUDE_CLASS_BAR_HPP
+#ifndef _VENGINE_DATA_CLASS_BAR_HPP
+#define _VENGINE_DATA_CLASS_BAR_HPP
 
 #include <engine.hpp>
 #include <predeclear.hpp>
@@ -39,4 +39,4 @@ namespace vEngine
     }  // namespace Core
 }  // namespace vEngine
 
-#endif /* _ASSIMP_TO_JSON_INCLUDE_CLASS_BAR_HPP */
+#endif /* _VENGINE_DATA_CLASS_BAR_HPP */

@@ -128,7 +128,7 @@ namespace vEngine
             if(ptr != nullptr) return;
 
             ptr = GameObjectFactory::CreateByDesc<T>(desc);
-            auto json = ParseJson(GameObjectToPath(desc));
+            auto json = LoadJson(GameObjectToPath(desc));
 
             auto content_loaded = false;
             using type_list = std::tuple<ClassBar, ClassFoo>;

@@ -9,7 +9,11 @@
 
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/core/camera_component.hpp>
+#include <vengine/core/transform_component.hpp>
 #include <vengine/core/scene.hpp>
+
+#include <vengine/data/class_bar.hpp>
+#include <vengine/data/class_foo.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -21,9 +25,14 @@ namespace vEngine
         GameObjectSharedPtr GameObjectFactory::CreateByTypeString(const std::string type)
         {
             if (type == "class vEngine::Core::CameraComponent") return Create<CameraComponent>();
+            if (type == "class vEngine::Core::TransformComponent") return Create<TransformComponent>();
             if (type == "class vEngine::Core::Scene") return Create<Scene>();
             if (type == "class vEngine::Core::GameNode") return Create<GameNode>();
 
+            if (type == "class vEngine::Core::ClassFoo") return Create<ClassFoo>();
+            if (type == "class vEngine::Core::ClassBar") return Create<ClassBar>();
+
+            PRINT_AND_BREAK("type " << type << " not created");
             NOT_IMPL_ASSERT;
             return nullptr;
         }
