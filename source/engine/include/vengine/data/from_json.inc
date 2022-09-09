@@ -79,14 +79,16 @@ namespace vEngine
             // PRINT("Deserialize " << desc.uuid.AsUint() << " " << desc.type);
 
             // 1. find by uuid
-            auto go = GameObjectFactory::Find<T>(desc);
-            CHECK_ASSERT_NOT_NULL(go);
-            ptr = go;
+            ptr = GameObjectFactory::Find<T>(desc);
+            if(ptr != nullptr) return;
+
+            ptr = GameObjectFactory::CreateByDesc<T>(desc);
+            CHECK_ASSERT_NOT_NULL(ptr);
 
             auto json = ParseJson(GameObjectToPath(desc));
             FromJson(json, *ptr.get());
 
-            PRINT("Load " << go->description_.uuid.AsUint() << " " << desc.type);
+            PRINT("Load " << ptr->description_.uuid.AsUint() << " " << desc.type);
         }
         template <typename T>
         void FromJson(const json& j, std::vector<T>& vector)
