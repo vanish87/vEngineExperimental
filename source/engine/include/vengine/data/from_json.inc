@@ -1,4 +1,16 @@
 
+#include <vengine/data/class_foo.hpp>
+#include <vengine/core/game_object_factory.hpp>
+
+#define FROM_JSON_BY_DESC(desc, type_name, template_name)           \
+if (desc.type == typeid(type_name).name())                          \
+{                                                                   \
+    auto go = GameObjectFactory::Create<type_name>();               \
+    auto json = LoadJson(GameObjectToPath(desc));                   \
+    FromJson(json, *go.get());                                      \
+    return std::dynamic_pointer_cast<template_name>(go);            \
+}
+
 namespace vEngine
 {
     namespace Core
@@ -65,8 +77,43 @@ namespace vEngine
         template <typename T>
         void FromJson(const json& j, std::weak_ptr<T>& ptr)
         {
-            UNUSED_PARAMETER(j);
-            UNUSED_PARAMETER(ptr);
+            // UNUSED_PARAMETER(j);
+            // UNUSED_PARAMETER(ptr);
+
+            auto shared = std::shared_ptr<T>();
+            FromJson(j, shared);
+            ptr = shared;
+        }
+        template <typename T>
+        std::shared_ptr<T> CreateAndLoadByDesc(const GameObjectDescription& desc)
+        {
+            // if (type == "class vEngine::Core::CameraComponent") return Create<CameraComponent>();
+            // if (type == "class vEngine::Core::TransformComponent") return Create<TransformComponent>();
+            // if (type == "class vEngine::Core::Scene") return Create<Scene>();
+            // if (type == "class vEngine::Core::GameNode") return Create<GameNode>();
+
+            // auto type = desc.type;
+
+
+            FROM_JSON_BY_DESC(desc, ClassFoo, T);
+            FROM_JSON_BY_DESC(desc, ClassBar, T);
+
+            // if (type == "class vEngine::Core::ClassFoo") 
+            // {
+            //     auto go = GameObjectFactory::Create<ClassFoo>();
+            //     auto json = LoadJson(GameObjectToPath(desc));
+            //     FromJson(json, *go.get());
+            //     return std::dynamic_pointer_cast<T>(go);
+            // }
+            // if (type == "class vEngine::Core::ClassBar") 
+            // {
+            //     auto go = GameObjectFactory::Create<ClassBar>();
+            //     auto json = LoadJson(GameObjectToPath(desc));
+            //     FromJson(json, *go.get());
+            //     return std::dynamic_pointer_cast<T>(go);
+            // }
+            // if (type == "class vEngine::Core::ClassBar") return Create<ClassBar>();
+            return nullptr;
         }
         template <typename T>
         void FromJson(const json& j, std::shared_ptr<T>& ptr)
@@ -76,42 +123,43 @@ namespace vEngine
 
             // PRINT("Deserialize " << desc.uuid.AsUint() << " " << desc.type);
 
+            PRINT("From json load " << typeid(T).name());
+
             // 1. find by uuid
             ptr = GameObjectFactory::Find<T>(desc);
             if(ptr != nullptr) return;
 
-            ptr = GameObjectFactory::CreateByDesc<T>(desc);
+            ptr = CreateAndLoadByDesc<T>(desc);
             CHECK_ASSERT_NOT_NULL(ptr);
-
-            auto json = LoadJson(GameObjectToPath(desc));
-            FromJson(json, *ptr.get());
 
             PRINT("Load " << ptr->description_.uuid.AsUint() << " " << desc.type);
         }
         template <typename T>
         void FromJson(const json& j, std::vector<T>& vector)
         {
-            for (auto it = j.begin(); it != j.end(); ++it)
+            vector.clear();
+            for (const auto& it : j)
             {
                 T v;
-                FromJson(*it, v);
+                FromJson(it, v);
                 vector.push_back(v);
             }
         }
         template <typename T>
         void FromJson(const json& j, std::list<T>& list)
         {
-            for (auto it = j.begin(); it != j.end(); ++it)
+            list.clear();
+            for (const auto& it : j)
             {
                 T v;
-                FromJson(*it, v);
+                FromJson(it, v);
                 list.push_back(v);
             }
         }
         template <typename T, typename S>
         void FromJson(const json& j, std::unordered_map<T, S>& map)
         {
-            for (auto it = j.begin(); it != j.end(); ++it)
+            for (const auto& it : j)
             {
                 // TODO ToJson should cast key to string in order to recover it here
                 auto k = FromString<T>(it.key());
@@ -127,20 +175,19 @@ namespace vEngine
         template <typename T, int N>
         void FromJson(const json& j, Vector<T, N>& vector)
         {
-            for (auto& i : vector)
+            auto idx = 0;
+            for (const auto& it : j)
             {
-                FromJson(j, i);
+                FromJson(it, vector[idx++]);
             }
         }
         template <typename T, int M, int N>
         void FromJson(const json& j, Matrix<T, M, N>& matrix)
         {
             auto idx = 0;
-            for (const auto& row : matrix)
+            for (const auto& it : j)
             {
-                Vector<T, N> r;
-                FromJson(*it, r);
-                matrix[idx++] = r;
+                FromJson(it, matrix[idx++]);
             }
         }
 

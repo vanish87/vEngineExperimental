@@ -91,14 +91,6 @@ namespace vEngine
                     return nullptr;
                 }
 
-                template <typename T, class... Args>
-                static std::shared_ptr<T> CreateByDesc(const GameObjectDescription& desc, Args&&... args)
-                {
-                    auto go = CreateByTypeString(desc.type);
-                    CHECK_ASSERT_NOT_NULL(go);
-                    PRINT(typeid(T).name());
-                    return std::dynamic_pointer_cast<T>(go);
-                }
 
                 // static GameNodeSharedPtr Create(const GameNodeDescription& desc);
                 // static TransformNodeSharedPtr Create();

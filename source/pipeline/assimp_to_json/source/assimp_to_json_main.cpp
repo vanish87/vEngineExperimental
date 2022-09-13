@@ -67,6 +67,8 @@ int main(int argc, char* argv[])
     GameObjectSharedPtr foo_class = GameObjectFactory::Create<ClassFoo>();
     auto foo = std::dynamic_pointer_cast<ClassFoo>(foo_class);
     foo->pos = float4(1, 2, 3, 4);
+    foo->content = "this is new content";
+    foo->matrix = float4x4::Identity();
 
     auto j = ToJson(foo_class);
 
@@ -79,6 +81,16 @@ int main(int argc, char* argv[])
     GameObjectSharedPtr foo_ptr;
     j = LoadJson(output);
     FromJson(j, foo_ptr);
+
+    auto fptr = std::dynamic_pointer_cast<ClassFoo>(foo_ptr);
+    PRINT(fptr->content);
+    PRINT(fptr->matrix[1][1]);
+    PRINT(fptr->pos.x() << " " << fptr->pos.y() << " " << fptr->pos.z() << " " << fptr->pos.w());
+
+    // auto go = GameObjectFactory::Create<ClassFoo>();
+    // auto foo_p = std::dynamic_pointer_cast<ClassFoo>(go);
+
+    // PRINT(foo_p->content);
 
     // auto path = ResourceLoader::GetInstance().GetFilePath("boblampclean.json");
     // Context::GetInstance().Clear();

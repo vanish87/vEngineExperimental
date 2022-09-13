@@ -23,6 +23,7 @@ namespace vEngine
                         GameObject::properties(), 
                         std::make_tuple(
                             property("pos", &ClassFoo::pos),
+                            property("matrix", &ClassFoo::matrix),
                             property("content", &ClassFoo::content),
                             property("my_vector", &ClassFoo::vector),
                             property("my_path", &ClassFoo::file_path)
@@ -41,6 +42,7 @@ namespace vEngine
 
             public:
                 float4 pos;
+                float4x4 matrix;
                 std::string content = "MyContent";
                 std::vector<std::shared_ptr<ClassBar>> vector;
                 std::filesystem::path file_path;
