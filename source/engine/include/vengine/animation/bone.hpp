@@ -28,7 +28,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Bone : public Core::GameObject
+        class VENGINE_API Bone : public Core::GameObject
         {
             public:
                 constexpr static auto properties()

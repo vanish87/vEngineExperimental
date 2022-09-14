@@ -45,6 +45,7 @@ namespace vEngine
                     );
                 };
                 /// \brief brief constructor description.
+                Texture(){};
                 Texture(const TextureDescriptor& desc);
                 virtual ~Texture();
 

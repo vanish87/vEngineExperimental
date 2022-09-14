@@ -1,14 +1,16 @@
 
 #include <vengine/data/class_foo.hpp>
 #include <vengine/core/game_object_factory.hpp>
+    
 
-#define FROM_JSON_BY_DESC(desc, type_name, template_name)           \
+//TODO use Default for better obj creation: auto go = type_name::Default();                                 
+#define FROM_JSON_BY_DESC(ptr, desc, type_name, template_name)      \
 if (desc.type == typeid(type_name).name())                          \
 {                                                                   \
     auto go = GameObjectFactory::Create<type_name>();               \
     auto json = LoadJson(GameObjectToPath(desc));                   \
     FromJson(json, *go.get());                                      \
-    return std::dynamic_pointer_cast<template_name>(go);            \
+    ptr = std::dynamic_pointer_cast<template_name>(go);             \
 }
 
 namespace vEngine
@@ -84,6 +86,18 @@ namespace vEngine
             FromJson(j, shared);
             ptr = shared;
         }
+        template <std::size_t I, class T, typename S>
+        bool HandleByType(std::shared_ptr<S>& ptr, const GameObjectDescription& desc)
+        {
+            using Type = typename std::tuple_element_t<I, T>;
+            // if(std::is_same<T, Type>::value)
+            if(typeid(Type).name() == desc.type)
+            {
+                FROM_JSON_BY_DESC(ptr, desc, Type, S);
+                return true;
+            }
+            return false;
+        }
         template <typename T>
         std::shared_ptr<T> CreateAndLoadByDesc(const GameObjectDescription& desc)
         {
@@ -94,9 +108,25 @@ namespace vEngine
 
             // auto type = desc.type;
 
+            // using type_list = std::tuple<ClassBar, ClassFoo>;
+            using type_list = std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, TransformComponent, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera,
+                                         CameraComponent, Rendering::PipelineState, Rendering::Texture, Animation::AnimationClip, Animation::Joint, Animation::Bone, GameNode, ClassFoo, ClassBar>;
 
-            FROM_JSON_BY_DESC(desc, ClassFoo, T);
-            FROM_JSON_BY_DESC(desc, ClassBar, T);
+            auto shared = std::shared_ptr<T>();
+            auto handled = false;
+
+            constexpr auto nlist = std::tuple_size<type_list>::value;
+            for_sequence(std::make_index_sequence<nlist>{},
+                         [&](auto i)
+                         {
+                            if(!handled)
+                            {
+                                handled = HandleByType<i, type_list>(shared, desc);
+                                // PRINT(desc.type << " " << (handled ? "Handled" : "Skiped"));
+                            }
+                         });
+            // FROM_JSON_BY_DESC(desc, ClassFoo, T);
+            // FROM_JSON_BY_DESC(desc, ClassBar, T);
 
             // if (type == "class vEngine::Core::ClassFoo") 
             // {
@@ -113,11 +143,16 @@ namespace vEngine
             //     return std::dynamic_pointer_cast<T>(go);
             // }
             // if (type == "class vEngine::Core::ClassBar") return Create<ClassBar>();
-            return nullptr;
+            return shared;
         }
         template <typename T>
         void FromJson(const json& j, std::shared_ptr<T>& ptr)
         {
+            if(j.is_null())
+            {
+                PRINT("json is null, it should be a nullptr");
+                return;
+            }
             GameObjectDescription desc;
             FromJson(j["description"], desc);
 
@@ -159,7 +194,7 @@ namespace vEngine
         template <typename T, typename S>
         void FromJson(const json& j, std::unordered_map<T, S>& map)
         {
-            for (const auto& it : j)
+            for (auto it = j.begin(); it != j.end(); ++it)
             {
                 // TODO ToJson should cast key to string in order to recover it here
                 auto k = FromString<T>(it.key());

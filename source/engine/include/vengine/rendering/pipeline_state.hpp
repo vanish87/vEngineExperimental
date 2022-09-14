@@ -43,6 +43,7 @@ namespace vEngine
                 };
             public:
                 /// \brief brief constructor description.
+                PipelineState(){};
                 PipelineState(const PipelineStateDescriptor& desc);
                 virtual ~PipelineState();
 

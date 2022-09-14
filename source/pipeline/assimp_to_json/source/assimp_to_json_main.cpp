@@ -12,6 +12,37 @@
 #include <vengine/data/json_test.hpp>
 #include <vengine/data/class_foo.hpp>
 
+void TestFunction(std::filesystem::path output)
+{
+    GameObjectSharedPtr foo_class = GameObjectFactory::Create<ClassFoo>();
+    auto foo = std::dynamic_pointer_cast<ClassFoo>(foo_class);
+    foo->pos = float4(1, 2, 3, 4);
+    foo->content = "this is new content";
+    foo->matrix = float4x4::Identity();
+
+    auto j = ToJson(foo_class);
+
+    std::ofstream outfile(output.string());
+    outfile << std::setw(2) << j << std::endl;
+    outfile.flush();
+    outfile.close();
+
+    Context::GetInstance().Clear();
+    GameObjectSharedPtr foo_ptr;
+    j = LoadJson(output);
+    FromJson(j, foo_ptr);
+
+    auto fptr = std::dynamic_pointer_cast<ClassFoo>(foo_ptr);
+    PRINT(fptr->content);
+    PRINT(fptr->matrix[1][1]);
+    PRINT(fptr->pos.x() << " " << fptr->pos.y() << " " << fptr->pos.z() << " " << fptr->pos.w());
+
+    // auto go = GameObjectFactory::Create<ClassFoo>();
+    // auto foo_p = std::dynamic_pointer_cast<ClassFoo>(go);
+
+    // PRINT(foo_p->content);
+}
+
 int main(int argc, char* argv[])
 {
     std::filesystem::path input;
@@ -56,46 +87,18 @@ int main(int argc, char* argv[])
     vEngine::Pipeline::AssimpHandler handler;
     handler.Init();
 
-    // auto scene = handler.LoadFromAssimp(input);
-    // PRINT("Save to " << output.string());
-    // auto j = ToJson(scene);
-    // std::ofstream outfile(output.string());
-    // outfile << std::setw(2) << j << std::endl;
-    // outfile.flush();
-    // outfile.close();
-
-    GameObjectSharedPtr foo_class = GameObjectFactory::Create<ClassFoo>();
-    auto foo = std::dynamic_pointer_cast<ClassFoo>(foo_class);
-    foo->pos = float4(1, 2, 3, 4);
-    foo->content = "this is new content";
-    foo->matrix = float4x4::Identity();
-
-    auto j = ToJson(foo_class);
-
+    auto scene = handler.LoadFromAssimp(input);
+    PRINT("Save to " << output.string());
+    auto j = ToJson(scene);
     std::ofstream outfile(output.string());
     outfile << std::setw(2) << j << std::endl;
     outfile.flush();
     outfile.close();
 
-    Context::GetInstance().Clear();
-    GameObjectSharedPtr foo_ptr;
-    j = LoadJson(output);
-    FromJson(j, foo_ptr);
-
-    auto fptr = std::dynamic_pointer_cast<ClassFoo>(foo_ptr);
-    PRINT(fptr->content);
-    PRINT(fptr->matrix[1][1]);
-    PRINT(fptr->pos.x() << " " << fptr->pos.y() << " " << fptr->pos.z() << " " << fptr->pos.w());
-
-    // auto go = GameObjectFactory::Create<ClassFoo>();
-    // auto foo_p = std::dynamic_pointer_cast<ClassFoo>(go);
-
-    // PRINT(foo_p->content);
-
     // auto path = ResourceLoader::GetInstance().GetFilePath("boblampclean.json");
-    // Context::GetInstance().Clear();
-    // auto path = output;
-    // auto new_scene = Scene::Load(path);
+    Context::GetInstance().Clear();
+    auto path = output;
+    auto new_scene = Scene::Load(path);
 
     handler.Deinit();
     Context::GetInstance().Deinit();

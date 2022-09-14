@@ -25,7 +25,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Camera : public GameObject
+        class VENGINE_API Camera : public GameObject
         {
             public:
                 /// \brief brief constructor description.

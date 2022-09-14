@@ -46,7 +46,7 @@ namespace vEngine
         {
             //just a place holder;
             //From json will overwrite this scene variable
-            auto scene = std::make_shared<Scene>();
+            SceneSharedPtr scene;
             auto j = LoadJson(path);
             FromJson(j, scene);
             return scene;
