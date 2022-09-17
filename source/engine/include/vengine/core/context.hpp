@@ -3,13 +3,14 @@
 
 #pragma once
 
-#include <unordered_map>
+// #include <unordered_map>
 
 #include <engine.hpp>
-#include <vengine/core/game_object.hpp>
-#include <vengine/data/meta.hpp>
+// #include <vengine/core/game_object.hpp>
+// #include <vengine/data/meta.hpp>
 #include <vengine/core/configure.hpp>
-#include <vengine/core/iruntime_module.hpp>
+#include <vengine/rendering/render_engine.hpp>
+// #include <vengine/core/iruntime_module.hpp>
 
 namespace vEngine
 {
@@ -29,41 +30,45 @@ namespace vEngine
                 Application& AppInstance() const;
                 // RenderFactory& RenderFactoty();
 
+
+
             public:
                 Rendering::RenderEngine & GetRenderEngine();
 
             public:
-                void Init(const Configure& configure);
+                void SetConfigure(const Configure& configure);
+                void Init();
                 void Deinit();
                 void Update();
 
                 void Clear()
                 {
-                    this->runtime_game_objects_.clear();
+                    // this->runtime_game_objects_.clear();
                 }
 
             private:
                 void LoadDll();
                 void FreeDll();
-                GameObjectSharedPtr Find(const UUID& uuid);
-                void Register(const GameObjectSharedPtr& go);
+                // GameObjectSharedPtr Find(const UUID& uuid);
+                // void Register(const GameObjectSharedPtr& go);
 
 
             private:
                 Configure configure_;
                 Application* app_instance_;
+                WindowSharedPtr window_;
 
                 void* render_plugin_dll_handle_;
                 Rendering::RenderEngineUniquePtr render_engine_ptr_;
 
-                std::unordered_map<UUID, GameObjectSharedPtr> runtime_game_objects_;
+                // std::unordered_map<UUID, GameObjectSharedPtr> runtime_game_objects_;
 
             public:
-                constexpr static auto properties()
-                {
-                    return std::make_tuple(
-                        property("context_objects", &Context::runtime_game_objects_));
-                }
+                // constexpr static auto properties()
+                // {
+                //     return std::make_tuple(
+                //         property("context_objects", &Context::runtime_game_objects_));
+                // }
         };
 
         void* LoadLibrary(const std::string lib_name);

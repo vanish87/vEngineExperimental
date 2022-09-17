@@ -79,12 +79,12 @@ namespace vEngine
         template <typename T>
         void FromJson(const json& j, std::weak_ptr<T>& ptr)
         {
-            // UNUSED_PARAMETER(j);
-            // UNUSED_PARAMETER(ptr);
+            UNUSED_PARAMETER(j);
+            UNUSED_PARAMETER(ptr);
 
-            auto shared = std::shared_ptr<T>();
-            FromJson(j, shared);
-            ptr = shared;
+            // auto shared = std::shared_ptr<T>();
+            // FromJson(j, shared);
+            // ptr = shared;
         }
         template <std::size_t I, class T, typename S>
         bool HandleByType(std::shared_ptr<S>& ptr, const GameObjectDescription& desc)
@@ -161,7 +161,7 @@ namespace vEngine
             PRINT("From json load " << typeid(T).name());
 
             // 1. find by uuid
-            ptr = GameObjectFactory::Find<T>(desc);
+            // ptr = GameObjectFactory::Find<T>(desc);
             if(ptr != nullptr) return;
 
             ptr = CreateAndLoadByDesc<T>(desc);

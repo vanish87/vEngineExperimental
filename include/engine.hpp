@@ -3,6 +3,13 @@
 
 #pragma once
 
+#ifdef VENGINE_PLATFORM_WINDOWS
+    //windows.h should include first in win32 platform
+    #define NOMINMAX
+    #include <windows.h>
+#endif
+
+
 #include <compiler_setting.hpp>
 #include <macros.hpp>
 #include <defines.hpp>

@@ -79,8 +79,9 @@ namespace vEngine
 
         typedef Matrix<float, 4, 4> float4x4;
 
-        class Window;
-        typedef std::shared_ptr<Window> vEngineWindowPtr;
+        // class Window;
+        // typedef std::shared_ptr<Window> vEngineWindowPtr;
+        CLASS_AND_SHARED_POINTER(Window)
         class Application;
 
         CLASS_AND_SHARED_POINTER(GameObject)

@@ -69,7 +69,7 @@ namespace vEngine
                     go->description_.type = typeid(T).name();
                     // TODO Checking description type with T
 
-                    Context::GetInstance().Register(go);
+                    // Context::GetInstance().Register(go);
 
                     return gn;
                 }

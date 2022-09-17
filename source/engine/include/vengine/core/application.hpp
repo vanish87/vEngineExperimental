@@ -3,9 +3,8 @@
 
 #pragma once
 
-#include <VENGINE_API.hpp>
-
-#include <vengine/core/iruntime_module.hpp>
+#include <engine.hpp>
+// #include <vengine/core/iruntime_module.hpp>
 
 namespace vEngine
 {
@@ -18,25 +17,19 @@ namespace vEngine
                 virtual ~Application();
 
             public:
-                virtual void Init(void* wnd = nullptr);
-                virtual void Update();
-                virtual void Deinit();
-                
                 virtual void Run();
-                virtual void Quit(bool quit);
-
-            public:
-                vEngineWindowPtr CurrentWindow();
-
-            protected:
-                vEngineWindowPtr window_;
+                virtual void Quit();
 
             private:
-                virtual void OnCreate();
-                virtual void OnUpdate();
-                virtual void OnDestroy();
+                void Init();
+                void Update();
+                void Deinit();
 
-                bool shouldQuit;
+                virtual void OnInit();
+                virtual void OnUpdate();
+                virtual void OnDeinit();
+
+                bool should_quit_;
         };
     }  // namespace Core
 }  // namespace vEngine

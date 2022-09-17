@@ -6,8 +6,8 @@
 
     // include windows.h first
     #include <vengine/core/window.hpp>
-    #include <vengine/core/application.hpp>
     #include <vengine/core/context.hpp>
+    #include <vengine/core/application.hpp>
 // #include <tchar.h>//wchar
 
 namespace vEngine
@@ -29,7 +29,7 @@ namespace vEngine
             {
                 case WM_DESTROY:
                 {
-                    Context::GetInstance().AppInstance().Quit(true);
+                    Context::GetInstance().AppInstance().Quit();
                     PostQuitMessage(0);
                     return 0;
                 }
@@ -47,16 +47,11 @@ namespace vEngine
 
             return this->default_wnd_proc_(hWnd, message, wParam, lParam);
         }
-        void* Window::WindowHandle()
+        void Window::Init(const WindowDescription& desc)
         {
-            return this->wnd_;
-        }
-        void Window::Init(void* wnd)
-        {
-            const auto configure = Context::GetInstance().CurrentConfigure();
-            std::string win_name = configure.app_name;
+            std::string win_name = desc.name;
 
-            auto hwnd = static_cast<HWND>(wnd);
+            auto hwnd = static_cast<HWND>(desc.wnd);
             if (hwnd != nullptr)
             {
                 this->default_wnd_proc_ = reinterpret_cast<WNDPROC>(::GetWindowLongPtrW(hwnd, GWLP_WNDPROC));
@@ -74,7 +69,7 @@ namespace vEngine
                 wcex.lpszClassName = win_name.c_str();
                 ::RegisterClass(&wcex);
 
-                RECT rc = {0, 0, configure.graphics_configure.width, configure.graphics_configure.height};
+                RECT rc = {0, 0, desc.width, desc.height};
                 // get real window size; should slightly bigger than rendering
                 // resolution we should render a frame with render_setting, so
                 // window is enlarged.

@@ -73,7 +73,9 @@ int main(int argc, char* argv[])
 #else
     configure.graphics_configure.render_plugin_name = "opengl_rendering_plugin";
 #endif
-    Context::GetInstance().Init(configure);
+    Context::GetInstance().SetConfigure(configure);
+
+    Context::GetInstance().Init();
     ResourceLoader::GetInstance().AddSearchPath(configure.resource_src);
     // ResourceLoader::GetInstance().AddSearchFolder("resource");
     ResourceLoader::GetInstance().AddSearchFolder("shader");
@@ -85,22 +87,20 @@ int main(int argc, char* argv[])
     PRINT(resource_bin.string());
 
     vEngine::Pipeline::AssimpHandler handler;
-    handler.Init();
 
-    auto scene = handler.LoadFromAssimp(input);
-    PRINT("Save to " << output.string());
-    auto j = ToJson(scene);
-    std::ofstream outfile(output.string());
-    outfile << std::setw(2) << j << std::endl;
-    outfile.flush();
-    outfile.close();
+    // auto scene = handler.LoadFromAssimp(input);
+    // PRINT("Save to " << output.string());
+    // auto j = ToJson(scene);
+    // std::ofstream outfile(output.string());
+    // outfile << std::setw(2) << j << std::endl;
+    // outfile.flush();
+    // outfile.close();
 
     // auto path = ResourceLoader::GetInstance().GetFilePath("boblampclean.json");
     Context::GetInstance().Clear();
     auto path = output;
     auto new_scene = Scene::Load(path);
 
-    handler.Deinit();
     Context::GetInstance().Deinit();
 
     return 0;

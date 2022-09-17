@@ -2,13 +2,11 @@
 #define _VENGINE_RENDERING_RENDER_ENGINE_HPP
 
 #pragma once
-
-#include <VENGINE_API.hpp>
+#include <map>
 
 #include <engine.hpp>
 #include <vengine/rendering/data_struct.hpp>
 #include <vengine/rendering/data_format.hpp>
-#include <map>
 #include <vengine/core/iruntime_module.hpp>
 #include <vengine/core/transform.hpp>
 

@@ -9,11 +9,18 @@ namespace vEngine
 {
     namespace Core
     {
+        enum class Output
+        {
+            Window,
+            Offline,
+        };
         struct GraphicsConfigure
         {
                 std::string render_plugin_name = "empty_plugin";
+                Output output = Output::Window;
                 int width = 640;
                 int height = 480;
+                void* wnd = nullptr;
         };
         struct Configure
         {

@@ -12,7 +12,6 @@
 
 #pragma once
 
-#include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <vengine/core/matrix.hpp>
 #include <vengine/core/quaternion.hpp>

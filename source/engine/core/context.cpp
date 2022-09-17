@@ -1,15 +1,16 @@
 
+//DLL loader header
 #ifdef VENGINE_PLATFORM_WINDOWS
     #include <windows.h>
 #elif VENGINE_PLATFORM_UNIX
     #include <dlfcn.h>
 #endif
 
-#include <engine.hpp>
-#include <vengine/core/application.hpp>
 #include <vengine/core/context.hpp>
-#include <vengine/rendering/render_engine.hpp>
-#include <vengine/core/resource_loader.hpp>
+// #include <vengine/core/application.hpp>
+// #include <vengine/rendering/render_engine.hpp>
+#include <vengine/core/window.hpp>
+// #include <vengine/core/resource_loader.hpp>
 
 // #include <vengine/data/meta.hpp>
 // #include <vengine/data/json.hpp>
@@ -28,21 +29,37 @@ namespace vEngine
             return this->configure_;
         }
 
-        /// Load Dll
-        /// Create Redering
-        void Context::Init(const Configure& configure)
+        void Context::SetConfigure(const Configure& configure)
         {
             this->configure_ = configure;
-            this->LoadDll();
-
-            ResourceLoader::GetInstance().Init();
         }
 
+        void Context::Init()
+        {
+            this->LoadDll();
+
+            auto graphics = this->configure_.graphics_configure;
+
+            if(graphics.output == Output::Window)
+            {
+                this->window_ = std::make_shared<Window>();
+                WindowDescription desc;
+                desc.name = this->configure_.app_name;
+                desc.width = graphics.width;
+                desc.height = graphics.height;
+                desc.wnd = graphics.wnd;
+
+                this->window_->Init(desc);
+            }
+            // ResourceLoader::GetInstance().Init();
+        }
         void Context::Deinit()
         {
-            this->runtime_game_objects_.clear();
+            this->Clear();
 
-            ResourceLoader::GetInstance().Deinit();
+            this->window_.reset();
+
+            // ResourceLoader::GetInstance().Deinit();
             // prt.reset() does same thing as this->ProcessRenderEngine("DestoryRenderEngine");
             this->render_engine_ptr_.reset();
 
@@ -82,21 +99,21 @@ namespace vEngine
             }
         }
 
-        GameObjectSharedPtr Context::Find(const UUID& uuid)
-        {
-            if (this->runtime_game_objects_.find(uuid) != this->runtime_game_objects_.end())
-            {
-                return this->runtime_game_objects_[uuid];
-            }
-            return nullptr;
-        }
-        void Context::Register(const GameObjectSharedPtr& go)
-        {
-            // UNUSED_PARAMETER(go);
-            const auto& uuid = go->description_.uuid;
-            CHECK_ASSERT(this->runtime_game_objects_.find(uuid) == this->runtime_game_objects_.end());
-            this->runtime_game_objects_[uuid] = go;
-        }
+        // GameObjectSharedPtr Context::Find(const UUID& uuid)
+        // {
+        //     if (this->runtime_game_objects_.find(uuid) != this->runtime_game_objects_.end())
+        //     {
+        //         return this->runtime_game_objects_[uuid];
+        //     }
+        //     return nullptr;
+        // }
+        // void Context::Register(const GameObjectSharedPtr& go)
+        // {
+        //     // UNUSED_PARAMETER(go);
+        //     const auto& uuid = go->description_.uuid;
+        //     CHECK_ASSERT(this->runtime_game_objects_.find(uuid) == this->runtime_game_objects_.end());
+        //     this->runtime_game_objects_[uuid] = go;
+        // }
 
         void Context::RegisterAppInstance(Application* app)
         {
@@ -111,39 +128,39 @@ namespace vEngine
         {
             auto dll_name = VENGINE_SHADRED_LIB_PREFIX + lib_name + VENGINE_SHADRED_LIB_DEBUG_POSTFIX + VENGINE_SHADRED_LIB_EXT;
 
-#ifdef VENGINE_PLATFORM_WINDOWS
+            #ifdef VENGINE_PLATFORM_WINDOWS
             auto handle = ::LoadLibrary(dll_name.c_str());
             if (!handle)
             {
                 PRINT_AND_BREAK("could not load the dynamic library");
             }
-#elif VENGINE_PLATFORM_UNIX
+            #elif VENGINE_PLATFORM_UNIX
             dlerror();
             auto handle = dlopen(dll_name.c_str(), RTLD_LAZY);
             if (!handle)
             {
                 PRINT_AND_BREAK("Cannot open library: " + std::string(dlerror()));
             }
-#endif
+            #endif
 
             return handle;
         }
 
         void FreeLibrary(void* handle)
         {
-#ifdef VENGINE_PLATFORM_WINDOWS
+            #ifdef VENGINE_PLATFORM_WINDOWS
             ::FreeLibrary(reinterpret_cast<HMODULE>(handle));
-#elif VENGINE_PLATFORM_UNIX
+            #elif VENGINE_PLATFORM_UNIX
             dlclose(handle);
-#endif
+            #endif
         }
 
         template <typename T, typename F>
         void ProcessSharedFunction(const std::string func_name, void* handle, std::unique_ptr<T>& ptr)
         {
-#ifdef VENGINE_PLATFORM_WINDOWS
+            #ifdef VENGINE_PLATFORM_WINDOWS
             auto function = reinterpret_cast<F>(::GetProcAddress(reinterpret_cast<HMODULE>(handle), func_name.c_str()));
-#elif VENGINE_PLATFORM_UNIX
+            #elif VENGINE_PLATFORM_UNIX
             // reset errors
             dlerror();
             auto function = reinterpret_cast<HandleRenderEngine>(dlsym(handle, func_name.c_str()));
@@ -152,14 +169,14 @@ namespace vEngine
             {
                 PRINT_AND_BREAK("Cannot load symbol " + func_name + dlsym_error);
             }
-#endif
+            #endif
             if (function != nullptr)
             {
                 function(ptr);
             }
             else
             {
-                PRINT_AND_BREAK("could not locate the function CreateRenderEngine");
+                PRINT_AND_BREAK("could not locate the function " << func_name);
             }
         }
     }  // namespace Core
