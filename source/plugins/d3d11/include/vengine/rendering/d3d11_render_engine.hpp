@@ -19,8 +19,8 @@ namespace vEngine
                 {
                     PRINT("Destructor D3D11");
                     // this->d3d_swap_chain_.Reset();
-                    // this->d3d_device_.Reset();
                     // this->d3d_imm_context_.Reset();
+                    // this->d3d_device_.Reset();
                 }
                 void Init() override;
                 void InitDebug();
@@ -78,7 +78,7 @@ namespace vEngine
             private:
                 ComPtr<ID3D11Device> d3d_device_;// for create resource/buffer/textures/views
                 ComPtr<ID3D11DeviceContext> d3d_imm_context_;  // for draw calls/set state/set buffers
-                ComPtr<IDXGISwapChain> d3d_swap_chain_; // for screen buffers
+                ComPtr<IDXGISwapChain1> d3d_swap_chain_; // for screen buffers
         };
 
     }  // namespace Rendering

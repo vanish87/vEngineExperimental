@@ -12,6 +12,7 @@ namespace vEngine
         enum class Output
         {
             Window,
+            CommandLine,
             Offline,
         };
         struct GraphicsConfigure

@@ -8,8 +8,9 @@
 
 #include <vengine/core/context.hpp>
 // #include <vengine/core/application.hpp>
-// #include <vengine/rendering/render_engine.hpp>
+#include <vengine/rendering/render_engine.hpp>
 #include <vengine/core/window.hpp>
+#include <vengine/core/application.hpp>
 // #include <vengine/core/resource_loader.hpp>
 
 // #include <vengine/data/meta.hpp>
@@ -34,6 +35,11 @@ namespace vEngine
             this->configure_ = configure;
         }
 
+        WindowSharedPtr Context::CurrentWindow() const
+        {
+            return this->window_;
+        }
+
         void Context::Init()
         {
             this->LoadDll();
@@ -42,16 +48,15 @@ namespace vEngine
 
             if(graphics.output == Output::Window)
             {
-                this->window_ = std::make_shared<Window>();
                 WindowDescription desc;
                 desc.name = this->configure_.app_name;
                 desc.width = graphics.width;
                 desc.height = graphics.height;
                 desc.wnd = graphics.wnd;
-
-                this->window_->Init(desc);
+                this->window_ = std::make_shared<Window>(desc);
             }
-            // ResourceLoader::GetInstance().Init();
+
+            this->GetRenderEngine().Init();
         }
         void Context::Deinit()
         {
@@ -59,9 +64,9 @@ namespace vEngine
 
             this->window_.reset();
 
-            // ResourceLoader::GetInstance().Deinit();
-            // prt.reset() does same thing as this->ProcessRenderEngine("DestoryRenderEngine");
+            this->GetRenderEngine().Deinit();
             this->render_engine_ptr_.reset();
+            // prt.reset() does same thing as this->ProcessRenderEngine("DestoryRenderEngine");
 
             this->FreeDll();
         }
@@ -119,10 +124,16 @@ namespace vEngine
         {
             this->app_instance_ = app;
         }
-        Application& Context::AppInstance() const
+        void Context::QuitApplication()
         {
-            return *(this->app_instance_);
+            // this->app_instance_ = app;
+            CHECK_ASSERT_NOT_NULL(this->app_instance_);
+            this->app_instance_->Quit();
         }
+        // Application& Context::AppInstance() const
+        // {
+        //     return *(this->app_instance_);
+        // }
 
         void* LoadLibrary(const std::string lib_name)
         {

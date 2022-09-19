@@ -63,6 +63,7 @@ int main(int argc, char* argv[])
     resource_bin = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin";
 
     Configure configure;
+    configure.graphics_configure.output = Output::CommandLine;
     configure.graphics_configure.width = 320;
     configure.graphics_configure.height = 240;
     configure.resource_src = resource_src;
@@ -86,7 +87,7 @@ int main(int argc, char* argv[])
     PRINT(resource_src.string());
     PRINT(resource_bin.string());
 
-    vEngine::Pipeline::AssimpHandler handler;
+    // vEngine::Pipeline::AssimpHandler handler;
 
     // auto scene = handler.LoadFromAssimp(input);
     // PRINT("Save to " << output.string());
@@ -97,9 +98,9 @@ int main(int argc, char* argv[])
     // outfile.close();
 
     // auto path = ResourceLoader::GetInstance().GetFilePath("boblampclean.json");
-    Context::GetInstance().Clear();
-    auto path = output;
-    auto new_scene = Scene::Load(path);
+    // Context::GetInstance().Clear();
+    // auto path = output;
+    // auto new_scene = Scene::Load(path);
 
     Context::GetInstance().Deinit();
 

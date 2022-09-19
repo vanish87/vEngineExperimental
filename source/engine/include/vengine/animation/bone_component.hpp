@@ -25,7 +25,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class BoneComponent : public Core::Component<Bone>
+        class VENGINE_API BoneComponent : public Core::Component<Bone>
         {
             public:
                 /// \brief brief constructor description.

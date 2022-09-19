@@ -28,10 +28,9 @@ namespace vEngine
         class VENGINE_API Window
         {
             public:
-                Window() {}
-                virtual ~Window() {}
-                void Init(const WindowDescription& desc);
-                void Deinit();
+                Window(const WindowDescription& desc);
+                virtual ~Window();
+
                 void Update();
 
             public:

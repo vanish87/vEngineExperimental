@@ -27,7 +27,10 @@ namespace vEngine
                 const Configure CurrentConfigure() const;
 
                 void RegisterAppInstance(Application* app);
-                Application& AppInstance() const;
+                void QuitApplication();
+
+                WindowSharedPtr CurrentWindow() const;
+                // Application& AppInstance() const;
                 // RenderFactory& RenderFactoty();
 
 

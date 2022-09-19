@@ -35,7 +35,13 @@ namespace vEngine
             public:
                 constexpr static auto properties()
                 {
-                    return std::tuple_cat(GameNode::properties(), std::make_tuple(property("enabled", &Component::enabled_), property("game_object", &Component::game_object_)));
+                    return std::tuple_cat(
+                        GameNode::properties(), 
+                        std::make_tuple(
+                            property("enabled", &Component::enabled_), 
+                            property("game_object", &Component::game_object_)
+                        )
+                    );
                 }
 
             public:

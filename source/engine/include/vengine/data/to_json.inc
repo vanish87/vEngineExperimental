@@ -45,7 +45,7 @@ namespace vEngine
             auto content_saved = false;
 
             using type_list = std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, TransformComponent, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera,
-                                         CameraComponent, Rendering::PipelineState, Rendering::Texture, Animation::AnimationClip, Animation::Joint, Animation::Bone, GameNode, ClassFoo, ClassBar>;
+                                         CameraComponent, Rendering::PipelineState, Rendering::Texture, Animation::AnimationClip, Animation::Joint, Animation::Bone, Animation::BoneComponent, GameNode, ClassFoo, ClassBar>;
             constexpr auto nlist = std::tuple_size<type_list>::value;
             for_sequence(std::make_index_sequence<nlist>{},
                          [&](auto i)

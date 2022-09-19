@@ -28,7 +28,6 @@ namespace vEngine
             // SceneManager::GetInstance().Init();
 
             Context::GetInstance().Init();
-
             this->OnInit();
         }
         void Application::Deinit()
@@ -51,7 +50,6 @@ namespace vEngine
             // Win32 will peek/dispatch window messages
             // this->window_->Update();
             Context::GetInstance().Update();
-
             // call user update
             this->OnUpdate();
 

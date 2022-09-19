@@ -110,7 +110,7 @@ namespace vEngine
 
             // using type_list = std::tuple<ClassBar, ClassFoo>;
             using type_list = std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, TransformComponent, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera,
-                                         CameraComponent, Rendering::PipelineState, Rendering::Texture, Animation::AnimationClip, Animation::Joint, Animation::Bone, GameNode, ClassFoo, ClassBar>;
+                                         CameraComponent, Rendering::PipelineState, Rendering::Texture, Animation::AnimationClip, Animation::Joint, Animation::Bone, Animation::BoneComponent, GameNode, ClassFoo, ClassBar>;
 
             auto shared = std::shared_ptr<T>();
             auto handled = false;

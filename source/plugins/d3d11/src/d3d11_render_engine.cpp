@@ -1,3 +1,4 @@
+
 #include <d3dcompiler.h>
 #include <dxcapi.h>
 
@@ -5,15 +6,15 @@
 #include <filesystem>
 #include <shlobj.h>
 
-#include <vengine/core/application.hpp>
+#include <vengine/rendering/d3d11_render_engine.hpp>
+
 #include <vengine/core/context.hpp>
-#include <vengine/core/vector.hpp>
 #include <vengine/core/window.hpp>
+#include <vengine/core/vector.hpp>
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/rendering/d3d11_frame_buffer.hpp>
 #include <vengine/rendering/d3d11_graphics_buffer.hpp>
 #include <vengine/rendering/d3d11_pipeline_state.hpp>
-#include <vengine/rendering/d3d11_render_engine.hpp>
 #include <vengine/rendering/d3d11_texture.hpp>
 
 namespace vEngine
@@ -248,74 +249,104 @@ namespace vEngine
             // TODO Use IDXGIFactory to check adapters
 
             const auto config = Context::GetInstance().CurrentConfigure();
-            auto window = Context::GetInstance().AppInstance().CurrentWindow();
-            auto hwnd = static_cast<HWND>(window->WindowHandle());
-            auto width = config.graphics_configure.width;
-            auto height = config.graphics_configure.height;
 
-            DXGI_SWAP_CHAIN_DESC scd;
-            // clear out the struct for use
-            ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
-
-            // fill the swap chain description struct
-            scd.BufferCount = 1;  // one back buffer
-            scd.BufferDesc.Width = width;
-            scd.BufferDesc.Height = height;
-            scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;  // use 32-bit color
-            scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;   // how swap chain is to be used
-            scd.OutputWindow = hwnd;                             // the window to be used
-            scd.SampleDesc.Count = 1;                            // how many multisamples
-            scd.Windowed = true;                                 // windowed/full-screen mode
-
-            auto hr = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &scd, &d3d_swap_chain_, &d3d_device_, nullptr, &d3d_imm_context_);
-
+            D3D_FEATURE_LEVEL feature_level;
+            auto hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, 
+            this->d3d_device_.GetAddressOf(), &feature_level, this->d3d_imm_context_.GetAddressOf());
             CHECK_ASSERT(hr == S_OK);
-            CHECK_ASSERT_NOT_NULL(this->d3d_swap_chain_);
-            CHECK_ASSERT_NOT_NULL(this->d3d_device_);
-            CHECK_ASSERT_NOT_NULL(this->d3d_imm_context_);
 
-            // get the address of the back buffer
-            ID3D11Texture2D* pBackBuffer;
-            hr = this->d3d_swap_chain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
-            CHECK_ASSERT(hr == S_OK);
-            auto backBufferTexture = std::make_shared<D3D11Texture>(pBackBuffer);
+            if(config.graphics_configure.output == Output::Window)
+            {
+                auto window = Context::GetInstance().CurrentWindow();
+                auto hwnd = static_cast<HWND>(window->WindowHandle());
+                auto width = config.graphics_configure.width;
+                auto height = config.graphics_configure.height;
 
-            FrameBufferDescriptor desc;
-            desc.colorFormat = DataFormat::RGBA32;
-            desc.depthStencilFormat = DataFormat::D24U8;
-            desc.width = width;
-            desc.height = height;
-            desc.usage = GraphicsResourceUsage::GPU_ReadWrite;
-            this->back_buffer_ = std::make_shared<D3D11FrameBuffer>(desc);
+                DXGI_SWAP_CHAIN_DESC scd;
+                // clear out the struct for use
+                ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
 
-            TextureDescriptor tdesc;
-            tdesc.width = desc.width;
-            tdesc.height = desc.height;
-            tdesc.depth = 1;
-            tdesc.format = desc.depthStencilFormat;
-            tdesc.dimension = TextureDimension::TD_2D;
-            tdesc.type = GraphicsResourceType::Depth;
-            tdesc.usage = GraphicsResourceUsage::GPU_ReadWrite;
-            tdesc.resource.data = nullptr;
-            auto depth_tex = Context::GetInstance().GetRenderEngine().Create(tdesc);
+                // fill the swap chain description struct
+                scd.BufferCount = 1;  // one back buffer
+                scd.BufferDesc.Width = width;
+                scd.BufferDesc.Height = height;
+                scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;  // use 32-bit color
+                scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;   // how swap chain is to be used
+                scd.OutputWindow = hwnd;                             // the window to be used
+                scd.SampleDesc.Count = 1;                            // how many multisamples
+                scd.Windowed = true;                                 // windowed/full-screen mode
 
-            this->back_buffer_->BindColor(backBufferTexture, 0);
-            this->back_buffer_->BindDepthStencil(depth_tex);
+                ComPtr<IDXGIDevice2> pDXGIDevice;
+                hr = this->d3d_device_->QueryInterface(__uuidof(IDXGIDevice2), (void**)pDXGIDevice.GetAddressOf());
 
-            //Note: before render camera scene.cpp will bind camera's frame buffer
-            // this->Bind(this->back_buffer_);
+                ComPtr<IDXGIAdapter> pDXGIAdapter;
+                hr = pDXGIDevice->GetParent(__uuidof(IDXGIAdapter), (void**)pDXGIAdapter.GetAddressOf());
 
-            // Set the viewport
-            D3D11_VIEWPORT viewport;
-            ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+                ComPtr<IDXGIFactory2> pIDXGIFactory;
+                pDXGIAdapter->GetParent(__uuidof(IDXGIFactory2), (void**)pIDXGIFactory.GetAddressOf());
 
-            viewport.TopLeftX = 0;
-            viewport.TopLeftY = 0;
-            viewport.Width = static_cast<FLOAT>(width);
-            viewport.Height = static_cast<FLOAT>(height);
-            viewport.MinDepth = 0;
-            viewport.MaxDepth = 1;
-            d3d_imm_context_->RSSetViewports(1, &viewport);
+                // hr = pIDXGIFactory->CreateSwapChainForHwnd(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &scd, &d3d_swap_chain_, &d3d_device_, nullptr,
+                // &d3d_imm_context_);
+
+                DXGI_SWAP_CHAIN_DESC1 scd1;
+                // clear out the struct for use
+                ZeroMemory(&scd1, sizeof(DXGI_SWAP_CHAIN_DESC1));
+                scd1.Width = width;
+                scd1.Height = height;
+                scd1.Format = DXGI_FORMAT_R8G8B8A8_UNORM;  // use 32-bit color
+                scd1.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;   // how swap chain is to be used
+                scd1.BufferCount = 2;
+                scd1.SampleDesc.Count = 1;
+                hr = pIDXGIFactory->CreateSwapChainForHwnd(this->d3d_device_.Get(), hwnd, &scd1, nullptr, nullptr, this->d3d_swap_chain_.GetAddressOf());
+
+                CHECK_ASSERT(hr == S_OK);
+                CHECK_ASSERT_NOT_NULL(this->d3d_swap_chain_);
+                CHECK_ASSERT_NOT_NULL(this->d3d_device_);
+                CHECK_ASSERT_NOT_NULL(this->d3d_imm_context_);
+
+                // get the address of the back buffer
+                ID3D11Texture2D* pBackBuffer;
+                hr = this->d3d_swap_chain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+                CHECK_ASSERT(hr == S_OK);
+                auto backBufferTexture = std::make_shared<D3D11Texture>(pBackBuffer);
+
+                FrameBufferDescriptor desc;
+                desc.colorFormat = DataFormat::RGBA32;
+                desc.depthStencilFormat = DataFormat::D24U8;
+                desc.width = width;
+                desc.height = height;
+                desc.usage = GraphicsResourceUsage::GPU_ReadWrite;
+                this->back_buffer_ = std::make_shared<D3D11FrameBuffer>(desc);
+
+                TextureDescriptor tdesc;
+                tdesc.width = desc.width;
+                tdesc.height = desc.height;
+                tdesc.depth = 1;
+                tdesc.format = desc.depthStencilFormat;
+                tdesc.dimension = TextureDimension::TD_2D;
+                tdesc.type = GraphicsResourceType::Depth;
+                tdesc.usage = GraphicsResourceUsage::GPU_ReadWrite;
+                tdesc.resource.data = nullptr;
+                auto depth_tex = Context::GetInstance().GetRenderEngine().Create(tdesc);
+
+                this->back_buffer_->BindColor(backBufferTexture, 0);
+                this->back_buffer_->BindDepthStencil(depth_tex);
+
+                // Note: before render camera scene.cpp will bind camera's frame buffer
+                //  this->Bind(this->back_buffer_);
+
+                // Set the viewport
+                D3D11_VIEWPORT viewport;
+                ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+
+                viewport.TopLeftX = 0;
+                viewport.TopLeftY = 0;
+                viewport.Width = static_cast<FLOAT>(width);
+                viewport.Height = static_cast<FLOAT>(height);
+                viewport.MinDepth = 0;
+                viewport.MaxDepth = 1;
+                d3d_imm_context_->RSSetViewports(1, &viewport);
+            }
 
             // this->InitPipeline();
         }
@@ -331,9 +362,10 @@ namespace vEngine
         {
             // this->DeinitPipeline();
 
-            this->d3d_device_->Release();
-            this->d3d_swap_chain_->Release();
-            this->d3d_imm_context_->Release();
+            this->d3d_device_.Reset();
+            this->d3d_imm_context_.Reset();
+
+            if(this->d3d_swap_chain_ != nullptr) this->d3d_swap_chain_.Reset();
         }
         void D3D11RenderEngine::Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice)
         {
