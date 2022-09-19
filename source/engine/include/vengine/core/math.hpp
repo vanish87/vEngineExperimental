@@ -2,8 +2,6 @@
 #define _VENGINE_CORE_MATH_H
 
 #pragma once
-#include <VENGINE_API.hpp>
-
 #include <engine.hpp>
 #include <vengine/core/angle.hpp>
 #include <vengine/core/vector.hpp>

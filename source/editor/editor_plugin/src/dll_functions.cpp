@@ -9,11 +9,18 @@ namespace vEngine
         using namespace vEngine::Core;
 
         EditorApp editor_app;
+        void EditorApp::EditorInit()
+        {
+            this->Init();
+        }
+        void EditorApp::EditorDeinit()
+        {
+            this->Deinit();
+        }
 
         void EditorApp::EditorUpdate()
         {
             this->Update();
-            Context::GetInstance().GetRenderEngine().Update();
         }
     }  // namespace Editor
 
@@ -29,9 +36,10 @@ extern "C" {
 
         Configure configure;
         configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
-        Context::GetInstance().Init(configure);
+        configure.graphics_configure.wnd = hwnd;
+        Context::GetInstance().SetConfigure(configure);
 
-        editor_app.Init(hwnd);
+        editor_app.EditorInit();
     }
     void Context_Update()
     {
@@ -40,6 +48,6 @@ extern "C" {
 
     void Context_Deinit()
     {
-        editor_app.Deinit();
+        editor_app.EditorDeinit();
     }
 }

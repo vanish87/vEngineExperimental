@@ -18,6 +18,8 @@ namespace vEngine
         {
             public:
             void EditorUpdate();
+            void EditorInit();
+            void EditorDeinit();
         };
     }  // namespace Editor
 }  // namespace vEngine

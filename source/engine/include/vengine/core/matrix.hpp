@@ -3,8 +3,6 @@
 
 #pragma once
 #include <vengine/core/math.hpp>
-
-// #include <engine.hpp>
 #include <vengine/core/vector.hpp>
 
 namespace vEngine

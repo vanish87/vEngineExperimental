@@ -85,20 +85,20 @@ TEST(Meta, Construct)
     auto bark = d3.Get_bark_type();
     d3.Set_bark_type("Wang2");
 
-    nlohmann::json j;
-    ToJson(j, d1);
+    // nlohmann::json j;
+    // ToJson(j, d1);
 
-    auto d4 = Dog();
-    FromJson(j, d4);
+    // auto d4 = Dog();
+    // FromJson(j, d4);
 
-    auto bd1 = BadDog();
-    bd1.bad_.Set(true);
-    bd1.my_string_.Set("Bad Dog");
-    ToJson(j, bd1);
+    // auto bd1 = BadDog();
+    // bd1.bad_.Set(true);
+    // bd1.my_string_.Set("Bad Dog");
+    // ToJson(j, bd1);
 
-    auto bd2 = BadDog();
-    FromJson(j, bd2);
-    PRINT(j.dump());
+    // auto bd2 = BadDog();
+    // FromJson(j, bd2);
+    // PRINT(j.dump());
     // auto json = JsonFunction::toJson(d1);
     // auto d2 = JsonFunction::fromJson<Dog>(json);
 }

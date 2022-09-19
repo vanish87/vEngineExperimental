@@ -18,7 +18,7 @@ namespace Example
             Mesh mesh;
             /// \brief user function for create
             /// 
-            void OnCreate() override
+            void OnInit() override
             {
                 PRINT("User Create");
 
@@ -39,7 +39,7 @@ namespace Example
             {
             }
             /// \brief user function for destory
-            void OnDestroy() override
+            void OnDeinit() override
             {
                 PRINT("User Destory");
             }
@@ -62,9 +62,8 @@ int main(int argc, char* argv[])
     configure.graphics_configure.render_plugin_name = "opengl_rendering_plugin";
     #endif
 
-    Context::GetInstance().Init(configure);
+    Context::GetInstance().SetConfigure(configure);
 
     Example::ExampleApp app;
-    app.Init();
     app.Run();
 }

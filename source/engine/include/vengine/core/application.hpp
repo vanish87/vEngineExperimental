@@ -20,7 +20,7 @@ namespace vEngine
                 virtual void Run();
                 virtual void Quit();
 
-            private:
+            protected:
                 void Init();
                 void Update();
                 void Deinit();

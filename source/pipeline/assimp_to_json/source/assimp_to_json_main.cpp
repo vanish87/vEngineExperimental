@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
     PRINT(resource_src.string());
     PRINT(resource_bin.string());
 
-    // vEngine::Pipeline::AssimpHandler handler;
+    vEngine::Pipeline::AssimpHandler handler;
 
     // auto scene = handler.LoadFromAssimp(input);
     // PRINT("Save to " << output.string());
@@ -96,6 +96,8 @@ int main(int argc, char* argv[])
     // outfile << std::setw(2) << j << std::endl;
     // outfile.flush();
     // outfile.close();
+
+    // scene.reset();
 
     // auto path = ResourceLoader::GetInstance().GetFilePath("boblampclean.json");
     // Context::GetInstance().Clear();
