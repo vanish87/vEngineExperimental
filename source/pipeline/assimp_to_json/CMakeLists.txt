@@ -10,6 +10,8 @@ add_executable(${PROJECT_NAME}
     ${external_source}
 )
 
+add_dependencies(${PROJECT_NAME} engine::d3d11_rendering_plugin)
+
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include
     # PUBLIC ${ASSIMP_INCLUDE_DIR}
