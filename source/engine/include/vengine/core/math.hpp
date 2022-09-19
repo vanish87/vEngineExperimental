@@ -1,5 +1,5 @@
-#ifndef _VENGINE_CORE_MATH_H
-#define _VENGINE_CORE_MATH_H
+#ifndef _VENGINE_CORE_MATH_HPP
+#define _VENGINE_CORE_MATH_HPP
 
 #pragma once
 #include <engine.hpp>
@@ -55,9 +55,6 @@ namespace vEngine
     /// with function reference \ref Abs and \ref IsNAN
     namespace Math
     {
-        //TODO Remove this
-        using namespace vEngine::Core;
-
         /// \brief PI constant
         float const PI = 3.141592653f;
 
@@ -92,7 +89,7 @@ namespace vEngine
 
         float VENGINE_API Sqrt(float x);
         float VENGINE_API Sin(float x);
-        float VENGINE_API Sin(radian x);
+        float VENGINE_API Sin(Core::radian x);
         float VENGINE_API Cos(float x);
         float VENGINE_API ArcCos(float x);
         float VENGINE_API Tan(float x);
@@ -102,8 +99,8 @@ namespace vEngine
         float VENGINE_API Ln(float x);
         float VENGINE_API Pow(float base, float exp);
 
-        color VENGINE_API ToColor(const float4& fcolor);
-        float4 VENGINE_API ToFloat(const color& color);
+        Core::color VENGINE_API ToColor(const Core::float4 fcolor);
+        Core::float4 VENGINE_API ToFloat(const Core::color color);
 
         /// \brief if a number(only float/double) is NAN(not a number)
         ///
@@ -144,82 +141,82 @@ namespace vEngine
         // Vector/Matrix related functions
 
         template <typename T, int N = 4>
-        void Identity(Matrix<T, N, N>& lhs);
+        void Identity(Core::Matrix<T, N, N>& lhs);
 
         template <typename T, int M, int N>
-        Matrix<T, N, M> Transpose(const Matrix<T, M, N>& lhs);
+        Core::Matrix<T, N, M> Transpose(const Core::Matrix<T, M, N>& lhs);
 
         template <typename T, int N = 4>
-        T Dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs);
+        T Dot(const Core::Vector<T, N>& lhs, const Core::Vector<T, N>& rhs);
 
         template <typename T>
-        Vector<T, 3> Cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs);
+        Core::Vector<T, 3> Cross(const Core::Vector<T, 3>& lhs, const Core::Vector<T, 3>& rhs);
 
         template <typename T>
         T Normalize(const T& rhs);
 
         template <typename T, int N = 4>
-        Vector<T, N> TransformPoint(const Vector<T, N>& lhs, const Matrix<T, N, N>& rhs);
+        Core::Vector<T, N> TransformPoint(const Core::Vector<T, N>& lhs, const Core::Matrix<T, N, N>& rhs);
 
         template <typename T, int N = 4>
-        Vector<T, N> TransformVector(const Vector<T, N>& lhs, const Matrix<T, N, N>& rhs);
+        Core::Vector<T, N> TransformVector(const Core::Vector<T, N>& lhs, const Core::Matrix<T, N, N>& rhs);
 
         template <typename T, int M = 4, int N = 4>
-        Matrix<T, M, N> OuterProduct(const Vector<T, M>& lhs, const Vector<T, N>& rhs);
+        Core::Matrix<T, M, N> OuterProduct(const Core::Vector<T, M>& lhs, const Core::Vector<T, N>& rhs);
 
         // template <typename T, int M = 4, int N = 4>
         // Vector<T, M> Multiply(const Vector<T, M>& lhs,
         //                       const Matrix<T, M, N>& rhs);
         template <typename T>
-        Quaternion<T> Multiply(const Quaternion<T>& lhs, const Quaternion<T >& rhs);
+        Core::Quaternion<T> Multiply(const Core::Quaternion<T>& lhs, const Core::Quaternion<T >& rhs);
 
         template <typename T>
-        Matrix<T, 4, 4> ToMatrix(const Quaternion<T>& q);
+        Core::Matrix<T, 4, 4> ToMatrix(const Core::Quaternion<T>& q);
         template <typename T = float>
-        Quaternion<T> RotateAngleAxis(const float angle, const float3& axis);
+        Core::Quaternion<T> RotateAngleAxis(const float angle, const Core::float3& axis);
 
         template <typename T, int M = 4, int S = 4, int N = 4>
-        Matrix<T, M, N> Multiply(const Matrix<T, S, N>& lhs, const Matrix<T, M, S>& rhs);
+        Core::Matrix<T, M, N> Multiply(const Core::Matrix<T, S, N>& lhs, const Core::Matrix<T, M, S>& rhs);
 
         template <typename T>
-        T Determinant(const Matrix<T, 4, 4>& matrix);
+        T Determinant(const Core::Matrix<T, 4, 4>& matrix);
 
         template <typename T>
-        Matrix<T, 4, 4> Inverse(const Matrix<T, 4, 4>& matrix);
+        Core::Matrix<T, 4, 4> Inverse(const Core::Matrix<T, 4, 4>& matrix);
 
         //=================================================
         // View/Projection related functions
 
         template <typename T>
-        Matrix<T, 4, 4> LookAtLH(const Vector<T, 3>& eye, const Vector<T, 3>& at, const Vector<T, 3>& up);
+        Core::Matrix<T, 4, 4> LookAtLH(const Core::Vector<T, 3>& eye, const Core::Vector<T, 3>& at, const Core::Vector<T, 3>& up);
 
         template <typename T>
-        Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect, const T zn, const T zf);
+        Core::Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect, const T zn, const T zf);
 
         template <typename T>
-        void XRotation(Matrix<T, 4, 4>& matrix, const float theta);
+        void XRotation(Core::Matrix<T, 4, 4>& matrix, const float theta);
 
         template <typename T>
-        void YRotation(Matrix<T, 4, 4>& lhs, const float theta);
+        void YRotation(Core::Matrix<T, 4, 4>& lhs, const float theta);
 
         template <typename T>
-        void ZRotation(Matrix<T, 4, 4>& lhs, const float theta);
+        void ZRotation(Core::Matrix<T, 4, 4>& lhs, const float theta);
 
         template <typename T>
-        void RotationAxis(Matrix<T, 4, 4>& lhs, const Vector<T, 3>& axis, const float theta);
+        void RotationAxis(Core::Matrix<T, 4, 4>& lhs, const Core::Vector<T, 3>& axis, const float theta);
 
         template <typename T>
-        void Translate(Matrix<T, 4, 4>& lhs, const float x, const float y, const float z);
+        void Translate(Core::Matrix<T, 4, 4>& lhs, const float x, const float y, const float z);
 
         template <typename T>
-        void Scale(Matrix<T, 4, 4>& lhs, const float scale);
+        void Scale(Core::Matrix<T, 4, 4>& lhs, const float scale);
 
         //=================================================
         // Animation related functions
         template <typename T, int N>
-        T Dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs);
+        T Dot(const Core::Vector<T, N>& lhs, const Core::Vector<T, N>& rhs);
         template <typename T>
-        T Dot(const Quaternion<T>& lhs, const Quaternion<T>& rhs);
+        T Dot(const Core::Quaternion<T>& lhs, const Core::Quaternion<T>& rhs);
 
         template <typename T, typename S = float>
         const T Lerp(const T& x, const T& y, const S& t);
@@ -228,10 +225,10 @@ namespace vEngine
         const T Lerp(const T& x, const T& y, const T& s);
 
         template <typename T, typename S = float>
-        Quaternion<T> NLerp(const Quaternion<T>& x, const Quaternion<T>& y, const S& s);
+        Core::Quaternion<T> NLerp(const Core::Quaternion<T>& x, const Core::Quaternion<T>& y, const S& s);
         
         template<typename T, typename S = float>
-        Quaternion<T> SLerp(const Quaternion<T>& x, const Quaternion<T>& y, const S& s);
+        Core::Quaternion<T> SLerp(const Core::Quaternion<T>& x, const Core::Quaternion<T>& y, const S& s);
 
     }  // namespace Math
 }  // namespace vEngine
@@ -239,4 +236,4 @@ namespace vEngine
 // include template definitions after declearations above
 // for separate declearation/definition of template functions
 #include <vengine/core/math.inc>
-#endif /* _VENGINE_CORE_MATH_H */
+#endif /* _VENGINE_CORE_MATH_HPP */

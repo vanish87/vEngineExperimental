@@ -4,6 +4,8 @@ namespace vEngine
 {
     namespace Math
     {
+        using namespace Core;
+
         static const int FLOAT_MAX_ULP = 4;
         /// Use union to compare float
         bool CompareFloat(const float lhs, const float rhs)
@@ -67,6 +69,7 @@ namespace vEngine
         float Sin(radian x)
         {
             UNUSED_PARAMETER(x);
+            NOT_IMPL_ASSERT;
             return 0;
         }
 
@@ -117,7 +120,7 @@ namespace vEngine
         {
             return pow(base, exp);
         }
-        color ToColor(const float4& float_color)
+        color ToColor(const float4 float_color)
         {
             color ret;
             ret.x() = Math::CeilToInt<float, uint8_t>(float_color.x() * 255);
@@ -126,7 +129,7 @@ namespace vEngine
             ret.w() = Math::CeilToInt<float, uint8_t>(float_color.w() * 255);
             return ret;
         }
-        float4 ToFloat(const color& color)
+        float4 ToFloat(const color color)
         {
             return float4(color) / float4(255, 255, 255, 255);
         }

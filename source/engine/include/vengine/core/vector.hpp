@@ -22,10 +22,12 @@ namespace vEngine
         /// \brief Basic vector data type
         ///
         /// Use std::array to store data,
-        /// Use template recrusion for compile time calculation
+        /// Use template recursion for compile time calculation
         /// \tparam T Vector type
         /// \tparam N Vector size
         template <typename T = float, int N = 4>
+        // Note: Do not EXPORT Matrix/Vector as DLL
+        // So that user can use it like this Matrix<float, 200, 200> 
         class Vector final
         {
             // public:

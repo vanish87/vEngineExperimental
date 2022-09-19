@@ -49,7 +49,7 @@ namespace vEngine
         }
 
         template <typename T, int N>
-        void Identity(Matrix<T, N, N>& lhs)
+        void Identity(Core::Matrix<T, N, N>& lhs)
         {
             for (size_t r = 0; r < lhs.row; ++r)
             {
@@ -60,9 +60,9 @@ namespace vEngine
             }
         }
         template <typename T, int M, int N>
-        Matrix<T, N, M> Transpose(const Matrix<T, M, N>& lhs)
+        Core::Matrix<T, N, M> Transpose(const Core::Matrix<T, M, N>& lhs)
         {
-            Matrix<T, N, M> ret;
+            Core::Matrix<T, N, M> ret;
             for (size_t r = 0; r < lhs.row; ++r)
             {
                 for (size_t c = 0; c < lhs.col; ++c)
@@ -74,20 +74,20 @@ namespace vEngine
         }
 
         template <typename T, int N>
-        T Dot(const Vector<T, N>& lhs, const Vector<T, N>& rhs)
+        T Dot(const Core::Vector<T, N>& lhs, const Core::Vector<T, N>& rhs)
         {
-            return vector_t<T, N>::do_dot(lhs.data(), rhs.data());
+            return Core::vector_t<T, N>::do_dot(lhs.data(), rhs.data());
         }
         template <typename T>
-        T Dot(const Quaternion<T>& lhs, const Quaternion<T>& rhs)
+        T Dot(const Core::Quaternion<T>& lhs, const Core::Quaternion<T>& rhs)
         {
-            return vector_t<T, 4>::do_dot(lhs.data(), rhs.data());
+            return Core::vector_t<T, 4>::do_dot(lhs.data(), rhs.data());
         }
 
         template <typename T>
-        Vector<T, 3> Cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)
+        Core::Vector<T, 3> Cross(const Core::Vector<T, 3>& lhs, const Core::Vector<T, 3>& rhs)
         {
-            return Vector<T, 3>(lhs.y() * rhs.z() - lhs.z() * rhs.y(), lhs.z() * rhs.x() - lhs.x() * rhs.z(), lhs.x() * rhs.y() - lhs.y() * rhs.x());
+            return Core::Vector<T, 3>(lhs.y() * rhs.z() - lhs.z() * rhs.y(), lhs.z() * rhs.x() - lhs.x() * rhs.z(), lhs.x() * rhs.y() - lhs.y() * rhs.x());
         }
 
         template <typename T>
@@ -99,12 +99,12 @@ namespace vEngine
         }
 
         template <typename T, int N>
-        Vector<T, N> TransformPoint(const Vector<T, N>& lhs, const Matrix<T, N, N>& rhs)
+        Core::Vector<T, N> TransformPoint(const Core::Vector<T, N>& lhs, const Core::Matrix<T, N, N>& rhs)
         {
             // the last element of position will be 1
             CHECK_ASSERT(IsFloatEqual(lhs[N - 1], 1));
 
-            Vector<T, N> ret;
+            Core::Vector<T, N> ret;
             for (size_t i = 0; i < lhs.size; ++i)
             {
                 for (size_t j = 0; j < rhs.row; ++j)
@@ -116,12 +116,12 @@ namespace vEngine
             return ret;
         }
         template <typename T, int N>
-        Vector<T, N> TransformVector(const Vector<T, N>& lhs, const Matrix<T, N, N>& rhs)
+        Core::Vector<T, N> TransformVector(const Core::Vector<T, N>& lhs, const Core::Matrix<T, N, N>& rhs)
         {
             // the last element of vector will be 0
             CHECK_ASSERT(IsFloatEqual(lhs[N - 1], 0));
 
-            Vector<T, N> ret;
+            Core::Vector<T, N> ret;
             for (size_t i = 0; i < lhs.size; ++i)
             {
                 for (size_t j = 0; j < rhs.row; ++j)
@@ -132,9 +132,9 @@ namespace vEngine
             return ret;
         }
         template <typename T, int M, int N>
-        Matrix<T, M, N> OuterProduct(const Vector<T, M>& lhs, const Vector<T, N>& rhs)
+        Core::Matrix<T, M, N> OuterProduct(const Core::Vector<T, M>& lhs, const Core::Vector<T, N>& rhs)
         {
-            Matrix<T, M, N> ret;
+            Core::Matrix<T, M, N> ret;
 
             for (size_t n = 0; n < N; ++n)
             {
@@ -147,18 +147,18 @@ namespace vEngine
             return ret;
         }
         template <typename T>
-        Quaternion<T> Multiply(const Quaternion<T>& lhs, const Quaternion<T>& rhs)
+        Core::Quaternion<T> Multiply(const Core::Quaternion<T>& lhs, const Core::Quaternion<T>& rhs)
         {
-            return Quaternion<T>(
+            return Core::Quaternion<T>(
                 lhs.x() * rhs.x() - lhs.y() * rhs.y() - lhs.z() * rhs.z() - lhs.w() * rhs.w(),
                 lhs.y() * rhs.x() + lhs.x() * rhs.y() - lhs.w() * rhs.z() + lhs.z() * rhs.w(),
                 lhs.z() * rhs.x() + lhs.w() * rhs.y() + lhs.x() * rhs.z() - lhs.y() * rhs.w(),
                 lhs.w() * rhs.x() - lhs.z() * rhs.y() + lhs.y() * rhs.z() + lhs.x() * rhs.w());
         }
         template <typename T>
-        Matrix<T, 4, 4> ToMatrix(const Quaternion<T>& q)
+        Core::Matrix<T, 4, 4> ToMatrix(const Core::Quaternion<T>& q)
         {
-            Matrix<T, 4, 4> ret;
+            Core::Matrix<T, 4, 4> ret;
             auto a = q.x();
             auto b = q.y();
             auto c = q.z();
@@ -183,14 +183,14 @@ namespace vEngine
             ret[3][2] = 0;
             ret[3][3] = 1;
 
-            ret = Math::Transpose(ret);
+            ret = Transpose(ret);
 
             return ret;
         }
         template <typename T>
-        Quaternion<T> RotateAngleAxis(const float angle, const float3& axis)
+        Core::Quaternion<T> RotateAngleAxis(const float angle, const Core::float3& axis)
         {
-            Quaternion<T> ret;
+            Core::Quaternion<T> ret;
             ret.x() = Math::Cos(angle * 0.5f);
             ret.y() = Math::Sin(angle * 0.5f) * axis.x();
             ret.z() = Math::Sin(angle * 0.5f) * axis.y();
@@ -199,10 +199,10 @@ namespace vEngine
         }
 
         template <typename T, int M, int S, int N>
-        Matrix<T, M, N> Multiply(const Matrix<T, S, N>& lhs, const Matrix<T, M, S>& rhs)
+        Core::Matrix<T, M, N> Multiply(const Core::Matrix<T, S, N>& lhs, const Core::Matrix<T, M, S>& rhs)
         {
             // CHECK_ASSERT(lhs.row == rhs.col);
-            Matrix<T, M, N> ret;
+            Core::Matrix<T, M, N> ret;
 
             for (size_t row = 0; row < lhs.row; ++row)
             {
@@ -219,7 +219,7 @@ namespace vEngine
         }
 
         template <typename T>
-        T Determinant(const Matrix<T, 4, 4>& matrix)
+        T Determinant(const Core::Matrix<T, 4, 4>& matrix)
         {
             // from KlayGE
             T const _3142_3241(matrix[2][0] * matrix[3][1] - matrix[2][1] * matrix[3][0]);
@@ -236,7 +236,7 @@ namespace vEngine
         }
 
         template <typename T>
-        Matrix<T, 4, 4> Inverse(const Matrix<T, 4, 4>& rhs)
+        Core::Matrix<T, 4, 4> Inverse(const Core::Matrix<T, 4, 4>& rhs)
         {
             // from KlayGE
             const T _2132_2231(rhs[1][0] * rhs[2][1] - rhs[1][1] * rhs[2][0]);
@@ -283,17 +283,17 @@ namespace vEngine
         }
 
         template <typename T>
-        Matrix<T, 4, 4> LookAtLH(const Vector<T, 3>& eye, const Vector<T, 3>& at, const Vector<T, 3>& up)
+        Core::Matrix<T, 4, 4> LookAtLH(const Core::Vector<T, 3>& eye, const Core::Vector<T, 3>& at, const Core::Vector<T, 3>& up)
         {
             auto zaxis = Normalize(at - eye);
             auto xaxis = Normalize(Cross(up, zaxis));
             auto yaxis = Cross(zaxis, xaxis);
 
-            return Matrix<T, 4, 4>(xaxis.x(), yaxis.x(), zaxis.x(), 0, xaxis.y(), yaxis.y(), zaxis.y(), 0, xaxis.z(), yaxis.z(), zaxis.z(), 0, -Dot(xaxis, eye), -Dot(yaxis, eye), -Dot(zaxis, eye), 1);
+            return Core::Matrix<T, 4, 4>(xaxis.x(), yaxis.x(), zaxis.x(), 0, xaxis.y(), yaxis.y(), zaxis.y(), 0, xaxis.z(), yaxis.z(), zaxis.z(), 0, -Dot(xaxis, eye), -Dot(yaxis, eye), -Dot(zaxis, eye), 1);
         }
 
         template <typename T>
-        Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect, const T n, const T f)
+        Core::Matrix<T, 4, 4> PerspectiveFovLH(const T fovy, const T aspect, const T n, const T f)
         {
             float y_scale = Cot(fovy / 2);
             float x_scale = y_scale / aspect;
@@ -302,7 +302,7 @@ namespace vEngine
             float m22 = f / (f - n);
             float m32 = -(f * n) / (f - n);
 
-            return Matrix<T, 4, 4>(
+            return Core::Matrix<T, 4, 4>(
                 x_scale, 0, 0, 0, 
                 0, y_scale, 0, 0,
                 0, 0, m22, 1,
@@ -310,7 +310,7 @@ namespace vEngine
         }
 
         template <typename T>
-        void XRotation(Matrix<T, 4, 4>& lhs, const float theta)
+        void XRotation(Core::Matrix<T, 4, 4>& lhs, const float theta)
         {
             Identity(lhs);
             lhs[1][1] = Math::Cos(theta);
@@ -320,7 +320,7 @@ namespace vEngine
         }
 
         template <typename T>
-        void YRotation(Matrix<T, 4, 4>& lhs, const float theta)
+        void YRotation(Core::Matrix<T, 4, 4>& lhs, const float theta)
         {
             Identity(lhs);
             lhs[0][0] = Math::Cos(theta);
@@ -330,7 +330,7 @@ namespace vEngine
         }
 
         template <typename T>
-        void ZRotation(Matrix<T, 4, 4>& lhs, const float theta)
+        void ZRotation(Core::Matrix<T, 4, 4>& lhs, const float theta)
         {
             Identity(lhs);
             lhs[0][0] = Math::Cos(theta);
@@ -340,7 +340,7 @@ namespace vEngine
         }
 
         template <typename T>
-        void RotationAxis(Matrix<T, 4, 4>& lhs, const Vector<T, 3>& axis, const float theta)
+        void RotationAxis(Core::Matrix<T, 4, 4>& lhs, const Core::Vector<T, 3>& axis, const float theta)
         {
             Identity(lhs);
             auto naxis = Normalize(axis);
@@ -357,7 +357,7 @@ namespace vEngine
         }
 
         template <typename T>
-        void Translate(Matrix<T, 4, 4>& lhs, const Vector<T, 3> xyz)
+        void Translate(Core::Matrix<T, 4, 4>& lhs, const Core::Vector<T, 3> xyz)
         {
             Identity(lhs);
             // left hand coordinate system
@@ -366,7 +366,7 @@ namespace vEngine
             lhs[3][2] = xyz.z();
         }
         template <typename T>
-        void Translate(Matrix<T, 4, 4>& lhs, const float x, const float y, const float z)
+        void Translate(Core::Matrix<T, 4, 4>& lhs, const float x, const float y, const float z)
         {
             Identity(lhs);
             // left hand coordinate system
@@ -376,7 +376,7 @@ namespace vEngine
         }
 
         template <typename T>
-        void Scale(Matrix<T, 4, 4>& lhs, const Vector<T, 3> scale)
+        void Scale(Core::Matrix<T, 4, 4>& lhs, const Core::Vector<T, 3> scale)
         {
             Identity(lhs);
             lhs[0][0] = scale.x();
@@ -384,7 +384,7 @@ namespace vEngine
             lhs[2][2] = scale.z();
         }
         template <typename T>
-        void Scale(Matrix<T, 4, 4>& lhs, const float scale)
+        void Scale(Core::Matrix<T, 4, 4>& lhs, const float scale)
         {
             Identity(lhs);
 
@@ -407,13 +407,13 @@ namespace vEngine
             return Lerp(x, y, t);
         }
         template <typename T, typename S>
-        Quaternion<T> NLerp(const Quaternion<T>& x, const Quaternion<T>& y, const S& s)
+        Core::Quaternion<T> NLerp(const Core::Quaternion<T>& x, const Core::Quaternion<T>& y, const S& s)
         {
             auto ret = Lerp(x, y, s);
             return ret.Normalized();
         }
         template<typename T, typename S>
-        Quaternion<T> SLerp(const Quaternion<T>& x, const Quaternion<T>& y, const S& s)
+        Core::Quaternion<T> SLerp(const Core::Quaternion<T>& x, const Core::Quaternion<T>& y, const S& s)
         {
             PRINT_AND_BREAK("Not verified");
             

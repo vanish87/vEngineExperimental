@@ -6,6 +6,7 @@
 
 
 using namespace vEngine::Math;
+using namespace vEngine::Core;
 
 TEST(Math, Matrix)
 {
@@ -45,17 +46,17 @@ TEST(Math, Matrix)
     float4x4 identity;
     Identity(identity);
 
-    // auto transpose = Transpose(mpv);
-    // auto tb = Transpose(Matrix<float, 200, 300>());
+    auto transpose = Transpose(mpv);
+    auto tb = Transpose(Matrix<float, 200, 300>());
 
-    // auto det = Determinant(mpv);
-    // det ++;
+    auto det = Determinant(mpv);
+    det ++;
 
-    // auto outer = OuterProduct(v1, v2);
-    // UNUSED_PARAMETER(outer);
+    auto outer = OuterProduct(v1, v2);
+    UNUSED_PARAMETER(outer);
 
-    // auto outer1 = OuterProduct(Vector<float, 5>(), Vector<float, 10>());
-    // UNUSED_PARAMETER(outer1);
+    auto outer1 = OuterProduct(Vector<float, 5>(), Vector<float, 10>());
+    UNUSED_PARAMETER(outer1);
 
     auto view = LookAtLH(float3(0, 0, -10), float3(2, 3, 6), float3(0,1,0));
     UNUSED_PARAMETER(view);
