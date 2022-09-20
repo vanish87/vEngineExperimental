@@ -46,8 +46,9 @@ namespace vEngine
 
             public:
                 /// \brief brief constructor description.
-                Component()
-                    : enabled_{false},
+                Component(const GameObjectType type = GameObjectType::Component)
+                    : GameNode(type),
+                      enabled_{false},
                       game_object_{GameObjectFactory::Create<T>()} {
 
                       };

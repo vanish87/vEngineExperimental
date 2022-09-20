@@ -41,7 +41,7 @@ namespace vEngine
                 // }
             public:
                 /// \brief brief constructor description.
-                CameraComponent();
+                CameraComponent(const GameObjectType type = GameObjectType::CameraComponent);
 
                 void OnBeginCamera();
 

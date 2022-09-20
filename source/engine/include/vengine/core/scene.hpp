@@ -50,7 +50,7 @@ namespace vEngine
                 static SceneSharedPtr Load(const std::filesystem::path path);
             public:
                 /// \brief brief constructor description.
-                Scene();
+                Scene(const GameObjectType type = GameObjectType::Scene);
                 virtual ~Scene();
 
                 const CameraSharedPtr GetCamera(const uint32_t index = 0) const;

@@ -66,7 +66,7 @@ namespace vEngine
                     static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
                     auto gn = std::make_shared<T>(std::forward<Args>(args)...);
                     auto go = std::dynamic_pointer_cast<GameObject>(gn);
-                    go->description_.type = typeid(T).name();
+                    go->description_.context = typeid(T).name();
                     // TODO Checking description type with T
 
                     // Context::GetInstance().Register(go);

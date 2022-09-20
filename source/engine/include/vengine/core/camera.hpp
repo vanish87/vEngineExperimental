@@ -29,7 +29,7 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                Camera();
+                Camera(const GameObjectType type = GameObjectType::Camera);
 
                 Rendering::FrameBufferSharedPtr target;
 

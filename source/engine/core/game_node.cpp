@@ -21,7 +21,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        GameNode::GameNode() 
+        GameNode::GameNode(const GameObjectType type) : GameObject(type)
         {
             // this->description_.name = "Raw GameNode";
         }

@@ -92,15 +92,15 @@ int main(int argc, char* argv[])
     auto mesh = Context::GetInstance().Create<GameObjectType::Mesh>();
     PRINT(mesh->description_.name);
 
-    // auto scene = handler.LoadFromAssimp(input);
-    // PRINT("Save to " << output.string());
-    // auto j = ToJson(scene);
-    // std::ofstream outfile(output.string());
-    // outfile << std::setw(2) << j << std::endl;
-    // outfile.flush();
-    // outfile.close();
+    auto scene = handler.LoadFromAssimp(input);
+    PRINT("Save to " << output.string());
+    auto j = ToJson(scene);
+    std::ofstream outfile(output.string());
+    outfile << std::setw(2) << j << std::endl;
+    outfile.flush();
+    outfile.close();
 
-    // scene.reset();
+    scene.reset();
 
     // auto path = ResourceLoader::GetInstance().GetFilePath("boblampclean.json");
     // Context::GetInstance().Clear();

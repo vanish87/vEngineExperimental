@@ -2,6 +2,8 @@ namespace vEngine
 {
     namespace Core
     {
+        #define ENUM_CASE_TO_STRING(x) case x : return #x;
+
         template <std::size_t I, class T, typename S>
         auto CastByType(std::shared_ptr<S> ptr)
         {
@@ -71,28 +73,27 @@ namespace vEngine
             NOT_IMPL_ASSERT;
             return Rendering::ShaderType::VS;
         }
-        template <typename T, typename>
         std::string ToString(const GameObjectType& obj)
         {
             switch (obj)
             {
-                case GameObjectType::Raw:
-                    return "Raw";
-                case GameObjectType::GameNode:
-                    return "GameNode";
-                case GameObjectType::Component:
-                    return "Component";
-                case GameObjectType::Camera:
-                    return "Camera";
-                case GameObjectType::AnimationClip:
-                    return "AnimationClip";
-                case GameObjectType::Asset:
-                    return "Asset";
+                ENUM_CASE_TO_STRING(GameObjectType::GameObject);
+                ENUM_CASE_TO_STRING(GameObjectType::GameNode);
+                ENUM_CASE_TO_STRING(GameObjectType::Component);
+                ENUM_CASE_TO_STRING(GameObjectType::Camera);
+                ENUM_CASE_TO_STRING(GameObjectType::AnimationClip);
+                ENUM_CASE_TO_STRING(GameObjectType::Texture);
+                ENUM_CASE_TO_STRING(GameObjectType::Scene);
                 default:
                     break;
             }
             // NOT_IMPL_ASSERT;
             return "NOT DEFINED";
+        }
+        template <typename T, typename>
+        std::string ToString(const GameObjectType& obj)
+        {
+            return ToString(obj);
         }
         // template <typename T, typename = std::enable_if_t<std::is_same<T, std::filesystem::path>::value, T>>
         // std::string ToString(const std::filesystem::path& obj)
@@ -124,7 +125,7 @@ namespace vEngine
             // }
 
             auto name = desc.name;
-            auto type = desc.type;
+            auto type = ToString(desc.type);
 
             auto file_name = std::to_string(desc.uuid.AsUint()) + "_" + name + "_" + type + ".json";
 

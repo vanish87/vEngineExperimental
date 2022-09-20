@@ -21,11 +21,11 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Light : public GameObject
+        class VENGINE_API Light : public GameObject
         {
             public:
                 /// \brief brief constructor description.
-                Light();
+                Light(const GameObjectType type = GameObjectType::Light);
 
 				//color
 				//intensity

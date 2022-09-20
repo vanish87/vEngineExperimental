@@ -25,7 +25,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        CameraComponent::CameraComponent()
+        CameraComponent::CameraComponent(const GameObjectType type) : Component(type)
         {
             GraphicsBufferDescriptor cbuffer_desc;
             cbuffer_desc.type = GraphicsResourceType::CBuffer;

@@ -39,33 +39,53 @@ namespace vEngine
             }
             return json();
         }
+
+        #define CASE_AND_SAVE(etype, type, go, path)            \
+            case etype:                                         \
+            {                                                   \
+                auto sub = std::dynamic_pointer_cast<type>(go); \
+                SaveJson(ToJson(*sub.get()), path);             \
+            }                                                   \
+            break;
+
         template <typename T>
         json ToJson(const std::shared_ptr<T>& ptr)
         {
-            auto content_saved = false;
+            auto go = std::dynamic_pointer_cast<GameObject>(ptr);
+            auto type = go->description_.type;
+            auto path = GameObjectToPath(go->description_);
 
-            using type_list = std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, TransformComponent, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera,
-                                         CameraComponent, Rendering::PipelineState, Rendering::Texture, Animation::AnimationClip, Animation::Joint, Animation::Bone, Animation::BoneComponent, GameNode, ClassFoo, ClassBar>;
-            constexpr auto nlist = std::tuple_size<type_list>::value;
-            for_sequence(std::make_index_sequence<nlist>{},
-                         [&](auto i)
-                         {
-                             auto p = CastByType<i, type_list>(ptr);
-                             if (!content_saved && p != nullptr)
-                             {
-                                 content_saved = true;
+            switch (type)
+            {
+                CASE_AND_SAVE(GameObjectType::Mesh, Mesh, go, path);
+                CASE_AND_SAVE(GameObjectType::Scene, Scene, go, path);
+                CASE_AND_SAVE(GameObjectType::Texture, Rendering::Texture, go, path);
+                default:
+                    break;
+            }
 
-                                 auto value = ToJson(*p.get());
-                                 auto path = GameObjectToPath(p->description_);
-                                 SaveJson(value, path);
-                             }
-                         });
+            // using type_list = std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, TransformComponent, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera,
+            //                              CameraComponent, Rendering::PipelineState, Rendering::Texture, Animation::AnimationClip, Animation::Joint, Animation::Bone, Animation::BoneComponent, GameNode, ClassFoo, ClassBar>;
+            // constexpr auto nlist = std::tuple_size<type_list>::value;
+            // for_sequence(std::make_index_sequence<nlist>{},
+            //              [&](auto i)
+            //              {
+            //                  auto p = CastByType<i, type_list>(ptr);
+            //                  if (!content_saved && p != nullptr)
+            //                  {
+            //                      content_saved = true;
+
+            //                      auto value = ToJson(*p.get());
+            //                      auto path = GameObjectToPath(p->description_);
+            //                      SaveJson(value, path);
+            //                  }
+            //              });
 
             // if (!value.is_null()) return value;
             // NOT_IMPL_ASSERT;
 
             // only return GameObject info here
-            auto go = std::dynamic_pointer_cast<GameObject>(ptr);
+            // auto go = std::dynamic_pointer_cast<GameObject>(ptr);
             auto value = ToJson(*go.get());
             return value;
         }
