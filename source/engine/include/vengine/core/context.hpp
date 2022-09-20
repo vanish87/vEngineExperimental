@@ -22,6 +22,14 @@ namespace vEngine
                 SINGLETON_CLASS(Context)
 
             public:
+                template <GameObjectType Type>
+                GameObjectSharedPtr Create()
+                {
+                    if constexpr (Type == GameObjectType::Mesh) return std::make_shared<Mesh>();
+                    // return nullptr;
+                }
+
+            public:
                 /// \brief Load all factories that create resource
                 ///
                 const Configure CurrentConfigure() const;
@@ -33,10 +41,8 @@ namespace vEngine
                 // Application& AppInstance() const;
                 // RenderFactory& RenderFactoty();
 
-
-
             public:
-                Rendering::RenderEngine & GetRenderEngine();
+                Rendering::RenderEngine& GetRenderEngine();
 
             public:
                 void SetConfigure(const Configure& configure);
@@ -54,7 +60,6 @@ namespace vEngine
                 void FreeDll();
                 // GameObjectSharedPtr Find(const UUID& uuid);
                 // void Register(const GameObjectSharedPtr& go);
-
 
             private:
                 Configure configure_;
@@ -75,7 +80,7 @@ namespace vEngine
         };
 
         void* LoadLibrary(const std::string lib_name);
-        void  FreeLibrary(void* handle);
+        void FreeLibrary(void* handle);
         template <typename T, typename F>
         void ProcessSharedFunction(const std::string func_name, void* handle, std::unique_ptr<T>& ptr);
 
