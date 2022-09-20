@@ -62,9 +62,11 @@ namespace vEngine
         template <>
         void FromJson(const json& j, GameObjectType& go_type)
         {
-            NOT_IMPL_ASSERT;
-            UNUSED_PARAMETER(j);
-            UNUSED_PARAMETER(go_type);
+            auto data = j.get<std::string>();
+            go_type = FromString<GameObjectType>(data);
+            // NOT_IMPL_ASSERT;
+            // UNUSED_PARAMETER(j);
+            // UNUSED_PARAMETER(go_type);
             // return json(ToString<GameObjectType>(go_type));
         }
         template <>
@@ -98,6 +100,16 @@ namespace vEngine
             }
             return false;
         }
+
+#define CASE_AND_CREATE(ptr, etype, type, path)                 \
+    case etype:                                                 \
+    {                                                           \
+        auto go = Context::GetInstance().Create<etype, type>(); \
+        FromJson(LoadJson(path), *go.get());                    \
+        ptr = go;                                               \
+    }                                                           \
+    break;
+
         template <typename T>
         std::shared_ptr<T> CreateAndLoadByDesc(const GameObjectDescription& desc)
         {
@@ -109,22 +121,35 @@ namespace vEngine
             // auto type = desc.type;
 
             // using type_list = std::tuple<ClassBar, ClassFoo>;
-            using type_list = std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, TransformComponent, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera,
-                                         CameraComponent, Rendering::PipelineState, Rendering::Texture, Animation::AnimationClip, Animation::Joint, Animation::Bone, Animation::BoneComponent, GameNode, ClassFoo, ClassBar>;
+            using type_list =
+                std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, TransformComponent, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera, CameraComponent,
+                           Rendering::PipelineState, Rendering::Texture, Animation::AnimationClip, Animation::Joint, Animation::Bone, Animation::BoneComponent, GameNode, ClassFoo, ClassBar>;
 
-            auto shared = std::shared_ptr<T>();
-            auto handled = false;
+            GameObjectSharedPtr shared;
+            // auto handled = false;
 
-            constexpr auto nlist = std::tuple_size<type_list>::value;
-            for_sequence(std::make_index_sequence<nlist>{},
-                         [&](auto i)
-                         {
-                            if(!handled)
-                            {
-                                handled = HandleByType<i, type_list>(shared, desc);
-                                // PRINT(desc.type << " " << (handled ? "Handled" : "Skiped"));
-                            }
-                         });
+            auto path = GameObjectToPath(desc);
+            // auto type = desc.type;
+
+            switch (desc.type)
+            {
+                CASE_AND_CREATE(shared, GameObjectType::Scene, Scene, path);
+                CASE_AND_CREATE(shared, GameObjectType::GameNode, GameNode, path);
+                CASE_AND_CREATE(shared, GameObjectType::Texture, Rendering::Texture, path);
+                default:
+                    break;
+            }
+
+            // constexpr auto nlist = std::tuple_size<type_list>::value;
+            // for_sequence(std::make_index_sequence<nlist>{},
+            //              [&](auto i)
+            //              {
+            //                 if(!handled)
+            //                 {
+            //                     handled = HandleByType<i, type_list>(shared, desc);
+            //                     // PRINT(desc.type << " " << (handled ? "Handled" : "Skiped"));
+            //                 }
+            //              });
             // FROM_JSON_BY_DESC(desc, ClassFoo, T);
             // FROM_JSON_BY_DESC(desc, ClassBar, T);
 
@@ -143,7 +168,7 @@ namespace vEngine
             //     return std::dynamic_pointer_cast<T>(go);
             // }
             // if (type == "class vEngine::Core::ClassBar") return Create<ClassBar>();
-            return shared;
+            return std::dynamic_pointer_cast<T>(shared);
         }
         template <typename T>
         void FromJson(const json& j, std::shared_ptr<T>& ptr)

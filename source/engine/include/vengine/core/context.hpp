@@ -22,10 +22,14 @@ namespace vEngine
                 SINGLETON_CLASS(Context)
 
             public:
-                template <GameObjectType Type>
-                GameObjectSharedPtr Create()
+                template <GameObjectType Type, typename T>
+                std::shared_ptr<T> Create()
                 {
                     if constexpr (Type == GameObjectType::Mesh) return std::make_shared<Mesh>();
+                    if constexpr (Type == GameObjectType::Scene) return std::make_shared<Scene>();
+                    if constexpr (Type == GameObjectType::GameObject) return std::make_shared<GameObject>();
+                    if constexpr (Type == GameObjectType::GameNode) return std::make_shared<GameNode>();
+                    if constexpr (Type == GameObjectType::Texture) return std::make_shared<Rendering::Texture>();
                     // return nullptr;
                 }
 

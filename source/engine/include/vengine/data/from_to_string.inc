@@ -3,6 +3,7 @@ namespace vEngine
     namespace Core
     {
         #define ENUM_CASE_TO_STRING(x) case x : return #x;
+        #define STRING_TO_ENUM(x, str) if(#x == str) return x;
 
         template <std::size_t I, class T, typename S>
         auto CastByType(std::shared_ptr<S> ptr)
@@ -80,6 +81,7 @@ namespace vEngine
                 ENUM_CASE_TO_STRING(GameObjectType::GameObject);
                 ENUM_CASE_TO_STRING(GameObjectType::GameNode);
                 ENUM_CASE_TO_STRING(GameObjectType::Component);
+                ENUM_CASE_TO_STRING(GameObjectType::TransformComponent);
                 ENUM_CASE_TO_STRING(GameObjectType::Camera);
                 ENUM_CASE_TO_STRING(GameObjectType::AnimationClip);
                 ENUM_CASE_TO_STRING(GameObjectType::Texture);
@@ -87,13 +89,25 @@ namespace vEngine
                 default:
                     break;
             }
-            // NOT_IMPL_ASSERT;
+            NOT_IMPL_ASSERT;
             return "NOT DEFINED";
         }
         template <typename T, typename>
         std::string ToString(const GameObjectType& obj)
         {
             return ToString(obj);
+        }
+        template <typename T, typename>
+        const GameObjectType FromString(const std::string& str)
+        {
+            STRING_TO_ENUM(GameObjectType::GameObject, str);
+            STRING_TO_ENUM(GameObjectType::GameNode, str);
+            STRING_TO_ENUM(GameObjectType::Scene, str);
+            STRING_TO_ENUM(GameObjectType::Texture, str);
+            STRING_TO_ENUM(GameObjectType::Component, str);
+
+            NOT_IMPL_ASSERT;
+            return GameObjectType::GameObject;
         }
         // template <typename T, typename = std::enable_if_t<std::is_same<T, std::filesystem::path>::value, T>>
         // std::string ToString(const std::filesystem::path& obj)

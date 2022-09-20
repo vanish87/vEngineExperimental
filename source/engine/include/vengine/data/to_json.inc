@@ -60,7 +60,11 @@ namespace vEngine
                 CASE_AND_SAVE(GameObjectType::Mesh, Mesh, go, path);
                 CASE_AND_SAVE(GameObjectType::Scene, Scene, go, path);
                 CASE_AND_SAVE(GameObjectType::Texture, Rendering::Texture, go, path);
+                CASE_AND_SAVE(GameObjectType::GameNode, GameNode, go, path);
+                CASE_AND_SAVE(GameObjectType::TransformComponent, TransformComponent, go, path);
                 default:
+                    PRINT(ToString(type));
+                    NOT_IMPL_ASSERT;
                     break;
             }
 
