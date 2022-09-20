@@ -2,10 +2,11 @@
 #define _ENGINE_MACROS_HPP
 #pragma once
 
-#define NOT_IMPL_ASSERT          \
-    {                           \
-        PRINT_FILE_AND_FUCTION; \
-        DEBUG_BREAK             \
+#define NOT_IMPL_ASSERT           \
+    {                             \
+        PRINT("Not Implemented"); \
+        PRINT_FILE_AND_FUCTION;   \
+        DEBUG_BREAK               \
     }
 #define UNUSED_PARAMETER(x) (&reinterpret_cast<const int&>(x))
 
