@@ -82,7 +82,7 @@ namespace vEngine
         // class Window;
         // typedef std::shared_ptr<Window> vEngineWindowPtr;
         CLASS_AND_SHARED_POINTER(Window)
-        class Application;
+        CLASS_AND_SHARED_WEAK_POINTER(Application)
 
         CLASS_AND_SHARED_POINTER(GameObject)
         CLASS_AND_SHARED_POINTER(Camera)

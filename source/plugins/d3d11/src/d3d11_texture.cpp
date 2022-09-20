@@ -26,8 +26,8 @@ namespace vEngine
         {
             if (this->tex2D_ == nullptr)
             {
-                auto re = &Core::Context::GetInstance().GetRenderEngine();
-                auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
+                auto& re = Core::Context::GetInstance().GetRenderEngine();
+                auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re.get());
                 auto device = d3d_re->Device();
                 auto desc = this->descriptor_;
                 switch (desc.dimension)
@@ -90,8 +90,8 @@ namespace vEngine
         {
             if (this->sr_view_ == nullptr)
             {
-                auto re = &Core::Context::GetInstance().GetRenderEngine();
-                auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
+                auto& re = Core::Context::GetInstance().GetRenderEngine();
+                auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re.get());
                 auto device = d3d_re->Device();
 
                 D3D11_SHADER_RESOURCE_VIEW_DESC desc;
@@ -109,8 +109,8 @@ namespace vEngine
         {
             if (this->rt_view_ == nullptr)
             {
-                auto re = &Core::Context::GetInstance().GetRenderEngine();
-                auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
+                auto& re = Core::Context::GetInstance().GetRenderEngine();
+                auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re.get());
                 auto device = d3d_re->Device();
 
                 device->CreateRenderTargetView(this->tex2D_.Get(), nullptr, this->rt_view_.GetAddressOf());
@@ -121,8 +121,8 @@ namespace vEngine
         {
             if (this->ds_view_ == nullptr)
             {
-                auto re = &Core::Context::GetInstance().GetRenderEngine();
-                auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
+                auto& re = Core::Context::GetInstance().GetRenderEngine();
+                auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re.get());
                 auto device = d3d_re->Device();
 
                 device->CreateDepthStencilView(this->tex2D_.Get(), nullptr, this->ds_view_.GetAddressOf());

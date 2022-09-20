@@ -24,7 +24,7 @@ namespace vEngine
         Material::Material()
         {
             PipelineStateDescriptor pdesc;
-            this->pipeline_state_ = Context::GetInstance().GetRenderEngine().Register(pdesc);
+            this->pipeline_state_ = Context::GetInstance().GetRenderEngine()->Register(pdesc);
         }
         Material::~Material() {}
 
@@ -45,11 +45,11 @@ namespace vEngine
 
         void Material::UpdateGPUResource()
         {
-            Context::GetInstance().GetRenderEngine().Bind(this->pipeline_state_);
+            Context::GetInstance().GetRenderEngine()->Bind(this->pipeline_state_);
             if (this->textures_.size() > 0)
             {
                 auto tex = this->textures_[0];
-                Context::GetInstance().GetRenderEngine().Bind(tex);
+                Context::GetInstance().GetRenderEngine()->Bind(tex);
             }
         }
 

@@ -59,7 +59,7 @@ namespace vEngine
             auto gn = GameObjectFactory::Create<GameNode>();
 
             auto camera = GameObjectFactory::Create<CameraComponent>();
-            camera->GO()->target = Context::GetInstance().GetRenderEngine().back_buffer_;
+            camera->GO()->target = Context::GetInstance().GetRenderEngine()->back_buffer_;
 
             auto transform = GameObjectFactory::Create<TransformComponent>();
 
@@ -148,7 +148,7 @@ namespace vEngine
                         tdesc.resource.pitch = sizeof(byte) * GetByteSize(format) * width;
                         tdesc.slot = GraphicsBufferSlot::Slot0;
 
-                        auto tex = Context::GetInstance().GetRenderEngine().Create(tdesc);
+                        auto tex = Context::GetInstance().GetRenderEngine()->Create(tdesc);
                         tex->SetRawData(out);
                         scene->SetTexture(texture_path.string(), tex);
 

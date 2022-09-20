@@ -1,8 +1,9 @@
 
-//DLL loader header
-#ifdef VENGINE_PLATFORM_WINDOWS
-    #include <windows.h>
-#elif VENGINE_PLATFORM_UNIX
+// DLL loader header
+// #ifdef VENGINE_PLATFORM_WINDOWS
+// #include <windows.h>
+// #elif VENGINE_PLATFORM_UNIX
+#if VENGINE_PLATFORM_UNIX
     #include <dlfcn.h>
 #endif
 
@@ -23,7 +24,7 @@ namespace vEngine
     {
         typedef void (*HandleRenderEngine)(Rendering::RenderEngineUniquePtr& ptr);
 
-        Context::Context() : app_instance_{nullptr} {}
+        Context::Context() {}
         Context::~Context() {}
         const Configure Context::CurrentConfigure() const
         {
@@ -46,7 +47,7 @@ namespace vEngine
 
             auto graphics = this->configure_.graphics_configure;
 
-            if(graphics.output == Output::Window)
+            if (graphics.output == Output::Window)
             {
                 WindowDescription desc;
                 desc.name = this->configure_.app_name;
@@ -56,7 +57,7 @@ namespace vEngine
                 this->window_ = std::make_shared<Window>(desc);
             }
 
-            this->GetRenderEngine().Init();
+            this->GetRenderEngine()->Init();
         }
         void Context::Deinit()
         {
@@ -64,7 +65,7 @@ namespace vEngine
 
             this->window_.reset();
 
-            this->GetRenderEngine().Deinit();
+            this->GetRenderEngine()->Deinit();
             this->render_engine_ptr_.reset();
             // prt.reset() does same thing as this->ProcessRenderEngine("DestoryRenderEngine");
 
@@ -72,24 +73,24 @@ namespace vEngine
         }
         void Context::Update() {}
 
-        Rendering::RenderEngine& Context::GetRenderEngine()
+        Rendering::RenderEngineUniquePtr& Context::GetRenderEngine()
         {
             if (this->render_engine_ptr_ == nullptr)
             {
-                #ifdef VENGINE_PLATFORM_APPLE_STATIC
+#ifdef VENGINE_PLATFORM_APPLE_STATIC
                 CreateRenderEngine(this->render_engine_ptr_);
-                #else
+#else
                 ProcessSharedFunction<Rendering::RenderEngine, HandleRenderEngine>("CreateRenderEngine", this->render_plugin_dll_handle_, this->render_engine_ptr_);
-                #endif
+#endif
             }
-            return *this->render_engine_ptr_;
+            return this->render_engine_ptr_;
         }
 
         void Context::LoadDll()
         {
-            #ifdef VENGINE_PLATFORM_APPLE_STATIC
+#ifdef VENGINE_PLATFORM_APPLE_STATIC
             return;
-            #endif
+#endif
             this->FreeDll();
 
             auto render_dll_name = this->configure_.graphics_configure.render_plugin_name;
@@ -120,15 +121,16 @@ namespace vEngine
         //     this->runtime_game_objects_[uuid] = go;
         // }
 
-        void Context::RegisterAppInstance(Application* app)
+        void Context::RegisterAppInstance(ApplicationSharedPtr app)
         {
-            this->app_instance_ = app;
+            this->app_ = app;
         }
         void Context::QuitApplication()
         {
             // this->app_instance_ = app;
-            CHECK_ASSERT_NOT_NULL(this->app_instance_);
-            this->app_instance_->Quit();
+            auto app = this->app_.lock();
+            CHECK_ASSERT_NOT_NULL(app);
+            app->Quit();
         }
         // Application& Context::AppInstance() const
         // {
@@ -137,7 +139,11 @@ namespace vEngine
 
         void* LoadLibrary(const std::string lib_name)
         {
-            auto dll_name = VENGINE_SHADRED_LIB_PREFIX + lib_name + VENGINE_SHADRED_LIB_DEBUG_POSTFIX + VENGINE_SHADRED_LIB_EXT;
+            #ifdef DEBUG
+            auto dll_name = VENGINE_SHARED_LIB_PREFIX + lib_name + VENGINE_SHARED_LIB_DEBUG_POSTFIX + VENGINE_SHARED_LIB_EXT;
+            #else
+            auto dll_name = VENGINE_SHARED_LIB_PREFIX + lib_name + VENGINE_SHARED_LIB_EXT;
+            #endif
 
             #ifdef VENGINE_PLATFORM_WINDOWS
             auto handle = ::LoadLibrary(dll_name.c_str());

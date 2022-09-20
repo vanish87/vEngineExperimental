@@ -28,6 +28,7 @@ namespace vEngine
             // SceneManager::GetInstance().Init();
 
             Context::GetInstance().Init();
+            Context::GetInstance().RegisterAppInstance(this->shared_from_this());
             this->OnInit();
         }
         void Application::Deinit()

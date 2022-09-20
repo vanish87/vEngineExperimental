@@ -39,7 +39,7 @@ namespace vEngine
             vEngineCameraConstantBuffer cb;
             cbuffer_desc.resource.data = &cb;
 
-            this->camera_constant_buffer_ = Context::GetInstance().GetRenderEngine().Create(cbuffer_desc);
+            this->camera_constant_buffer_ = Context::GetInstance().GetRenderEngine()->Create(cbuffer_desc);
         }
         void CameraComponent::OnBeginCamera()
         {
@@ -63,7 +63,7 @@ namespace vEngine
             // std::copy(&cb, &cb + sizeof(vEngineCameraConstantBuffer), data.data);
             this->camera_constant_buffer_->Unmap();
 
-            Context::GetInstance().GetRenderEngine().OnBind(this->camera_constant_buffer_);
+            Context::GetInstance().GetRenderEngine()->OnBind(this->camera_constant_buffer_);
         }
     }  // namespace Core
 

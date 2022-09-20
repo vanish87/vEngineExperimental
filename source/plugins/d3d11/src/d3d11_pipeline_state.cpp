@@ -30,8 +30,8 @@ namespace vEngine
         {
             if (this->vs_ == nullptr)
             {
-                auto re = &Core::Context::GetInstance().GetRenderEngine();
-                auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
+                auto& re = Core::Context::GetInstance().GetRenderEngine();
+                auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re.get());
                 auto device = d3d_re->Device();
 
                 ComPtr<ID3DBlob> error;

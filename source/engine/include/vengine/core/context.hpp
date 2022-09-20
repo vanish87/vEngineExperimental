@@ -34,7 +34,7 @@ namespace vEngine
                 ///
                 const Configure CurrentConfigure() const;
 
-                void RegisterAppInstance(Application* app);
+                void RegisterAppInstance(ApplicationSharedPtr app);
                 void QuitApplication();
 
                 WindowSharedPtr CurrentWindow() const;
@@ -42,7 +42,7 @@ namespace vEngine
                 // RenderFactory& RenderFactoty();
 
             public:
-                Rendering::RenderEngine& GetRenderEngine();
+                Rendering::RenderEngineUniquePtr& GetRenderEngine();
 
             public:
                 void SetConfigure(const Configure& configure);
@@ -63,7 +63,7 @@ namespace vEngine
 
             private:
                 Configure configure_;
-                Application* app_instance_;
+                ApplicationWeakPtr app_;
                 WindowSharedPtr window_;
 
                 void* render_plugin_dll_handle_;

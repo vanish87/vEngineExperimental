@@ -327,7 +327,7 @@ namespace vEngine
                 tdesc.type = GraphicsResourceType::Depth;
                 tdesc.usage = GraphicsResourceUsage::GPU_ReadWrite;
                 tdesc.resource.data = nullptr;
-                auto depth_tex = Context::GetInstance().GetRenderEngine().Create(tdesc);
+                auto depth_tex = Context::GetInstance().GetRenderEngine()->Create(tdesc);
 
                 this->back_buffer_->BindColor(backBufferTexture, 0);
                 this->back_buffer_->BindDepthStencil(depth_tex);

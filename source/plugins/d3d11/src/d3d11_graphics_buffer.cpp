@@ -24,8 +24,8 @@ namespace vEngine
         D3D11GraphicsBuffer::D3D11GraphicsBuffer(const GraphicsBufferDescriptor& desc) : GraphicsBuffer(desc)
         {
             PRINT("D3DGraphicsBuffer");
-            auto re = &Core::Context::GetInstance().GetRenderEngine();
-            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
+            auto& re = Core::Context::GetInstance().GetRenderEngine();
+            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re.get());
             auto device = d3d_re->Device();
             D3D11_BUFFER_DESC d3d_desc;
             d3d_desc.ByteWidth = static_cast<uint32_t>(desc.resource.total_size);
@@ -49,8 +49,8 @@ namespace vEngine
 
         GPUSubResource D3D11GraphicsBuffer::DoMap()
         {
-            auto re = &Core::Context::GetInstance().GetRenderEngine();
-            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
+            auto& re = Core::Context::GetInstance().GetRenderEngine();
+            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re.get());
             auto context = d3d_re->DeviceContext();
 
             GPUSubResource sub;
@@ -66,8 +66,8 @@ namespace vEngine
         }
         void D3D11GraphicsBuffer::DoUnmap()
         {
-            auto re = &Core::Context::GetInstance().GetRenderEngine();
-            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
+            auto& re = Core::Context::GetInstance().GetRenderEngine();
+            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re.get());
             auto context = d3d_re->DeviceContext();
             context->Unmap(this->buffer_.Get(), 0);
         }

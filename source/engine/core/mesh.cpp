@@ -144,7 +144,7 @@ namespace vEngine
                 desc.layout.elements_.push_back(ElementLayout::Element("BLENDWEIGHT", DataFormat::RGBAFloat));
                 desc.layout.topology = ElementTopology::TriangleList;
 
-                this->vertex_buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
+                this->vertex_buffer_ = Context::GetInstance().GetRenderEngine()->Create(desc);
             }
 
             if (this->index_buffer_ == nullptr)
@@ -158,7 +158,7 @@ namespace vEngine
                 desc.resource.count = this->index_data_.size();
                 desc.resource.total_size = desc.resource.count * desc.resource.stride;
                 desc.resource.data = this->index_data_.data();
-                this->index_buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
+                this->index_buffer_ = Context::GetInstance().GetRenderEngine()->Create(desc);
             }
         }
 

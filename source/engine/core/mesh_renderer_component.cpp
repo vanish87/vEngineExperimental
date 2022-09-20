@@ -32,7 +32,7 @@ namespace vEngine
             vEngineObjectConstantBuffer cb;
             cbuffer_desc.resource.data = &cb;
 
-            this->mesh_constant_buffer_ = Context::GetInstance().GetRenderEngine().Create(cbuffer_desc);
+            this->mesh_constant_buffer_ = Context::GetInstance().GetRenderEngine()->Create(cbuffer_desc);
         }
         void MeshRendererComponent::OnBeginRender()
         {
@@ -86,7 +86,7 @@ namespace vEngine
             std::memcpy(data.data, &cb, sizeof(vEngineObjectConstantBuffer));
             this->mesh_constant_buffer_->Unmap();
 
-            Context::GetInstance().GetRenderEngine().OnBind(this->mesh_constant_buffer_);
+            Context::GetInstance().GetRenderEngine()->OnBind(this->mesh_constant_buffer_);
         };
 
         void MeshRendererComponent::OnUpdate()

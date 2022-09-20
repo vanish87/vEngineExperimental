@@ -10,7 +10,7 @@ namespace vEngine
 {
     namespace Core
     {
-        class VENGINE_API Application
+        class VENGINE_API Application: public std::enable_shared_from_this<Application>
         {
             public:
                 Application();

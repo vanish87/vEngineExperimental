@@ -176,7 +176,7 @@ namespace vEngine
             if (this->cameras_.size() == 0)
             {
                 auto cam = GameObjectFactory::Default<Camera>();
-                cam->target = Context::GetInstance().GetRenderEngine().back_buffer_;
+                cam->target = Context::GetInstance().GetRenderEngine()->back_buffer_;
                 this->cameras_.emplace_back(cam);
             }
 
@@ -383,10 +383,10 @@ namespace vEngine
                     auto cam = c->GO();
                     auto frameBuffer = cam->target;
                     auto& re = Context::GetInstance().GetRenderEngine();
-                    re.Bind(frameBuffer);
-                    re.OnBeginFrame();
+                    re->Bind(frameBuffer);
+                    re->OnBeginFrame();
                     this->Flush();
-                    re.OnEndFrame();
+                    re->OnEndFrame();
                     // render all game node
                     // PRINT("Camera");
                     return true;
