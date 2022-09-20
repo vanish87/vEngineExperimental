@@ -11,7 +11,7 @@
 #include <vengine/rendering/frame_buffer.hpp>
 #include <vengine/rendering/graphics_buffer.hpp>
 #include <vengine/rendering/render_engine.hpp>
-
+#include <vengine/rendering/shared/data_cbuffer.hpp>
 /// A detailed namespace description, it
 /// should be 2 lines at least.
 namespace vEngine
@@ -25,25 +25,34 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        FrameBuffer::FrameBuffer(TextureSharedPtr backBuffer, const FrameBufferDescriptor& desc)
+        // FrameBuffer::FrameBuffer(TextureSharedPtr backBuffer, const FrameBufferDescriptor& desc)
+        // {
+        //     UNUSED_PARAMETER(desc);
+        //     // auto& re = Context::GetInstance().GetRenderEngine();
+        //     this->colorTextures_.push_back(backBuffer);
+        //     // this->depthStencilTexture_ =
+
+        //     TextureDescriptor tdesc;
+        //     tdesc.width = desc.width;
+        //     tdesc.height = desc.height;
+        //     tdesc.depth = 1;
+        //     tdesc.format = desc.depthStencilFormat;
+        //     tdesc.dimension = TextureDimension::TD_2D;
+        //     tdesc.type = GraphicsResourceType::Depth;
+        //     tdesc.usage = GraphicsResourceUsage::GPU_ReadWrite;
+        //     tdesc.resource.data = nullptr;
+
+        //     this->depthStencilTexture_ = Context::GetInstance().GetRenderEngine().Create(tdesc);
+
+        //     // this->frame_constat_buffer_ = Context::GetInstance().GetRenderEngine().Create(cbuffer_desc);
+        // }
+        void FrameBuffer::BindColor(const TextureSharedPtr color, const uint8_t index /*= 0*/)
         {
-            UNUSED_PARAMETER(desc);
-            // auto& re = Context::GetInstance().GetRenderEngine();
-            this->colorTextures_.push_back(backBuffer);
-            // this->depthStencilTexture_ =
-
-            GraphicsBufferDescriptor cbuffer_desc;
-            cbuffer_desc.type = GraphicsBufferType::GBT_CBuffer;
-            cbuffer_desc.usage = GraphicsBufferUsage::GPU_CPU_Write_GPU_Read;
-            cbuffer_desc.offset = 0;
-            cbuffer_desc.stride = sizeof(vEngineCameraConstantBuffer);
-            cbuffer_desc.count = 1;
-            cbuffer_desc.total_size = cbuffer_desc.count * cbuffer_desc.stride;
-
-            vEngineCameraConstantBuffer cb;
-            cbuffer_desc.data = &cb;
-
-            // this->frame_constat_buffer_ = Context::GetInstance().GetRenderEngine().Create(cbuffer_desc);
+            this->colorTextures_[index] = color;
+        }
+        void FrameBuffer::BindDepthStencil(const TextureSharedPtr depth_stencil)
+        {
+            this->depthStencilTexture_ = depth_stencil;
         }
         FrameBuffer::~FrameBuffer() {}
         // void FrameBuffer::UpdateGPU(const float4x4 view_matrix, const float4x4 proj_matrix)

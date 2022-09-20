@@ -14,12 +14,11 @@ enable_testing()
 
 include_directories(${PROJECT_SOURCE_DIR}/external/googletest/googletest/include)
 
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} test_source)
+
 # Create the executable
 add_executable(${PROJECT_NAME} 
-	test_vector.cpp
-	test_matrix.cpp
-	test_math.cpp
-	test_main.cpp
+	${test_source}
 )
 
 # Link the static library from subproject1 using its alias sub::lib1

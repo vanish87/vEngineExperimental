@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include <VENGINE_API.h>
+#include <engine.hpp>
 
 #include <vengine/core/game_object.hpp>
 #include <vengine/core/irenderer.hpp>
@@ -31,12 +31,19 @@ namespace vEngine
         class VENGINE_API Renderer : public GameObject, public IRenderer
         {
             public:
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(GameObject::properties(), std::make_tuple(property("material", &Renderer::material_)));
+                };
+
+            public:
                 /// \brief brief constructor description.
                 Renderer()
-                {
 
-                };
-                
+                    {
+
+                    };
+
                 virtual bool UpdateRenderable()
                 {
                     return false;
@@ -52,7 +59,7 @@ namespace vEngine
 
                 std::shared_ptr<T> renderable_;
                 // gpu buffer etc.
-                MaterialSharedPtr material_;
+                Rendering::MaterialSharedPtr material_;
         };
     }  // namespace Core
 }  // namespace vEngine

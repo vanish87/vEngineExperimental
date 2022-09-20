@@ -12,8 +12,11 @@
 
 #pragma once
 
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 #include <engine.hpp>
+#include <vengine/rendering/data_struct.hpp>
+#include <vengine/data/meta.hpp>
+#include <vengine/core/game_object.hpp>
 
 namespace vEngine
 {
@@ -22,23 +25,32 @@ namespace vEngine
         /// \brief Unity-like Graphics buffer
         ///
         /// Graphics buffer could be index/vertex buffer or
-		/// constant buffer.
-		/// It could be used in cpu and/or gpu
-		// template<typename T>
-        class VENGINE_API PipelineState
+        /// constant buffer.
+        /// It could be used in cpu and/or gpu
+        // template<typename T>
+        class VENGINE_API PipelineState: public Core::GameObject
         {
             public:
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        Core::GameObject::properties(),
+                        std::make_tuple(
+                            Core::property("descriptor", &PipelineState::descriptor_),
+                            Core::property("shaders", &PipelineState::shaders_)
+                        )
+                    );
+                };
+            public:
                 /// \brief brief constructor description.
+                PipelineState(){};
                 PipelineState(const PipelineStateDescriptor& desc);
                 virtual ~PipelineState();
-                bool Load(ShaderSharedPtr shader);
 
-                /// class variable description
-                // int public_variable_;
+                virtual void PrepareData();
 
-				PipelineStateDescriptor descriptor_;
-                ShaderSharedPtr vs_shader_;
-                ShaderSharedPtr ps_shader_;
+                PipelineStateDescriptor descriptor_;
+                std::unordered_map<ShaderType, ShaderSharedPtr> shaders_;
 
             public:
                 /// \brief A brief function description.
@@ -46,9 +58,8 @@ namespace vEngine
                 /// \param p1 Description for p1.
                 /// \param p2 Description for p2.
                 /// \return Description for return value.
-		};
-	}
-}
+        };
+    }  // namespace Rendering
+}  // namespace vEngine
 
 #endif /* _VENGINE_RENDERING_PIPELINE_STATE_HPP */
-

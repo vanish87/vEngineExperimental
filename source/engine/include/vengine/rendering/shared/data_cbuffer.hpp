@@ -18,7 +18,7 @@
 
 #include <engine.hpp>
 #include <vengine/core/matrix.hpp>
-using namespace vEngine::Math;
+using namespace vEngine::Core;
 
 #endif
 
@@ -31,10 +31,15 @@ struct vs_in
 	float3 normal semantics_def(NORMAL);
 	float2 texcoord semantics_def(TEXCOORD0);
 	float4 color semantics_def(COLOR);
+	int4 bone_id_0 semantics_def(BLENDINDICES0);
+	float4 bone_weight_0 semantics_def(BLENDWEIGHT0);
+	int4 bone_id_1 semantics_def(BLENDINDICES1);
+	float4 bone_weight_1 semantics_def(BLENDWEIGHT1);
 };
 struct vs_out 
 {
 	float4 position semantics_def(SV_POSITION); 
+	float2 texcoord semantics_def(TEXCOORD0); 
 	float3 pos_w semantics_def(POSITION); 
 	float3 normal semantics_def(NORMAL);
 	float4 color semantics_def(COLOR);
@@ -53,6 +58,7 @@ struct_def vEngineCameraConstantBuffer register_def(b0)
 struct_def vEngineObjectConstantBuffer register_def(b1)
 {
 	float4x4 local_to_world_matrix;
+	float4x4 bone[128];
 };
 
 #endif /* _VENGINE_RENDERING_DATA_CBUFFER_HPP */

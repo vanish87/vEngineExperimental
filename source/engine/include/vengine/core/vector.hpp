@@ -17,17 +17,25 @@
 
 namespace vEngine
 {
-    namespace Math
+    namespace Core
     {
         /// \brief Basic vector data type
         ///
         /// Use std::array to store data,
-        /// Use template recrusion for compile time calculation
+        /// Use template recursion for compile time calculation
         /// \tparam T Vector type
         /// \tparam N Vector size
         template <typename T = float, int N = 4>
+        // Note: Do not EXPORT Matrix/Vector as DLL
+        // So that user can use it like this Matrix<float, 200, 200> 
         class Vector final
         {
+            // public:
+            //     constexpr static auto properties()
+            //     {
+            //         return std::make_tuple(property("data", &Vector::data_));
+            //     }
+
             private:
                 typedef std::array<T, N> DataType;
 
@@ -174,7 +182,7 @@ namespace vEngine
                 {
                     return this->data_.begin();
                 }
-                const iterator begin() const noexcept
+                const_iterator begin() const noexcept
                 {
                     return this->data_.begin();
                 }
@@ -183,7 +191,7 @@ namespace vEngine
                 {
                     return this->data_.end();
                 }
-                const iterator end() const noexcept
+                const_iterator end() const noexcept
                 {
                     return this->data_.end();
                 }

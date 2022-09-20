@@ -13,6 +13,7 @@
 #pragma once
 
 #include <engine.hpp>
+#include <vengine/data/meta.hpp>
 
 namespace vEngine
 {
@@ -21,21 +22,34 @@ namespace vEngine
         // very simple and intuitive uuid generate
         class UUIDGenerator
         {
+            friend class Context;
+            public:
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        // GameNode::properties(),
+                        std::make_tuple(
+                            property("current_id", &UUIDGenerator::current_id_)
+                        )
+                    );
+                }
             private:
-                explicit UUIDGenerator() : currentid_(0){};
+                explicit UUIDGenerator() : current_id_(0){};
                 UUIDGenerator(const UUIDGenerator& rhs)
                 {
                     UNUSED_PARAMETER(rhs);
                 };
                 UUIDGenerator& operator=(const UUIDGenerator& rhs)
                 {
-                    UNUSED_PARAMETER(rhs);
-
+                    if(this != &rhs)
+                    {
+                        this->current_id_ = rhs.current_id_;
+                    }
                     return *this;
                 };
                 virtual ~UUIDGenerator(){};
 
-                uint64_t currentid_;
+                uint64_t current_id_;
 
             public:
                 static UUIDGenerator& GetInstance()
@@ -45,18 +59,29 @@ namespace vEngine
                 }
                 uint64_t Generate()
                 {
-                    return ++this->currentid_;
+                    return ++this->current_id_;
                 }
         };
 
         class UUID
         {
                 friend struct std::hash<vEngine::Core::UUID>;
-                friend class GameObject;
-                friend class DebugTracking;
+                friend struct GameObjectDescription;
+                // friend class DebugTracking;
+                // friend class Json;
 
             public:
                 virtual ~UUID(void){};
+
+                const uint64_t AsUint() const
+                {
+                    return this->data_;
+                }
+
+                void Set(const uint64_t id)
+                {
+                    this->data_ = id;
+                }
 
             private:
                 UUID() : data_(0)
@@ -65,9 +90,9 @@ namespace vEngine
                 }
 
             private:
-                explicit UUID(uint64_t uuid)
+                explicit UUID(const uint64_t uuid)
                 {
-                    UNUSED_PARAMETER(uuid);
+                    this->data_ = uuid;
                 }
 
             public:
@@ -91,6 +116,12 @@ namespace vEngine
                 {
                     return this->data_ != rhs.data_;
                 }
+                // constexpr static auto properties()
+                // {
+                //     return std::make_tuple(
+                //         property("value", &UUID::data_)
+                //     );
+                // }
 
             private:
                 uint64_t data_;

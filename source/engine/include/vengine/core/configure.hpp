@@ -3,23 +3,33 @@
 
 #pragma once
 
+#include <filesystem>
+
 namespace vEngine
 {
     namespace Core
     {
+        enum class Output
+        {
+            Window,
+            CommandLine,
+            Offline,
+        };
         struct GraphicsConfigure
         {
-                std::string render_plugin_name;
-                int width;
-                int height;
-
-                GraphicsConfigure() : render_plugin_name{"empty_plugin"}, width{640}, height{480} {}
+                std::string render_plugin_name = "empty_plugin";
+                Output output = Output::Window;
+                int width = 640;
+                int height = 480;
+                void* wnd = nullptr;
         };
         struct Configure
         {
-                std::string app_name;
+                std::string app_name = "vEngineApp";
+                std::string context_name = "default_context";
+                std::filesystem::path resource_src;
+                std::filesystem::path resource_bin;
                 GraphicsConfigure graphics_configure;
-                Configure() : app_name{"vEngine_Example"} {}
         };
 
     }  // namespace Core

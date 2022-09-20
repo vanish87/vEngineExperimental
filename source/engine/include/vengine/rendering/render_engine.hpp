@@ -2,11 +2,11 @@
 #define _VENGINE_RENDERING_RENDER_ENGINE_HPP
 
 #pragma once
-
-#include <VENGINE_API.h>
+#include <map>
 
 #include <engine.hpp>
-#include <map>
+#include <vengine/rendering/data_struct.hpp>
+#include <vengine/rendering/data_format.hpp>
 #include <vengine/core/iruntime_module.hpp>
 #include <vengine/core/transform.hpp>
 
@@ -46,6 +46,12 @@ namespace vEngine
                 }
                 virtual void OnBind(const GraphicsBufferSharedPtr graphics_buffer) = 0;
                 
+                virtual void Bind(const TextureSharedPtr texture)
+                {
+                    this->OnBind(texture);
+                }
+                virtual void OnBind(const TextureSharedPtr texture) = 0;
+
                 virtual void Bind(const FrameBufferSharedPtr frameBuffer)
                 {
                     this->current_frame_buffer_ = frameBuffer;
@@ -60,8 +66,14 @@ namespace vEngine
                 }
                 virtual PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) = 0;
 
-                virtual void OnBeginFrame(){
+                virtual void OnBeginFrame()
+                {
                     // update per frame cbuffer
+                    this->Clear(this->current_frame_buffer_);
+                };
+                virtual void OnEndFrame()
+                {
+
                 };
 
                 virtual void BeginRender(){
@@ -79,6 +91,8 @@ namespace vEngine
                 virtual TextureSharedPtr Create(const TextureDescriptor& desc) = 0;
                 virtual FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) = 0;
                 virtual GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) = 0;
+
+                virtual void Clear(const FrameBufferSharedPtr frame_buffer, const color color = color(0, 51, 102, 255)) = 0;
 
                 FrameBufferSharedPtr current_frame_buffer_;
                 FrameBufferSharedPtr back_buffer_;

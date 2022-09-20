@@ -12,15 +12,50 @@
 
 #pragma once
 
-#include <VENGINE_API.h>
-
+#include <engine.hpp>
 #include <vengine/core/uuid.hpp>
+#include <vengine/data/meta.hpp>
 
 /// A brief namespace description.
 namespace vEngine
 {
     namespace Core
     {
+        enum class GameObjectType
+        {
+            Raw,
+            GameNode,
+            Component,
+            Transform,
+            Camera,
+            Light,
+            Renderer,
+            Mesh,
+            // Mesh_Cube,
+            Material,
+            Bone,
+            Joint,
+            AnimationClip,
+            Animator,
+            Skeleton,
+            Asset,
+            Serializer,
+        };
+
+        struct GameObjectDescription
+        {
+                UUID uuid;
+                std::string name = "GameObject";
+                std::string type;
+                constexpr static auto properties()
+                {
+                    return std::make_tuple(
+                        property("name", &GameObjectDescription::name),
+                        property("type", &GameObjectDescription::type),
+                        property("uuid", &GameObjectDescription::uuid)
+                    );
+                }
+        };
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
@@ -30,11 +65,19 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 GameObject();
+                // GameObject(const GameObjectType type);
+                // GameObject(const GameObject& other);
+                // GameObject(const GameObject&& other);
                 virtual ~GameObject();
 
-                // uuid
-                UUID uuid_;
-                // type?
+
+                GameObjectDescription description_;
+                constexpr static auto properties()
+                {
+                    return std::make_tuple(
+                        property("description", &GameObject::description_)
+                    );
+                }
         };
     }  // namespace Core
 }  // namespace vEngine

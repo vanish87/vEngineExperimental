@@ -2,14 +2,12 @@
 #define _VENGINE_CORE_MATRIX_HPP
 
 #pragma once
-#include <vengine/core/math.h>
-
-// #include <engine.hpp>
+#include <vengine/core/math.hpp>
 #include <vengine/core/vector.hpp>
 
 namespace vEngine
 {
-    namespace Math
+    namespace Core
     {
         enum class MatrixPackType
         {
@@ -18,14 +16,16 @@ namespace vEngine
         };
         /// \brief Define a MxN matrix with data type T
         ///
-        /// Note M is number of row elements, N is number of col elements. \n
+        /// Note M is the number of row elements, N is the number of col elements. \n
         /// use matrix[row][col] to assess data. \n
         /// the data layout is colum major, see Math for details.
         /// \tparam T
         /// \tparam M number of row elements
         /// \tparam N number of col elements
         template <typename T = float, int M = 4, int N = 4>
-        class Matrix final
+        // Note: Do not EXPORT Matrix/Vector as DLL
+        // So that user can use it like this Matrix<float, 200, 200> 
+        class Matrix final 
         {
             private:
                 typedef Vector<Vector<T, M>, N> DataType;
@@ -180,10 +180,10 @@ namespace vEngine
                     static const Matrix<T, M, N> zero(z);
                     return zero;
                 }
-                static const Matrix<T, M, N>& IdentityMat()
+                static const Matrix<T, M, N>& Identity()
                 {
                     static Matrix<T, M, N> identity;
-                    Identity(identity);
+                    Math::Identity(identity);
                     return identity;
                 }
 
@@ -192,18 +192,18 @@ namespace vEngine
                 {
                     return this->data_.begin();
                 }
-                const iterator begin() const noexcept
+                const_iterator begin() const noexcept
                 {
                     return this->data_.begin();
                 }
 
                 iterator end() noexcept
                 {
-                    return this->data_.begin() + size;
+                    return this->data_.end();
                 }
-                const iterator end() const noexcept
+                const_iterator end() const noexcept
                 {
-                    return this->data_.begin() + size;
+                    return this->data_.end();
                 }
 
             public:
@@ -299,7 +299,7 @@ namespace vEngine
                 template <typename U>
                 constexpr Matrix operator*(const Matrix<U, M, N>& other) noexcept
                 {
-                    return Multiply(*this, other);
+                    return Math::Multiply(*this, other);
                 }
                 template <typename U>
                 constexpr Matrix operator/(const Matrix<U, M, N>& other) noexcept

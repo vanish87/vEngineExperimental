@@ -2,7 +2,7 @@
 #define _ENGINE_MACROS_HPP
 #pragma once
 
-#define NOTIMPL_ASSERT()        \
+#define NOT_IMPL_ASSERT          \
     {                           \
         PRINT_FILE_AND_FUCTION; \
         DEBUG_BREAK             \
@@ -23,5 +23,10 @@ public:                                                \
         static class_name Instance;                    \
         return Instance;                               \
     };
+
+#define PROPERTY(type, var) \
+private: type _##var;\
+public: const type& Get_##var()const {return _##var;} \
+public: void Set_##var(const type& value){this->_##var = value;} 
 
 #endif /* _ENGINE_MACROS_HPP */

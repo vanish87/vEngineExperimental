@@ -12,68 +12,100 @@
 
 #pragma once
 
-#include <VENGINE_API.h>
-
-#include <engine.hpp>
 #include <functional>
 #include <list>
-#include <vengine/core/matrix.hpp>
-#include <vengine/core/uuid.hpp>
-#include <vengine/core/transform.hpp>
+
+#include <VENGINE_API.hpp>
+#include <engine.hpp>
+// #include <vengine/core/matrix.hpp>
+// #include <vengine/core/transform_component.hpp>
+#include <vengine/core/game_object.hpp>
 
 /// A brief namespace description.
 namespace vEngine
 {
     namespace Core
     {
-        using namespace vEngine::Math;
+        // using namespace vEngine::Math;
         /// \brief Game Node is basic game scene object
         ///
-        /// It contains a tranfrom and a list of children nodes
-        /// and contructs a tree struture that presents the game scene
+        /// It contains a transform and a list of children nodes
+        /// and constructs a tree struture that presents the game scene
         /// the child of GameNode could be a normal game node or
         /// a component that referenced to other game object class
-        class VENGINE_API GameNode : public std::enable_shared_from_this<GameNode>
+        class VENGINE_API GameNode : public GameObject, public std::enable_shared_from_this<GameNode>
         {
             public:
                 /// \brief brief constructor description.
                 GameNode();
+                GameNode(const GameObjectType type);
                 virtual ~GameNode();
 
-                void AddChild(const GameNodeSharedPtr game_node);
-                void RemoveChild(const GameNodeSharedPtr game_node);
-                
-                void AddComponent(const GameNodeSharedPtr component);
-                void RemoveComponent(const GameNodeSharedPtr component);
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        GameObject::properties(),
+                        std::make_tuple(
+                            property("parent", &GameNode::parent_),
+                            property("children", &GameNode::children_))
+                    );
+                }
+            public:
+                // std::string name_;
 
-                const float4x4 LocalTransform()
-                {
-                    return this->transform_.GetLocal();
-                }
-                const float4x4 LocalToWorldTransform()
-                {
-                    return this->transform_.local_to_world_;
-                }
-                void SetScale(float3 scale)
-                {
-                    this->transform_.local_scale_ = scale;
-                }
-                void SetPos(float3 pos)
-                {
-                    this->transform_.local_pos_ = pos;
-                }
+                virtual void AddChild(const GameNodeSharedPtr game_node);
+                virtual void RemoveChild(const GameNodeSharedPtr game_node);
 
-                void UpdateLocal(GameNodeSharedPtr parent)
-                {
-                    auto mat = parent==nullptr?float4x4::IdentityMat():parent->LocalToWorldTransform();
-                    this->transform_.local_to_world_ = Math::Multiply(this->LocalTransform(), mat);
-                    // this->transform_.local_to_world_ = this->LocalTransform();
-                }
+                virtual void AttachComponent(const GameNodeSharedPtr component);
+                virtual void DetachComponent(const GameNodeSharedPtr component);
 
                 template <typename T>
-                std::shared_ptr<T> FirstOf()
+                bool HasComponent()
                 {
                     for (auto c : this->children_)
+                    {
+                        auto go = std::dynamic_pointer_cast<T>(c);
+                        if (go != nullptr) return true;
+                    }
+                    return false;
+                }
+
+                // const float4x4 LocalTransform()
+                // {
+                //     return this->transform_.GetLocal();
+                // }
+
+                // TransformSharedPtr Transform();
+                // float4x4 LocalToWorldTransform()
+                // {
+                //     return this->transform_.LocalToWorldTransform();
+                // }
+                // void SetScale(float3 scale)
+                // {
+                //     this->transform_.Scale() = scale;
+                // }
+                // void SetPos(float3 pos)
+                // {
+                //     this->transform_.Translate() = pos;
+                // }
+
+                // void UpdateLocal(GameNodeSharedPtr parent)
+                // {
+                //     auto transform = parent == nullptr ? Transform::Identity() : parent->transform_;
+                //     this->transform_.UpdateLocalToWorld(transform);
+                //     // this->transform_.local_to_world_ = Math::Multiply(this->LocalTransform(), mat);
+                //     // this->transform_.local_to_world_ = this->LocalTransform();
+                // }
+
+                // TransformComponentSharedPtr& TransformPtr()
+                // {
+                //     return this->transform_com_;
+                // }
+
+                template <typename T>
+                std::shared_ptr<T> FirstOf(const int search_depth = 0)
+                {
+                    for (const auto& c : this->children_)
                     {
                         auto go = std::dynamic_pointer_cast<T>(c);
                         if (go != nullptr)
@@ -81,12 +113,20 @@ namespace vEngine
                             return go;
                         }
                     }
+                    if (search_depth > 0)
+                    {
+                        for (const auto& c : this->children_)
+                        {
+                            auto node = c->FirstOf<T>(search_depth - 1);
+                            if (node != nullptr) return node;
+                        }
+                    }
                     return nullptr;
                 }
                 template <typename T>
                 void ForEachChild(std::function<void(std::shared_ptr<T>)> const& iter)
                 {
-                    for (auto c : this->children_)
+                    for (const auto& c : this->children_)
                     {
                         auto go = std::dynamic_pointer_cast<T>(c);
                         if (go != nullptr)
@@ -96,29 +136,41 @@ namespace vEngine
                     }
                 }
                 template <typename T>
-                void Traverse(std::function<bool(std::shared_ptr<T>)> const& func)
-                {
-                    auto gn = std::dynamic_pointer_cast<T>(shared_from_this());
-                    if (gn == nullptr ? true : func(gn))
-                    {
-                        for (const auto& c : this->children_)
-                        {
-                            c->Traverse(func);
-                        }
-                    }
-                }
-                template <typename T>
-                void Traverse(std::function<bool(std::shared_ptr<T>, const GameNodeSharedPtr)> const& func)
+                void TraverseAllChildren(std::function<bool(std::shared_ptr<T>)> const& func)
                 {
                     for (const auto& c : this->children_)
                     {
                         auto gn = std::dynamic_pointer_cast<T>(c);
-                        if (gn == nullptr ? true : func(gn, shared_from_this()))
+                        if (gn == nullptr ? true : func(gn))
                         {
-                            c->Traverse(func);
+                            c->TraverseAllChildren(func);
                         }
                     }
                 }
+                // template <typename T>
+                // void Traverse(std::function<bool(std::shared_ptr<T>)> const& func)
+                // {
+                //     auto gn = std::dynamic_pointer_cast<T>(shared_from_this());
+                //     if (gn == nullptr ? true : func(gn))
+                //     {
+                //         for (const auto& c : this->children_)
+                //         {
+                //             c->Traverse(func);
+                //         }
+                //     }
+                // }
+                // template <typename T>
+                // void Traverse(std::function<bool(std::shared_ptr<T>, const GameNodeSharedPtr)> const& func)
+                // {
+                //     for (const auto& c : this->children_)
+                //     {
+                //         auto gn = std::dynamic_pointer_cast<T>(c);
+                //         if (gn == nullptr ? true : func(gn, shared_from_this()))
+                //         {
+                //             c->Traverse(func);
+                //         }
+                //     }
+                // }
                 // template <typename T>
                 // void ForEachChild(std::function<void(T*)> const& iter)
                 // {
@@ -143,9 +195,20 @@ namespace vEngine
                 //     }
                 // }
 
+            public:
+                GameNodeWeakPtr Parent()
+                {
+                    return this->parent_;
+                }
+
             private:
                 // transform
-                Transform transform_;
+                // Transform transform_;
+
+                // cached transform node
+                // TransformComponentSharedPtr transform_;
+                // parent node
+                GameNodeWeakPtr parent_;
                 // children also used as list of gameobject/components
                 std::list<GameNodeSharedPtr> children_;
                 // GameNodeSharedPtr parent_;

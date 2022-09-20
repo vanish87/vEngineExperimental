@@ -15,15 +15,13 @@ namespace vEngine
 {
     namespace Core
     {
-
         /// constructor detailed defintion,
         /// should be 2 lines
         MeshComponent::MeshComponent() {}
-        MeshComponent::MeshComponent(const MeshSharedPtr mesh)
-        {
-            this->game_object_.reset();
-            this->game_object_ = mesh;
-        }
+        // MeshComponent::MeshComponent(const MeshSharedPtr mesh)
+        // {
+        //     this->Reset(mesh);
+        // }
     }  // namespace Core
 
 }  // namespace vEngine

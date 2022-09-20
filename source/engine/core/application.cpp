@@ -1,116 +1,98 @@
 
-#include <vengine/core/window.hpp>  //windows.h should include first in win32 platform
+// #define NOMINMAX
+// #include <vengine/core/window.hpp>  //windows.h should include first in win32 platform
 // #include <memory>
 #include <vengine/core/application.hpp>
-#include <vengine/core/configure.hpp>
+// #include <vengine/core/configure.hpp>
 #include <vengine/core/constants.hpp>
 #include <vengine/core/context.hpp>
-#include <vengine/core/scene_manager.hpp>
+// #include <vengine/core/scene_manager.hpp>
 #include <vengine/core/timer.hpp>
-#include <vengine/rendering/render_engine.hpp>
+// #include <vengine/rendering/render_engine.hpp>
 
 namespace vEngine
 {
     namespace Core
     {
-        vEngineWindowPtr Application::CurrentWindow()
-        {
-            return this->window_;
-        }
+        Application::Application() : should_quit_{false} {}
+        Application::~Application() {}
         void Application::Init()
         {
-            this->InitInternal(nullptr);
-        }
-        void Application::Init(void* wnd)
-        {
-            this->InitInternal(wnd);
-        }
-
-        void Application::InitInternal(void* wnd)
-        {
-            Context::GetInstance().RegisterAppInstance(this);
-
-            auto configure = Context::GetInstance().CurrentConfigure();
-            // Load Dll etc.
-            Context::GetInstance().ConfigureWith(configure);
-
+            // Context::GetInstance().RegisterAppInstance(this);
             // Make window
             // Platform dependent
-            this->window_ = std::make_shared<Window>();
-            this->window_->Init(wnd);
+            // this->window_ = std::make_shared<Window>();
+            // this->window_->Init(wnd);
 
-            Context::GetInstance().GetRenderEngine().Init();
-            
-            SceneManager::GetInstance().Init();
+            // Context::GetInstance().GetRenderEngine().Init();
+            // SceneManager::GetInstance().Init();
 
-            this->OnCreate();
+            Context::GetInstance().Init();
+            Context::GetInstance().RegisterAppInstance(this->shared_from_this());
+            this->OnInit();
         }
         void Application::Deinit()
         {
-            this->OnDestory();
-
-            SceneManager::GetInstance().Deinit();
-
-            // Destory RenderEngine etc;
-            Context::GetInstance().GetRenderEngine().Deinit();
-
-            // Destory Window
-            this->window_->Deinit();
-            this->window_.reset();
-
-            // Destory Context
+            this->OnDeinit();
             Context::GetInstance().Deinit();
+
+            // Destroy RenderEngine etc;
+            // SceneManager::GetInstance().Deinit();
+            // Context::GetInstance().GetRenderEngine().Deinit();
+
+            // // Destroy Window
+            // this->window_->Deinit();
+            // this->window_.reset();
         }
         void Application::Update()
         {
             // Update Window event/messages
             // this is platform dependent
             // Win32 will peek/dispatch window messages
-            this->window_->Update();
-
+            // this->window_->Update();
+            Context::GetInstance().Update();
             // call user update
             this->OnUpdate();
 
+
             // update other context module
             //  Context::Update();
-            SceneManager::GetInstance().Update();
+            // SceneManager::GetInstance().Update();
+            // call here or PAINT event in Window Class
+            // Context::GetInstance().GetRenderEngine().Update();
         }
         void Application::Run()
         {
-            this->shouldQuit = false;
+            this->Init();
 
-            Timer updateTimer;
-            double previous = updateTimer.Time();
-            double lag = 0;
+            Timer update_timer;
+            auto previous = update_timer.Time();
+            auto lag = 0.0;
 
-            while (!this->shouldQuit)
+            while (!this->should_quit_)
             {
-                double current = updateTimer.Time();
-                double elapsed = current - previous;
+                auto current = update_timer.Time();
+                auto elapsed = current - previous;
                 previous = current;
                 lag += elapsed;
 
                 // Update in constant rate
                 // may be changed later
-                while (lag >= TIME_PER_UPDATE)
+                while (lag >= TIME_PER_UPDATE && !this->should_quit_)
                 {
                     this->Update();
                     lag -= TIME_PER_UPDATE;
                 }
-
-                // call here or PAINT event in Winodw Class
-                // Context::GetInstance().GetRenderEngine().Update();
             }
-
             this->Deinit();
         }
 
-        void Application::OnCreate() {}
+        void Application::OnInit() {}
         void Application::OnUpdate() {}
-        void Application::OnDestory() {}
-        void Application::Quit(bool quit)
+        void Application::OnDeinit() {}
+        void Application::Quit()
         {
-            this->shouldQuit = quit;
+            this->should_quit_ = true;
         }
 
     }  // namespace Core

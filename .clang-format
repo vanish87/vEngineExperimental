@@ -8,6 +8,7 @@ IndentExternBlock: Indent
 IndentPPDirectives: BeforeHash
 IndentWidth: 4
 NamespaceIndentation: All
+SortIncludes: Never
 TabWidth: 0
 BreakBeforeBraces: Custom
 BraceWrapping:

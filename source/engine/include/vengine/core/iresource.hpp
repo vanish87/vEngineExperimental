@@ -2,18 +2,26 @@
 #define _VENGINE_CORE_IRESOURCE_HPP
 
 #pragma once
+#include <VENGINE_API.hpp>
+#include <engine.hpp>
 #include <functional>
-#include <VENGINE_API.h>
+#include <filesystem>
 
 namespace vEngine
 {
     namespace Core
     {
-        Interface VENGINE_API IResource: public std::enable_shared_from_this<IResource>
+        struct ResourceDescriptor
         {
-        public:
-            virtual bool Load() = 0;
+                std::function<GameObjectSharedPtr()> on_load_call_back;
         };
+
+        // Interface VENGINE_API IResource
+        // {
+        // public:
+            // virtual bool Load(const ResourceDescriptorSharedPtr descriptor) = 0;
+            // virtual ResourceState CurrentState() = 0;
+        // };
     }  // namespace Core
 }  // namespace vEngine
 

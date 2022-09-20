@@ -7,8 +7,8 @@
 
 @implementation AppViewController
 {
-    // MTK::View* view_;
-	// MTL::Device* device_;
+    MTK::View* view_;
+	MTL::Device* device_;
     // vEngine::Core::window window_;
 }
 
@@ -41,7 +41,13 @@
     [super viewDidLoad];
     [self CreateViewControllerManully];
 
-    [self performSelectorInBackground:@selector(app_main_loop:) withObject:self.view];
+    self.device_ = MTL::CreateSystemDefaultDevice();
+    NSAssert(device_, @"Metal is not supported on this device");
+    MTKView *mtkView = (MTKView *)self.view;
+    mtkView.delegate = self;
+    self.view_ = new MTK::View(mtkView, *device_);
+
+    [self performSelectorInBackground:@selector(app_main_loop:) withObject:self.view_];
 
     // self.device_ = MTL::CreateSystemDefaultDevice();
 
@@ -61,8 +67,8 @@
 - (void)dealloc
 {
     [super dealloc];
-    // delete device_;
-    // device_ = nullptr;
+    delete device_;
+    device_ = nullptr;
 
 }
 

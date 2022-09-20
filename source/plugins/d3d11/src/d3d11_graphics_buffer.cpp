@@ -18,67 +18,25 @@ namespace vEngine
 {
     namespace Rendering
     {
-        static D3D11_BIND_FLAG ToD3DBindFlag(GraphicsBufferType type)
-        {
-            switch (type)
-            {
-                case GraphicsBufferType::GBT_Index:
-                    return D3D11_BIND_INDEX_BUFFER;
-                case GraphicsBufferType::GBT_Vertex:
-                    return D3D11_BIND_VERTEX_BUFFER;
-                case GraphicsBufferType::GBT_CBuffer:
-                    return D3D11_BIND_CONSTANT_BUFFER;
-                default:
-                    return D3D11_BIND_UNORDERED_ACCESS;
-            }
-        }
-        static uint32_t ToD3DAccessFlag(GraphicsBufferUsage usage)
-        {
-            switch (usage)
-            {
-                case GraphicsBufferUsage::GBU_CPU_GPU_ReadWrite:
-                    return D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
-                case GraphicsBufferUsage::GPU_CPU_Write_GPU_Read:
-                    return D3D11_CPU_ACCESS_WRITE;
-                default:
-                    return 0;
-            }
-        }
 
-        static D3D11_USAGE ToD3DUsage(GraphicsBufferUsage usage)
-        {
-            switch (usage)
-            {
-                case GraphicsBufferUsage::GBU_CPU_GPU_ReadWrite:
-                    return D3D11_USAGE_STAGING;
-                case GraphicsBufferUsage::GPU_CPU_Write_GPU_Read:
-                    return D3D11_USAGE_DYNAMIC;
-                case GraphicsBufferUsage::GBU_GPU_Read_Only:
-                    return D3D11_USAGE_IMMUTABLE;
-                case GraphicsBufferUsage::GBU_GPU_ReadWrite:  // but can be update by UpdateSubresource
-                    return D3D11_USAGE_DEFAULT;
-                default:
-                    return D3D11_USAGE_DEFAULT;
-            }
-        }
         /// constructor detailed defintion,
         /// should be 2 lines
         D3D11GraphicsBuffer::D3D11GraphicsBuffer(const GraphicsBufferDescriptor& desc) : GraphicsBuffer(desc)
         {
             PRINT("D3DGraphicsBuffer");
-            auto re = &Core::Context::GetInstance().GetRenderEngine();
-            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
+            auto& re = Core::Context::GetInstance().GetRenderEngine();
+            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re.get());
             auto device = d3d_re->Device();
             D3D11_BUFFER_DESC d3d_desc;
-            d3d_desc.ByteWidth = static_cast<uint32_t>(desc.total_size);
-            d3d_desc.StructureByteStride = desc.stride;
-            d3d_desc.Usage = ToD3DUsage(desc.usage);
-            d3d_desc.BindFlags = ToD3DBindFlag(desc.type);
-            d3d_desc.CPUAccessFlags = ToD3DAccessFlag(desc.usage);
+            d3d_desc.ByteWidth = static_cast<uint32_t>(desc.resource.total_size);
+            d3d_desc.StructureByteStride = desc.resource.stride;
+            d3d_desc.Usage = D3D11RenderEngine::ToD3DUsage(desc.usage);
+            d3d_desc.BindFlags = D3D11RenderEngine::ToD3DBindFlag(desc.type);
+            d3d_desc.CPUAccessFlags = D3D11RenderEngine::ToD3DAccessFlag(desc.usage);
             d3d_desc.MiscFlags = 0;
 
             D3D11_SUBRESOURCE_DATA sub;
-            sub.pSysMem = desc.data;
+            sub.pSysMem = desc.resource.data;
             sub.SysMemPitch = 0;
             sub.SysMemSlicePitch = 0;
 
@@ -89,13 +47,13 @@ namespace vEngine
             }
         }
 
-        GPUSubresource D3D11GraphicsBuffer::DoMap()
+        GPUSubResource D3D11GraphicsBuffer::DoMap()
         {
-            auto re = &Core::Context::GetInstance().GetRenderEngine();
-            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
+            auto& re = Core::Context::GetInstance().GetRenderEngine();
+            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re.get());
             auto context = d3d_re->DeviceContext();
 
-            GPUSubresource sub;
+            GPUSubResource sub;
             D3D11_MAPPED_SUBRESOURCE data;
 
             auto hr = context->Map(this->buffer_.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &data);
@@ -108,8 +66,8 @@ namespace vEngine
         }
         void D3D11GraphicsBuffer::DoUnmap()
         {
-            auto re = &Core::Context::GetInstance().GetRenderEngine();
-            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re);
+            auto& re = Core::Context::GetInstance().GetRenderEngine();
+            auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re.get());
             auto context = d3d_re->DeviceContext();
             context->Unmap(this->buffer_.Get(), 0);
         }

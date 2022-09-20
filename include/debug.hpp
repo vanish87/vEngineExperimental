@@ -1,6 +1,8 @@
 #ifndef _INCLUDE_DEBUG_HPP
 #define _INCLUDE_DEBUG_HPP
 
+#pragma once
+
 #ifdef VENGINE_PLATFORM_WINDOWS
     #define DEBUG_BREAK __debugbreak();
 #else

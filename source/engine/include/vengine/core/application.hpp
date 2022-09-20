@@ -3,42 +3,33 @@
 
 #pragma once
 
-#include <VENGINE_API.h>
-
-#include <vengine/core/iruntime_module.hpp>
+#include <engine.hpp>
+// #include <vengine/core/iruntime_module.hpp>
 
 namespace vEngine
 {
     namespace Core
     {
-        class VENGINE_API Application : public IRuntimeModule
+        class VENGINE_API Application: public std::enable_shared_from_this<Application>
         {
             public:
-                Application(){};
-                virtual ~Application(){};
+                Application();
+                virtual ~Application();
 
             public:
-                virtual void Init(void* wnd);
-                virtual void Init() override;
-                virtual void Update() override;
-                virtual void Deinit() override;
-                
                 virtual void Run();
-                virtual void Quit(bool quit);
-
-            public:
-                vEngineWindowPtr CurrentWindow();
+                virtual void Quit();
 
             protected:
-                vEngineWindowPtr window_;
+                void Init();
+                void Update();
+                void Deinit();
 
-            private:
-                virtual void OnCreate();
+                virtual void OnInit();
                 virtual void OnUpdate();
-                virtual void OnDestory();
+                virtual void OnDeinit();
 
-                virtual void InitInternal(void* wnd);
-                bool shouldQuit;
+                bool should_quit_;
         };
     }  // namespace Core
 }  // namespace vEngine

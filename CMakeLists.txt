@@ -10,7 +10,7 @@ endif()
 set(VENGINE_BUILD_DOC OFF)
 
 # cmake setting
-set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_VERBOSE_MAKEFILE OFF)
 
 # Include cmake modules
 include(GenerateExportHeader)
@@ -77,6 +77,7 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # debug setting
 set(CMAKE_DEBUG_POSTFIX d)
+add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 
 set(PROJECT_PLATFORM_MARCO ${PROJECT_NAME}_PLATFORM)
 string(TOUPPER ${PROJECT_PLATFORM_MARCO} PROJECT_PLATFORM_MARCO)
@@ -96,15 +97,16 @@ if(VENGINE_BUILD_STATIC)
 endif()
 
 add_subdirectory(source)
+add_subdirectory(resource)
 
 # message(STATUS "CMAKE_SOURCE_DIR= ${CMAKE_SOURCE_DIR}")
 # add_custom_target(COPY_RESOURCE ALL
 #     COMMAND ${CMAKE_COMMAND} -E copy_directory
-#     ${CMAKE_SOURCE_DIR}/resources
+#     ${CMAKE_SOURCE_DIR}/resource
 #     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
 # )
 # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 #         COMMAND ${CMAKE_COMMAND} -E copy_directory
-#         ${CMAKE_SOURCE_DIR}/resources
+#         ${CMAKE_SOURCE_DIR}/resource
 #         $<TARGET_FILE_DIR:${PROJECT_NAME}>/
 # )

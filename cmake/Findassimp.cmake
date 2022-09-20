@@ -65,11 +65,17 @@ else(WIN32)
 			${ASSIMP_ROOT_DIR}/include
 	)
 
-	set(ASSIMP_LIB_EXT "so")
 
-	if(APPLE)
-		set(ASSIMP_LIB_EXT "dylib")
-	endif(APPLE)
+
+	if(BUILD_SHARED_LIBS)
+		if(APPLE)
+			set(ASSIMP_LIB_EXT "dylib")
+		else()
+			set(ASSIMP_LIB_EXT "so")
+		endif(APPLE)
+	else()
+		set(ASSIMP_LIB_EXT "a")
+	endif(BUILD_SHARED_LIBS)
 
 	find_path(ASSIMP_LIBRARY_DIR
 		NAMES

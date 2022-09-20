@@ -8,9 +8,11 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
+
 #include <vengine/core/scene_manager.hpp>
-#include <vengine/core/scene.hpp>
+
 #include <vengine/core/resource_loader.hpp>
+#include <vengine/core/scene.hpp>
 /// A detailed namespace description, it
 /// should be 2 lines at least.
 namespace vEngine
@@ -22,21 +24,22 @@ namespace vEngine
         /// should be 2 lines
         SceneManager::SceneManager() {}
         SceneManager::~SceneManager() {}
-        void SceneManager::Init()
+        void SceneManager::Load(const std::string scene_name)
         {
-            // this->root_ = std::make_shared<GameNode>();
-            // this->scene_ = std::make_shared<Scene>("cornell-box.obj");
-            this->scene_ = std::make_shared<Scene>("bunny.obj");
-            ResourceLoader::GetInstance().LoadAsync(this->scene_,
-            [&](IResourceSharedPtr c)
+            ResourceDescriptor desc;
+            desc.on_load_call_back = [&]()
             {
-                UNUSED_PARAMETER(c);
-                PRINT("Resource loaded");
-            });
-            // this->scene_->Load();
+                auto path = ResourceLoader::GetInstance().GetFilePath(scene_name);
+                this->scene_ = Scene::Load(path);;
+                return this->scene_;
+            };             
+            ResourceLoader::GetInstance().LoadAsync(desc);
 
         }
-        void SceneManager::Deinit() 
+        void SceneManager::Init()
+        {
+        }
+        void SceneManager::Deinit()
         {
             this->scene_.reset();
         }
@@ -44,15 +47,14 @@ namespace vEngine
         {
             // Update lights constant buffer here
         }
-        void SceneManager::Flush()
+        void SceneManager::EndScene()
         {
-            this->scene_->Flush();
+
         }
         void SceneManager::Update()
         {
-            this->scene_->Update();
+            if (this->scene_ != nullptr) this->scene_->Update();
         }
-
 
     }  // namespace Core
 

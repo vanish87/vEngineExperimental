@@ -10,26 +10,34 @@
 // so this is a empty window in linux platform
 // TODO use x11 window later
 // struct GLFWwindow;
-
 #endif
 
-#include <VENGINE_API.h>
+#include <engine.hpp>
 
 namespace vEngine
 {
     namespace Core
     {
+        struct WindowDescription
+        {
+            std::string name;
+            void* wnd;
+            int width;
+            int height;
+        };
         class VENGINE_API Window
         {
             public:
-                Window() {}
-                virtual ~Window() {}
-                virtual void Init(void* wnd) ;
-                virtual void Deinit();
-                virtual void Update();
+                Window(const WindowDescription& desc);
+                virtual ~Window();
+
+                void Update();
 
             public:
-                void* WindowHandle();
+                void* WindowHandle()
+                {
+                    return this->wnd_;
+                };
 
             private:
                 void* wnd_;

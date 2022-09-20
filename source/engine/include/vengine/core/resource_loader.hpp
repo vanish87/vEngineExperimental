@@ -16,9 +16,14 @@
 #include <queue>
 #include <functional>
 
-#include <VENGINE_API.h>
+// #include <unordered_map>
+#include <unordered_set>
+
+#include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <vengine/core/thread.hpp>
+#include <vengine/core/iruntime_module.hpp>
+#include <vengine/core/iresource.hpp>
 
 namespace vEngine
 {
@@ -46,7 +51,7 @@ namespace vEngine
         class ResourceLoadingJob : public ThreadJob
         {
             public:
-                ResourceLoadingJob(IResourceSharedPtr JobObj, std::function<void(IResourceSharedPtr user_data)> const& complete_callback);
+                ResourceLoadingJob(const ResourceDescriptor& desc);
                 ~ResourceLoadingJob();
 
             public:
@@ -54,19 +59,33 @@ namespace vEngine
 
             private:
                 ResourceLoadingJob(){};
-                IResourceSharedPtr resource_to_load_;
-                std::function<void(IResourceSharedPtr user_data)> complete_call_back_;
+                ResourceDescriptor desc_;
         };
-        class ResourceLoader
+        class VENGINE_API ResourceLoader: public IRuntimeModule
         {
                 SINGLETON_CLASS(ResourceLoader)
 
             public:
+                void Init() override{};
+                void Deinit() override{};
+                void Update() override{};
 
-                void LoadAsync(IResourceSharedPtr resource, std::function<void(IResourceSharedPtr user_data)> const& complete_callback = nullptr);
+            public:
+                void LoadAsync(const ResourceDescriptor& desc);
+                void Load(const ResourceDescriptor& desc);
                 // void AddSync();
+
+                std::filesystem::path GetFilePath(const std::string file_name);
+                void AddSearchFolder(const std::string folder);
+                void AddSearchPath(const std::filesystem::path path);
+
+                void DumpCurrentPath();
+
             private:
                 ResourceLoadingThread loading_thread_;
+
+                std::unordered_map<std::string, std::filesystem::path> search_paths_;
+                // std::unordered_set<std::filesystem::path> search_paths_;
         };
 
     }  // namespace Core

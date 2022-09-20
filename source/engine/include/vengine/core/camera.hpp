@@ -21,19 +21,23 @@ namespace vEngine
 {
     namespace Core
     {
-        using namespace Math;
-        using namespace Rendering;
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Camera : public GameObject
+        class VENGINE_API Camera : public GameObject
         {
             public:
                 /// \brief brief constructor description.
                 Camera();
 
-                FrameBufferSharedPtr target;
+                Rendering::FrameBufferSharedPtr target;
+
+                static CameraSharedPtr Default()
+                {
+                    static auto cam = std::make_shared<Camera>();
+                    return cam;
+                }
 
                 const float4x4 ProjectionMatrix() const
                 {

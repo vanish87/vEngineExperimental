@@ -36,6 +36,10 @@ namespace vEngine
                 {
                     UNUSED_PARAMETER(graphics_buffer);
                 }
+                void OnBind(const TextureSharedPtr texture) override
+                {
+                    UNUSED_PARAMETER(texture);
+                }
 
                 PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) override
                 {
@@ -62,13 +66,25 @@ namespace vEngine
                     UNUSED_PARAMETER(desc);
                     return nullptr;
                 }
+                void Clear(const FrameBufferSharedPtr frame_buffer, const color color = float4(0.0f, 0.2f, 0.4f, 1.0f)) override
+                {
+                    UNUSED_PARAMETER(frame_buffer);
+                    UNUSED_PARAMETER(color);
+
+                }
 
             private:
-                void InitPipline();
-                void DeinitPipline();
+                void InitPipeline();
+                void DeinitPipeline();
                 void TriangleDraw();
 
             private:
+                // MTL::Device device_;
+                MTK::View* view_;
+                MTL::CommandQueue* command_queue_;
+                MTL::RenderPipelineState* current_pipeline_state_;
+                MTL::Buffer* vertex_buffer_;
+                MTL::Buffer* color_buffer_;
         };
 
     }  // namespace Rendering

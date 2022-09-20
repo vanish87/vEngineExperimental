@@ -9,6 +9,10 @@ project (vengine)
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core core_source)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/rendering rendering_source)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/animation animation_source)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/data data_source)
+
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/external external_source)
 
 # if(APPLE)
 #     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core/apple apple_sources)
@@ -17,6 +21,9 @@ aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/rendering rendering_source)
 add_library(${PROJECT_NAME} 
     ${core_source}
     ${rendering_source}
+    ${animation_source}
+    ${data_source}
+    ${external_source}
     # ${apple_sources}
 )
 add_library(engine::core ALIAS ${PROJECT_NAME})
@@ -30,7 +37,7 @@ message(STATUS "ASSIMP_INCLUDE_DIR= ${ASSIMP_INCLUDE_DIR}")
 GENERATE_EXPORT_HEADER( ${PROJECT_NAME}
              BASE_NAME ${HEADER_NAME}
              EXPORT_MACRO_NAME ${HEADER_NAME}_API
-             EXPORT_FILE_NAME ${API_EXPORT_DIR}/${HEADER_NAME}_API.h
+             EXPORT_FILE_NAME ${API_EXPORT_DIR}/${HEADER_NAME}_API.hpp
              STATIC_DEFINE ${HEADER_NAME}_BUILT_AS_STATIC
 )
 
@@ -41,6 +48,7 @@ target_include_directories( ${PROJECT_NAME}
 
 target_link_libraries( ${PROJECT_NAME}
 	${ASSIMP_LIBRARIES}
+	${ZLIB_LIBRARIES}
 	# ${LUA_LIBRARIES}
 	# ${FREETYPE_LIBRARIES}
 )
@@ -60,24 +68,24 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/resources
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>
+    ${CMAKE_SOURCE_DIR}/resource
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/resource
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${PROJECT_SOURCE_DIR}/include/vengine/rendering/shared
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>/shader
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/resource/shader
 )
 # INSTALL(TARGETS ${PROJECT_NAME} 
 #         PUBLIC_HEADER DESTINATION $<TARGET_FILE_DIR:${PROJECT_NAME}
 # )
 
-if(APPLE)
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${EXTERNAL_BUILD_DIR}/lib
-        # $<TARGET_FILE_DIR:${PROJECT_NAME}>/lib
-        ${CMAKE_BINARY_DIR}/bin/lib
-    )
-endif(APPLE)
+# if(APPLE)
+#     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+#         COMMAND ${CMAKE_COMMAND} -E copy_directory
+#         ${EXTERNAL_BUILD_DIR}/lib
+#         # $<TARGET_FILE_DIR:${PROJECT_NAME}>/lib
+#         ${CMAKE_BINARY_DIR}/bin/lib
+#     )
+# endif(APPLE)

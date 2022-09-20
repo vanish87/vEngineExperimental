@@ -10,8 +10,10 @@
 #ifndef _VENGINE_RENDERING_GRAPHICS_BUFFER_HPP
 #define _VENGINE_RENDERING_GRAPHICS_BUFFER_HPP
 
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 #include <engine.hpp>
+#include <vengine/rendering/data_struct.hpp>
+#include <vengine/rendering/data_format.hpp>
 
 namespace vEngine
 {
@@ -35,11 +37,11 @@ namespace vEngine
 
 				GraphicsBufferDescriptor descriptor_;
 
-                GPUSubresource Map();
+                GPUSubResource Map();
                 void Unmap();
 
             protected:
-                virtual GPUSubresource DoMap();
+                virtual GPUSubResource DoMap();
                 virtual void DoUnmap();
 
             public:

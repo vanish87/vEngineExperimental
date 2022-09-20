@@ -18,7 +18,7 @@ namespace Example
             Mesh mesh;
             /// \brief user function for create
             /// 
-            void OnCreate() override
+            void OnInit() override
             {
                 PRINT("User Create");
 
@@ -27,6 +27,8 @@ namespace Example
                 // // auto mp = std::make_shared<MeshRendererComponent>();
                 // // auto mp = std::make_shared<MeshComponent>();
                 // SceneManager::GetInstance().AddToSceneRoot(mp);
+
+                // SceneManager::GetInstance().Load()
 
             }
             /// \brief user function for update
@@ -37,7 +39,7 @@ namespace Example
             {
             }
             /// \brief user function for destory
-            void OnDestory() override
+            void OnDeinit() override
             {
                 PRINT("User Destory");
             }
@@ -60,9 +62,8 @@ int main(int argc, char* argv[])
     configure.graphics_configure.render_plugin_name = "opengl_rendering_plugin";
     #endif
 
-    Context::GetInstance().ConfigureWith(configure);
+    Context::GetInstance().SetConfigure(configure);
 
     Example::ExampleApp app;
-    app.Init();
     app.Run();
 }

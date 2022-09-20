@@ -11,17 +11,17 @@
 #define _VENGINE_CORE_MESH_HPP
 
 #include <vector>
+#include <unordered_map>
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
 #include <vengine/core/iresource.hpp>
 #include <vengine/core/element.hpp>
 #include <vengine/core/vector.hpp>
+#include <vengine/animation/bone.hpp>
+
+#include <vengine/data/meta.hpp>
 
 
 /// A brief namespace description.
@@ -29,8 +29,6 @@ namespace vEngine
 {
     namespace Core
     {
-        using namespace vEngine::Rendering;
-        using namespace vEngine::Math;
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
@@ -41,42 +39,86 @@ namespace vEngine
             float3 pos;
             float3 normal;
             float2 uv;
-            float4 color;
+            color color;
+            int4 bone_id_0;
+            float4 bone_weight_0;
+            int4 bone_id_1;
+            float4 bone_weight_1;
+            constexpr static auto properties()
+            {
+                return std::make_tuple(
+                    property("position", &Vertex::pos),
+                    property("normal", &Vertex::normal),
+                    property("uv", &Vertex::uv),
+                    property("color", &Vertex::color),
+                    property("bone_id_0", &Vertex::bone_id_0),
+                    property("bone_id_1", &Vertex::bone_id_1),
+                    property("bone_weight_0", &Vertex::bone_weight_0),
+                    property("bone_weight_1", &Vertex::bone_weight_1)
+                );
+            }
+        };
+		struct VertexWeight
+		{
+			uint32_t index;
+			float weight;
+		};
+
+        enum class MeshPrimitive
+        {
+            Cube,
+            Sphere,
         };
 
         template <typename T = Vertex>
-        class Mesh_T : public GameObject, public IResource
+        class Mesh_T : public GameObject
         {
             // static_assert(std::is_base_of<IElement, T>::value, "T must derived from IElement");
         };
-        class VENGINE_API Mesh : public GameObject, public IResource 
+        // template <typename T = Vertex>
+        class VENGINE_API Mesh : public GameObject
         {
             // static_assert(std::is_base_of<IElement, V>::value, "T must derived from IElement");
 
             public:
-                /// \brief brief constructor description.
+                /// \brief Construct a new empty Mesh object
+                ///
                 Mesh();
                 virtual ~Mesh();
-                virtual bool Load() override;
-                void Load(const std::string file_name);
-                bool HandleNode(const aiNode* node, const aiScene* scene);
-                void HandleMeshNode(const aiMesh* mesh, const aiScene* scene);
                 void UpdateGPUBuffer();
 
-                Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
+                void SetVertexData(const std::vector<Vertex> vertices, const std::vector<uint32_t> indices);
+                void SetBoneData(const std::string name, const int id, std::vector<VertexWeight> weights, float4x4 inverse_bind_pose_matrix_);
 
+                // Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
 
-                GraphicsBufferSharedPtr vertex_buffer_;
-                GraphicsBufferSharedPtr index_buffer_;
+                Rendering::GraphicsBufferSharedPtr vertex_buffer_;
+                Rendering::GraphicsBufferSharedPtr index_buffer_;
 
                 std::vector<Vertex> vertex_data_;
                 std::vector<uint32_t> index_data_;
+                //TODO Verify if the usage of BoneComponentSharedPtr is a good mesh/bone design
+                //GameObject usually does not contain a GameNode object
+                std::unordered_map<std::string, Animation::BoneComponentSharedPtr> bone_data_;
 
-
-                std::string file_name_;
-                bool loaded = false;
+                // bool loaded = false;
                 //vertex
                 //index
+
+                public:
+                static void GenerateCube(MeshSharedPtr mesh);
+                static MeshSharedPtr Default(const MeshPrimitive primitive = MeshPrimitive::Cube, const int sub_div = 0);
+
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        GameObject::properties(),
+                        std::make_tuple(
+                            property("vertices", &Mesh::vertex_data_),
+                            property("indices", &Mesh::index_data_)
+                            )
+                    );
+                }
 
         };
     }  // namespace Core

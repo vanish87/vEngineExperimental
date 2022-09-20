@@ -25,9 +25,8 @@ int main(int argc, char* argv[])
     configure.graphics_configure.height = 720;
     configure.graphics_configure.render_plugin_name = "opengl_rendering_plugin";
 
-    Context::GetInstance().ConfigureWith(configure);
+    Context::GetInstance().SetConfigure(configure);
 
     Example::OpenGLApp myapp;
-    myapp.Init();
     myapp.Run();
 }

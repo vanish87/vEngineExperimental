@@ -9,13 +9,25 @@ namespace vEngine
         Interface VENGINE_API IComponent
         {
         public:
-            virtual void UpdateComponent(GameNodeSharedPtr parent)
+            IComponent()
             {
-                UNUSED_PARAMETER(parent);
+                this->OnInit();
+            };
+            virtual ~IComponent()
+            {
+                this->OnDeinit();
             };
 
-        protected:
-            virtual ~IComponent(){};
+        public:
+            virtual GameNodeSharedPtr Owner() = 0;
+            virtual bool Enabled() const = 0;
+            virtual void SetEnable(const bool enable) = 0;
+
+            virtual void OnInit(){};
+            virtual void OnDeinit(){};
+            virtual void OnEnable(){};
+            virtual void OnDisable(){};
+            virtual void OnUpdate(){};
         };
     }  // namespace Core
 }  // namespace vEngine

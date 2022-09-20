@@ -1,10 +1,12 @@
 #include <gtest/gtest.h>
-#include <vengine/core/math.h>
-
-#include <vengine/core/matrix.hpp>
 #include <engine.hpp>
 
+#include <vengine/core/matrix.hpp>
+#include <vengine/core/math.hpp>
+
+
 using namespace vEngine::Math;
+using namespace vEngine::Core;
 
 TEST(Math, Matrix)
 {

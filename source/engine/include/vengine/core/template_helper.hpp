@@ -13,7 +13,7 @@
 #pragma once
 namespace vEngine
 {
-    namespace Math
+    namespace Core
     {
         /// \brief helper function to expand template
         ///
@@ -67,6 +67,12 @@ namespace vEngine
                     v[0] = lhs[0] / rhs[0];
                     vector_t<T, N - 1>::do_div(v + 1, lhs + 1, rhs + 1);
                 }
+                static void do_div(T v[N], const T lhs[N], const T& rhs) noexcept
+                {
+                    CHECK_ASSERT(rhs != 0);
+                    v[0] = lhs[0] / rhs;
+                    vector_t<T, N - 1>::do_div(v + 1, lhs + 1, rhs);
+                }
                 static void do_negative(T v[N], const T rhs[N]) noexcept
                 {
                     v[0] = -rhs[0];
@@ -80,6 +86,10 @@ namespace vEngine
                 {
                     std::swap(lhs[0], rhs[0]);
                     vector_t<T, N - 1>::do_swap(lhs + 1, rhs + 1);
+                }
+                static T do_dot(const T lhs[N], const T rhs[N]) noexcept
+                {
+                    return lhs[0] * rhs[0] + vector_t<T, N - 1>::do_dot(lhs + 1, rhs + 1);
                 }
         };
 
@@ -121,6 +131,10 @@ namespace vEngine
                 {
                     v[0] = lhs[0] / rhs[0];
                 }
+                static void do_div(T v[1], const T lhs[1], const T& rhs) noexcept
+                {
+                    v[0] = lhs[0] / rhs;
+                }
                 static void do_negative(T v[1], const T rhs[1]) noexcept
                 {
                     v[0] = -rhs[0];
@@ -132,6 +146,10 @@ namespace vEngine
                 static void do_swap(T lhs[1], T rhs[1]) noexcept
                 {
                     std::swap(lhs[0], rhs[0]);
+                }
+                static T do_dot(const T lhs[1], const T rhs[1]) noexcept
+                {
+                    return lhs[0] * rhs[0];
                 }
         };
 

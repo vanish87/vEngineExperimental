@@ -13,7 +13,7 @@
 #pragma once
 
 #include <queue>
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 
 #include <vengine/core/iruntime_module.hpp>
 // #include <vengine/core/renderer.hpp>
@@ -40,19 +40,12 @@ namespace vEngine
                 /// \brief traverse all camera and render them
                 void Update() override;
 
-                /// \brief only render all objects
-                void Flush();
-
                 void BeginScene();
+                void EndScene();
 
-                // GameNodeSharedPtr root_;
-
-                std::queue<IRendererSharedPtr> render_queue_;
-
+                void Load(const std::string scene_path);
 
                 SceneSharedPtr scene_;
-
-
         };
     }  // namespace Core
 }  // namespace vEngine

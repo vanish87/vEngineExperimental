@@ -17,9 +17,22 @@ namespace vEngine
     namespace Core
     {
 
+        // GameObject::GameObject(const GameObject&& other)
+        // {
+        //     UNUSED_PARAMETER(other);
+        //     NOT_IMPL_ASSERT;
+        // }
+        // GameObject::GameObject(const GameObject& other)
+        // {
+        //     UNUSED_PARAMETER(other);
+        //     NOT_IMPL_ASSERT;
+        // }
         /// constructor detailed defintion,
         /// should be 2 lines
-        GameObject::GameObject() {}
+        GameObject::GameObject()
+        {
+            // this->description_.type = type;
+        }
         GameObject::~GameObject() {}
     }  // namespace Core
 

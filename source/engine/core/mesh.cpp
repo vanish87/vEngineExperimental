@@ -11,6 +11,7 @@
 #include <vengine/core/mesh.hpp>
 #include <vengine/core/resource_loader.hpp>
 #include <vengine/rendering/render_engine.hpp>
+#include <vengine/animation/bone_component.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -18,168 +19,251 @@ namespace vEngine
 {
     namespace Core
     {
+        using namespace Rendering;
+
+        MeshSharedPtr Mesh::Default(const MeshPrimitive primitive, const int sub_div)
+        {
+            UNUSED_PARAMETER(primitive);
+            UNUSED_PARAMETER(sub_div);
+            static auto m = std::make_shared<Mesh>();
+            // if (m->CurrentState() != ResourceState::Loaded)
+            // {
+            //     switch (primitive)
+            //     {
+            //         case MeshPrimitive::Cube:
+            //             GenerateCube(m);
+            //             break;
+
+            //         default:
+            //             NOT_IMPL_ASSERT;
+            //             break;
+            //     }
+            // }
+            return m;
+        }
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Mesh::Mesh() : vertex_buffer_(nullptr), index_buffer_(nullptr)
+        Mesh::Mesh() : vertex_buffer_{nullptr}, index_buffer_{nullptr}
         {
-            PRINT("mesh object created");
-        }
-        Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices) 
-        {
-            this->vertex_data_.clear();
-            this->index_data_.clear();
-
-            this->vertex_data_.insert(this->vertex_data_.end(), vertices.begin(), vertices.end());
-            this->index_data_.insert(this->index_data_.end(), indices.begin(), indices.end());
-
-            this->loaded = true;
+            // PRINT("mesh object created");
         }
 
         Mesh::~Mesh()
         {
             this->vertex_data_.clear();
             this->index_data_.clear();
+            this->bone_data_.clear();
         }
 
-        /// Load mesh from assimp lib
-        /// store them in cpu side, then update to gpu later
-        void Mesh::Load(const std::string file_name)
+        MeshSharedPtr Default()
         {
-            // PRINT("Load mesh from file " + file_name);
-            this->file_name_ = file_name;
-
-            ResourceLoader::GetInstance().LoadAsync(shared_from_this(),
-            [&](IResourceSharedPtr c)
-            {
-                UNUSED_PARAMETER(c);
-                PRINT(this->file_name_ << " Resource loaded");
-            });
-        }
-        bool Mesh::Load()
-        {
-            // this->file_name_ = "bunny.obj";
-            // PRINT("Load mesh from file " + this->file_name_);
-
-            Assimp::Importer importer;
-            auto pScene = importer.ReadFile(this->file_name_, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
-            this->HandleNode(pScene->mRootNode, pScene);
-
-            // auto z = 20.0f;
-            // Vertex v1;
-            // v1.pos = float3(-0.5f, 0.7f, z);
-            // Vertex v2;
-            // v2.pos = float3(-0.5f, -0.5, z);
-            // Vertex v3;
-            // v3.pos = float3(0.5f, -0.5f, z);
-            // Vertex v4;
-            // v4.pos = float3(0.5f, 0.5f, z);
-
-            // v1.color = v2.color = v3.color = v4.color = float4::One();
-
-            // this->vertex_data_.push_back(v1);
-            // this->vertex_data_.push_back(v2);
-            // this->vertex_data_.push_back(v3);
-            // this->vertex_data_.push_back(v4);
-
-            // this->index_data_.push_back(0);
-            // this->index_data_.push_back(3);
-            // this->index_data_.push_back(1);
-
-            // this->index_data_.push_back(3);
-            // this->index_data_.push_back(2);
-            // this->index_data_.push_back(1);
-
-            this->loaded = true;
-
-            return true;
-        }
-        bool Mesh::HandleNode(const aiNode* node, const aiScene* scene)
-        {
-            if (node->mNumMeshes > 0)
-            {
-                auto mesh = scene->mMeshes[node->mMeshes[0]];
-                this->HandleMeshNode(mesh, scene);
-                return true;
-            }
-
-            for (uint32_t c = 0; c < node->mNumChildren; ++c)
-            {
-                if (this->HandleNode(node->mChildren[c], scene)) return true;
-            }
-
-            return false;
+            static auto m = std::make_shared<Mesh>();
+            return m;
         }
 
-        void Mesh::HandleMeshNode(const aiMesh* mesh, const aiScene* scene)
+        void Mesh::SetVertexData(const std::vector<Vertex> vertices, const std::vector<uint32_t> indices)
         {
-            UNUSED_PARAMETER(scene);
+            this->vertex_data_ = vertices;
+            this->index_data_ = indices;
+        }
+        void Mesh::SetBoneData(const std::string name, const int id, std::vector<VertexWeight> weights, float4x4 inverse_bind_pose_matrix)
+        {
+            auto bone = GameObjectFactory::Create<Animation::BoneComponent>();
+            bone->description_.name = name;
+            auto go = bone->GO();
+            go->id_ = id;
+            go->inverse_bind_pose_matrix_ = inverse_bind_pose_matrix;
 
-            auto hasPos = mesh->HasPositions();
-            auto hasUV = mesh->HasTextureCoords(0);
-            auto hasNormal = mesh->HasNormals();
-
-            for (uint32_t i = 0; i < mesh->mNumVertices; ++i)
+            for (auto& w : weights)
             {
-                Vertex v;
-                v.pos = hasPos ? float3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z) : float3(0, 0, 0);
-                // v.pos *= 0.2f;
-                // v.pos.z() = 0;
-                v.normal = hasNormal ? float3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z) : float3(0, 0, 0);
-                v.uv = hasUV ? float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y) : float2(0, 0);
-                v.color = float4(1, 1, 1, 1);
+                auto vid = w.index;
+                auto vweight = w.weight;
 
-                this->vertex_data_.emplace_back(v);
-            }
+                auto& v = this->vertex_data_[vid];
+                // statics[vid]++;
+                // CHECK_ASSERT(statics[vid] < 8);
 
-            for (uint32_t i = 0; i < mesh->mNumFaces; ++i)
-            {
-                auto f = mesh->mFaces[i];
-                for (uint32_t fi = 0; fi < f.mNumIndices; ++fi)
+                for (uint32_t vcount = 0; vcount < 8; ++vcount)
                 {
-                    this->index_data_.emplace_back(f.mIndices[fi]);
+                    if (vcount < 4)
+                    {
+                        if (v.bone_id_0[vcount] != -1)
+                        {
+                            // CHECK_ASSERT(vcount < 3);
+                            continue;
+                        }
+
+                        v.bone_id_0[vcount] = id;
+                        v.bone_weight_0[vcount] = vweight;
+                        break;
+                    }
+                    else
+                    {
+                        auto index = vcount % 4;
+                        if (v.bone_id_1[index] != -1)
+                        {
+                            // CHECK_ASSERT(vcount < 3);
+                            continue;
+                        }
+
+                        v.bone_id_1[index] = id;
+                        v.bone_weight_1[index] = vweight;
+                        break;
+                    }
                 }
             }
+            CHECK_ASSERT(this->bone_data_.find(bone->description_.name) == this->bone_data_.end());
+            this->bone_data_[bone->description_.name] = bone;
+
+            PRINT("Bone " << bone->description_.name << " id " << id);
         }
 
         /// Create GPU related buffer
         /// ie. Index/Vertice buffer for rendering
         void Mesh::UpdateGPUBuffer()
         {
-            if (this->vertex_buffer_ == nullptr && this->loaded)
+            if (this->vertex_buffer_ == nullptr)
             {
-                PRINT("Create mesh vertex Buffer");
+                // PRINT("Create mesh vertex Buffer");
                 GraphicsBufferDescriptor desc;
-                desc.type = GraphicsBufferType::GBT_Vertex;
-                desc.usage = GraphicsBufferUsage::GBU_GPU_Read_Only;
-                desc.offset = 0;
-                desc.stride = sizeof(Vertex);
-                desc.count = this->vertex_data_.size();
-                desc.total_size = desc.count * desc.stride;
-                desc.data = this->vertex_data_.data();
+                desc.type = GraphicsResourceType::Vertex;
+                desc.usage = GraphicsResourceUsage::GPU_Read_Only;
+                desc.resource.offset = 0;
+                desc.resource.stride = sizeof(Vertex);
+                desc.resource.count = this->vertex_data_.size();
+                desc.resource.total_size = desc.resource.count * desc.resource.stride;
+                desc.resource.data = this->vertex_data_.data();
 
-                desc.layout.elements_.push_back(ElementLayout::Element("POSITION", DataFormat::DF_RGBFloat));
-                desc.layout.elements_.push_back(ElementLayout::Element("NORMAL", DataFormat::DF_RGBFloat));
-                desc.layout.elements_.push_back(ElementLayout::Element("UV", DataFormat::DF_RGFloat));
-                desc.layout.elements_.push_back(ElementLayout::Element("COLOR", DataFormat::DF_RGBA32));
-                desc.layout.topology = ElementTopology::ET_TriangleList;
+                // Not used
+                desc.layout.elements_.push_back(ElementLayout::Element("POSITION", DataFormat::RGBFloat));
+                desc.layout.elements_.push_back(ElementLayout::Element("NORMAL", DataFormat::RGBFloat));
+                desc.layout.elements_.push_back(ElementLayout::Element("UV", DataFormat::RGFloat));
+                desc.layout.elements_.push_back(ElementLayout::Element("COLOR", DataFormat::RGBA32));
+                desc.layout.elements_.push_back(ElementLayout::Element("BLENDINDICES", DataFormat::RGBAInt));
+                desc.layout.elements_.push_back(ElementLayout::Element("BLENDWEIGHT", DataFormat::RGBAFloat));
+                desc.layout.topology = ElementTopology::TriangleList;
 
-                this->vertex_buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
+                this->vertex_buffer_ = Context::GetInstance().GetRenderEngine()->Create(desc);
             }
 
-            if (this->index_buffer_ == nullptr && this->loaded)
+            if (this->index_buffer_ == nullptr)
             {
-                PRINT("Create mesh index Buffer");
+                // PRINT("Create mesh index Buffer");
                 GraphicsBufferDescriptor desc;
-                desc.type = GraphicsBufferType::GBT_Index;
-                desc.usage = GraphicsBufferUsage::GBU_GPU_Read_Only;
-                desc.offset = 0;
-                desc.stride = sizeof(uint32_t);
-                desc.count = this->index_data_.size();
-                desc.total_size = desc.count * desc.stride;
-                desc.data = this->index_data_.data();
-                this->index_buffer_ = Context::GetInstance().GetRenderEngine().Create(desc);
+                desc.type = GraphicsResourceType::Index;
+                desc.usage = GraphicsResourceUsage::GPU_Read_Only;
+                desc.resource.offset = 0;
+                desc.resource.stride = sizeof(uint32_t);
+                desc.resource.count = this->index_data_.size();
+                desc.resource.total_size = desc.resource.count * desc.resource.stride;
+                desc.resource.data = this->index_data_.data();
+                this->index_buffer_ = Context::GetInstance().GetRenderEngine()->Create(desc);
             }
+        }
+
+        void Mesh::GenerateCube(MeshSharedPtr mesh)
+        {
+            mesh->vertex_data_.clear();
+            mesh->index_data_.clear();
+
+            if (mesh->vertex_buffer_ != nullptr) mesh->vertex_buffer_.reset();
+            if (mesh->index_buffer_ != nullptr) mesh->index_buffer_.reset();
+
+            Vertex v0;
+            v0.pos = float3(0.5f, 0.5f, 0.5f);
+            v0.normal = float3(0, 0, -1);
+            v0.uv = float2(1, 1);
+
+            Vertex v1;
+            v1.pos = float3(-0.5f, 0.5f, 0.5f);
+            v1.normal = float3(0, 0, -1);
+            v1.uv = float2(0, 1);
+
+            Vertex v2;
+            v2.pos = float3(-0.5f, -0.5f, 0.5f);
+            v2.normal = float3(0, 0, -1);
+            v2.uv = float2(0, 0);
+
+            Vertex v3;
+            v3.pos = float3(0.5f, -0.5f, 0.5f);
+            v3.normal = float3(0, 0, -1);
+            v3.uv = float2(1, 0);
+
+            Vertex v4;
+            v4.pos = float3(0.5f, 0.5f, -0.5f);
+            v4.normal = float3(0, 0, -1);
+            v4.uv = float2(1, 0);
+            Vertex v5;
+            v5.pos = float3(-0.5f, 0.5f, -0.5f);
+            v5.normal = float3(0, 0, -1);
+            v5.uv = float2(1, 0);
+            Vertex v6;
+            v6.pos = float3(-0.5f, -0.5f, -0.5f);
+            v6.normal = float3(0, 0, -1);
+            v6.uv = float2(1, 0);
+            Vertex v7;
+            v7.pos = float3(0.5f, -0.5f, -0.5f);
+            v7.normal = float3(0, 0, -1);
+            v7.uv = float2(1, 0);
+
+            mesh->vertex_data_.push_back(v0);
+            mesh->vertex_data_.push_back(v1);
+            mesh->vertex_data_.push_back(v2);
+            mesh->vertex_data_.push_back(v3);
+            mesh->vertex_data_.push_back(v4);
+            mesh->vertex_data_.push_back(v5);
+            mesh->vertex_data_.push_back(v6);
+            mesh->vertex_data_.push_back(v7);
+
+            mesh->index_data_.push_back(0);
+            mesh->index_data_.push_back(2);
+            mesh->index_data_.push_back(1);
+
+            mesh->index_data_.push_back(0);
+            mesh->index_data_.push_back(3);
+            mesh->index_data_.push_back(2);
+
+            mesh->index_data_.push_back(4);
+            mesh->index_data_.push_back(5);
+            mesh->index_data_.push_back(6);
+
+            mesh->index_data_.push_back(4);
+            mesh->index_data_.push_back(6);
+            mesh->index_data_.push_back(7);
+
+            mesh->index_data_.push_back(0);
+            mesh->index_data_.push_back(4);
+            mesh->index_data_.push_back(3);
+
+            mesh->index_data_.push_back(3);
+            mesh->index_data_.push_back(4);
+            mesh->index_data_.push_back(7);
+
+            mesh->index_data_.push_back(5);
+            mesh->index_data_.push_back(1);
+            mesh->index_data_.push_back(6);
+
+            mesh->index_data_.push_back(1);
+            mesh->index_data_.push_back(6);
+            mesh->index_data_.push_back(2);
+
+            mesh->index_data_.push_back(0);
+            mesh->index_data_.push_back(1);
+            mesh->index_data_.push_back(5);
+
+            mesh->index_data_.push_back(0);
+            mesh->index_data_.push_back(5);
+            mesh->index_data_.push_back(4);
+
+            mesh->index_data_.push_back(2);
+            mesh->index_data_.push_back(3);
+            mesh->index_data_.push_back(6);
+
+            mesh->index_data_.push_back(3);
+            mesh->index_data_.push_back(7);
+            mesh->index_data_.push_back(6);
+
         }
     }  // namespace Core
 

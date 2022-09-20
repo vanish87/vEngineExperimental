@@ -10,10 +10,11 @@
 #ifndef _VENGINE_RENDERING_FRAME_BUFFER_HPP
 #define _VENGINE_RENDERING_FRAME_BUFFER_HPP
 
-#include <VENGINE_API.h>
+#include <VENGINE_API.hpp>
 
 #include <engine.hpp>
-#include <vector>
+#include <vengine/rendering/data_struct.hpp>
+#include <unordered_map>
 
 namespace vEngine
 {
@@ -32,7 +33,7 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 FrameBuffer(const FrameBufferDescriptor& desc);
-                FrameBuffer(TextureSharedPtr backBuffer, const FrameBufferDescriptor& desc);
+                // FrameBuffer(TextureSharedPtr backBuffer, const FrameBufferDescriptor& desc);
                 virtual ~FrameBuffer();
 
                 TextureSharedPtr GetColor(const uint8_t index)
@@ -43,6 +44,9 @@ namespace vEngine
                 {
                     return this->depthStencilTexture_;
                 };
+
+                void BindColor(const TextureSharedPtr color, const uint8_t index = 0);
+                void BindDepthStencil(const TextureSharedPtr depth_stencil);
 
                 /// class variable description
                 // int public_variable_;
@@ -55,7 +59,7 @@ namespace vEngine
                 /// \param p1 Description for p1.
                 /// \param p2 Description for p2.
                 /// \return Description for return value.
-                std::vector<TextureSharedPtr> colorTextures_;
+                std::unordered_map<uint8_t, TextureSharedPtr> colorTextures_;
                 TextureSharedPtr depthStencilTexture_;
 
                 // view matrix and projection matrix
@@ -66,7 +70,7 @@ namespace vEngine
 
                 //not used for now
                 //maybe rt dimensions
-                GraphicsBufferSharedPtr frame_constat_buffer_;
+                GraphicsBufferSharedPtr frame_constant_buffer_;
         };
     }  // namespace Rendering
 

@@ -5,6 +5,10 @@ set(EXTERNAL_BUILD_DIR "${CMAKE_BINARY_DIR}/external/build")
 message(STATUS "EXTERNAL_BUILD_DIR= ${EXTERNAL_BUILD_DIR}")
 
 find_package(assimp REQUIRED)
+# assimp needs zlib
+set(ZLIB_ROOT ${EXTERNAL_BUILD_DIR})
+find_package(zlib REQUIRED)
+
 # find_package(lua REQUIRED)
 # find_package(freetype REQUIRED)
 
@@ -18,7 +22,10 @@ add_subdirectory(configure)
 add_subdirectory(engine)
 add_subdirectory(plugins)
 add_subdirectory(app)
+
+add_subdirectory(pipeline)
 add_subdirectory(editor)
+
 add_subdirectory(test)
 
 if(VENGINE_BUILD_DOC)

@@ -22,12 +22,12 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class MeshComponent : public Component<Mesh>
+        class VENGINE_API MeshComponent : public Component<Mesh>
         {
             public:
                 /// \brief brief constructor description.
                 MeshComponent();
-                MeshComponent(const MeshSharedPtr mesh);
+                // MeshComponent(const MeshSharedPtr mesh);
         };
     }  // namespace Core
 }  // namespace vEngine

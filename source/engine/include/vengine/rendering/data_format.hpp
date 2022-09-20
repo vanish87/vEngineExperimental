@@ -7,14 +7,28 @@ namespace vEngine
     {
         enum class DataFormat
         {
-            DF_Undifiend,
-            DF_RGBA32,
+            Undefined,
+            RGBA32,
 
-            DF_RGFloat,
-            DF_RGBFloat,
-            DF_RGBAFloat,
-            DF_R32Int,
+            RGFloat,
+            RGBFloat,
+            RGBAFloat,
+            R32Int,
+            RGBAInt,
+            D24U8,
         };
+        constexpr static uint8_t GetByteSize(const DataFormat f)
+        {
+            switch (f)
+            {
+            case DataFormat::RGBA32: return 4;
+            case DataFormat::RGFloat: return 8;
+            default:
+                break;
+            }
+
+            return 0;
+        }
     }
 }  // namespace vEngine
 

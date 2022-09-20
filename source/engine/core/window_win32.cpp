@@ -6,8 +6,8 @@
 
     // include windows.h first
     #include <vengine/core/window.hpp>
-    #include <vengine/core/application.hpp>
     #include <vengine/core/context.hpp>
+    // #include <vengine/core/application.hpp>
 // #include <tchar.h>//wchar
 
 namespace vEngine
@@ -29,7 +29,8 @@ namespace vEngine
             {
                 case WM_DESTROY:
                 {
-                    Context::GetInstance().AppInstance().Quit(true);
+                    //Use Event/Observer Pattern to decouple context class
+                    Context::GetInstance().QuitApplication();
                     PostQuitMessage(0);
                     return 0;
                 }
@@ -47,16 +48,11 @@ namespace vEngine
 
             return this->default_wnd_proc_(hWnd, message, wParam, lParam);
         }
-        void* Window::WindowHandle()
+        Window::Window(const WindowDescription& desc)
         {
-            return this->wnd_;
-        }
-        void Window::Init(void* wnd)
-        {
-            const auto configure = Context::GetInstance().CurrentConfigure();
-            std::string win_name = configure.app_name;
+            std::string win_name = desc.name;
 
-            auto hwnd = static_cast<HWND>(wnd);
+            auto hwnd = static_cast<HWND>(desc.wnd);
             if (hwnd != nullptr)
             {
                 this->default_wnd_proc_ = reinterpret_cast<WNDPROC>(::GetWindowLongPtrW(hwnd, GWLP_WNDPROC));
@@ -74,7 +70,7 @@ namespace vEngine
                 wcex.lpszClassName = win_name.c_str();
                 ::RegisterClass(&wcex);
 
-                RECT rc = {0, 0, configure.graphics_configure.width, configure.graphics_configure.height};
+                RECT rc = {0, 0, desc.width, desc.height};
                 // get real window size; should slightly bigger than rendering
                 // resolution we should render a frame with render_setting, so
                 // window is enlarged.
@@ -100,7 +96,7 @@ namespace vEngine
             //::ShowCursor(!render_setting.full_screen);
             // ::UpdateWindow(this->wnd_);
         }
-        void Window::Deinit() 
+        Window::~Window() 
         {
             ::DestroyWindow(static_cast<HWND>(this->wnd_));
         }
