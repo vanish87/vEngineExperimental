@@ -5,7 +5,7 @@
 
 //TODO use Default for better obj creation: auto go = type_name::Default();                                 
 #define FROM_JSON_BY_DESC(ptr, desc, type_name, template_name)      \
-if (desc.type == typeid(type_name).name())                          \
+if (ToString(desc.type) == typeid(type_name).name())                \
 {                                                                   \
     auto go = GameObjectFactory::Create<type_name>();               \
     auto json = LoadJson(GameObjectToPath(desc));                   \
@@ -91,7 +91,7 @@ namespace vEngine
         {
             using Type = typename std::tuple_element_t<I, T>;
             // if(std::is_same<T, Type>::value)
-            if(typeid(Type).name() == desc.type)
+            if(typeid(Type).name() == ToString(desc.type))
             {
                 FROM_JSON_BY_DESC(ptr, desc, Type, S);
                 return true;
@@ -167,7 +167,7 @@ namespace vEngine
             ptr = CreateAndLoadByDesc<T>(desc);
             CHECK_ASSERT_NOT_NULL(ptr);
 
-            PRINT("Load " << ptr->description_.uuid.AsUint() << " " << desc.type);
+            PRINT("Load " << ptr->description_.uuid.AsUint() << " " << ToString(desc.type));
         }
         template <typename T>
         void FromJson(const json& j, std::vector<T>& vector)
