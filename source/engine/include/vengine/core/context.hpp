@@ -6,11 +6,12 @@
 // #include <unordered_map>
 
 #include <engine.hpp>
-#include <vengine/core/game_object.hpp>
+// #include <vengine/core/game_object.hpp>
 // #include <vengine/data/meta.hpp>
 #include <vengine/core/configure.hpp>
 // #include <vengine/rendering/render_engine.hpp>
 // #include <vengine/core/iruntime_module.hpp>
+
 
 namespace vEngine
 {

@@ -19,13 +19,13 @@
 #include <assimp/postprocess.h>
 
 #include <engine.hpp>
-#include <vengine/core/application.hpp>
+// #include <vengine/core/application.hpp>
 
 namespace vEngine
 {
     namespace Pipeline
     {
-        class AssimpHandler: public Core::Application
+        class AssimpHandler
         {
             public:
                 Core::SceneSharedPtr LoadFromAssimp(const std::filesystem::path path);

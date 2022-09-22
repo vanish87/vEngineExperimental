@@ -84,6 +84,7 @@ namespace vEngine
         CLASS_AND_SHARED_POINTER(Window)
         CLASS_AND_SHARED_WEAK_POINTER(Application)
 
+        enum class GameObjectType;
         CLASS_AND_SHARED_POINTER(GameObject)
         CLASS_AND_SHARED_POINTER(Camera)
         CLASS_AND_SHARED_POINTER(Light)
