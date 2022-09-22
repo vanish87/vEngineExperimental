@@ -18,6 +18,7 @@ namespace vEngine
 
             public:
                 virtual void Run();
+                virtual void RunOnce();
                 virtual void Quit();
 
             protected:
