@@ -1,6 +1,5 @@
-#include <vengine/core/context.hpp>
 #include <vengine/editor/dll_functions.hpp>
-#include <vengine/rendering/render_engine.hpp>
+#include <vengine/core/context.hpp>
 
 namespace vEngine
 {
@@ -25,7 +24,8 @@ namespace vEngine
     }  // namespace Editor
 
 }  // namespace vEngine
-extern "C" {
+extern "C"
+{
     using namespace vEngine::Core;
     using namespace vEngine::Editor;
     void Context_Init(void* hwnd)
