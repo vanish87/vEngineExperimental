@@ -54,13 +54,19 @@ namespace vEngine
             // call user update
             this->OnUpdate();
 
-
             // update other context module
             //  Context::Update();
             // SceneManager::GetInstance().Update();
             // call here or PAINT event in Window Class
             // Context::GetInstance().GetRenderEngine().Update();
         }
+        void Application::RunOnce()
+        {
+            this->Init();
+            this->Update();
+            this->Deinit();
+        }
+
         void Application::Run()
         {
             this->Init();
