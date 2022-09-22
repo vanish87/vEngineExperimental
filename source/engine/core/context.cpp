@@ -49,7 +49,7 @@ namespace vEngine
 
             if (graphics.output == Output::Window)
             {
-                WindowDescription desc;
+                WindowDescriptor desc;
                 desc.name = this->configure_.app_name;
                 desc.width = graphics.width;
                 desc.height = graphics.height;

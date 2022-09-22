@@ -19,7 +19,7 @@ namespace vEngine
 {
     namespace Core
     {
-        struct WindowDescription
+        struct WindowDescriptor
         {
             std::string name;
             void* wnd;
@@ -29,7 +29,7 @@ namespace vEngine
         class VENGINE_API Window
         {
             public:
-                Window(const WindowDescription& desc);
+                Window(const WindowDescriptor& desc);
                 virtual ~Window();
 
                 void Update();

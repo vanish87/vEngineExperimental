@@ -48,7 +48,7 @@ namespace vEngine
 
             return this->default_wnd_proc_(hWnd, message, wParam, lParam);
         }
-        Window::Window(const WindowDescription& desc)
+        Window::Window(const WindowDescriptor& desc)
         {
             std::string win_name = desc.name;
 
