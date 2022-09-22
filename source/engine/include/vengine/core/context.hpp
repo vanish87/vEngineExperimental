@@ -6,10 +6,10 @@
 // #include <unordered_map>
 
 #include <engine.hpp>
-// #include <vengine/core/game_object.hpp>
+#include <vengine/core/game_object.hpp>
 // #include <vengine/data/meta.hpp>
 #include <vengine/core/configure.hpp>
-#include <vengine/rendering/render_engine.hpp>
+// #include <vengine/rendering/render_engine.hpp>
 // #include <vengine/core/iruntime_module.hpp>
 
 namespace vEngine
@@ -18,7 +18,7 @@ namespace vEngine
     {
         class VENGINE_API Context
         {
-                friend class GameObjectFactory;
+                // friend class GameObjectFactory;
                 SINGLETON_CLASS(Context)
 
             public:
@@ -36,7 +36,7 @@ namespace vEngine
             public:
                 /// \brief Load all factories that create resource
                 ///
-                const Configure CurrentConfigure() const;
+                Configure CurrentConfigure() const;
 
                 void RegisterAppInstance(ApplicationSharedPtr app);
                 void QuitApplication();

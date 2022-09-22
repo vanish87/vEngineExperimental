@@ -12,11 +12,12 @@
 
 #pragma once
 
-#include <engine.hpp>
+// #include <engine.hpp>
 
-#include <map>
-#include <vengine/core/vector.hpp>
-#include <vengine/core/matrix.hpp>
+#include <utility>
+// #include <map>
+// #include <vengine/core/vector.hpp>
+// #include <vengine/core/matrix.hpp>
 
 namespace vEngine
 {
@@ -57,10 +58,10 @@ namespace vEngine
                     );
                 }
         };
-        class TexAttribute : public Attribute<std::string>
-        {
+        // class TexAttribute : public Attribute<std::string>
+        // {
 
-        };
+        // };
         template<typename T>
         struct Getter
         {

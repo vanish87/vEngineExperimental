@@ -3,14 +3,15 @@
 
 #pragma once
 
-#ifdef VENGINE_PLATFORM_WINDOWS
-    #include <windows.h>
-#elif VENGINE_PLATFORM_UNIX
+// #ifdef VENGINE_PLATFORM_WINDOWS
+//     #define NOMINMAX
+//     #include <windows.h>
+// #ifdef VENGINE_PLATFORM_UNIX
 // OpenGL rendering plugin will create glwindow when creating rendering window
 // so this is a empty window in linux platform
 // TODO use x11 window later
 // struct GLFWwindow;
-#endif
+// #endif
 
 #include <engine.hpp>
 

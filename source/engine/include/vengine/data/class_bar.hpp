@@ -2,10 +2,10 @@
 #define _VENGINE_DATA_CLASS_BAR_HPP
 
 #include <engine.hpp>
-#include <predeclear.hpp>
 
 #include <vengine/data/meta.hpp>
 #include <vengine/core/game_object.hpp>
+#include <vengine/core/vector.hpp>
 
 namespace vEngine
 {

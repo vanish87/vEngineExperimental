@@ -3,12 +3,13 @@
 
 #include <vector>
 #include <engine.hpp>
-#include <predeclear.hpp>
 
 #include <vengine/data/meta.hpp>
 #include <vengine/core/game_object.hpp>
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/data/class_bar.hpp>
+
+#include <vengine/core/matrix.hpp>
 
 namespace vEngine
 {

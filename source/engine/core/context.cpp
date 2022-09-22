@@ -16,7 +16,7 @@
 
 // #include <vengine/data/meta.hpp>
 // #include <vengine/data/json.hpp>
-#include <fstream>
+// #include <fstream>
 
 namespace vEngine
 {
@@ -26,7 +26,7 @@ namespace vEngine
 
         Context::Context() {}
         Context::~Context() {}
-        const Configure Context::CurrentConfigure() const
+        Configure Context::CurrentConfigure() const
         {
             return this->configure_;
         }
@@ -71,26 +71,29 @@ namespace vEngine
 
             this->FreeDll();
         }
-        void Context::Update() {}
+        void Context::Update()
+        {
+            if (this->CurrentWindow() != nullptr) this->CurrentWindow()->Update();
+        }
 
         Rendering::RenderEngineUniquePtr& Context::GetRenderEngine()
         {
             if (this->render_engine_ptr_ == nullptr)
             {
-#ifdef VENGINE_PLATFORM_APPLE_STATIC
+                #ifdef VENGINE_PLATFORM_APPLE_STATIC
                 CreateRenderEngine(this->render_engine_ptr_);
-#else
+                #else
                 ProcessSharedFunction<Rendering::RenderEngine, HandleRenderEngine>("CreateRenderEngine", this->render_plugin_dll_handle_, this->render_engine_ptr_);
-#endif
+                #endif
             }
             return this->render_engine_ptr_;
         }
 
         void Context::LoadDll()
         {
-#ifdef VENGINE_PLATFORM_APPLE_STATIC
+            #ifdef VENGINE_PLATFORM_APPLE_STATIC
             return;
-#endif
+            #endif
             this->FreeDll();
 
             auto render_dll_name = this->configure_.graphics_configure.render_plugin_name;
