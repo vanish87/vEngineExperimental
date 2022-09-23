@@ -9,8 +9,8 @@
 
 #include <vengine/core/context.hpp>
 #include <vengine/core/mesh.hpp>
-#include <vengine/core/mesh_renderer.hpp>
-#include <vengine/core/mesh_renderer_component.hpp>
+#include <vengine/rendering/mesh_renderer.hpp>
+#include <vengine/rendering/mesh_renderer_component.hpp>
 #include <vengine/rendering/render_engine.hpp>
 #include <vengine/rendering/material.hpp>
 
@@ -18,7 +18,7 @@
 /// should be 2 lines at least.
 namespace vEngine
 {
-    namespace Core
+    namespace Rendering
     {
 
         /// constructor detailed defintion,

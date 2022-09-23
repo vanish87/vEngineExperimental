@@ -26,7 +26,7 @@
 #include <vengine/core/game_object.hpp>
 #include <vengine/rendering/data_struct.hpp>
 #include <vengine/rendering/pipeline_state.hpp>
-#include <vengine/core/mesh_renderer_component.hpp>
+#include <vengine/rendering/mesh_renderer_component.hpp>
 #include <vengine/core/mesh_component.hpp>
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/transform_component.hpp>

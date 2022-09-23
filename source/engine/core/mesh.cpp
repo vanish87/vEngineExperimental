@@ -25,7 +25,7 @@ namespace vEngine
         {
             UNUSED_PARAMETER(primitive);
             UNUSED_PARAMETER(sub_div);
-            static auto m = std::make_shared<Mesh>();
+            static auto m = GameObjectFactory::Create<Mesh>();
             // if (m->CurrentState() != ResourceState::Loaded)
             // {
             //     switch (primitive)
@@ -44,7 +44,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Mesh::Mesh() : vertex_buffer_{nullptr}, index_buffer_{nullptr}
+        Mesh::Mesh(const GameObjectType type) : GameObject(type), vertex_buffer_{nullptr}, index_buffer_{nullptr}
         {
             // PRINT("mesh object created");
         }

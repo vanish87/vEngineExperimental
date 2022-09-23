@@ -13,15 +13,12 @@
 #include <vector>
 #include <unordered_map>
 
-#include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
 #include <vengine/core/iresource.hpp>
 #include <vengine/core/element.hpp>
 #include <vengine/core/vector.hpp>
 #include <vengine/animation/bone.hpp>
-
-#include <vengine/data/meta.hpp>
 
 
 /// A brief namespace description.
@@ -83,7 +80,7 @@ namespace vEngine
             public:
                 /// \brief Construct a new empty Mesh object
                 ///
-                Mesh();
+                Mesh(const GameObjectType type = GameObjectType::Mesh);
                 virtual ~Mesh();
                 void UpdateGPUBuffer();
 

@@ -104,7 +104,7 @@ namespace vEngine
 #define CASE_AND_CREATE(ptr, etype, type, path)                 \
     case etype:                                                 \
     {                                                           \
-        auto go = Context::GetInstance().Create<etype, type>(); \
+        auto go = GameObjectFactory::Create<etype, type>(); \
         FromJson(LoadJson(path), *go.get());                    \
         ptr = go;                                               \
     }                                                           \
@@ -122,7 +122,7 @@ namespace vEngine
 
             // using type_list = std::tuple<ClassBar, ClassFoo>;
             using type_list =
-                std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, TransformComponent, Mesh, MeshComponent, MeshRenderer, Rendering::MeshRendererComponent, Camera, CameraComponent,
+                std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, TransformComponent, Mesh, MeshComponent, Rendering::MeshRenderer, Rendering::MeshRendererComponent, Camera, CameraComponent,
                            Rendering::PipelineState, Rendering::Texture, Animation::AnimationClip, Animation::Joint, Animation::Bone, Animation::BoneComponent, GameNode, ClassFoo, ClassBar>;
 
             GameObjectSharedPtr shared;
@@ -180,10 +180,6 @@ namespace vEngine
             }
             GameObjectDescription desc;
             FromJson(j["description"], desc);
-
-            // PRINT("Deserialize " << desc.uuid.AsUint() << " " << desc.type);
-
-            PRINT("From json load " << typeid(T).name());
 
             // 1. find by uuid
             // ptr = GameObjectFactory::Find<T>(desc);

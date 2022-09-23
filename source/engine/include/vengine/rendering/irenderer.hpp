@@ -1,9 +1,9 @@
-#ifndef _VENGINE_CORE_IRENDERER_HPP
-#define _VENGINE_CORE_IRENDERER_HPP
+#ifndef _VENGINE_RENDERING_IRENDERER_HPP
+#define _VENGINE_RENDERING_IRENDERER_HPP
 
 namespace vEngine
 {
-    namespace Core
+    namespace Rendering
     {
         Interface IRenderer
         {
@@ -14,4 +14,4 @@ namespace vEngine
     }  // namespace Core
 }  // namespace vEngine
 
-#endif /* _VENGINE_CORE_IRENDERER_HPP */
+#endif /* _VENGINE_RENDERING_IRENDERER_HPP */

@@ -84,8 +84,8 @@ namespace vEngine
                 }
 
             private:
-                std::shared_ptr<T> game_object_;
                 bool enabled_;
+                std::shared_ptr<T> game_object_;
 
             public:
                 virtual GameNodeSharedPtr Owner() override

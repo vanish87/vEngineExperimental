@@ -6,6 +6,7 @@
 #include <vengine/data/meta.hpp>
 #include <vengine/data/json.hpp>
 #include <vengine/core/scene.hpp>
+#include <vengine/core/light.hpp>
 
 #include <assimp_handler.hpp>
 
@@ -57,15 +58,13 @@ int main(int argc, char* argv[])
         if (s == "-r") resource_src = argv[i + 1];
         if (s == "-b") resource_bin = argv[i + 1];
     }
-    // input = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource/boblamp/boblampclean.md5mesh";
-    // output = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin/assimp/boblampclean.json";
-    // resource_src = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource";
-    // resource_bin = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin";
+    input = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource/boblamp/boblampclean.md5mesh";
+    output = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin/assimp/boblampclean.json";
+    resource_src = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource";
+    resource_bin = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin";
 
     Configure configure;
     configure.graphics_configure.output = Output::CommandLine;
-    configure.graphics_configure.width = 320;
-    configure.graphics_configure.height = 240;
     configure.resource_src = resource_src;
     configure.resource_bin = resource_bin;
 
@@ -88,9 +87,18 @@ int main(int argc, char* argv[])
     PRINT(resource_bin.string());
 
     vEngine::Pipeline::AssimpHandler handler;
+    
+    auto go = GameObjectFactory::Create<GameObjectType::Mesh>();
 
-    auto mesh = Context::GetInstance().Create<GameObjectType::Mesh>();
+    auto mesh = GameObjectFactory::Create<GameObjectType::Mesh, vEngine::Core::Mesh>();
+    // auto mesh = Context::GetInstance().Create<GameObjectType::Mesh, vEngine::Core::Mesh>();
     PRINT(mesh->description_.name);
+
+    // auto camera = GameObjectFactory::Create<GameObjectType::Camera, vEngine::Core::Camera>(mesh->description_);
+    // PRINT(camera->description_.name);
+
+    // auto light = GameObjectFactory::Create<GameObjectType::Light, vEngine::Core::Light>(1234);
+    // PRINT(light->description_.name);
 
     auto scene = handler.LoadFromAssimp(input);
     PRINT("Save to " << output.string());
@@ -103,9 +111,9 @@ int main(int argc, char* argv[])
     scene.reset();
 
     // auto path = ResourceLoader::GetInstance().GetFilePath("boblampclean.json");
-    // Context::GetInstance().Clear();
-    // auto path = output;
-    // auto new_scene = Scene::Load(path);
+    Context::GetInstance().Clear();
+    auto path = output;
+    auto new_scene = Scene::Load(path);
 
     Context::GetInstance().Deinit();
 

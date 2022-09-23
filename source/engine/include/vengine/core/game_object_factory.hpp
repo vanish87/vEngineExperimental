@@ -25,25 +25,47 @@ namespace vEngine
     /// should be 2 lines at least.
     namespace Core
     {
-        template <typename T>
-        class go_shared_ptr : public std::shared_ptr<T>
-        {
-            using go_type = T;
-        };
-
         /// \brief To create component and call Init for it
         ///
         class VENGINE_API GameObjectFactory
         {
             public:
-                template <typename T, class... Args>
-                go_shared_ptr<T> go_make_shared(Args&&... args)
+                #define TYPE_AND_CREATE(etype, type) \
+                    if constexpr (Type == etype) return GameObjectFactory::Create<type>(std::forward<Args>(args)...);
+
+                #define CONTEXT_TYPE_AND_CREATE(etype, type) \
+                    if constexpr (Type == etype) return std::make_shared<type>(std::forward<Args>(args)...);
+
+                #define RENDERING_TYPE_AND_CREATE(etype, type) \
+                    if constexpr (Type == etype) return Context::GetInstance().GetRenderingEngine()->Create(std::forward<Args>(args)...);
+
+                template <GameObjectType Type, typename T = GameObject, class... Args>
+                static std::shared_ptr<T> Create(Args&&... args)
                 {
-                    static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
-                    auto go = new T(std::forward<Args>(args)...);
-                    go_shared_ptr<T> go_ptr;
-                    go_ptr.reset(go);
-                    return go_ptr;
+                    TYPE_AND_CREATE(GameObjectType::GameObject, GameObject);
+                    TYPE_AND_CREATE(GameObjectType::GameNode, GameNode);
+                    if constexpr (Type == GameObjectType::Component) static_assert(false, "Cannot create component without game object type");
+                    TYPE_AND_CREATE(GameObjectType::Transform, Transform);
+                    TYPE_AND_CREATE(GameObjectType::TransformComponent, TransformComponent);
+                    TYPE_AND_CREATE(GameObjectType::Camera, Camera);
+                    TYPE_AND_CREATE(GameObjectType::CameraComponent, CameraComponent);
+                    TYPE_AND_CREATE(GameObjectType::Light, Light);
+                    TYPE_AND_CREATE(GameObjectType::Mesh, Mesh);
+                    if constexpr (Type == GameObjectType::Renderer) static_assert(false, "Cannot create renderer without renderable type");
+
+                    TYPE_AND_CREATE(GameObjectType::Scene, Scene);
+                    TYPE_AND_CREATE(GameObjectType::Texture, Rendering::Texture);
+
+
+                    if constexpr (Type == GameObjectType::Camera) return Context::GetInstance().CreateTest<Camera>(std::forward<Args>(args)...);
+                    if constexpr (Type == GameObjectType::Light) return Context::GetInstance().CreateTest<Light>(std::forward<Args>(args)...);
+                    // if constexpr (Type == GameObjectType::Mesh) return std::make_shared<Mesh>(args);
+
+                    // if constexpr (Type == GameObjectType::Mesh) return std::make_shared<Mesh>();
+                    // if constexpr (Type == GameObjectType::Scene) return std::make_shared<Scene>();
+                    // if constexpr (Type == GameObjectType::GameObject) return std::make_shared<GameObject>();
+                    // if constexpr (Type == GameObjectType::GameNode) return std::make_shared<GameNode>();
+                    // return nullptr;
                 }
 
                 template <typename T, class... Args>

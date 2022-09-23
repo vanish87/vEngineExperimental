@@ -1,4 +1,3 @@
-
 /// \file renderer.hpp
 /// \brief Head file for Renderer
 ///
@@ -8,27 +7,26 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#ifndef _VENGINE_CORE_RENDERER_HPP
-#define _VENGINE_CORE_RENDERER_HPP
+#ifndef _VENGINE_RENDERING_RENDERER_HPP
+#define _VENGINE_RENDERING_RENDERER_HPP
 
 #pragma once
 
 #include <engine.hpp>
-
 #include <vengine/core/game_object.hpp>
-#include <vengine/core/irenderer.hpp>
+#include <vengine/rendering/irenderer.hpp>
 
 /// A brief namespace description.
 namespace vEngine
 {
-    namespace Core
+    namespace Rendering
     {
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
         template <typename T>
-        class VENGINE_API Renderer : public GameObject, public IRenderer
+        class VENGINE_API Renderer : public Core::GameObject, public IRenderer
         {
             public:
                 constexpr static auto properties()
@@ -38,18 +36,12 @@ namespace vEngine
 
             public:
                 /// \brief brief constructor description.
-                Renderer()
-
-                    {
-
-                    };
-
-                virtual bool UpdateRenderable()
+                Renderer(const Core::GameObjectType type = Core::GameObjectType::Renderer) : GameObject(type) {}
+                bool UpdateRenderable()
                 {
                     return false;
                 }
-
-                virtual void Render()
+                void Render()
                 {
                     // pepare gpu dat from renderable_
                     // Get render engine
@@ -59,9 +51,9 @@ namespace vEngine
 
                 std::shared_ptr<T> renderable_;
                 // gpu buffer etc.
-                Rendering::MaterialSharedPtr material_;
+                MaterialSharedPtr material_;
         };
-    }  // namespace Core
+    }  // namespace Rendering
 }  // namespace vEngine
 
-#endif /* _VENGINE_CORE_RENDERER_HPP */
+#endif /* _VENGINE_RENDERING_RENDERER_HPP */

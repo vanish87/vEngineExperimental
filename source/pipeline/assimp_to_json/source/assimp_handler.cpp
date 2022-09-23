@@ -9,7 +9,7 @@
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/transform_component.hpp>
 #include <vengine/core/mesh_component.hpp>
-#include <vengine/core/mesh_renderer_component.hpp>
+#include <vengine/rendering/mesh_renderer_component.hpp>
 #include <vengine/core/resource_loader.hpp>
 #include <vengine/rendering/shader.hpp>
 #include <vengine/rendering/material.hpp>

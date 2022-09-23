@@ -6,7 +6,7 @@
 // #include <unordered_map>
 
 #include <engine.hpp>
-// #include <vengine/core/game_object.hpp>
+#include <vengine/core/game_object.hpp>
 // #include <vengine/data/meta.hpp>
 #include <vengine/core/configure.hpp>
 // #include <vengine/rendering/render_engine.hpp>
@@ -23,21 +23,23 @@ namespace vEngine
                 SINGLETON_CLASS(Context)
 
             public:
-                template <GameObjectType Type, typename T>
-                std::shared_ptr<T> Create()
+                template <typename T>
+                std::shared_ptr<T> CreateTest(GameObjectDescription desc)
                 {
-                    if constexpr (Type == GameObjectType::Mesh) return std::make_shared<Mesh>();
-                    if constexpr (Type == GameObjectType::Scene) return std::make_shared<Scene>();
-                    if constexpr (Type == GameObjectType::GameObject) return std::make_shared<GameObject>();
-                    if constexpr (Type == GameObjectType::GameNode) return std::make_shared<GameNode>();
-                    if constexpr (Type == GameObjectType::Texture) return std::make_shared<Rendering::Texture>();
-                    // return nullptr;
+                    return nullptr;
+                }
+                template <typename T>
+                std::shared_ptr<T> CreateTest(int desc)
+                {
+                    UNUSED_PARAMETER(desc);
+                    return nullptr;
                 }
 
-            public:
-                /// \brief Load all factories that create resource
-                ///
-                Configure CurrentConfigure() const;
+                public :
+                    /// \brief Load all factories that create resource
+                    ///
+                    Configure
+                    CurrentConfigure() const;
 
                 void RegisterAppInstance(ApplicationSharedPtr app);
                 void QuitApplication();

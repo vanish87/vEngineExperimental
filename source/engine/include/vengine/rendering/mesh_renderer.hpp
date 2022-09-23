@@ -7,25 +7,24 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#ifndef _VENGINE_CORE_MESH_RENDERER_HPP
-#define _VENGINE_CORE_MESH_RENDERER_HPP
+#ifndef _VENGINE_RENDERING_MESH_RENDERER_HPP
+#define _VENGINE_RENDERING_MESH_RENDERER_HPP
 
 #pragma once
 
 #include <engine.hpp>
-#include <VENGINE_API.hpp>
-#include <vengine/core/renderer.hpp>
+#include <vengine/rendering/renderer.hpp>
 
 /// A brief namespace description.
 namespace vEngine
 {
-    namespace Core
+    namespace Rendering
     {
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class VENGINE_API MeshRenderer : public Renderer<Mesh>
+        class VENGINE_API MeshRenderer : public Renderer<Core::Mesh>
         {
             public:
                 /// \brief brief constructor description.
@@ -36,4 +35,4 @@ namespace vEngine
     }  // namespace Core
 }  // namespace vEngine
 
-#endif /* _VENGINE_CORE_MESH_RENDERER_HPP */
+#endif /* _VENGINE_RENDERING_MESH_RENDERER_HPP */
