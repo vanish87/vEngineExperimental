@@ -32,14 +32,20 @@ namespace vEngine
             Camera,
             CameraComponent,
             Light,
+            LightComponent,
             Mesh,
+            MeshComponent,
             Renderer,
-
-            // Mesh_Cube,
+            MeshRenderer,
+            MeshRendererComponent,
             Material,
+
             Bone,
+            BoneComponent,
             Joint,
             AnimationClip,
+
+            // Mesh_Cube,
             Animator,
             Skeleton,
             Asset,

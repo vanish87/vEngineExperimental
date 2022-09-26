@@ -45,7 +45,7 @@ namespace vEngine
                 }
             public:
                 /// \brief brief constructor description.
-                AnimationClip();
+                AnimationClip(const Core::GameObjectType type = Core::GameObjectType::AnimationClip);
                 virtual ~AnimationClip();
 
                 std::unordered_map<std::string, JointSharedPtr> GetJointAtTime(const float currentTime);

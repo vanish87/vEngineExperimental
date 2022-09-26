@@ -15,10 +15,11 @@ namespace vEngine
 {
     namespace Rendering
     {
+        using namespace Core;
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        MeshRendererComponent::MeshRendererComponent()
+        MeshRendererComponent::MeshRendererComponent(const Core::GameObjectType type) : Component(type)
         {
             auto cbuffer_desc = GraphicsBufferDescriptor();
             cbuffer_desc.type = GraphicsResourceType::CBuffer;

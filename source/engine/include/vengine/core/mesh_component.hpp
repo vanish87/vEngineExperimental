@@ -10,6 +10,7 @@
 #ifndef _VENGINE_CORE_MESH_COMPONENT_HPP
 #define _VENGINE_CORE_MESH_COMPONENT_HPP
 
+#include <engine.hpp>
 #include <vengine/core/component.hpp>
 #include <vengine/core/mesh.hpp>
 
@@ -26,7 +27,7 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                MeshComponent();
+                MeshComponent(const GameObjectType type = GameObjectType::MeshComponent);
                 // MeshComponent(const MeshSharedPtr mesh);
         };
     }  // namespace Core

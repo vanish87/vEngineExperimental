@@ -13,7 +13,6 @@
 #pragma once
 
 #include <engine.hpp>
-#include <vector>
 #include <vengine/core/game_object.hpp>
 #include <vengine/core/quaternion.hpp>
 
@@ -59,7 +58,7 @@ namespace vEngine
                 }
             public:
                 /// \brief brief constructor description.
-                Joint();
+                Joint(const Core::GameObjectType type = Core::GameObjectType::Joint);
                 virtual ~Joint();
 
                 std::vector<JointKey<Core::float3>> position_keys_;

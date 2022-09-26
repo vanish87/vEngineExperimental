@@ -7,10 +7,9 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#ifndef _VENGINE_CORE_MATERIAL_HPP
-#define _VENGINE_CORE_MATERIAL_HPP
+#ifndef _VENGINE_RENDERING_MATERIAL_HPP
+#define _VENGINE_RENDERING_MATERIAL_HPP
 
-#include <filesystem>
 
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
@@ -44,7 +43,7 @@ namespace vEngine
                 static MaterialSharedPtr Default();
 
                 /// \brief brief constructor description.
-                Material();
+                Material(const Core::GameObjectType type = Core::GameObjectType::Material);
                 ~Material();
                 // void SetShader(const std::filesystem::path path, const ShaderType type);
 
@@ -93,4 +92,4 @@ namespace vEngine
     }  // namespace Rendering
 }  // namespace vEngine
 
-#endif /* _VENGINE_CORE_MATERIAL_HPP */
+#endif /* _VENGINE_RENDERING_MATERIAL_HPP */

@@ -19,9 +19,10 @@ namespace vEngine
 {
     namespace Rendering
     {
+        using namespace Core;
         /// constructor detailed defintion,
         /// should be 2 lines
-        Material::Material()
+        Material::Material(const GameObjectType type) : GameObject(type)
         {
             PipelineStateDescriptor pdesc;
             this->pipeline_state_ = Context::GetInstance().GetRenderEngine()->Register(pdesc);

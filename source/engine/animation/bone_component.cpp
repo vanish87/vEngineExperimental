@@ -16,9 +16,10 @@ namespace vEngine
     namespace Animation
     {
 
+        using namespace Core;
         /// constructor detailed defintion,
         /// should be 2 lines
-        BoneComponent::BoneComponent() {}
+        BoneComponent::BoneComponent(const GameObjectType type) : Component(type) {}
         BoneComponent::~BoneComponent() {}
         // void BoneComponent::Update()
         //         {

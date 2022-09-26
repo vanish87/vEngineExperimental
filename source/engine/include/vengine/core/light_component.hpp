@@ -12,6 +12,7 @@
 
 #pragma once
 
+#include <engine.hpp>
 #include <vengine/core/component.hpp>
 #include <vengine/core/light.hpp>
 
@@ -28,7 +29,7 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                LightComponent();
+                LightComponent(const GameObjectType type = GameObjectType::LightComponent);
         };
     }  // namespace Core
 }  // namespace vEngine

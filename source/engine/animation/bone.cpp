@@ -16,9 +16,10 @@ namespace vEngine
 {
     namespace Animation
     {
+        using namespace Core;
         /// constructor detailed defintion,
         /// should be 2 lines
-        Bone::Bone() : id_(-1) {}
+        Bone::Bone(const GameObjectType type) : GameObject(type), id_(-1) {}
 
         /// A detailed function description, it
         /// should be 2 lines at least.

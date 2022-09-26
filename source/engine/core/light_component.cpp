@@ -18,7 +18,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        LightComponent::LightComponent() {}
+        LightComponent::LightComponent(const GameObjectType type) : Component(type) {}
     }  // namespace Core
 
 }  // namespace vEngine

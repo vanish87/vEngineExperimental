@@ -13,8 +13,8 @@
 #pragma once
 
 #include <engine.hpp>
-#include <vengine/animation/bone.hpp>
 #include <vengine/core/component.hpp>
+#include <vengine/animation/bone.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -29,7 +29,7 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                BoneComponent();
+                BoneComponent(const Core::GameObjectType type = Core::GameObjectType::BoneComponent);
                 virtual ~BoneComponent();
 
                 // void Update()

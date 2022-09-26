@@ -17,7 +17,7 @@ namespace vEngine
     {
         /// constructor detailed defintion,
         /// should be 2 lines
-        MeshComponent::MeshComponent() {}
+        MeshComponent::MeshComponent(const GameObjectType type) : Component(type) {}
         // MeshComponent::MeshComponent(const MeshSharedPtr mesh)
         // {
         //     this->Reset(mesh);

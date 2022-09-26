@@ -20,10 +20,11 @@ namespace vEngine
 {
     namespace Rendering
     {
+        using namespace Core;
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        MeshRenderer::MeshRenderer()
+        MeshRenderer::MeshRenderer(const GameObjectType type) : Renderer(type)
         {
             PRINT("Mesh renderer created");
         }
