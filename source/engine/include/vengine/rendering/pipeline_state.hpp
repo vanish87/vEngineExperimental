@@ -43,8 +43,8 @@ namespace vEngine
                 };
             public:
                 /// \brief brief constructor description.
-                PipelineState(){};
-                PipelineState(const PipelineStateDescriptor& desc);
+                PipelineState(const Core::GameObjectType type = Core::GameObjectType::PipelineState);
+                PipelineState(const PipelineStateDescriptor desc);
                 virtual ~PipelineState();
 
                 virtual void PrepareData();

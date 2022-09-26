@@ -36,7 +36,7 @@ namespace vEngine
             LightComponent,
             Mesh,
             MeshComponent,
-            
+
             Serializer,
             Scene,
 
@@ -47,6 +47,8 @@ namespace vEngine
             MeshRendererComponent,
             Material,
             Texture,
+            PipelineState,
+            Shader,
 
             //Animation
             Bone,

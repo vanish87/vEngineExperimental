@@ -22,7 +22,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Shader::Shader() {}
+        Shader::Shader(const GameObjectType type) : GameObject(type) {}
         ShaderSharedPtr Shader::Load(const std::filesystem::path path)
         {
             auto shader = GameObjectFactory::Create<Shader>();

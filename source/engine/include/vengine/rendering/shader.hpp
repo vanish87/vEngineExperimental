@@ -73,7 +73,7 @@ namespace vEngine
 
             public:
                 /// \brief brief constructor description.
-                Shader();
+                Shader(const Core::GameObjectType type = Core::GameObjectType::Shader);
                 virtual ~Shader() {}
 
                 std::filesystem::path path;
