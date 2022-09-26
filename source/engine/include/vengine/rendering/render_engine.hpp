@@ -88,6 +88,8 @@ namespace vEngine
                 // GPU Resource management
                 // virtual void
 
+                virtual GameObjectSharedPtr Create(const GameObjectType type) = 0;
+
                 virtual TextureSharedPtr Create(const TextureDescriptor& desc) = 0;
                 virtual FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) = 0;
                 virtual GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) = 0;

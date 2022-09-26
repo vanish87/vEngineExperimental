@@ -36,9 +36,10 @@ namespace vEngine
             LightComponent,
             Mesh,
             MeshComponent,
-
-            Serializer,
             Scene,
+
+            //Data
+            Serializer,
 
             //Rendering
             Renderer,

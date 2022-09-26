@@ -30,14 +30,13 @@ namespace vEngine
         class VENGINE_API GameObjectFactory
         {
             public:
-                #define TYPE_AND_CREATE(etype, type) \
-                    if constexpr (Type == etype) return GameObjectFactory::Create<type>(std::forward<Args>(args)...);
-
-                #define CONTEXT_TYPE_AND_CREATE(etype, type) \
+                    // if constexpr (Type == etype) return GameObjectFactory::Create<type>(std::forward<Args>(args)...);
+                #define TYPE_AND_CREATE(etype, type)                                                        \
+                    static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject"); \
                     if constexpr (Type == etype) return std::make_shared<type>(std::forward<Args>(args)...);
 
                 #define RENDERING_TYPE_AND_CREATE(etype, type) \
-                    if constexpr (Type == etype) return Context::GetInstance().GetRenderingEngine()->Create(std::forward<Args>(args)...);
+                    if constexpr (Type == etype) return std::dynamic_pointer_cast<type>(Context::GetInstance().GetRenderEngine()->Create(etype, std::forward<Args>(args)...));
 
                 template <GameObjectType Type, typename T = GameObject, class... Args>
                 static std::shared_ptr<T> Create(Args&&... args)
@@ -50,12 +49,28 @@ namespace vEngine
                     TYPE_AND_CREATE(GameObjectType::Camera, Camera);
                     TYPE_AND_CREATE(GameObjectType::CameraComponent, CameraComponent);
                     TYPE_AND_CREATE(GameObjectType::Light, Light);
+                    TYPE_AND_CREATE(GameObjectType::LightComponent, LightComponent);
                     TYPE_AND_CREATE(GameObjectType::Mesh, Mesh);
-                    if constexpr (Type == GameObjectType::Renderer) static_assert(false, "Cannot create renderer without renderable type");
-
+                    TYPE_AND_CREATE(GameObjectType::MeshComponent, MeshComponent);
                     TYPE_AND_CREATE(GameObjectType::Scene, Scene);
-                    TYPE_AND_CREATE(GameObjectType::Texture, Rendering::Texture);
 
+                    TYPE_AND_CREATE(GameObjectType::Serializer, Data::Serializer);
+
+                    if constexpr (Type == GameObjectType::Renderer) static_assert(false, "Cannot create renderer without renderable type");
+                    if constexpr (Type == GameObjectType::RendererComponent) static_assert(false, "Cannot create renderer component without renderable type");
+                    TYPE_AND_CREATE(GameObjectType::MeshRenderer, Rendering::MeshRenderer);
+                    TYPE_AND_CREATE(GameObjectType::MeshRendererComponent, Rendering::MeshRendererComponent);
+                    TYPE_AND_CREATE(GameObjectType::Material, Rendering::Material);
+                    RENDERING_TYPE_AND_CREATE(GameObjectType::Texture, Rendering::Texture);
+                    TYPE_AND_CREATE(GameObjectType::PipelineState, Rendering::PipelineState);
+                    TYPE_AND_CREATE(GameObjectType::Shader, Rendering::Shader);
+
+                    TYPE_AND_CREATE(GameObjectType::Bone, Animation::Bone);
+                    TYPE_AND_CREATE(GameObjectType::BoneComponent, Animation::BoneComponent);
+                    TYPE_AND_CREATE(GameObjectType::Joint, Animation::Joint);
+                    TYPE_AND_CREATE(GameObjectType::AnimationClip, Animation::AnimationClip);
+                    TYPE_AND_CREATE(GameObjectType::Animator, Animation::Animator);
+                    TYPE_AND_CREATE(GameObjectType::AnimatorComponent, Animation::AnimatorComponent);
 
                     // if constexpr (Type == GameObjectType::Camera) return Context::GetInstance().CreateTest<Camera>(std::forward<Args>(args)...);
                     // if constexpr (Type == GameObjectType::Light) return Context::GetInstance().CreateTest<Light>(std::forward<Args>(args)...);

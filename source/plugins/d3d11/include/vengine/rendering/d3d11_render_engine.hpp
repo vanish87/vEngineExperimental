@@ -36,6 +36,7 @@ namespace vEngine
                 void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) override;
                 void OnEndFrame() override;
 
+                GameObjectSharedPtr Create(const Core::GameObjectType type) override;
                 TextureSharedPtr Create(const TextureDescriptor& desc) override;
                 FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override;
                 GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override;

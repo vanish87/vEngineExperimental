@@ -577,6 +577,11 @@ namespace vEngine
         {
             return GameObjectFactory::Create<D3D11PipelineState>(pipeline_desc);
         }
+        GameObjectSharedPtr D3D11RenderEngine::Create(const Core::GameObjectType type)
+        {
+            UNUSED_PARAMETER(type);
+            return nullptr;
+        }
         TextureSharedPtr D3D11RenderEngine::Create(const TextureDescriptor& desc)
         {
             return GameObjectFactory::Create<D3D11Texture>(desc);
