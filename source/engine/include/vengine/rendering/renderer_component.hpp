@@ -7,33 +7,32 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#ifndef _VENGINE_CORE_RENDER_COMPONENT_HPP
-#define _VENGINE_CORE_RENDER_COMPONENT_HPP
+#ifndef _VENGINE_RENDERING_RENDERER_COMPONENT_HPP
+#define _VENGINE_RENDERING_RENDERER_COMPONENT_HPP
 
 #pragma once
 
-#include <VENGINE_API.hpp>
+#include <engine.hpp>
 #include <vengine/core/component.hpp>
-
+#include <vengine/rendering/renderer.hpp>
 
 /// A brief namespace description.
 namespace vEngine
 {
-    namespace Core
+    namespace Rendering
     {
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-		template<typename T>
-        class VENGINE_API RendererComponent : public Component<Renderer<T>>
+        template <typename T>
+        class VENGINE_API RendererComponent : public Core::Component<Renderer<T>>
         {
             public:
                 /// \brief brief constructor description.
-                RendererComponent(){};
+                RendererComponent(const Core::GameObjectType type = Core::GameObjectType::RendererComponent) : Core::Component(type){};
         };
-    }  // namespace Core
+    }  // namespace Rendering
 }  // namespace vEngine
 
-
-#endif /* _VENGINE_CORE_RENDER_COMPONENT_HPP */
+#endif /* _VENGINE_RENDERING_RENDERER_COMPONENT_HPP */
