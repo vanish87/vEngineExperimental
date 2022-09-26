@@ -6,12 +6,11 @@
 // #include <unordered_map>
 
 #include <engine.hpp>
-#include <vengine/core/game_object.hpp>
+// #include <vengine/core/game_object.hpp>
 // #include <vengine/data/meta.hpp>
 #include <vengine/core/configure.hpp>
 // #include <vengine/rendering/render_engine.hpp>
 // #include <vengine/core/iruntime_module.hpp>
-
 
 namespace vEngine
 {
@@ -23,23 +22,9 @@ namespace vEngine
                 SINGLETON_CLASS(Context)
 
             public:
-                template <typename T>
-                std::shared_ptr<T> CreateTest(GameObjectDescription desc)
-                {
-                    return nullptr;
-                }
-                template <typename T>
-                std::shared_ptr<T> CreateTest(int desc)
-                {
-                    UNUSED_PARAMETER(desc);
-                    return nullptr;
-                }
-
-                public :
-                    /// \brief Load all factories that create resource
-                    ///
-                    Configure
-                    CurrentConfigure() const;
+                /// \brief Load all factories that create resource
+                ///
+                Configure CurrentConfigure() const;
 
                 void RegisterAppInstance(ApplicationSharedPtr app);
                 void QuitApplication();

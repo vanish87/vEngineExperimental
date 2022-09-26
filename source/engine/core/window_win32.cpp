@@ -7,7 +7,7 @@
     // include windows.h first
     #include <vengine/core/window.hpp>
     #include <vengine/core/context.hpp>
-    // #include <vengine/core/application.hpp>
+// #include <vengine/core/application.hpp>
 // #include <tchar.h>//wchar
 
 namespace vEngine
@@ -29,7 +29,7 @@ namespace vEngine
             {
                 case WM_DESTROY:
                 {
-                    //Use Event/Observer Pattern to decouple context class
+                    // Use Event/Observer Pattern to decouple context class
                     Context::GetInstance().QuitApplication();
                     PostQuitMessage(0);
                     return 0;
@@ -96,14 +96,13 @@ namespace vEngine
             //::ShowCursor(!render_setting.full_screen);
             // ::UpdateWindow(this->wnd_);
         }
-        Window::~Window() 
+        Window::~Window()
         {
             ::DestroyWindow(static_cast<HWND>(this->wnd_));
         }
         void Window::Update()
         {
             MSG msg = {0};
-
             if (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
             {
                 ::TranslateMessage(&msg);

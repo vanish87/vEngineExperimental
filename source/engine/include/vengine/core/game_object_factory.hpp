@@ -57,8 +57,8 @@ namespace vEngine
                     TYPE_AND_CREATE(GameObjectType::Texture, Rendering::Texture);
 
 
-                    if constexpr (Type == GameObjectType::Camera) return Context::GetInstance().CreateTest<Camera>(std::forward<Args>(args)...);
-                    if constexpr (Type == GameObjectType::Light) return Context::GetInstance().CreateTest<Light>(std::forward<Args>(args)...);
+                    // if constexpr (Type == GameObjectType::Camera) return Context::GetInstance().CreateTest<Camera>(std::forward<Args>(args)...);
+                    // if constexpr (Type == GameObjectType::Light) return Context::GetInstance().CreateTest<Light>(std::forward<Args>(args)...);
                     // if constexpr (Type == GameObjectType::Mesh) return std::make_shared<Mesh>(args);
 
                     // if constexpr (Type == GameObjectType::Mesh) return std::make_shared<Mesh>();
