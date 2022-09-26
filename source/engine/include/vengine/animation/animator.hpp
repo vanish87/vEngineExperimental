@@ -13,8 +13,8 @@
 
 #pragma once
 
-#include <engine.hpp>
 #include <unordered_map>
+#include <engine.hpp>
 #include <vengine/core/game_object.hpp>
 
 /// A brief namespace description.
@@ -30,7 +30,8 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                Animator();
+                Animator(const Core::GameObjectType type = Core::GameObjectType::Animator);
+                virtual ~Animator() {}
 
                 /// class variable description
 

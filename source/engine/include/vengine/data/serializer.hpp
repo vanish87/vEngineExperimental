@@ -33,7 +33,7 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                Serializer();
+                Serializer(const Core::GameObjectType type = Core::GameObjectType::Serializer);
                 virtual ~Serializer();
 
                 void Serialize(ISerializable data)

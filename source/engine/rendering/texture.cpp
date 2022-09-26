@@ -19,14 +19,14 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Texture::Texture(const TextureDescriptor& desc) : GameObject(GameObjectType::Texture)
+        Texture::Texture(const TextureDescriptor desc) : Texture()
         {
             this->descriptor_ = desc;
         }
+        Texture::Texture(const GameObjectType type) : GameObject(type) {}
         Texture::~Texture() {}
 
         void Texture::PrepareData() {}
-
 
         /// A detailed function description, it
         /// should be 2 lines at least.

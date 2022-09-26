@@ -15,10 +15,11 @@ namespace vEngine
 {
     namespace Data
     {
+        using namespace Core;
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Serializer::Serializer() {}
+        Serializer::Serializer(const GameObjectType type) : GameObject(type) {}
         Serializer::~Serializer() {}
 
         /// A detailed function description, it
@@ -30,5 +31,5 @@ namespace vEngine
             return 1;
         }
 
-    }  // namespace Core
+    }  // namespace Data
 }  // namespace vEngine

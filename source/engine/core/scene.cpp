@@ -21,7 +21,6 @@
 #include <vengine/animation/bone.hpp>
 #include <vengine/animation/bone_component.hpp>
 #include <vengine/animation/joint.hpp>
-#include <vengine/animation/joint_component.hpp>
 #include <vengine/animation/animation_clip.hpp>
 #include <vengine/animation/animator_component.hpp>
 #include <vengine/core/camera_component.hpp>

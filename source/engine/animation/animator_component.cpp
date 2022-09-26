@@ -20,10 +20,11 @@ namespace vEngine
 {
     namespace Animation
     {
+        using namespace Core;
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        AnimatorComponent::AnimatorComponent()
+        AnimatorComponent:: AnimatorComponent(const GameObjectType type): Component(type)
         {
             // timer = 0;
         }

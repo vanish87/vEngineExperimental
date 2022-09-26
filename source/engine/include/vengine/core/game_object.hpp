@@ -24,6 +24,7 @@ namespace vEngine
     {
         enum class GameObjectType
         {
+            //Core
             GameObject,
             GameNode,
             Component,
@@ -35,25 +36,26 @@ namespace vEngine
             LightComponent,
             Mesh,
             MeshComponent,
+            
+            Serializer,
+            Scene,
+
+            //Rendering
             Renderer,
+            RendererComponent,
             MeshRenderer,
             MeshRendererComponent,
             Material,
+            Texture,
 
+            //Animation
             Bone,
             BoneComponent,
             Joint,
             AnimationClip,
-
-            // Mesh_Cube,
             Animator,
-            Skeleton,
-            Asset,
-            Serializer,
+            AnimatorComponent,
 
-            Texture,
-
-            Scene,
         };
 
         struct GameObjectDescription

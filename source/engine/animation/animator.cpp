@@ -18,10 +18,11 @@ namespace vEngine
 {
     namespace Animation
     {
+        using namespace Core;
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Animator::Animator() : current_time_{0} {}
+        Animator::Animator(const GameObjectType type) : GameObject(type), current_time_{0} {}
         void Animator::SetAnimations(const std::vector<AnimationClipSharedPtr> animations)
         {
             // this->skeleton_ = skeleton;

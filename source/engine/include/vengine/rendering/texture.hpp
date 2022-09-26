@@ -45,8 +45,8 @@ namespace vEngine
                     );
                 };
                 /// \brief brief constructor description.
-                Texture() : GameObject(Core::GameObjectType::Texture){};
-                Texture(const TextureDescriptor& desc);
+                Texture(const Core::GameObjectType type = Core::GameObjectType::Texture);
+                Texture(const TextureDescriptor desc);
                 virtual ~Texture();
 
                 void SetRawData(const std::vector<byte> data)

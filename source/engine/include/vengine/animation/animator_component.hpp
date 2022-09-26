@@ -30,7 +30,7 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                AnimatorComponent();
+                AnimatorComponent(const Core::GameObjectType type = Core::GameObjectType::AnimatorComponent);
                 virtual ~AnimatorComponent();
                 virtual void OnInit() override;
                 virtual void OnUpdate() override;
@@ -38,7 +38,6 @@ namespace vEngine
                 void SetAnimationRoot(const Core::GameNodeSharedPtr root);
 
             private:
-
                 // float timer;
                 Core::GameNodeSharedPtr animation_root_;
 
