@@ -89,26 +89,14 @@ int main(int argc, char* argv[])
     PRINT(resource_bin.string());
 
     vEngine::Pipeline::AssimpHandler handler;
-    
-    auto go = GameObjectFactory::Create<GameObjectType::Mesh>();
-
-    auto mesh = GameObjectFactory::Create<GameObjectType::Mesh, vEngine::Core::Mesh>();
-    // auto mesh = Context::GetInstance().Create<GameObjectType::Mesh, vEngine::Core::Mesh>();
-    PRINT(mesh->description_.name);
-
-    auto camera = GameObjectFactory::Create<GameObjectType::Camera, vEngine::Core::Camera>();
-    PRINT(camera->description_.name);
-
-    auto light = GameObjectFactory::Create<GameObjectType::Light, vEngine::Core::Light>();
-    PRINT(light->description_.name);
 
     auto scene = handler.LoadFromAssimp(input);
-    PRINT("Save to " << output.string());
-    auto j = ToJson(scene);
-    std::ofstream outfile(output.string());
-    outfile << std::setw(2) << j << std::endl;
-    outfile.flush();
-    outfile.close();
+    // PRINT("Save to " << output.string());
+    // auto j = ToJson(scene);
+    // std::ofstream outfile(output.string());
+    // outfile << std::setw(2) << j << std::endl;
+    // outfile.flush();
+    // outfile.close();
 
     scene.reset();
 

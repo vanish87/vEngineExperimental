@@ -68,6 +68,7 @@ namespace vEngine
         const Rendering::ShaderType FromString(const std::string& obj)
         {
             if (obj == "VS") return Rendering::ShaderType::VS;
+            if (obj == "PS") return Rendering::ShaderType::PS;
             // case Rendering::ShaderType::GS: return "GS";
             // case Rendering::ShaderType::PS: return "PS";
             // case Rendering::ShaderType::CS: return "CS";

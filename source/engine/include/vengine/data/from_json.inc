@@ -35,6 +35,7 @@ namespace vEngine
 
                              // get the type of the property
                              //  using Type = typename decltype(property)::member_type;
+                            //  PRINT(property.name);
 
                              // set the value to the member
                              // you can also replace `asAny` by `fromJson` to recursively serialize
@@ -72,9 +73,11 @@ namespace vEngine
         template <>
         void FromJson(const json& j, Rendering::ShaderType& shader_type)
         {
-            NOT_IMPL_ASSERT;
-            UNUSED_PARAMETER(j);
-            UNUSED_PARAMETER(shader_type);
+            auto data = j.get<std::string>();
+            shader_type = FromString<Rendering::ShaderType>(data);
+            // NOT_IMPL_ASSERT;
+            // UNUSED_PARAMETER(j);
+            // UNUSED_PARAMETER(shader_type);
             // return json(ToString<GameObjectType>(go_type));
         }
 
@@ -138,6 +141,7 @@ namespace vEngine
             // auto handled = false;
 
             auto path = GameObjectToPath(desc);
+            // PRINT("Path " << path);
             // auto type = desc.type;
 
             switch (desc.type)
@@ -220,7 +224,8 @@ namespace vEngine
 
             // 1. find by uuid
             // ptr = GameObjectFactory::Find<T>(desc);
-            if(ptr != nullptr) return;
+            // if(ptr != nullptr) return;
+            // CHECK_ASSERT(ptr == nullptr);
 
             ptr = CreateAndLoadByDesc<T>(desc);
             CHECK_ASSERT_NOT_NULL(ptr);
@@ -236,6 +241,16 @@ namespace vEngine
                 T v;
                 FromJson(it, v);
                 vector.push_back(v);
+            }
+        }
+        template <>
+        void FromJson(const json& j, std::vector<char>& vector)
+        {
+            vector.clear();
+            auto data = j.get<std::string>();
+            for (const auto& it : data)
+            {
+                vector.push_back(it);
             }
         }
         template <typename T>
