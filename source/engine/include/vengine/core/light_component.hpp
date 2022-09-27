@@ -25,7 +25,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class LightComponent : public Component<Light>
+        class VENGINE_API LightComponent : public Component<Light>
         {
             public:
                 /// \brief brief constructor description.

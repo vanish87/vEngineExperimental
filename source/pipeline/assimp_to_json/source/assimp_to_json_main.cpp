@@ -7,6 +7,8 @@
 #include <vengine/data/json.hpp>
 #include <vengine/core/scene.hpp>
 #include <vengine/core/light.hpp>
+#include <vengine/core/light_component.hpp>
+#include <vengine/animation/animator_component.hpp>
 
 #include <assimp_handler.hpp>
 
@@ -94,11 +96,11 @@ int main(int argc, char* argv[])
     // auto mesh = Context::GetInstance().Create<GameObjectType::Mesh, vEngine::Core::Mesh>();
     PRINT(mesh->description_.name);
 
-    // auto camera = GameObjectFactory::Create<GameObjectType::Camera, vEngine::Core::Camera>(mesh->description_);
-    // PRINT(camera->description_.name);
+    auto camera = GameObjectFactory::Create<GameObjectType::Camera, vEngine::Core::Camera>();
+    PRINT(camera->description_.name);
 
-    // auto light = GameObjectFactory::Create<GameObjectType::Light, vEngine::Core::Light>(1234);
-    // PRINT(light->description_.name);
+    auto light = GameObjectFactory::Create<GameObjectType::Light, vEngine::Core::Light>();
+    PRINT(light->description_.name);
 
     auto scene = handler.LoadFromAssimp(input);
     PRINT("Save to " << output.string());
@@ -114,6 +116,7 @@ int main(int argc, char* argv[])
     Context::GetInstance().Clear();
     auto path = output;
     auto new_scene = Scene::Load(path);
+    new_scene.reset();
 
     Context::GetInstance().Deinit();
 

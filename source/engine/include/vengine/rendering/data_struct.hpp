@@ -103,8 +103,7 @@ namespace vEngine
                         // Core::property("shaders", &PipelineStateDescriptor::shaders)
                         // Core::property("rasterizer", &RasterizerDescriptor::fill_mode),
                         // Core::property("depth_stencil", &RasterizerDescriptor::cull_mode)
-                        Core::property("depth_bias", &RasterizerDescriptor::depth_bias)
-                    );
+                        Core::property("depth_bias", &RasterizerDescriptor::depth_bias));
                 };
                 FillMode fill_mode = FillMode::Solid;
                 CullMode cull_mode = CullMode::Back;
@@ -126,8 +125,7 @@ namespace vEngine
                         // Core::property("shaders", &PipelineStateDescriptor::shaders)
                         // Core::property("rasterizer", &RasterizerDescriptor::fill_mode),
                         // Core::property("depth_stencil", &RasterizerDescriptor::cull_mode)
-                        Core::property("depth_enabled", &DepthStencilDescriptor::depth_enabled)
-                    );
+                        Core::property("depth_enabled", &DepthStencilDescriptor::depth_enabled));
                 };
                 bool depth_enabled = true;
                 DepthWriteMask depth_write_mask = DepthWriteMask::All;
@@ -151,10 +149,8 @@ namespace vEngine
         {
                 constexpr static auto properties()
                 {
-                    return std::make_tuple(
-                        Core::property("width", &TextureDescriptor::width),
-                        Core::property("height", &TextureDescriptor::height)
-                        // Core::property("raw_data", &TextureDescriptor::raw_data)
+                    return std::make_tuple(Core::property("width", &TextureDescriptor::width), Core::property("height", &TextureDescriptor::height)
+                                           // Core::property("raw_data", &TextureDescriptor::raw_data)
                     );
                 };
                 TextureDimension dimension;
@@ -219,15 +215,17 @@ namespace vEngine
                         // GameObject::properties(),
                         std::make_tuple(
                             // Core::property("shaders", &PipelineStateDescriptor::shaders)
-                            Core::property("rasterizer", &PipelineStateDescriptor::rasterizer_descriptor),
-                            Core::property("depth_stencil", &PipelineStateDescriptor::depth_stencil_descriptor)
-                        )
-                    );
+                            Core::property("rasterizer", &PipelineStateDescriptor::rasterizer_descriptor), Core::property("depth_stencil", &PipelineStateDescriptor::depth_stencil_descriptor)));
                 };
                 // similar design as https://docs.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_graphics_pipeline_state_desc
                 // std::unordered_map<ShaderType, std::filesystem::path> shaders;
                 RasterizerDescriptor rasterizer_descriptor;
                 DepthStencilDescriptor depth_stencil_descriptor;
+                static const PipelineStateDescriptor& Default()
+                {
+                    static PipelineStateDescriptor desc;
+                    return desc;
+                }
         };
 
     }  // namespace Rendering

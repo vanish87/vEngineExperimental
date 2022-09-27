@@ -40,27 +40,53 @@ namespace vEngine
             return json();
         }
 
-        #define CASE_AND_SAVE(etype, type, go)                   \
-            case etype:                                          \
-            {                                                    \
-                auto sub = std::dynamic_pointer_cast<type>(go);  \
-                auto path = GameObjectToPath(sub->description_); \
-                SaveJson(ToJson(*sub.get()), path);              \
-            }                                                    \
-            break;
+#define CASE_AND_SAVE(etype, type)                       \
+    case etype:                                          \
+    {                                                    \
+        auto sub = std::dynamic_pointer_cast<type>(go);  \
+        auto path = GameObjectToPath(sub->description_); \
+        SaveJson(ToJson(*sub.get()), path);              \
+    }                                                    \
+    break;
 
         template <typename T>
         json ToJson(const std::shared_ptr<T>& ptr)
         {
             auto go = std::dynamic_pointer_cast<GameObject>(ptr);
             auto type = go->description_.type;
+            if (type == GameObjectType::Component) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
+            if (type == GameObjectType::Renderer) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
+            if (type == GameObjectType::RendererComponent) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
             switch (type)
             {
-                CASE_AND_SAVE(GameObjectType::Mesh, Mesh, go);
-                CASE_AND_SAVE(GameObjectType::Scene, Mesh, go);
-                CASE_AND_SAVE(GameObjectType::Texture, Rendering::Texture, go);
-                CASE_AND_SAVE(GameObjectType::GameNode, GameNode, go);
-                CASE_AND_SAVE(GameObjectType::TransformComponent, TransformComponent, go);
+                CASE_AND_SAVE(GameObjectType::GameObject, GameObject);
+                CASE_AND_SAVE(GameObjectType::GameNode, GameNode);
+                CASE_AND_SAVE(GameObjectType::Transform, Transform);
+                CASE_AND_SAVE(GameObjectType::TransformComponent, TransformComponent);
+                CASE_AND_SAVE(GameObjectType::Camera, Camera);
+                CASE_AND_SAVE(GameObjectType::CameraComponent, CameraComponent);
+                CASE_AND_SAVE(GameObjectType::Light, Light);
+                CASE_AND_SAVE(GameObjectType::LightComponent, CameraComponent);
+                CASE_AND_SAVE(GameObjectType::Mesh, Mesh);
+                CASE_AND_SAVE(GameObjectType::MeshComponent, MeshComponent);
+                CASE_AND_SAVE(GameObjectType::Scene, Scene);
+
+                // CASE_AND_SAVE(GameObjectType::Serializer, Data::Serializer);
+
+                CASE_AND_SAVE(GameObjectType::MeshRenderer, Rendering::MeshRenderer);
+                CASE_AND_SAVE(GameObjectType::MeshRendererComponent, Rendering::MeshRendererComponent);
+                CASE_AND_SAVE(GameObjectType::Material, Rendering::Material);
+                CASE_AND_SAVE(GameObjectType::Texture, Rendering::Texture);
+                CASE_AND_SAVE(GameObjectType::PipelineState, Rendering::PipelineState);
+                CASE_AND_SAVE(GameObjectType::Shader, Rendering::Shader);
+
+
+                CASE_AND_SAVE(GameObjectType::Bone, Animation::Bone);
+                CASE_AND_SAVE(GameObjectType::BoneComponent, Animation::BoneComponent);
+                CASE_AND_SAVE(GameObjectType::Joint, Animation::Joint);
+                CASE_AND_SAVE(GameObjectType::AnimationClip, Animation::AnimationClip);
+                CASE_AND_SAVE(GameObjectType::Animator, Animation::Animator);
+                CASE_AND_SAVE(GameObjectType::AnimatorComponent, Animation::AnimatorComponent);
                 default:
                     PRINT(ToString(type));
                     NOT_IMPL_ASSERT;

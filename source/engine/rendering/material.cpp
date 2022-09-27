@@ -24,8 +24,7 @@ namespace vEngine
         /// should be 2 lines
         Material::Material(const GameObjectType type) : GameObject(type)
         {
-            PipelineStateDescriptor pdesc;
-            this->pipeline_state_ = Context::GetInstance().GetRenderEngine()->Register(pdesc);
+            this->pipeline_state_ = Context::GetInstance().GetRenderEngine()->Create(PipelineStateDescriptor::Default());
         }
         Material::~Material() {}
 

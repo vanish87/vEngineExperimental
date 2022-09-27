@@ -36,7 +36,7 @@ namespace vEngine
                     if constexpr (Type == etype) return std::make_shared<type>(std::forward<Args>(args)...);
 
                 #define RENDERING_TYPE_AND_CREATE(etype, type) \
-                    if constexpr (Type == etype) return std::dynamic_pointer_cast<type>(Context::GetInstance().GetRenderEngine()->Create(etype, std::forward<Args>(args)...));
+                    if constexpr (Type == etype) return Context::GetInstance().GetRenderEngine()->Create(std::forward<Args>(args)...);
 
                 template <GameObjectType Type, typename T = GameObject, class... Args>
                 static std::shared_ptr<T> Create(Args&&... args)
@@ -62,7 +62,7 @@ namespace vEngine
                     TYPE_AND_CREATE(GameObjectType::MeshRendererComponent, Rendering::MeshRendererComponent);
                     TYPE_AND_CREATE(GameObjectType::Material, Rendering::Material);
                     RENDERING_TYPE_AND_CREATE(GameObjectType::Texture, Rendering::Texture);
-                    TYPE_AND_CREATE(GameObjectType::PipelineState, Rendering::PipelineState);
+                    RENDERING_TYPE_AND_CREATE(GameObjectType::PipelineState, Rendering::PipelineState);
                     TYPE_AND_CREATE(GameObjectType::Shader, Rendering::Shader);
 
                     TYPE_AND_CREATE(GameObjectType::Bone, Animation::Bone);

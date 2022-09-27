@@ -21,7 +21,10 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        D3D11Texture::D3D11Texture(const TextureDescriptor& desc) : Texture(desc) {}
+        D3D11Texture::D3D11Texture(const TextureDescriptor& desc) : Texture(desc)
+        {
+            // PRINT("D3D11Texture");
+        }
         void D3D11Texture::PrepareData()
         {
             if (this->tex2D_ == nullptr)

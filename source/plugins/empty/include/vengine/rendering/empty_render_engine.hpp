@@ -41,7 +41,7 @@ namespace vEngine
                     UNUSED_PARAMETER(texture);
                 }
 
-                PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) override
+                PipelineStateSharedPtr Create(const PipelineStateDescriptor& pipeline_desc) override
                 {
                     UNUSED_PARAMETER(pipeline_desc);
                     return nullptr;

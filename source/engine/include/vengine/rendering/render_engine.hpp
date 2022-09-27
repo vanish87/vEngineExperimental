@@ -59,13 +59,6 @@ namespace vEngine
                 }
                 virtual void OnBind(const FrameBufferSharedPtr frameBuffer) = 0;
 
-                virtual PipelineStateSharedPtr Register(const PipelineStateDescriptor& pipeline_desc)
-                {
-                    // this->current_pipline_states = frameBuffer;
-                    return this->OnRegister(pipeline_desc);
-                }
-                virtual PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) = 0;
-
                 virtual void OnBeginFrame()
                 {
                     // update per frame cbuffer
@@ -88,8 +81,7 @@ namespace vEngine
                 // GPU Resource management
                 // virtual void
 
-                virtual GameObjectSharedPtr Create(const GameObjectType type) = 0;
-
+                virtual PipelineStateSharedPtr Create(const PipelineStateDescriptor& pipeline_desc) = 0;
                 virtual TextureSharedPtr Create(const TextureDescriptor& desc) = 0;
                 virtual FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) = 0;
                 virtual GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) = 0;

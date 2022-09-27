@@ -81,11 +81,33 @@ namespace vEngine
                 ENUM_CASE_TO_STRING(GameObjectType::GameObject);
                 ENUM_CASE_TO_STRING(GameObjectType::GameNode);
                 ENUM_CASE_TO_STRING(GameObjectType::Component);
+                ENUM_CASE_TO_STRING(GameObjectType::Transform);
                 ENUM_CASE_TO_STRING(GameObjectType::TransformComponent);
                 ENUM_CASE_TO_STRING(GameObjectType::Camera);
-                ENUM_CASE_TO_STRING(GameObjectType::AnimationClip);
-                ENUM_CASE_TO_STRING(GameObjectType::Texture);
+                ENUM_CASE_TO_STRING(GameObjectType::CameraComponent);
+                ENUM_CASE_TO_STRING(GameObjectType::Light);
+                ENUM_CASE_TO_STRING(GameObjectType::LightComponent);
+                ENUM_CASE_TO_STRING(GameObjectType::Mesh);
+                ENUM_CASE_TO_STRING(GameObjectType::MeshComponent);
                 ENUM_CASE_TO_STRING(GameObjectType::Scene);
+
+                ENUM_CASE_TO_STRING(GameObjectType::Serializer);
+
+                ENUM_CASE_TO_STRING(GameObjectType::Renderer);
+                ENUM_CASE_TO_STRING(GameObjectType::RendererComponent);
+                ENUM_CASE_TO_STRING(GameObjectType::MeshRenderer);
+                ENUM_CASE_TO_STRING(GameObjectType::MeshRendererComponent);
+                ENUM_CASE_TO_STRING(GameObjectType::Material);
+                ENUM_CASE_TO_STRING(GameObjectType::Texture);
+                ENUM_CASE_TO_STRING(GameObjectType::PipelineState);
+                ENUM_CASE_TO_STRING(GameObjectType::Shader);
+
+                ENUM_CASE_TO_STRING(GameObjectType::Bone);
+                ENUM_CASE_TO_STRING(GameObjectType::BoneComponent);
+                ENUM_CASE_TO_STRING(GameObjectType::Joint);
+                ENUM_CASE_TO_STRING(GameObjectType::AnimationClip);
+                ENUM_CASE_TO_STRING(GameObjectType::Animator);
+                ENUM_CASE_TO_STRING(GameObjectType::AnimatorComponent);
                 default:
                     break;
             }
@@ -102,9 +124,34 @@ namespace vEngine
         {
             STRING_TO_ENUM(GameObjectType::GameObject, str);
             STRING_TO_ENUM(GameObjectType::GameNode, str);
-            STRING_TO_ENUM(GameObjectType::Scene, str);
-            STRING_TO_ENUM(GameObjectType::Texture, str);
             STRING_TO_ENUM(GameObjectType::Component, str);
+            STRING_TO_ENUM(GameObjectType::Transform, str);
+            STRING_TO_ENUM(GameObjectType::TransformComponent, str);
+            STRING_TO_ENUM(GameObjectType::Camera, str);
+            STRING_TO_ENUM(GameObjectType::CameraComponent, str);
+            STRING_TO_ENUM(GameObjectType::Light, str);
+            STRING_TO_ENUM(GameObjectType::LightComponent, str);
+            STRING_TO_ENUM(GameObjectType::Mesh, str);
+            STRING_TO_ENUM(GameObjectType::MeshComponent, str);
+            STRING_TO_ENUM(GameObjectType::Scene, str);
+
+            STRING_TO_ENUM(GameObjectType::Serializer, str);
+
+            STRING_TO_ENUM(GameObjectType::Renderer, str);
+            STRING_TO_ENUM(GameObjectType::RendererComponent, str);
+            STRING_TO_ENUM(GameObjectType::MeshRenderer, str);
+            STRING_TO_ENUM(GameObjectType::MeshRendererComponent, str);
+            STRING_TO_ENUM(GameObjectType::Material, str);
+            STRING_TO_ENUM(GameObjectType::Texture, str);
+            STRING_TO_ENUM(GameObjectType::PipelineState, str);
+            STRING_TO_ENUM(GameObjectType::Shader, str);
+
+            STRING_TO_ENUM(GameObjectType::Bone, str);
+            STRING_TO_ENUM(GameObjectType::BoneComponent, str);
+            STRING_TO_ENUM(GameObjectType::Joint, str);
+            STRING_TO_ENUM(GameObjectType::AnimationClip, str);
+            STRING_TO_ENUM(GameObjectType::Animator, str);
+            STRING_TO_ENUM(GameObjectType::AnimatorComponent, str);
 
             NOT_IMPL_ASSERT;
             return GameObjectType::GameObject;

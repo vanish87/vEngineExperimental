@@ -4,7 +4,7 @@
 #include <vengine/core/context.hpp>
 #include <vengine/core/scene_manager.hpp>
 #include <vengine/core/mesh.hpp>
-#include <vengine/core/mesh_renderer_component.hpp>
+#include <vengine/rendering/mesh_renderer_component.hpp>
 
 using namespace vEngine::Core;
 

@@ -573,14 +573,9 @@ namespace vEngine
             this->d3d_swap_chain_->Present(0, 0);
         }
 
-        PipelineStateSharedPtr D3D11RenderEngine::OnRegister(const PipelineStateDescriptor& pipeline_desc)
+        PipelineStateSharedPtr D3D11RenderEngine::Create(const PipelineStateDescriptor& pipeline_desc)
         {
             return GameObjectFactory::Create<D3D11PipelineState>(pipeline_desc);
-        }
-        GameObjectSharedPtr D3D11RenderEngine::Create(const Core::GameObjectType type)
-        {
-            UNUSED_PARAMETER(type);
-            return nullptr;
         }
         TextureSharedPtr D3D11RenderEngine::Create(const TextureDescriptor& desc)
         {

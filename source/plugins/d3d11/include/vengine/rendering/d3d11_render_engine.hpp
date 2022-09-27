@@ -32,11 +32,10 @@ namespace vEngine
                 void OnBind(const PipelineStateSharedPtr pipeline_state) override;
                 void OnBind(const GraphicsBufferSharedPtr graphics_buffer) override;
                 void OnBind(const TextureSharedPtr texture) override;
-                PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) override;
                 void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) override;
                 void OnEndFrame() override;
 
-                GameObjectSharedPtr Create(const Core::GameObjectType type) override;
+                PipelineStateSharedPtr Create(const PipelineStateDescriptor& pipeline_desc) override;
                 TextureSharedPtr Create(const TextureDescriptor& desc) override;
                 FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override;
                 GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override;
