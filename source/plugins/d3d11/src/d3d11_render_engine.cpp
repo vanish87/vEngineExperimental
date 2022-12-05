@@ -254,6 +254,8 @@ namespace vEngine
             auto hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, 
             this->d3d_device_.GetAddressOf(), &feature_level, this->d3d_imm_context_.GetAddressOf());
             CHECK_ASSERT(hr == S_OK);
+            CHECK_ASSERT_NOT_NULL(this->d3d_device_);
+            CHECK_ASSERT_NOT_NULL(this->d3d_imm_context_);
 
             if(config.graphics_configure.output == Output::Window)
             {
@@ -262,19 +264,19 @@ namespace vEngine
                 auto width = config.graphics_configure.width;
                 auto height = config.graphics_configure.height;
 
-                DXGI_SWAP_CHAIN_DESC scd;
-                // clear out the struct for use
-                ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
+                // DXGI_SWAP_CHAIN_DESC scd;
+                // // clear out the struct for use
+                // ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
 
-                // fill the swap chain description struct
-                scd.BufferCount = 1;  // one back buffer
-                scd.BufferDesc.Width = width;
-                scd.BufferDesc.Height = height;
-                scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;  // use 32-bit color
-                scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;   // how swap chain is to be used
-                scd.OutputWindow = hwnd;                             // the window to be used
-                scd.SampleDesc.Count = 1;                            // how many multisamples
-                scd.Windowed = true;                                 // windowed/full-screen mode
+                // // fill the swap chain description struct
+                // scd.BufferCount = 1;  // one back buffer
+                // scd.BufferDesc.Width = width;
+                // scd.BufferDesc.Height = height;
+                // scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;  // use 32-bit color
+                // scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;   // how swap chain is to be used
+                // scd.OutputWindow = hwnd;                             // the window to be used
+                // scd.SampleDesc.Count = 1;                            // how many multisamples
+                // scd.Windowed = true;                                 // windowed/full-screen mode
 
                 ComPtr<IDXGIDevice2> pDXGIDevice;
                 hr = this->d3d_device_->QueryInterface(__uuidof(IDXGIDevice2), (void**)pDXGIDevice.GetAddressOf());
@@ -301,8 +303,6 @@ namespace vEngine
 
                 CHECK_ASSERT(hr == S_OK);
                 CHECK_ASSERT_NOT_NULL(this->d3d_swap_chain_);
-                CHECK_ASSERT_NOT_NULL(this->d3d_device_);
-                CHECK_ASSERT_NOT_NULL(this->d3d_imm_context_);
 
                 // get the address of the back buffer
                 ID3D11Texture2D* pBackBuffer;
@@ -584,12 +584,12 @@ namespace vEngine
         FrameBufferSharedPtr D3D11RenderEngine::Create(const FrameBufferDescriptor& desc)
         {
             PRINT("Create D3D11FrameBuffer");
-            return std::make_shared<D3D11FrameBuffer>(desc);
+            return GameObjectFactory::Create<D3D11FrameBuffer>(desc);
         }
         GraphicsBufferSharedPtr D3D11RenderEngine::Create(const GraphicsBufferDescriptor& desc)
         {
             PRINT("Create D3D11GraphicsBuffer");
-            return std::make_shared<D3D11GraphicsBuffer>(desc);
+            return GameObjectFactory::Create<D3D11GraphicsBuffer>(desc);
         }
 
     }  // namespace Rendering

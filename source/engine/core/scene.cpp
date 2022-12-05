@@ -395,6 +395,7 @@ namespace vEngine
         }
         void Scene::Flush()
         {
+            //TODO Sort by Material then foreach mat render mesh
             this->TraverseAllChildren<MeshRendererComponent>(
                 [&](MeshRendererComponentSharedPtr n)
                 {

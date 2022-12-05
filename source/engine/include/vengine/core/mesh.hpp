@@ -94,6 +94,7 @@ namespace vEngine
 
                 std::vector<Vertex> vertex_data_;
                 std::vector<uint32_t> index_data_;
+                //TODO add submesh index sets(offset, count) if possible
                 //TODO Verify if the usage of BoneComponentSharedPtr is a good mesh/bone design
                 //GameObject usually does not contain a GameNode object
                 std::unordered_map<std::string, Animation::BoneComponentSharedPtr> bone_data_;

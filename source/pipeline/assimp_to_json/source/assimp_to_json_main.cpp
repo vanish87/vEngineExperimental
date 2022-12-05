@@ -85,25 +85,22 @@ int main(int argc, char* argv[])
     ResourceLoader::GetInstance().AddSearchFolder("bob");
     ResourceLoader::GetInstance().AddSearchFolder("boblamp");
 
-    PRINT(resource_src.string());
-    PRINT(resource_bin.string());
+    // PRINT(resource_src.string());
+    // PRINT(resource_bin.string());
 
     vEngine::Pipeline::AssimpHandler handler;
 
     auto scene = handler.LoadFromAssimp(input);
-    // PRINT("Save to " << output.string());
-    // auto j = ToJson(scene);
-    // std::ofstream outfile(output.string());
-    // outfile << std::setw(2) << j << std::endl;
-    // outfile.flush();
-    // outfile.close();
+    PRINT("Save to " << output.string());
+    auto j = ToJson(scene);
+    SaveJson(j, output);
 
     scene.reset();
 
     // auto path = ResourceLoader::GetInstance().GetFilePath("boblampclean.json");
     Context::GetInstance().Clear();
-    auto path = output;
-    auto new_scene = Scene::Load(path);
+    // auto path = output;
+    auto new_scene = Scene::Load(output);
     new_scene.reset();
 
     Context::GetInstance().Deinit();

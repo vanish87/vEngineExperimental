@@ -29,7 +29,7 @@ namespace vEngine
             {
                 case WM_DESTROY:
                 {
-                    // Use Event/Observer Pattern to decouple context class
+                    //TODO Use Event/Observer Pattern to decouple context class
                     Context::GetInstance().QuitApplication();
                     PostQuitMessage(0);
                     return 0;

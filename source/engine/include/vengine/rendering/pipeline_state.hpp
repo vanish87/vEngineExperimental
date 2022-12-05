@@ -12,7 +12,6 @@
 
 #pragma once
 
-#include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <vengine/rendering/data_struct.hpp>
 #include <vengine/data/meta.hpp>

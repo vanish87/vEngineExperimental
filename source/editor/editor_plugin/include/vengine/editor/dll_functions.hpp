@@ -11,9 +11,7 @@ namespace vEngine
 {
     namespace Editor
     {
-        using namespace vEngine::Core;
-
-        class EditorApp : public Application
+        class EditorApp : public Core::Application
         {
             public:
                 void EditorUpdate();

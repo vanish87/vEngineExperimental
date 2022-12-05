@@ -128,6 +128,8 @@ namespace vEngine
         {
             this->app_ = app;
         }
+        // TODO Use Event/Observer Pattern to decouple application class
+        // context could not having a app ptr
         void Context::QuitApplication()
         {
             // this->app_instance_ = app;

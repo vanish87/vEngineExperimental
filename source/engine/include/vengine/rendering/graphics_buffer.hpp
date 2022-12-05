@@ -10,8 +10,8 @@
 #ifndef _VENGINE_RENDERING_GRAPHICS_BUFFER_HPP
 #define _VENGINE_RENDERING_GRAPHICS_BUFFER_HPP
 
-#include <VENGINE_API.hpp>
 #include <engine.hpp>
+#include <vengine/core/game_object.hpp>
 #include <vengine/rendering/data_struct.hpp>
 #include <vengine/rendering/data_format.hpp>
 
@@ -25,7 +25,7 @@ namespace vEngine
 		/// constant buffer.
 		/// It could be used in cpu and/or gpu
 		// template<typename T>
-        class VENGINE_API GraphicsBuffer
+        class VENGINE_API GraphicsBuffer : public Core::GameObject
         {
             public:
                 /// \brief brief constructor description.
