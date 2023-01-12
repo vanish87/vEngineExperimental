@@ -86,20 +86,6 @@ namespace vEngine
                 template <typename T, class... Args>
                 static std::shared_ptr<T> Create(Args&&... args)
                 {
-                    // switch (desc.type)
-                    // {
-                    // case GameObjectType::Raw:
-                    //     break;
-                    // // case GameObjectType::Mesh_Cube:
-                    // // {
-                    // //     static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
-                    // //     auto gn = std::make_shared<T>(std::forward<Args>(args)...);
-                    // // }
-                    // //     break;
-                    // default:
-                    //     break;
-                    // }
-
                     static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
                     auto gn = std::make_shared<T>(std::forward<Args>(args)...);
                     auto go = std::dynamic_pointer_cast<GameObject>(gn);
