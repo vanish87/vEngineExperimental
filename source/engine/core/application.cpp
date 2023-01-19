@@ -60,12 +60,6 @@ namespace vEngine
             // call here or PAINT event in Window Class
             // Context::GetInstance().GetRenderEngine().Update();
         }
-        void Application::RunOnce()
-        {
-            this->Init();
-            this->Update();
-            this->Deinit();
-        }
 
         void Application::Run()
         {

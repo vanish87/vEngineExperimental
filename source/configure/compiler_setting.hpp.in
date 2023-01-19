@@ -3,8 +3,7 @@
 #pragma once
 
 #ifdef _MSC_VER
-    #pragma warning( \
-        disable : 4251)  // disable for export shared_ptr with dll class
+    #pragma warning(disable : 4251)  // disable for export shared_ptr with dll class
     #pragma warning(disable : 4273)  //
 #endif
 #endif

@@ -3,7 +3,7 @@ project(opengl_app)
 
 
 # Create the executable
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} ${PROJECT_NAME}_main.cpp)
 
 target_link_libraries(${PROJECT_NAME}
     engine::core
