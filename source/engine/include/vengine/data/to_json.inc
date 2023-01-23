@@ -44,7 +44,7 @@ namespace vEngine
     case etype:                                          \
     {                                                    \
         auto sub = std::dynamic_pointer_cast<type>(go);  \
-        auto path = GameObjectToPath(sub->description_); \
+        auto path = GameObjectToPath(sub->descriptor_); \
         SaveJson(ToJson(*sub.get()), path);              \
     }                                                    \
     break;
@@ -53,7 +53,7 @@ namespace vEngine
         json ToJson(const std::shared_ptr<T>& ptr)
         {
             auto go = std::dynamic_pointer_cast<GameObject>(ptr);
-            auto type = go->description_.type;
+            auto type = go->descriptor_.type;
             if (type == GameObjectType::Component) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
             if (type == GameObjectType::Renderer) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
             if (type == GameObjectType::RendererComponent) CHECK_AND_ASSERT(false, "Cannot create component without game object type");

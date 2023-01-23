@@ -172,7 +172,7 @@ namespace vEngine
             outfile.flush();
             outfile.close();
         }
-        std::filesystem::path GameObjectToPath(const GameObjectDescription& desc)
+        std::filesystem::path GameObjectToPath(const GameObjectDescriptor& desc)
         {
             auto config = Context::GetInstance().CurrentConfigure();
             auto path = config.resource_bin;
@@ -182,7 +182,7 @@ namespace vEngine
             // {
             //     while(gn != nullptr)
             //     {
-            //         path /= gn->description_.name;
+            //         path /= gn->descriptor_.name;
             //     }
             // }
 

@@ -66,7 +66,7 @@ namespace vEngine
         class UUID
         {
                 friend struct std::hash<vEngine::Core::UUID>;
-                friend struct GameObjectDescription;
+                friend struct GameObjectDescriptor;
                 // friend class DebugTracking;
                 // friend class Json;
 

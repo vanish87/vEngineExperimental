@@ -246,11 +246,11 @@ namespace vEngine
                 // each animation is an AnimationClip
                 auto anim = ai_scene->mAnimations[i];
 
-                animation->description_.name = anim->mName.data;
+                animation->descriptor_.name = anim->mName.data;
                 animation->Duration() = static_cast<float>(anim->mDuration);
                 animation->TicksPerSecond() = static_cast<float>(anim->mTicksPerSecond);
                 animation->TotalFrame() = Math::FloorToInt(anim->mDuration * anim->mTicksPerSecond);
-                PRINT("handling " << animation->description_.name << " animation with " << animation->TotalFrame() << " frames")
+                PRINT("handling " << animation->descriptor_.name << " animation with " << animation->TotalFrame() << " frames")
                 for (uint32_t c = 0; c < anim->mNumChannels; ++c)
                 {
                     // Each channel defines node/bone it controls
@@ -261,7 +261,7 @@ namespace vEngine
                     PRINT("channel " << node->mNodeName.data << " has " << node->mNumPositionKeys << " Key values");
 
                     auto joint = GameObjectFactory::Create<Joint>();
-                    joint->description_.name = node->mNodeName.data;
+                    joint->descriptor_.name = node->mNodeName.data;
 
                     uint32_t k = 0;
                     for (k = 0; k < node->mNumPositionKeys; ++k)
@@ -281,7 +281,7 @@ namespace vEngine
                     }
 
                     // TODO: use unordered_map for fast access
-                    animation->AddJoint(joint->description_.name, joint);
+                    animation->AddJoint(joint->descriptor_.name, joint);
                 }
 
                 scene->AddAnimation(animation);
@@ -309,11 +309,11 @@ namespace vEngine
             auto node = GameObjectFactory::Create<GameNode>();
             auto transform = GameObjectFactory::Create<TransformComponent>();
             node->AttachComponent(transform);
-            node->description_.name = ai_node->mName.data;
+            node->descriptor_.name = ai_node->mName.data;
 
             this->HandleBoneNode(scene, ai_node, node);
 
-            node->description_.name = ai_node->mName.data;
+            node->descriptor_.name = ai_node->mName.data;
             // set transformation here
             // auto transform = ai_node->mTransformation;
             // parent->AddChild(game_node);

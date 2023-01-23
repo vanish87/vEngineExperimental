@@ -56,7 +56,7 @@ namespace vEngine
                 virtual void OnInit() override
                 {
                     // PRINT("Created "<< typeid(T).name() << " from component");
-                    this->description_.name = std::string("Component ") + typeid(T).name();
+                    this->descriptor_.name = std::string("Component ") + typeid(T).name();
                     // this->game_object_ = std::make_shared<T>();
                 }
                 virtual bool Enabled() const override

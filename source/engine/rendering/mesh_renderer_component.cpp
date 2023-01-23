@@ -50,7 +50,7 @@ namespace vEngine
                     // if(mesh->bone_data_.find(b->name_) == mesh->bone_data_.end())
                     // {
                     //     continue;
-                    //     // GameObjectDescription jdesc;
+                    //     // GameObjectDescriptor jdesc;
                     //     // jdesc.type = GameObjectType::Bone;
                     //     // auto new_bone = GameObjectFactory::Create<Animation::Bone>(jdesc);
                     //     // new_bone->name_ = b->name_;

@@ -92,7 +92,7 @@ namespace vEngine
             // ptr = shared;
         }
         template <std::size_t I, class T, typename S>
-        bool HandleByType(std::shared_ptr<S>& ptr, const GameObjectDescription& desc)
+        bool HandleByType(std::shared_ptr<S>& ptr, const GameObjectDescriptor& desc)
         {
             using Type = typename std::tuple_element_t<I, T>;
             // if(std::is_same<T, Type>::value)
@@ -123,7 +123,7 @@ namespace vEngine
     break;
 
         template <typename T>
-        std::shared_ptr<T> CreateAndLoadByDesc(const GameObjectDescription& desc)
+        std::shared_ptr<T> CreateAndLoadByDesc(const GameObjectDescriptor& desc)
         {
             // if (type == "class vEngine::Core::CameraComponent") return Create<CameraComponent>();
             // if (type == "class vEngine::Core::TransformComponent") return Create<TransformComponent>();
@@ -219,7 +219,7 @@ namespace vEngine
                 PRINT("json is null, it should be a nullptr");
                 return;
             }
-            GameObjectDescription desc;
+            GameObjectDescriptor desc;
             FromJson(j["description"], desc);
 
             // 1. find by uuid
@@ -230,7 +230,7 @@ namespace vEngine
             ptr = CreateAndLoadByDesc<T>(desc);
             CHECK_ASSERT_NOT_NULL(ptr);
 
-            PRINT("Load " << ptr->description_.uuid.AsUint() << " " << ToString(desc.type));
+            PRINT("Load " << ptr->descriptor_.uuid.AsUint() << " " << ToString(desc.type));
         }
         template <typename T>
         void FromJson(const json& j, std::vector<T>& vector)

@@ -89,7 +89,7 @@ namespace vEngine
                     static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
                     auto gn = std::make_shared<T>(std::forward<Args>(args)...);
                     auto go = std::dynamic_pointer_cast<GameObject>(gn);
-                    go->description_.context = typeid(T).name();
+                    go->descriptor_.context = typeid(T).name();
                     // TODO Checking description type with T
 
                     // Context::GetInstance().Register(go);
@@ -107,7 +107,7 @@ namespace vEngine
                 static GameObjectSharedPtr CreateByTypeString(const std::string type);
 
                 template <typename T>
-                static std::shared_ptr<T> Find(const GameObjectDescription& desc)
+                static std::shared_ptr<T> Find(const GameObjectDescriptor& desc)
                 {
                     auto go = Context::GetInstance().Find(desc.uuid);
                     if (go != nullptr) return std::dynamic_pointer_cast<T>(go);

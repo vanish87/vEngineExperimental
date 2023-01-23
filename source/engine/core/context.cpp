@@ -119,7 +119,7 @@ namespace vEngine
         // void Context::Register(const GameObjectSharedPtr& go)
         // {
         //     // UNUSED_PARAMETER(go);
-        //     const auto& uuid = go->description_.uuid;
+        //     const auto& uuid = go->descriptor_.uuid;
         //     CHECK_ASSERT(this->runtime_game_objects_.find(uuid) == this->runtime_game_objects_.end());
         //     this->runtime_game_objects_[uuid] = go;
         // }

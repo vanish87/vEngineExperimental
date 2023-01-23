@@ -27,6 +27,16 @@ namespace vEngine
         ///
         class VENGINE_API ObjectFactory
         {
+            public:
+                template <class... Args>
+                virtual GameObjectSharedPtr Create(Args&&... args) = 0;
+        } 
+        class VENGINE_API RenderFactory : public ObjectFactory
+        {
+        }
+
+        class VENGINE_API GameObjectFactory : public ObjectFactory
+        {
         }
     }  // namespace Core
 }  // namespace vEngine

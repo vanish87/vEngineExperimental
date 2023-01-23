@@ -65,7 +65,7 @@ namespace vEngine
                                  content_saved = true;
 
                                  auto value = ToJsonTest(*p.get());
-                                 auto path = GameObjectToPath(p->description_);
+                                 auto path = GameObjectToPath(p->descriptor_);
                                  SaveJson(value, path);
                              }
                          });
@@ -116,7 +116,7 @@ namespace vEngine
         template <typename T>
         void FromJsonTest(const json& j, std::shared_ptr<T>& ptr)
         {
-            GameObjectDescription desc;
+            GameObjectDescriptor desc;
             // FromJson(j["data"], *v);
 
             FromJson(j["description"], desc);
@@ -144,7 +144,7 @@ namespace vEngine
                              }
                          });
 
-            PRINT("Load " << ptr->description_.uuid.AsUint() << " " << desc.type);
+            PRINT("Load " << ptr->descriptor_.uuid.AsUint() << " " << desc.type);
         }
         template <typename T, int N>
         void FromJsonTest(const json& j, Vector<T, N>& vector)

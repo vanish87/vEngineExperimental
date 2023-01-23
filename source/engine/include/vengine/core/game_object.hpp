@@ -59,9 +59,10 @@ namespace vEngine
             Animator,
             AnimatorComponent,
 
+            Custom,
         };
 
-        struct GameObjectDescription
+        struct GameObjectDescriptor
         {
                 UUID uuid;
                 std::string name = "GameObject";
@@ -70,10 +71,10 @@ namespace vEngine
                 constexpr static auto properties()
                 {
                     return std::make_tuple(
-                        property("name", &GameObjectDescription::name),
-                        property("type", &GameObjectDescription::type),
-                        property("context", &GameObjectDescription::context),
-                        property("uuid", &GameObjectDescription::uuid)
+                        property("name", &GameObjectDescriptor::name),
+                        property("type", &GameObjectDescriptor::type),
+                        property("context", &GameObjectDescriptor::context),
+                        property("uuid", &GameObjectDescriptor::uuid)
                     );
                 }
         };
@@ -91,11 +92,11 @@ namespace vEngine
                 // GameObject(const GameObject&& other);
                 virtual ~GameObject();
 
-                GameObjectDescription description_;
+                GameObjectDescriptor descriptor_;
                 constexpr static auto properties()
                 {
                     return std::make_tuple(
-                        property("description", &GameObject::description_)
+                        property("description", &GameObject::descriptor_)
                     );
                 }
         };

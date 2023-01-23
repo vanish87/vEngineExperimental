@@ -31,7 +31,7 @@ namespace vEngine
         /// should be 2 lines
         GameObject::GameObject(const GameObjectType type)
         {
-            this->description_.type = type;
+            this->descriptor_.type = type;
         }
         GameObject::~GameObject() {}
     }  // namespace Core

@@ -23,7 +23,7 @@ namespace vEngine
         /// should be 2 lines
         GameNode::GameNode(const GameObjectType type) : GameObject(type)
         {
-            // this->description_.name = "Raw GameNode";
+            // this->descriptor_.name = "Raw GameNode";
         }
         GameNode::~GameNode() {}
 
