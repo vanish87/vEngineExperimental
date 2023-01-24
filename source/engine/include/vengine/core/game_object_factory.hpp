@@ -12,6 +12,8 @@
 
 #pragma once
 
+#include <any>
+
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
 #include <vengine/core/context.hpp>
@@ -29,13 +31,22 @@ namespace vEngine
         ///
         class VENGINE_API GameObjectFactory
         {
+            // auto mesh = GameObjectFactory::Create<GameObjectType::Mesh>(p1, p2);
+            // auto custom = GameObjectFactory::Create<GameObjectType::Custom>(117);
+            // auto desc = TextureDescriptor;
+            // auto texture = GameObjectFactory::Create<GameObjectType::Texture>(desc);
             public:
-                    // if constexpr (Type == etype) return GameObjectFactory::Create<type>(std::forward<Args>(args)...);
+                //all parameters should be passed by value with std::any to avoid confusion
+                //then use if(auto p = std::any_cast<int>(&parameter)) to check type cast
+                //When creating dynamic objects, parameter should be packed into one(like TextureDescriptor)
+                //then passing into Create function
+                virtual GameObjectSharedPtr Create(std::any parameter) = 0;
+
                 #define TYPE_AND_CREATE(etype, type)                                                        \
                     static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject"); \
                     if constexpr (Type == etype) return std::make_shared<type>(std::forward<Args>(args)...);
 
-                #define RENDERING_TYPE_AND_CREATE(etype, type) \
+                #define DYNAMIC_TYPE_AND_CREATE(etype, type) \
                     if constexpr (Type == etype) return Context::GetInstance().GetRenderEngine()->Create(std::forward<Args>(args)...);
 
                 template <GameObjectType Type, typename T = GameObject, class... Args>
@@ -61,8 +72,8 @@ namespace vEngine
                     TYPE_AND_CREATE(GameObjectType::MeshRenderer, Rendering::MeshRenderer);
                     TYPE_AND_CREATE(GameObjectType::MeshRendererComponent, Rendering::MeshRendererComponent);
                     TYPE_AND_CREATE(GameObjectType::Material, Rendering::Material);
-                    RENDERING_TYPE_AND_CREATE(GameObjectType::Texture, Rendering::Texture);
-                    RENDERING_TYPE_AND_CREATE(GameObjectType::PipelineState, Rendering::PipelineState);
+                    DYNAMIC_TYPE_AND_CREATE(GameObjectType::Texture, Rendering::Texture);
+                    DYNAMIC_TYPE_AND_CREATE(GameObjectType::PipelineState, Rendering::PipelineState);
                     TYPE_AND_CREATE(GameObjectType::Shader, Rendering::Shader);
 
                     TYPE_AND_CREATE(GameObjectType::Bone, Animation::Bone);
@@ -83,19 +94,19 @@ namespace vEngine
                     // return nullptr;
                 }
 
-                template <typename T, class... Args>
-                static std::shared_ptr<T> Create(Args&&... args)
-                {
-                    static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
-                    auto gn = std::make_shared<T>(std::forward<Args>(args)...);
-                    auto go = std::dynamic_pointer_cast<GameObject>(gn);
-                    go->descriptor_.context = typeid(T).name();
-                    // TODO Checking description type with T
+                // template <typename T, class... Args>
+                // static std::shared_ptr<T> Create(Args&&... args)
+                // {
+                //     static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
+                //     auto gn = std::make_shared<T>(std::forward<Args>(args)...);
+                //     auto go = std::dynamic_pointer_cast<GameObject>(gn);
+                //     go->descriptor_.context = typeid(T).name();
+                //     // TODO Checking description type with T
 
-                    // Context::GetInstance().Register(go);
+                //     // Context::GetInstance().Register(go);
 
-                    return gn;
-                }
+                //     return gn;
+                // }
 
                 template <typename T, class... Args>
                 static std::shared_ptr<T> Default(Args&&... args)
@@ -104,21 +115,41 @@ namespace vEngine
                     // static auto go = std::make_shared<T>();
                     // return go;
                 }
-                static GameObjectSharedPtr CreateByTypeString(const std::string type);
+                // static GameObjectSharedPtr CreateByTypeString(const std::string type);
 
-                template <typename T>
-                static std::shared_ptr<T> Find(const GameObjectDescriptor& desc)
-                {
-                    auto go = Context::GetInstance().Find(desc.uuid);
-                    if (go != nullptr) return std::dynamic_pointer_cast<T>(go);
-                    return nullptr;
-                }
+                // template <typename T>
+                // static std::shared_ptr<T> Find(const GameObjectDescriptor& desc)
+                // {
+                //     auto go = Context::GetInstance().Find(desc.uuid);
+                //     if (go != nullptr) return std::dynamic_pointer_cast<T>(go);
+                //     return nullptr;
+                // }
 
 
                 // static GameNodeSharedPtr Create(const GameNodeDescription& desc);
                 // static TransformNodeSharedPtr Create();
         };
 
+        class VENGINE_API MyGameObjectFactory : public GameObjectFactory
+        {
+            public:
+                virtual GameObjectSharedPtr Create(std::any parameter)
+                {
+                    if (auto p = std::any_cast<int>(&parameter))
+                    {
+                        // if(*p == 117) return std::make_shared<MyObject>();
+                    }
+                }
+        };
+        class VENGINE_API D3DRenderExampleFactory : public GameObjectFactory
+        {
+            public:
+                virtual GameObjectSharedPtr Create(std::any parameter)
+                {
+                    // if(auto desc = std::any_cast<TextureDesc>(&parameter)) return new D3DTexture(desc);
+                }
+        };
+            
     }  // namespace Core
 
 }  // namespace vEngine
