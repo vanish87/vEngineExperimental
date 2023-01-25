@@ -8,6 +8,7 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/rendering/mesh_renderer_component.hpp>
+#include <vengine/core/game_object_factory.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -33,7 +34,7 @@ namespace vEngine
             vEngineObjectConstantBuffer cb;
             cbuffer_desc.resource.data = &cb;
 
-            this->mesh_constant_buffer_ = Context::GetInstance().GetRenderEngine()->Create(cbuffer_desc);
+            this->mesh_constant_buffer_ = GameObjectFactory::Create<GameObjectType::GraphicsBuffer, GraphicsBuffer>(cbuffer_desc);
         }
         void MeshRendererComponent::OnBeginRender()
         {

@@ -141,7 +141,7 @@ namespace vEngine
             // auto handled = false;
 
             auto path = GameObjectToPath(desc);
-            // PRINT("Path " << path);
+            PRINT("Path " << path);
             // auto type = desc.type;
 
             switch (desc.type)
@@ -220,7 +220,7 @@ namespace vEngine
                 return;
             }
             GameObjectDescriptor desc;
-            FromJson(j["description"], desc);
+            FromJson(j["game_object_meta"], desc);
 
             // 1. find by uuid
             // ptr = GameObjectFactory::Find<T>(desc);
@@ -230,7 +230,7 @@ namespace vEngine
             ptr = CreateAndLoadByDesc<T>(desc);
             CHECK_ASSERT_NOT_NULL(ptr);
 
-            PRINT("Load " << ptr->descriptor_.uuid.AsUint() << " " << ToString(desc.type));
+            // PRINT("Load " << ptr->descriptor_.uuid.AsUint() << " " << ToString(desc.type));
         }
         template <typename T>
         void FromJson(const json& j, std::vector<T>& vector)

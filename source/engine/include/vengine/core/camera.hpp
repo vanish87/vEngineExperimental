@@ -35,7 +35,7 @@ namespace vEngine
 
                 static CameraSharedPtr Default()
                 {
-                    static auto cam = GameObjectFactory::Create<Camera>();
+                    static auto cam = GameObjectFactory::Create<GameObjectType::Camera, Camera>();
                     return cam;
                 }
 

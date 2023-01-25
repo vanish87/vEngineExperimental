@@ -27,12 +27,19 @@ namespace vEngine
         class VENGINE_API MeshRenderer : public Renderer<Core::Mesh>
         {
             public:
+                static MeshRendererSharedPtr Default()
+                {
+                    const static auto mesh_render = Core::GameObjectFactory::Create<Core::GameObjectType::MeshRenderer, MeshRenderer>();
+                    return mesh_render;
+                }
+
+            public:
                 /// \brief brief constructor description.
                 MeshRenderer(const Core::GameObjectType type = Core::GameObjectType::MeshRenderer);
 
                 virtual void Render();
         };
-    }  // namespace Core
+    }  // namespace Rendering
 }  // namespace vEngine
 
 #endif /* _VENGINE_RENDERING_MESH_RENDERER_HPP */

@@ -25,7 +25,7 @@ namespace vEngine
         Shader::Shader(const GameObjectType type) : GameObject(type) {}
         ShaderSharedPtr Shader::Load(const std::filesystem::path path)
         {
-            auto shader = GameObjectFactory::Create<Shader>();
+            auto shader = GameObjectFactory::Create<GameObjectType::Shader, Shader>();
             shader->path = path;
 
             std::ifstream fin(shader->path.string());

@@ -35,10 +35,10 @@ namespace vEngine
                 void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) override;
                 void OnEndFrame() override;
 
-                PipelineStateSharedPtr Create(const PipelineStateDescriptor& pipeline_desc) override;
-                TextureSharedPtr Create(const TextureDescriptor& desc) override;
-                FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override;
-                GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override;
+                // PipelineStateSharedPtr Create(const PipelineStateDescriptor& pipeline_desc) override;
+                // TextureSharedPtr Create(const TextureDescriptor& desc) override;
+                // FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override;
+                // GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override;
 
                 void Clear(const FrameBufferSharedPtr frame_buffer, const color color) override;
 

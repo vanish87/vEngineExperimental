@@ -29,6 +29,11 @@ namespace vEngine
         class VENGINE_API Transform final : public GameObject
         {
             public:
+                static TransformSharedPtr Default()
+                {
+                    const static auto transform = GameObjectFactory::Create<GameObjectType::Transform, Transform>();
+                    return transform;
+                }
                 constexpr static auto properties()
                 {
                     return std::tuple_cat(

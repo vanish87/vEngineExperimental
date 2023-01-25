@@ -24,8 +24,26 @@ namespace vEngine
         class VENGINE_API Light : public GameObject
         {
             public:
+                static LightSharedPtr Default()
+                {
+                    const static auto light = GameObjectFactory::Create<GameObjectType::Light, Light>();
+                    return light;
+                }
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        GameObject::properties()
+                        // std::make_tuple(
+                        //     property("fall_off", &Light::fall_off_)
+                        // )
+                    );
+                }
+            public:
                 /// \brief brief constructor description.
                 Light(const GameObjectType type = GameObjectType::Light);
+
+                // protected:
+                // float4 fall_off_;
 
 				//color
 				//intensity

@@ -81,10 +81,10 @@ namespace vEngine
                 // GPU Resource management
                 // virtual void
 
-                virtual PipelineStateSharedPtr Create(const PipelineStateDescriptor& pipeline_desc) = 0;
-                virtual TextureSharedPtr Create(const TextureDescriptor& desc) = 0;
-                virtual FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) = 0;
-                virtual GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) = 0;
+                // virtual PipelineStateSharedPtr Create(const PipelineStateDescriptor& pipeline_desc) = 0;
+                // virtual TextureSharedPtr Create(const TextureDescriptor& desc) = 0;
+                // virtual FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) = 0;
+                // virtual GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) = 0;
 
                 virtual void Clear(const FrameBufferSharedPtr frame_buffer, const color color = color(0, 51, 102, 255)) = 0;
 

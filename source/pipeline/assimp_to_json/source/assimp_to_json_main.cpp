@@ -17,7 +17,7 @@
 
 void TestFunction(std::filesystem::path output)
 {
-    GameObjectSharedPtr foo_class = GameObjectFactory::Create<ClassFoo>();
+    GameObjectSharedPtr foo_class = GameObjectFactory::Create<GameObjectType::Custom, ClassFoo>();
     auto foo = std::dynamic_pointer_cast<ClassFoo>(foo_class);
     foo->pos = float4(1, 2, 3, 4);
     foo->content = "this is new content";
@@ -60,10 +60,10 @@ int main(int argc, char* argv[])
         if (s == "-r") resource_src = argv[i + 1];
         if (s == "-b") resource_bin = argv[i + 1];
     }
-    // input = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource/boblamp/boblampclean.md5mesh";
-    // output = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin/assimp/boblampclean.json";
-    // resource_src = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource";
-    // resource_bin = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin";
+    input = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource/boblamp/boblampclean.md5mesh";
+    output = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin/assimp/boblampclean.json";
+    resource_src = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource";
+    resource_bin = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin";
 
     Configure configure;
     configure.graphics_configure.output = Output::CommandLine;

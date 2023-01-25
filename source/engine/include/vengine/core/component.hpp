@@ -48,7 +48,8 @@ namespace vEngine
                 Component(const GameObjectType type = GameObjectType::Component)
                     : GameNode(type),
                       enabled_{false},
-                      game_object_{GameObjectFactory::Create<T>()} {
+                      game_object_{T::Default()}
+                      {
 
                       };
                 virtual ~Component(){};
@@ -56,7 +57,8 @@ namespace vEngine
                 virtual void OnInit() override
                 {
                     // PRINT("Created "<< typeid(T).name() << " from component");
-                    this->descriptor_.name = std::string("Component ") + typeid(T).name();
+                    // this->descriptor_.name = std::string("Component ") + typeid(T).name();
+                    // this->game_object_ = T::Default();
                     // this->game_object_ = std::make_shared<T>();
                 }
                 virtual bool Enabled() const override
@@ -73,6 +75,8 @@ namespace vEngine
             public:
                 std::shared_ptr<T> GO()
                 {
+                    CHECK_ASSERT_NOT_NULL(this->game_object_);
+
                     return this->game_object_;
                 }
 

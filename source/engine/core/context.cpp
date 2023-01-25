@@ -23,6 +23,7 @@ namespace vEngine
     namespace Core
     {
         typedef void (*HandleRenderEngine)(Rendering::RenderEngineUniquePtr& ptr);
+        typedef void (*HandleGameObjectFactory)(GameObjectFactoryUniquePtr& ptr);
 
         Context::Context() {}
         Context::~Context() {}
@@ -67,6 +68,7 @@ namespace vEngine
 
             this->GetRenderEngine()->Deinit();
             this->render_engine_ptr_.reset();
+            this->render_object_factory_ptr_.reset();
             // prt.reset() does same thing as this->ProcessRenderEngine("DestoryRenderEngine");
 
             this->FreeDll();
@@ -74,6 +76,19 @@ namespace vEngine
         void Context::Update()
         {
             if (this->CurrentWindow() != nullptr) this->CurrentWindow()->Update();
+        }
+
+        GameObjectFactoryUniquePtr& Context::GetRenderObjectFactory()
+        {
+            if (this->render_object_factory_ptr_ == nullptr)
+            {
+                #ifdef VENGINE_PLATFORM_APPLE_STATIC
+                CreateGameObjectFactory(this->render_object_factory_ptr_);
+                #else
+                ProcessSharedFunction<GameObjectFactory, HandleGameObjectFactory>("CreateGameObjectFactory", this->render_plugin_dll_handle_, this->render_object_factory_ptr_);
+                #endif
+            }
+            return this->render_object_factory_ptr_;
         }
 
         Rendering::RenderEngineUniquePtr& Context::GetRenderEngine()

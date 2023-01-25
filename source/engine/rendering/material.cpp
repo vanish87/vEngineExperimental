@@ -8,9 +8,10 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/core/context.hpp>
+#include <vengine/core/resource_loader.hpp>
+#include <vengine/core/game_object_factory.hpp>
 #include <vengine/rendering/material.hpp>
 #include <vengine/rendering/render_engine.hpp>
-#include <vengine/core/resource_loader.hpp>
 #include <vengine/rendering/pipeline_state.hpp>
 
 /// A detailed namespace description, it
@@ -24,13 +25,14 @@ namespace vEngine
         /// should be 2 lines
         Material::Material(const GameObjectType type) : GameObject(type)
         {
-            this->pipeline_state_ = Context::GetInstance().GetRenderEngine()->Create(PipelineStateDescriptor::Default());
+            PipelineStateDescriptor desc;
+            this->pipeline_state_ = GameObjectFactory::Create<GameObjectType::PipelineState, PipelineState>(desc);
         }
         Material::~Material() {}
 
         MaterialSharedPtr Material::Default()
         {
-            static auto mat = GameObjectFactory::Create<Material>();
+            static auto mat = GameObjectFactory::Create<GameObjectType::Material, Material>();
             return mat;
         }
         void Material::BindShader(const ShaderType type, const ShaderSharedPtr shader)

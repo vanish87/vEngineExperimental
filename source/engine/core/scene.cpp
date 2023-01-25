@@ -118,7 +118,7 @@ namespace vEngine
         // }
         GameNodeSharedPtr Scene::HandleNode(const aiNode* node, const aiScene* scene)
         {
-            auto gn = GameObjectFactory::Create<TransformComponent>();
+            auto gn = GameObjectFactory::Create<GameObjectType::TransformComponent, TransformComponent>();
 
             this->HandleBoneNode(node, gn);
 
@@ -132,7 +132,7 @@ namespace vEngine
 
             for (uint32_t i = 0; i < node->mNumMeshes; ++i)
             {
-                auto mesh_node = GameObjectFactory::Create<GameNode>();
+                auto mesh_node = GameObjectFactory::Create<GameObjectType::GameNode, GameNode>();
                 // scene_meshes_ contains same mesh data as they are in aiScene
                 auto scene_mesh_id = node->mMeshes[i];
 
@@ -140,11 +140,11 @@ namespace vEngine
                 auto mesh = this->meshes_[scene_mesh_id];
                 PRINT("aiNode " << node->mName.data << " with ai mesh name " << ai_mesh->mName.data);
 
-                auto mesh_component = GameObjectFactory::Create<MeshComponent>();
+                auto mesh_component = GameObjectFactory::Create<GameObjectType::MeshComponent, MeshComponent>();
                 mesh_component->Reset(mesh);
                 mesh_node->AttachComponent(mesh_component);
 
-                auto mesh_renderer = GameObjectFactory::Create<MeshRendererComponent>();
+                auto mesh_renderer = GameObjectFactory::Create<GameObjectType::MeshRendererComponent, MeshRendererComponent>();
                 mesh_node->AttachComponent(mesh_renderer);
 
                 auto mat = this->materials_[ai_mesh->mMaterialIndex];
@@ -285,7 +285,7 @@ namespace vEngine
         {
             for (uint32_t i = 0; i < scene->mNumAnimations; ++i)
             {
-                auto animation = GameObjectFactory::Create<AnimationClip>();
+                auto animation = GameObjectFactory::Create<GameObjectType::AnimationClip, AnimationClip>();
                 // each animation is an AnimationClip
                 auto anim = scene->mAnimations[i];
 
@@ -303,7 +303,7 @@ namespace vEngine
                     auto node = anim->mChannels[c];
                     PRINT("channel " << node->mNodeName.data << " has " << node->mNumPositionKeys << " Key values");
 
-                    auto joint = GameObjectFactory::Create<Joint>();
+                    auto joint = GameObjectFactory::Create<GameObjectType::Joint, Joint>();
                     joint->descriptor_.name = node->mNodeName.data;
 
                     uint32_t k = 0;

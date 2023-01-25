@@ -42,7 +42,7 @@ namespace vEngine
                 };
             public:
                 /// \brief brief constructor description.
-                PipelineState(const Core::GameObjectType type = Core::GameObjectType::PipelineState);
+                // PipelineState(const Core::GameObjectType type = Core::GameObjectType::PipelineState);
                 PipelineState(const PipelineStateDescriptor desc);
                 virtual ~PipelineState();
 

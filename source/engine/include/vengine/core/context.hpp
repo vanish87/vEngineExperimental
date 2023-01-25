@@ -35,6 +35,7 @@ namespace vEngine
 
             public:
                 Rendering::RenderEngineUniquePtr& GetRenderEngine();
+                GameObjectFactoryUniquePtr& GetRenderObjectFactory();
 
             public:
                 void SetConfigure(const Configure& configure);
@@ -59,6 +60,7 @@ namespace vEngine
                 WindowSharedPtr window_;
 
                 void* render_plugin_dll_handle_;
+                GameObjectFactoryUniquePtr render_object_factory_ptr_;
                 Rendering::RenderEngineUniquePtr render_engine_ptr_;
 
                 // std::unordered_map<UUID, GameObjectSharedPtr> runtime_game_objects_;

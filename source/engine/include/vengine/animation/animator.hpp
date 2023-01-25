@@ -29,6 +29,11 @@ namespace vEngine
         class VENGINE_API Animator : public Core::GameObject
         {
             public:
+                static AnimatorSharedPtr Default()
+                {
+                    const static auto animator = Core::GameObjectFactory::Create<Core::GameObjectType::Animator, Animator>();
+                    return animator;
+                }
                 /// \brief brief constructor description.
                 Animator(const Core::GameObjectType type = Core::GameObjectType::Animator);
                 virtual ~Animator() {}

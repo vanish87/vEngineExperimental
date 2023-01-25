@@ -327,7 +327,7 @@ namespace vEngine
                 tdesc.type = GraphicsResourceType::Depth;
                 tdesc.usage = GraphicsResourceUsage::GPU_ReadWrite;
                 tdesc.resource.data = nullptr;
-                auto depth_tex = Context::GetInstance().GetRenderEngine()->Create(tdesc);
+                auto depth_tex = GameObjectFactory::Create<GameObjectType::Texture, Texture>(tdesc);
 
                 this->back_buffer_->BindColor(backBufferTexture, 0);
                 this->back_buffer_->BindDepthStencil(depth_tex);
@@ -573,24 +573,24 @@ namespace vEngine
             this->d3d_swap_chain_->Present(0, 0);
         }
 
-        PipelineStateSharedPtr D3D11RenderEngine::Create(const PipelineStateDescriptor& pipeline_desc)
-        {
-            return GameObjectFactory::Create<D3D11PipelineState>(pipeline_desc);
-        }
-        TextureSharedPtr D3D11RenderEngine::Create(const TextureDescriptor& desc)
-        {
-            return GameObjectFactory::Create<D3D11Texture>(desc);
-        }
-        FrameBufferSharedPtr D3D11RenderEngine::Create(const FrameBufferDescriptor& desc)
-        {
-            PRINT("Create D3D11FrameBuffer");
-            return GameObjectFactory::Create<D3D11FrameBuffer>(desc);
-        }
-        GraphicsBufferSharedPtr D3D11RenderEngine::Create(const GraphicsBufferDescriptor& desc)
-        {
-            PRINT("Create D3D11GraphicsBuffer");
-            return GameObjectFactory::Create<D3D11GraphicsBuffer>(desc);
-        }
+        // PipelineStateSharedPtr D3D11RenderEngine::Create(const PipelineStateDescriptor& pipeline_desc)
+        // {
+        //     return GameObjectFactory::Create<D3D11PipelineState>(pipeline_desc);
+        // }
+        // TextureSharedPtr D3D11RenderEngine::Create(const TextureDescriptor& desc)
+        // {
+        //     return GameObjectFactory::Create<D3D11Texture>(desc);
+        // }
+        // FrameBufferSharedPtr D3D11RenderEngine::Create(const FrameBufferDescriptor& desc)
+        // {
+        //     PRINT("Create D3D11FrameBuffer");
+        //     return GameObjectFactory::Create<D3D11FrameBuffer>(desc);
+        // }
+        // GraphicsBufferSharedPtr D3D11RenderEngine::Create(const GraphicsBufferDescriptor& desc)
+        // {
+        //     PRINT("Create D3D11GraphicsBuffer");
+        //     return GameObjectFactory::Create<D3D11GraphicsBuffer>(desc);
+        // }
 
     }  // namespace Rendering
 }  // namespace vEngine

@@ -36,18 +36,19 @@ namespace vEngine
             // auto desc = TextureDescriptor;
             // auto texture = GameObjectFactory::Create<GameObjectType::Texture>(desc);
             public:
+                virtual ~GameObjectFactory() {}
                 //all parameters should be passed by value with std::any to avoid confusion
                 //then use if(auto p = std::any_cast<int>(&parameter)) to check type cast
                 //When creating dynamic objects, parameter should be packed into one(like TextureDescriptor)
                 //then passing into Create function
-                virtual GameObjectSharedPtr Create(std::any parameter) = 0;
+                virtual GameObjectSharedPtr Create(std::any parameter = nullptr) = 0;
 
+                    // static_assert(std::is_base_of<GameObject, type>::value, "T must derived from GameObject"); 
                 #define TYPE_AND_CREATE(etype, type)                                                        \
-                    static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject"); \
                     if constexpr (Type == etype) return std::make_shared<type>(std::forward<Args>(args)...);
 
                 #define DYNAMIC_TYPE_AND_CREATE(etype, type) \
-                    if constexpr (Type == etype) return Context::GetInstance().GetRenderEngine()->Create(std::forward<Args>(args)...);
+                    if constexpr (Type == etype) return std::dynamic_pointer_cast<type>(Context::GetInstance().GetRenderObjectFactory()->Create(std::forward<Args>(args)...));
 
                 template <GameObjectType Type, typename T = GameObject, class... Args>
                 static std::shared_ptr<T> Create(Args&&... args)
@@ -73,7 +74,8 @@ namespace vEngine
                     TYPE_AND_CREATE(GameObjectType::MeshRendererComponent, Rendering::MeshRendererComponent);
                     TYPE_AND_CREATE(GameObjectType::Material, Rendering::Material);
                     DYNAMIC_TYPE_AND_CREATE(GameObjectType::Texture, Rendering::Texture);
-                    DYNAMIC_TYPE_AND_CREATE(GameObjectType::PipelineState, Rendering::PipelineState);
+                    DYNAMIC_TYPE_AND_CREATE(GameObjectType::GraphicsBuffer, T);
+                    DYNAMIC_TYPE_AND_CREATE(GameObjectType::PipelineState, T);
                     TYPE_AND_CREATE(GameObjectType::Shader, Rendering::Shader);
 
                     TYPE_AND_CREATE(GameObjectType::Bone, Animation::Bone);
@@ -82,6 +84,8 @@ namespace vEngine
                     TYPE_AND_CREATE(GameObjectType::AnimationClip, Animation::AnimationClip);
                     TYPE_AND_CREATE(GameObjectType::Animator, Animation::Animator);
                     TYPE_AND_CREATE(GameObjectType::AnimatorComponent, Animation::AnimatorComponent);
+
+                    DYNAMIC_TYPE_AND_CREATE(GameObjectType::Custom, T);
 
                     // if constexpr (Type == GameObjectType::Camera) return Context::GetInstance().CreateTest<Camera>(std::forward<Args>(args)...);
                     // if constexpr (Type == GameObjectType::Light) return Context::GetInstance().CreateTest<Light>(std::forward<Args>(args)...);
@@ -135,10 +139,12 @@ namespace vEngine
             public:
                 virtual GameObjectSharedPtr Create(std::any parameter)
                 {
+                    NOT_IMPL_ASSERT;
                     if (auto p = std::any_cast<int>(&parameter))
                     {
                         // if(*p == 117) return std::make_shared<MyObject>();
                     }
+                    return nullptr;
                 }
         };
         class VENGINE_API D3DRenderExampleFactory : public GameObjectFactory
@@ -146,7 +152,9 @@ namespace vEngine
             public:
                 virtual GameObjectSharedPtr Create(std::any parameter)
                 {
+                    NOT_IMPL_ASSERT;
                     // if(auto desc = std::any_cast<TextureDesc>(&parameter)) return new D3DTexture(desc);
+                    return nullptr;
                 }
         };
             
@@ -154,4 +162,9 @@ namespace vEngine
 
 }  // namespace vEngine
 
+extern "C"
+{
+    VENGINE_API void CreateGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr);
+    VENGINE_API void DestoryGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr);
+}
 #endif /* _VENGINE_CORE_GAME_OBJECT_FACTORY_HPP */

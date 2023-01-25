@@ -35,9 +35,9 @@ namespace vEngine
             public:
                 ClassFoo()
                 {
-                    this->vector.push_back(GameObjectFactory::Create<ClassBar>());
-                    this->vector.push_back(GameObjectFactory::Create<ClassBar>());
-                    this->vector.push_back(GameObjectFactory::Create<ClassBar>());
+                    this->vector.push_back(GameObjectFactory::Create<GameObjectType::Custom, ClassBar>());
+                    // this->vector.push_back(GameObjectFactory::Create<ClassBar>());
+                    // this->vector.push_back(GameObjectFactory::Create<ClassBar>());
                 }
                 virtual ~ClassFoo() {}
 

@@ -46,6 +46,7 @@ void ErrorText(std::string text);
     {                               \
         if (ptr == nullptr)         \
         {                           \
+            PRINT("Null Pointer");  \
             PRINT_FILE_AND_FUCTION; \
             DEBUG_BREAK             \
         }                           \

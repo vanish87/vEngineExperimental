@@ -10,7 +10,9 @@
 #include <vengine/core/context.hpp>
 #include <vengine/core/mesh.hpp>
 #include <vengine/core/resource_loader.hpp>
+#include <vengine/core/game_object_factory.hpp>
 #include <vengine/rendering/render_engine.hpp>
+#include <vengine/rendering/graphics_buffer.hpp>
 #include <vengine/animation/bone_component.hpp>
 
 /// A detailed namespace description, it
@@ -25,7 +27,7 @@ namespace vEngine
         {
             UNUSED_PARAMETER(primitive);
             UNUSED_PARAMETER(sub_div);
-            static auto m = GameObjectFactory::Create<Mesh>();
+            static auto m = GameObjectFactory::Create<GameObjectType::Mesh, Mesh>();
             // if (m->CurrentState() != ResourceState::Loaded)
             // {
             //     switch (primitive)
@@ -69,7 +71,7 @@ namespace vEngine
         }
         void Mesh::SetBoneData(const std::string name, const int id, std::vector<VertexWeight> weights, float4x4 inverse_bind_pose_matrix)
         {
-            auto bone = GameObjectFactory::Create<Animation::BoneComponent>();
+            auto bone = GameObjectFactory::Create<GameObjectType::BoneComponent, Animation::BoneComponent>();
             bone->descriptor_.name = name;
             auto go = bone->GO();
             go->id_ = id;
@@ -144,7 +146,7 @@ namespace vEngine
                 desc.layout.elements_.push_back(ElementLayout::Element("BLENDWEIGHT", DataFormat::RGBAFloat));
                 desc.layout.topology = ElementTopology::TriangleList;
 
-                this->vertex_buffer_ = Context::GetInstance().GetRenderEngine()->Create(desc);
+                this->vertex_buffer_ = GameObjectFactory::Create<GameObjectType::GraphicsBuffer, GraphicsBuffer>(desc);
             }
 
             if (this->index_buffer_ == nullptr)
@@ -158,7 +160,7 @@ namespace vEngine
                 desc.resource.count = this->index_data_.size();
                 desc.resource.total_size = desc.resource.count * desc.resource.stride;
                 desc.resource.data = this->index_data_.data();
-                this->index_buffer_ = Context::GetInstance().GetRenderEngine()->Create(desc);
+                this->index_buffer_ = GameObjectFactory::Create<GameObjectType::GraphicsBuffer, GraphicsBuffer>(desc);
             }
         }
 

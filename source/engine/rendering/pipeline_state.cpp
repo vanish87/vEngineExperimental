@@ -22,8 +22,8 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        PipelineState::PipelineState(const GameObjectType type): GameObject(type){}
-        PipelineState::PipelineState(const PipelineStateDescriptor desc): PipelineState()
+        // PipelineState::PipelineState(const GameObjectType type): GameObject(type){}
+        PipelineState::PipelineState(const PipelineStateDescriptor desc) : GameObject(GameObjectType::PipelineState)
         {
             // PRINT("PipelineState Base");
             this->descriptor_ = desc;

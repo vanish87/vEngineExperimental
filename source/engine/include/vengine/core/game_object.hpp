@@ -48,6 +48,7 @@ namespace vEngine
             MeshRendererComponent,
             Material,
             Texture,
+            GraphicsBuffer,
             PipelineState,
             Shader,
 
@@ -96,7 +97,7 @@ namespace vEngine
                 constexpr static auto properties()
                 {
                     return std::make_tuple(
-                        property("description", &GameObject::descriptor_)
+                        property("game_object_meta", &GameObject::descriptor_)
                     );
                 }
         };

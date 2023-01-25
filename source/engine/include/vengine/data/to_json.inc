@@ -44,7 +44,7 @@ namespace vEngine
     case etype:                                          \
     {                                                    \
         auto sub = std::dynamic_pointer_cast<type>(go);  \
-        auto path = GameObjectToPath(sub->descriptor_); \
+        auto path = GameObjectToPath(go->descriptor_);   \
         SaveJson(ToJson(*sub.get()), path);              \
     }                                                    \
     break;

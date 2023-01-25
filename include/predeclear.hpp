@@ -86,6 +86,8 @@ namespace vEngine
 
         enum class GameObjectType;
         CLASS_AND_SHARED_POINTER(GameObject)
+        CLASS_AND_UNIQUE_POINTER(GameObjectFactory)
+
         CLASS_AND_SHARED_POINTER(Camera)
         CLASS_AND_SHARED_POINTER(Light)
         CLASS_AND_SHARED_POINTER(Mesh)
@@ -116,6 +118,7 @@ namespace vEngine
         CLASS_AND_SHARED_POINTER(FrameBuffer)
         CLASS_AND_SHARED_POINTER(GraphicsBuffer)
         CLASS_AND_SHARED_POINTER(Texture)
+        CLASS_AND_SHARED_POINTER(MeshRenderer)
         CLASS_AND_SHARED_POINTER(MeshRendererComponent)
 
         CLASS_AND_SHARED_POINTER(Shader)

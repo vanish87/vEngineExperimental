@@ -11,6 +11,7 @@
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/context.hpp>
 #include <vengine/core/transform_component.hpp>
+#include <vengine/core/game_object_factory.hpp>
 #include <vengine/rendering/graphics_buffer.hpp>
 #include <vengine/rendering/render_engine.hpp>
 #include <vengine/rendering/shared/data_cbuffer.hpp>
@@ -39,7 +40,7 @@ namespace vEngine
             vEngineCameraConstantBuffer cb;
             cbuffer_desc.resource.data = &cb;
 
-            this->camera_constant_buffer_ = Context::GetInstance().GetRenderEngine()->Create(cbuffer_desc);
+            this->camera_constant_buffer_ = GameObjectFactory::Create<GameObjectType::GraphicsBuffer, GraphicsBuffer>(cbuffer_desc);
         }
         void CameraComponent::OnBeginCamera()
         {

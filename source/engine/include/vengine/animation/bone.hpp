@@ -28,6 +28,11 @@ namespace vEngine
         class VENGINE_API Bone : public Core::GameObject
         {
             public:
+                static BoneSharedPtr Default()
+                {
+                    const static auto bone = Core::GameObjectFactory::Create<Core::GameObjectType::Bone, Bone>();
+                    return bone;
+                }
                 constexpr static auto properties()
                 {
                     return std::tuple_cat(

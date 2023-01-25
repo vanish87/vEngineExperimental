@@ -37,7 +37,7 @@ namespace vEngine
 
             Assimp::Importer importer;
             auto ai_scene = importer.ReadFile(path.string(), aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
-            auto scene = GameObjectFactory::Create<Scene>();
+            auto scene = GameObjectFactory::Create<GameObjectType::Scene, Scene>();
 
             this->HandleMeshes(scene, ai_scene);
             this->HandleMaterials(scene, ai_scene);
@@ -55,12 +55,12 @@ namespace vEngine
             // UNUSED_PARAMETER(scene);
             UNUSED_PARAMETER(ai_scene);
 
-            auto gn = GameObjectFactory::Create<GameNode>();
+            auto gn = GameObjectFactory::Create<GameObjectType::GameNode, GameNode>();
 
-            auto camera = GameObjectFactory::Create<CameraComponent>();
+            auto camera = GameObjectFactory::Create<GameObjectType::CameraComponent, CameraComponent>();
             camera->GO()->target = Context::GetInstance().GetRenderEngine()->back_buffer_;
 
-            auto transform = GameObjectFactory::Create<TransformComponent>();
+            auto transform = GameObjectFactory::Create<GameObjectType::TransformComponent, TransformComponent>();
 
             gn->AttachComponent(camera);
             gn->AttachComponent(transform);
@@ -85,7 +85,7 @@ namespace vEngine
             for (uint32_t mid = 0; mid < ai_scene->mNumMaterials; ++mid)
             {
                 auto ai_mat = ai_scene->mMaterials[mid];
-                auto mat = GameObjectFactory::Create<Material>();
+                auto mat = GameObjectFactory::Create<GameObjectType::Material, Material>();
                 mat->BindShader(ShaderType::VS, vs);
                 mat->BindShader(ShaderType::PS, ps);
 
@@ -147,7 +147,7 @@ namespace vEngine
                         tdesc.resource.pitch = sizeof(byte) * GetByteSize(format) * width;
                         tdesc.slot = GraphicsBufferSlot::Slot0;
 
-                        auto tex = Context::GetInstance().GetRenderEngine()->Create(tdesc);
+                        auto tex = GameObjectFactory::Create<GameObjectType::Texture, Texture>(tdesc);
                         tex->SetRawData(out);
                         scene->SetTexture(texture_path.string(), tex);
 
@@ -178,7 +178,7 @@ namespace vEngine
             for (uint32_t mid = 0; mid < ai_scene->mNumMeshes; ++mid)
             {
                 auto ai_mesh = ai_scene->mMeshes[mid];
-                auto mesh = GameObjectFactory::Create<Mesh>();
+                auto mesh = GameObjectFactory::Create<GameObjectType::Mesh, Mesh>();
 
                 std::vector<Vertex> vertices;
                 std::vector<uint32_t> indices;
@@ -242,7 +242,7 @@ namespace vEngine
         {
             for (uint32_t i = 0; i < ai_scene->mNumAnimations; ++i)
             {
-                auto animation = GameObjectFactory::Create<AnimationClip>();
+                auto animation = GameObjectFactory::Create<GameObjectType::AnimationClip, AnimationClip>();
                 // each animation is an AnimationClip
                 auto anim = ai_scene->mAnimations[i];
 
@@ -260,7 +260,7 @@ namespace vEngine
                     auto node = anim->mChannels[c];
                     PRINT("channel " << node->mNodeName.data << " has " << node->mNumPositionKeys << " Key values");
 
-                    auto joint = GameObjectFactory::Create<Joint>();
+                    auto joint = GameObjectFactory::Create<GameObjectType::Joint, Joint>();
                     joint->descriptor_.name = node->mNodeName.data;
 
                     uint32_t k = 0;
@@ -306,8 +306,8 @@ namespace vEngine
         }
         GameNodeSharedPtr AssimpHandler::HandleNode(SceneSharedPtr scene, const aiNode* ai_node, const aiScene* ai_scene)
         {
-            auto node = GameObjectFactory::Create<GameNode>();
-            auto transform = GameObjectFactory::Create<TransformComponent>();
+            auto node = GameObjectFactory::Create<GameObjectType::GameNode, GameNode>();
+            auto transform = GameObjectFactory::Create<GameObjectType::TransformComponent, TransformComponent>();
             node->AttachComponent(transform);
             node->descriptor_.name = ai_node->mName.data;
 
@@ -323,8 +323,8 @@ namespace vEngine
 
             for (uint32_t i = 0; i < ai_node->mNumMeshes; ++i)
             {
-                auto mesh_node = GameObjectFactory::Create<GameNode>();
-                auto mesh_transform = GameObjectFactory::Create<TransformComponent>();
+                auto mesh_node = GameObjectFactory::Create<GameObjectType::GameNode, GameNode>();
+                auto mesh_transform = GameObjectFactory::Create<GameObjectType::TransformComponent, TransformComponent>();
                 mesh_node->AttachComponent(mesh_transform);
                 // scene_meshes_ contains same mesh data as they are in aiScene
                 auto scene_mesh_id = ai_node->mMeshes[i];
@@ -333,11 +333,11 @@ namespace vEngine
                 auto mesh = scene->meshes_[scene_mesh_id];
                 PRINT("aiNode " << ai_node->mName.data << " with ai mesh name " << ai_mesh->mName.data);
 
-                auto mesh_component = GameObjectFactory::Create<MeshComponent>();
+                auto mesh_component = GameObjectFactory::Create<GameObjectType::MeshComponent, MeshComponent>();
                 mesh_component->Reset(mesh);
                 mesh_node->AttachComponent(mesh_component);
 
-                auto mesh_renderer = GameObjectFactory::Create<MeshRendererComponent>();
+                auto mesh_renderer = GameObjectFactory::Create<GameObjectType::MeshRendererComponent, MeshRendererComponent>();
                 mesh_node->AttachComponent(mesh_renderer);
 
                 auto mat = scene->materials_[ai_mesh->mMaterialIndex];
