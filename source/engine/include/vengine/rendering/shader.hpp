@@ -50,14 +50,14 @@ namespace vEngine
                     {
                     case ShaderType::VS:
                     {
-                        auto path = Core::ResourceLoader::GetInstance().GetFilePath("vs.hlsl");
+                        auto path = Core::ResourceManager::GetInstance().GetFilePath("vs.hlsl");
                         static auto vs = Shader::Load(path);
                         vs->type = ShaderType::VS;
                         return vs;
                     }
                     case ShaderType::PS:
                     {
-                        auto path = Core::ResourceLoader::GetInstance().GetFilePath("ps.hlsl");
+                        auto path = Core::ResourceManager::GetInstance().GetFilePath("ps.hlsl");
                         static auto ps = Shader::Load(path);
                         ps->type = ShaderType::PS;
                         return ps;

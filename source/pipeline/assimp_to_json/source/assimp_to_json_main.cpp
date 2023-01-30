@@ -60,10 +60,10 @@ int main(int argc, char* argv[])
         if (s == "-r") resource_src = argv[i + 1];
         if (s == "-b") resource_bin = argv[i + 1];
     }
-    // input = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource/boblamp/boblampclean.md5mesh";
-    // output = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin/assimp/boblampclean.json";
-    // resource_src = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource";
-    // resource_bin = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin";
+    input = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource/boblamp/boblampclean.md5mesh";
+    output = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin/assimp/boblampclean.json";
+    resource_src = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource";
+    resource_bin = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin";
 
     Configure configure;
     configure.graphics_configure.output = Output::CommandLine;
@@ -78,12 +78,12 @@ int main(int argc, char* argv[])
     Context::GetInstance().SetConfigure(configure);
 
     Context::GetInstance().Init();
-    ResourceLoader::GetInstance().AddSearchPath(configure.resource_src);
+    ResourceManager::GetInstance().AddSearchPath(configure.resource_src);
     // ResourceLoader::GetInstance().AddSearchFolder("resource");
-    ResourceLoader::GetInstance().AddSearchFolder("shader");
-    ResourceLoader::GetInstance().AddSearchFolder("sponza");
-    ResourceLoader::GetInstance().AddSearchFolder("bob");
-    ResourceLoader::GetInstance().AddSearchFolder("boblamp");
+    ResourceManager::GetInstance().AddSearchFolder("shader");
+    ResourceManager::GetInstance().AddSearchFolder("sponza");
+    ResourceManager::GetInstance().AddSearchFolder("bob");
+    ResourceManager::GetInstance().AddSearchFolder("boblamp");
 
     // PRINT(resource_src.string());
     // PRINT(resource_bin.string());

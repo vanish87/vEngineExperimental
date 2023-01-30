@@ -33,7 +33,7 @@ namespace vEngine
 
         SceneSharedPtr AssimpHandler::LoadFromAssimp(const std::filesystem::path path)
         {
-            ResourceLoader::GetInstance().DumpCurrentPath();
+            ResourceManager::GetInstance().DumpCurrentPath();
 
             Assimp::Importer importer;
             auto ai_scene = importer.ReadFile(path.string(), aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
@@ -94,7 +94,7 @@ namespace vEngine
                 aiString szPath;
                 if (AI_SUCCESS == ai_mat->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), szPath))
                 {
-                    auto texture_path = ResourceLoader::GetInstance().GetFilePath(szPath.data);
+                    auto texture_path = ResourceManager::GetInstance().GetFilePath(szPath.data);
                     if (!scene->HasTexture(texture_path.string()))
                     {
                         std::vector<byte> out;

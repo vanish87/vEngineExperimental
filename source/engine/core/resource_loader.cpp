@@ -7,26 +7,26 @@ namespace vEngine
     namespace Core
     {
 
-        ResourceLoader::ResourceLoader()
+        ResourceManager::ResourceManager()
         {
             this->loading_thread_.Create();
         }
-        ResourceLoader::~ResourceLoader()
+        ResourceManager::~ResourceManager()
         {
             this->loading_thread_.Quit();
             this->loading_thread_.Join();
         }
 
-        void ResourceLoader::LoadAsync(const ResourceDescriptor& desc)
+        void ResourceManager::LoadAsync(const ResourceDescriptor& desc)
         {
             this->loading_thread_.AddToQueue(std::make_shared<ResourceLoadingJob>(desc));
         }
-        void ResourceLoader::Load(const ResourceDescriptor& desc)
+        void ResourceManager::Load(const ResourceDescriptor& desc)
         {
             desc.on_load_call_back();
         }
 
-        void ResourceLoader::AddSearchPath(const std::filesystem::path path)
+        void ResourceManager::AddSearchPath(const std::filesystem::path path)
         {
             auto p = path;
             if (p.is_relative()) p = std::filesystem::absolute(p);
@@ -39,11 +39,11 @@ namespace vEngine
 
             this->search_paths_[p.string()] = p;
         }
-        void ResourceLoader::AddSearchFolder(const std::string folder)
+        void ResourceManager::AddSearchFolder(const std::string folder)
         {
             this->AddSearchPath(this->GetFilePath(folder));
         }
-        std::filesystem::path ResourceLoader::GetFilePath(const std::string file_name)
+        std::filesystem::path ResourceManager::GetFilePath(const std::string file_name)
         {
             for (const auto& p : this->search_paths_)
             {
@@ -54,7 +54,7 @@ namespace vEngine
             CHECK_AND_ASSERT(false, "Cannot find file/folder " << file_name);
             return nullptr;
         }
-        void ResourceLoader::DumpCurrentPath()
+        void ResourceManager::DumpCurrentPath()
         {
             PRINT("Current Searching Path: ");
             for (auto& p : this->search_paths_)

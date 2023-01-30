@@ -29,11 +29,11 @@ namespace vEngine
             ResourceDescriptor desc;
             desc.on_load_call_back = [&]()
             {
-                auto path = ResourceLoader::GetInstance().GetFilePath(scene_name);
+                auto path = ResourceManager::GetInstance().GetFilePath(scene_name);
                 this->scene_ = Scene::Load(path);;
                 return this->scene_;
             };             
-            ResourceLoader::GetInstance().LoadAsync(desc);
+            ResourceManager::GetInstance().LoadAsync(desc);
 
         }
         void SceneManager::Init()

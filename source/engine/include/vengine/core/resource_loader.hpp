@@ -25,9 +25,9 @@ namespace vEngine
 {
     namespace Core
     {
-        class VENGINE_API ResourceLoader: public IRuntimeModule
+        class VENGINE_API ResourceManager: public IRuntimeModule
         {
-                SINGLETON_CLASS(ResourceLoader)
+                SINGLETON_CLASS(ResourceManager)
 
             public:
                 void Init() override{};
