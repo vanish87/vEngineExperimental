@@ -29,8 +29,7 @@ namespace vEngine
             public:
                 static MeshRendererSharedPtr Default()
                 {
-                    const static auto mesh_render = Core::GameObjectFactory::Create<Core::GameObjectType::MeshRenderer, MeshRenderer>();
-                    return mesh_render;
+                    return Core::GameObjectFactory::Create<Core::GameObjectType::MeshRenderer, MeshRenderer>();
                 }
 
             public:

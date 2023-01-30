@@ -41,30 +41,10 @@ namespace vEngine
                     UNUSED_PARAMETER(texture);
                 }
 
-                PipelineStateSharedPtr Create(const PipelineStateDescriptor& pipeline_desc) override
-                {
-                    UNUSED_PARAMETER(pipeline_desc);
-                    return nullptr;
-                }
                 void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) override
                 {
                     UNUSED_PARAMETER(vertice);
                     UNUSED_PARAMETER(indice);
-                }
-                TextureSharedPtr Create(const TextureDescriptor& desc) override
-                {
-                    UNUSED_PARAMETER(desc);
-                    return nullptr;
-                }
-                FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override
-                {
-                    UNUSED_PARAMETER(desc);
-                    return nullptr;
-                }
-                GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override
-                {
-                    UNUSED_PARAMETER(desc);
-                    return nullptr;
                 }
                 void Clear(const FrameBufferSharedPtr frame_buffer, const color color) override
                 {

@@ -48,9 +48,8 @@ namespace vEngine
                 Component(const GameObjectType type = GameObjectType::Component)
                     : GameNode(type),
                       enabled_{false},
-                      game_object_{T::Default()}
+                      game_object_{GameObjectFactory::Default<T>()} 
                       {
-
                       };
                 virtual ~Component(){};
 
