@@ -27,7 +27,7 @@ namespace vEngine
         /// Unity-like Component model attached
         /// as game node in the scene
         template <typename T>
-        class VENGINE_API Component : public GameNode, public IComponent
+        class Component : public GameNode, public IComponent
         {
                 static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
 

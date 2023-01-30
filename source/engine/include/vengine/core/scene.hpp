@@ -20,8 +20,8 @@
 #include <vengine/core/iresource.hpp>
 #include <vengine/core/game_node.hpp>
 
-struct aiNode;
-struct aiScene;
+// struct aiNode;
+// struct aiScene;
 
 /// A brief namespace description.
 namespace vEngine
@@ -75,12 +75,12 @@ namespace vEngine
                 std::vector<Rendering::MaterialSharedPtr> materials_;
                 std::vector<Animation::AnimationClipSharedPtr> animation_clips_;
 
-                GameNodeSharedPtr HandleNode(const aiNode* node, const aiScene* scene);
-                void HandleCameras(const aiScene* scene);
-                void HandleMaterials(const aiScene* scene);
-                void HandleMeshes(const aiScene* scene);
-                void HandleAnimations(const aiScene* scene);
-                void HandleBoneNode(const aiNode* node, const GameNodeSharedPtr game_node);
+                // GameNodeSharedPtr HandleNode(const aiNode* node, const aiScene* scene);
+                // void HandleCameras(const aiScene* scene);
+                // void HandleMaterials(const aiScene* scene);
+                // void HandleMeshes(const aiScene* scene);
+                // void HandleAnimations(const aiScene* scene);
+                // void HandleBoneNode(const aiNode* node, const GameNodeSharedPtr game_node);
 
             public:
                 void Update();
