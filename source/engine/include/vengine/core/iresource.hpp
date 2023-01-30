@@ -2,10 +2,8 @@
 #define _VENGINE_CORE_IRESOURCE_HPP
 
 #pragma once
-#include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <functional>
-#include <filesystem>
 
 namespace vEngine
 {

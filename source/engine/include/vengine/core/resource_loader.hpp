@@ -11,17 +11,13 @@
 #define _VENGINE_CORE_RESOURCE_LOADER_HPP
 
 #pragma once
-#include <condition_variable>
-#include <mutex>
-#include <queue>
-#include <functional>
 
-// #include <unordered_map>
-#include <unordered_set>
+#include <unordered_map>
+// #include <unordered_set>
+#include <filesystem>
 
-#include <VENGINE_API.hpp>
 #include <engine.hpp>
-#include <vengine/core/thread.hpp>
+#include <vengine/core/resource_loading_thread.hpp>
 #include <vengine/core/iruntime_module.hpp>
 #include <vengine/core/iresource.hpp>
 
@@ -29,38 +25,6 @@ namespace vEngine
 {
     namespace Core
     {
-        class ResourceLoadingThread : public Thread
-        {
-            public:
-                ResourceLoadingThread();
-                ~ResourceLoadingThread();
-
-            public:
-                virtual int Main(void* para) override;
-
-                void AddToQueue(ThreadJobSharedPtr job);
-                void Quit();
-
-            private:
-                std::queue<ThreadJobSharedPtr> loading_queue_;
-                std::mutex mutex_;
-                std::condition_variable cond_variable_;
-
-                bool should_quit_;
-        };
-        class ResourceLoadingJob : public ThreadJob
-        {
-            public:
-                ResourceLoadingJob(const ResourceDescriptor& desc);
-                ~ResourceLoadingJob();
-
-            public:
-                virtual void Run() override;
-
-            private:
-                ResourceLoadingJob(){};
-                ResourceDescriptor desc_;
-        };
         class VENGINE_API ResourceLoader: public IRuntimeModule
         {
                 SINGLETON_CLASS(ResourceLoader)
