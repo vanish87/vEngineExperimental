@@ -1,12 +1,22 @@
-#include <vengine/core/resource_loader.hpp>
+/// \file resource_manager.cpp
+/// \brief source file for Resource Manager
+///
+/// A detailed file description.
+///
+/// \author author_name
+/// \version version_number
+/// \date xxxx-xx-xxx
 
-#include <vengine/core/iresource.hpp>
+#include <vengine/core/resource_manager.hpp>
 
+/// A detailed namespace description, it
+/// should be 2 lines at least.
 namespace vEngine
 {
+    /// constructor detailed defintion,
+    /// should be 2 lines
     namespace Core
     {
-
         ResourceManager::ResourceManager()
         {
             this->loading_thread_.Create();

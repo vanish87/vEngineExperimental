@@ -5,23 +5,23 @@
 #include <external/tga.h>
 
 #include <vengine/core/game_object_factory.hpp>
+#include <vengine/core/context.hpp>
 #include <vengine/core/scene.hpp>
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/transform_component.hpp>
 #include <vengine/core/mesh_component.hpp>
+#include <vengine/core/resource_manager.hpp>
 #include <vengine/rendering/mesh_renderer_component.hpp>
-#include <vengine/core/resource_loader.hpp>
 #include <vengine/rendering/shader.hpp>
 #include <vengine/rendering/material.hpp>
 #include <vengine/rendering/texture.hpp>
+#include <vengine/rendering/render_engine.hpp>
 
 #include <vengine/animation/bone_component.hpp>
 #include <vengine/animation/joint.hpp>
 #include <vengine/animation/animation_clip.hpp>
 #include <vengine/animation/animator_component.hpp>
 
-#include <vengine/core/context.hpp>
-#include <vengine/rendering/render_engine.hpp>
 
 namespace vEngine
 {

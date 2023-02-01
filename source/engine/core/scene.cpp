@@ -18,19 +18,19 @@
 // #include <external/tga.h>
 
 #include <vengine/core/game_object_factory.hpp>
+#include <vengine/core/camera_component.hpp>
+#include <vengine/core/mesh.hpp>
+#include <vengine/core/resource_manager.hpp>
+#include <vengine/core/transform_component.hpp>
+#include <vengine/core/light.hpp>
+#include <vengine/core/light_component.hpp>
 #include <vengine/animation/bone.hpp>
 #include <vengine/animation/bone_component.hpp>
 #include <vengine/animation/joint.hpp>
 #include <vengine/animation/animation_clip.hpp>
 #include <vengine/animation/animator_component.hpp>
-#include <vengine/core/camera_component.hpp>
 #include <vengine/rendering/material.hpp>
-#include <vengine/core/mesh.hpp>
 #include <vengine/rendering/mesh_renderer_component.hpp>
-#include <vengine/core/resource_loader.hpp>
-#include <vengine/core/transform_component.hpp>
-#include <vengine/core/light.hpp>
-#include <vengine/core/light_component.hpp>
 
 #include <vengine/data/json.hpp>
 
@@ -43,10 +43,10 @@ namespace vEngine
         using namespace Animation;
         using namespace Rendering;
 
-        SceneSharedPtr Scene::Load(const std::filesystem::path path) 
+        SceneSharedPtr Scene::Load(const std::filesystem::path path)
         {
-            //just a place holder;
-            //From json will overwrite this scene variable
+            // just a place holder;
+            // From json will overwrite this scene variable
             SceneSharedPtr scene;
             auto j = LoadJson(path);
             FromJson(j, scene);
@@ -395,7 +395,7 @@ namespace vEngine
         }
         void Scene::Flush()
         {
-            //TODO Sort by Material then foreach mat render mesh
+            // TODO Sort by Material then foreach mat render mesh
             this->TraverseAllChildren<MeshRendererComponent>(
                 [&](MeshRendererComponentSharedPtr n)
                 {

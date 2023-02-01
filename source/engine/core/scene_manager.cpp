@@ -11,7 +11,7 @@
 
 #include <vengine/core/scene_manager.hpp>
 
-#include <vengine/core/resource_loader.hpp>
+#include <vengine/core/resource_manager.hpp>
 #include <vengine/core/scene.hpp>
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -34,7 +34,6 @@ namespace vEngine
                 return this->scene_;
             };             
             ResourceManager::GetInstance().LoadAsync(desc);
-
         }
         void SceneManager::Init()
         {

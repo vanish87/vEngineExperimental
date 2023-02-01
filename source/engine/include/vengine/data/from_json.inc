@@ -220,7 +220,7 @@ namespace vEngine
                 return;
             }
             GameObjectDescriptor desc;
-            FromJson(j["game_object_meta"], desc);
+            FromJson(j["meta"], desc);
 
             // 1. find by uuid
             // ptr = GameObjectFactory::Find<T>(desc);

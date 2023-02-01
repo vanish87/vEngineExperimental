@@ -16,7 +16,7 @@
 #include <vengine/rendering/data_struct.hpp>
 #include <vengine/core/iresource.hpp>
 #include <vengine/core/game_object.hpp>
-#include <vengine/core/resource_loader.hpp>
+#include <vengine/core/resource_manager.hpp>
 #include <vengine/core/game_object_factory.hpp>
 
 namespace vEngine

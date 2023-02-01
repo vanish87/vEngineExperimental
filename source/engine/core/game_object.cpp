@@ -16,7 +16,6 @@ namespace vEngine
 {
     namespace Core
     {
-
         // GameObject::GameObject(const GameObject&& other)
         // {
         //     UNUSED_PARAMETER(other);

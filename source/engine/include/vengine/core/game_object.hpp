@@ -97,7 +97,7 @@ namespace vEngine
                 constexpr static auto properties()
                 {
                     return std::make_tuple(
-                        property("game_object_meta", &GameObject::descriptor_)
+                        property("meta", &GameObject::descriptor_)
                     );
                 }
         };

@@ -9,7 +9,6 @@
 
 #include <vengine/core/context.hpp>
 #include <vengine/core/mesh.hpp>
-#include <vengine/core/resource_loader.hpp>
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/rendering/render_engine.hpp>
 #include <vengine/rendering/graphics_buffer.hpp>
