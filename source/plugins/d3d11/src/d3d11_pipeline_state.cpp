@@ -25,7 +25,14 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        D3D11PipelineState::D3D11PipelineState(const PipelineStateDescriptor& desc) : PipelineState(desc) {}
+        D3D11PipelineState::D3D11PipelineState(const PipelineStateDescriptor& desc) : PipelineState(desc) 
+        {
+            // PRINT("D3D11PipelineState");
+        }
+        D3D11PipelineState::~D3D11PipelineState()
+        {
+            // PRINT("D3D11PipelineState Destructor");
+        }
         void D3D11PipelineState::PrepareData()
         {
             if (this->vs_ == nullptr)

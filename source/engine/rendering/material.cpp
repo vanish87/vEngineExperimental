@@ -8,7 +8,7 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/core/context.hpp>
-#include <vengine/core/resource_loader.hpp>
+// #include <vengine/core/resource_manager.hpp>
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/rendering/material.hpp>
 #include <vengine/rendering/render_engine.hpp>
@@ -36,6 +36,7 @@ namespace vEngine
         }
         void Material::BindShader(const ShaderType type, const ShaderSharedPtr shader)
         {
+            CHECK_ASSERT_NOT_NULL(this->pipeline_state_);
             this->pipeline_state_->shaders_[type] = shader;
         }
         void Material::BindTexture(const std::string name, const TextureSharedPtr texture)

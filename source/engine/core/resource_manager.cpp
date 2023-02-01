@@ -47,6 +47,10 @@ namespace vEngine
         {
             return this->resource_root_;
         }
+        std::filesystem::path ResourceManager::GetFilePath(const GameObjectDescriptor& desc)
+        {
+            return this->resource_root_ / desc.reference_path;
+        }
         std::filesystem::path ResourceManager::GetFilePath(const std::string file_name)
         {
             for (const auto& file : std::filesystem::recursive_directory_iterator{this->resource_root_})

@@ -75,7 +75,7 @@ namespace vEngine
                     TYPE_AND_CREATE(GameObjectType::Material, Rendering::Material);
                     DYNAMIC_TYPE_AND_CREATE(GameObjectType::Texture, Rendering::Texture);
                     DYNAMIC_TYPE_AND_CREATE(GameObjectType::GraphicsBuffer, Rendering::GraphicsBuffer);
-                    DYNAMIC_TYPE_AND_CREATE(GameObjectType::PipelineState, T);
+                    DYNAMIC_TYPE_AND_CREATE(GameObjectType::PipelineState, Rendering::PipelineState);
                     TYPE_AND_CREATE(GameObjectType::Shader, Rendering::Shader);
 
                     TYPE_AND_CREATE(GameObjectType::Bone, Animation::Bone);

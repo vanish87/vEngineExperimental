@@ -12,10 +12,11 @@
 
 #pragma once
 
+#include <filesystem>
+
 #include <engine.hpp>
 #include <vengine/core/uuid.hpp>
 #include <vengine/core/game_object_factory.hpp>
-#include <vengine/data/meta.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -69,6 +70,7 @@ namespace vEngine
                 std::string name = "GameObject";
                 GameObjectType type = GameObjectType::GameObject;
                 std::string context;
+                std::filesystem::path reference_path;
                 constexpr static auto properties()
                 {
                     return std::make_tuple(

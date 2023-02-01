@@ -20,6 +20,7 @@
 #include <vengine/core/resource_loading_thread.hpp>
 #include <vengine/core/iruntime_module.hpp>
 #include <vengine/core/iresource.hpp>
+#include <vengine/core/game_object.hpp>
 
 namespace vEngine
 {
@@ -40,6 +41,7 @@ namespace vEngine
                 // void AddSync();
 
                 std::filesystem::path GetFilePath(const std::string file_name);
+                std::filesystem::path GetFilePath(const GameObjectDescriptor& desc);
                 void SetRoot(const std::filesystem::path root);
                 std::filesystem::path GetRoot() const;
                 // void AddSearchFolder(const std::string folder);
@@ -47,12 +49,19 @@ namespace vEngine
 
                 void DumpCurrentPath();
 
+                void Register(const GameObjectSharedPtr go, bool isDynamic = false);
+                void Unregister(const GameObjectSharedPtr go);
+                GameObjectSharedPtr HasObjectLoaded(const GameObjectDescriptor& desc);
+
             private:
                 ResourceLoadingThread loading_thread_;
 
                 std::filesystem::path resource_root_;
                 // std::unordered_map<std::string, std::filesystem::path> search_paths_;
                 // std::unordered_set<std::filesystem::path> search_paths_;
+
+                std::unordered_map<UUID, GameObjectSharedPtr> runtime_objects_;
+                std::unordered_map<UUID, GameObjectSharedPtr> runtime_dynamic_objects_;// context related objects
         };
 
     }  // namespace Core

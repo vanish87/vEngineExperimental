@@ -30,6 +30,7 @@ namespace vEngine
             public:
                 /// \brief brief constructor description.
                 D3D11PipelineState(const PipelineStateDescriptor& desc);
+                ~D3D11PipelineState();
 
                 void PrepareData() override;
 
