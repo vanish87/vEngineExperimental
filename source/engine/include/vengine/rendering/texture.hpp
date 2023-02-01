@@ -45,7 +45,7 @@ namespace vEngine
                     );
                 };
                 /// \brief brief constructor description.
-                Texture(const Core::GameObjectType type = Core::GameObjectType::Texture);
+                // Texture(const Core::GameObjectType type = Core::GameObjectType::Texture);
                 Texture(const TextureDescriptor desc);
                 virtual ~Texture();
 

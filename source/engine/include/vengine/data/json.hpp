@@ -100,6 +100,7 @@ namespace vEngine
 #include <vengine/data/to_json.inc>
 #include <vengine/data/from_json.inc>
 #include <vengine/data/from_to_string.inc>
+#include <vengine/data/json.inc>
 
 #ifdef _MSC_VER
     #pragma warning(pop)

@@ -91,6 +91,8 @@ namespace vEngine
             // FromJson(j, shared);
             // ptr = shared;
         }
+
+        //Not used
         template <std::size_t I, class T, typename S>
         bool HandleByType(std::shared_ptr<S>& ptr, const GameObjectDescriptor& desc)
         {
