@@ -151,7 +151,7 @@ namespace vEngine
                         tex->SetRawData(out);
                         scene->SetTexture(texture_path.string(), tex);
 
-                        PRINT(texture_path.relative_path().string() << " Loaded");
+                        PRINT(texture_path.string() << " Loaded");
                     }
 
                     mat->BindTexture("diffuse", scene->GetTexture(texture_path.string()));

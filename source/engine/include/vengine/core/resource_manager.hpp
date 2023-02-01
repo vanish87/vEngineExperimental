@@ -40,15 +40,18 @@ namespace vEngine
                 // void AddSync();
 
                 std::filesystem::path GetFilePath(const std::string file_name);
-                void AddSearchFolder(const std::string folder);
-                void AddSearchPath(const std::filesystem::path path);
+                void SetRoot(const std::filesystem::path root);
+                std::filesystem::path GetRoot() const;
+                // void AddSearchFolder(const std::string folder);
+                // void AddSearchPath(const std::filesystem::path path);
 
                 void DumpCurrentPath();
 
             private:
                 ResourceLoadingThread loading_thread_;
 
-                std::unordered_map<std::string, std::filesystem::path> search_paths_;
+                std::filesystem::path resource_root_;
+                // std::unordered_map<std::string, std::filesystem::path> search_paths_;
                 // std::unordered_set<std::filesystem::path> search_paths_;
         };
 

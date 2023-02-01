@@ -78,12 +78,12 @@ int main(int argc, char* argv[])
     Context::GetInstance().SetConfigure(configure);
 
     Context::GetInstance().Init();
-    ResourceManager::GetInstance().AddSearchPath(configure.resource_src);
+    ResourceManager::GetInstance().SetRoot(configure.resource_src);
     // ResourceLoader::GetInstance().AddSearchFolder("resource");
-    ResourceManager::GetInstance().AddSearchFolder("shader");
-    ResourceManager::GetInstance().AddSearchFolder("sponza");
-    ResourceManager::GetInstance().AddSearchFolder("bob");
-    ResourceManager::GetInstance().AddSearchFolder("boblamp");
+    // ResourceManager::GetInstance().AddSearchFolder("shader");
+    // ResourceManager::GetInstance().AddSearchFolder("sponza");
+    // ResourceManager::GetInstance().AddSearchFolder("bob");
+    // ResourceManager::GetInstance().AddSearchFolder("boblamp");
 
     // PRINT(resource_src.string());
     // PRINT(resource_bin.string());

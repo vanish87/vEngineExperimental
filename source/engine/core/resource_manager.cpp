@@ -36,29 +36,25 @@ namespace vEngine
             desc.on_load_call_back();
         }
 
-        void ResourceManager::AddSearchPath(const std::filesystem::path path)
+        void ResourceManager::SetRoot(const std::filesystem::path root)
         {
-            auto p = path;
+            auto p = root;
             if (p.is_relative()) p = std::filesystem::absolute(p);
-
-            if (std::filesystem::exists(p) == false)
-            {
-                PRINT(p.string() << " Not Found");
-                return;
-            }
-
-            this->search_paths_[p.string()] = p;
+            this->resource_root_ = p;
         }
-        void ResourceManager::AddSearchFolder(const std::string folder)
+
+        std::filesystem::path ResourceManager::GetRoot() const
         {
-            this->AddSearchPath(this->GetFilePath(folder));
+            return this->resource_root_;
         }
         std::filesystem::path ResourceManager::GetFilePath(const std::string file_name)
         {
-            for (const auto& p : this->search_paths_)
+            for (const auto& file : std::filesystem::recursive_directory_iterator{this->resource_root_})
             {
-                const auto path = p.second / file_name;
-                if (std::filesystem::exists(path)) return path;
+                if(file.is_regular_file() && file.path().filename() == file_name)
+                {
+                    return file.path();
+                }
             }
 
             CHECK_AND_ASSERT(false, "Cannot find file/folder " << file_name);
@@ -66,11 +62,7 @@ namespace vEngine
         }
         void ResourceManager::DumpCurrentPath()
         {
-            PRINT("Current Searching Path: ");
-            for (auto& p : this->search_paths_)
-            {
-                PRINT(p.second.string());
-            }
+            PRINT("Current Root Path: " << this->resource_root_.string());
         }
 
     }  // namespace Core
