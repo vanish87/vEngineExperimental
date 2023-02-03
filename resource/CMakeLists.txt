@@ -1,12 +1,37 @@
 
 set(RESOURCE_SRC ${CMAKE_CURRENT_SOURCE_DIR})
 set(RESOURCE_BIN ${CMAKE_CURRENT_BINARY_DIR}/bin)
-
-file(GLOB SMPL_SOURCE "${RESOURCE_SRC}/smpl/*.smpl")
-# file(GLOB SMPL_SOURCE "smpl/*.smpl")
-
 set(BIN_FILES)
 
+file(GLOB SHADER_VS_SOURCE "${RESOURCE_SRC}/shader/vs/*.hlsl")
+foreach(SRC_FILE ${SHADER_VS_SOURCE})
+  get_filename_component(BIN_FILE ${SRC_FILE} NAME_WE)
+  set(BIN_FILE ${RESOURCE_BIN}/shader/vs/${BIN_FILE}.json)
+
+  set(BIN_FILES ${BIN_FILES} ${BIN_FILE})
+  add_custom_command(
+    OUTPUT ${BIN_FILE}
+    DEPENDS ${SRC_FILE} shader_compiler
+    COMMAND shader_compiler -i ${SRC_FILE} -o ${BIN_FILE} -p vs
+    COMMENT "Compile vs ${SRC_FILE} to json ${BIN_FILE}"
+  )
+endforeach(SRC_FILE ${SHADER_VS_SOURCE})
+
+file(GLOB SHADER_PS_SOURCE "${RESOURCE_SRC}/shader/ps/*.hlsl")
+foreach(SRC_FILE ${SHADER_PS_SOURCE})
+  get_filename_component(BIN_FILE ${SRC_FILE} NAME_WE)
+  set(BIN_FILE ${RESOURCE_BIN}/shader/ps/${BIN_FILE}.json)
+
+  set(BIN_FILES ${BIN_FILES} ${BIN_FILE})
+  add_custom_command(
+    OUTPUT ${BIN_FILE}
+    DEPENDS ${SRC_FILE} shader_compiler
+    COMMAND shader_compiler -i ${SRC_FILE} -o ${BIN_FILE} -p ps
+    COMMENT "Compile ps ${SRC_FILE} to json ${BIN_FILE}"
+  )
+endforeach(SRC_FILE ${SHADER_PS_SOURCE})
+
+file(GLOB SMPL_SOURCE "${RESOURCE_SRC}/smpl/*.smpl")
 foreach(SRC_FILE ${SMPL_SOURCE})
   get_filename_component(BIN_FILE ${SRC_FILE} NAME_WE)
   set(BIN_FILE ${RESOURCE_BIN}/smpl/${BIN_FILE}.json)
@@ -23,8 +48,6 @@ foreach(SRC_FILE ${SMPL_SOURCE})
 endforeach(SRC_FILE ${SMPL_SOURCE})
 
 file(GLOB ASSIMP_SOURCE "${RESOURCE_SRC}/boblamp/*.md5mesh")
-# file(GLOB SMPL_SOURCE "smpl/*.smpl")
-
 foreach(SRC_FILE ${ASSIMP_SOURCE})
   get_filename_component(BIN_FILE ${SRC_FILE} NAME_WE)
   set(BIN_FILE ${RESOURCE_BIN}/assimp/${BIN_FILE}.json)
@@ -33,7 +56,7 @@ foreach(SRC_FILE ${ASSIMP_SOURCE})
   add_custom_command(
     OUTPUT ${BIN_FILE}
     DEPENDS ${SRC_FILE} assimp_to_json
-    COMMAND assimp_to_json -i ${SRC_FILE} -o ${BIN_FILE} -r ${RESOURCE_SRC} -b ${RESOURCE_BIN}
+    # COMMAND assimp_to_json -i ${SRC_FILE} -o ${BIN_FILE} -r ${RESOURCE_SRC} -b ${RESOURCE_BIN}
     COMMENT "Covert assimp ${SRC_FILE} to json ${BIN_FILE}"
     # ${CMAKE_SOURCE_DIR}/resources
     # $<TARGET_FILE_DIR:resource>/resources
