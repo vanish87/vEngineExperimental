@@ -2,14 +2,17 @@
 set(RESOURCE_SRC ${CMAKE_CURRENT_SOURCE_DIR})
 set(RESOURCE_BIN ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set(BIN_FILES)
+set(SHADER_BIN_FILES)
 
 
 file(GLOB SHADER_VS_SOURCE "${RESOURCE_SRC}/shader/vs/*.hlsl")
 foreach(SRC_FILE ${SHADER_VS_SOURCE})
   get_filename_component(BIN_FILE ${SRC_FILE} NAME_WE)
   set(BIN_FILE ${RESOURCE_BIN}/shader/vs/${BIN_FILE}.json)
-
   set(BIN_FILES ${BIN_FILES} ${BIN_FILE})
+
+  set(SHADER_BIN_FILES ${SHADER_BIN_FILES} ${BIN_FILE})
+
   add_custom_command(
     OUTPUT ${BIN_FILE}
     DEPENDS ${SRC_FILE} shader_compiler
@@ -22,8 +25,9 @@ file(GLOB SHADER_PS_SOURCE "${RESOURCE_SRC}/shader/ps/*.hlsl")
 foreach(SRC_FILE ${SHADER_PS_SOURCE})
   get_filename_component(BIN_FILE ${SRC_FILE} NAME_WE)
   set(BIN_FILE ${RESOURCE_BIN}/shader/ps/${BIN_FILE}.json)
-
   set(BIN_FILES ${BIN_FILES} ${BIN_FILE})
+
+  set(SHADER_BIN_FILES ${SHADER_BIN_FILES} ${BIN_FILE})
   add_custom_command(
     OUTPUT ${BIN_FILE}
     DEPENDS ${SRC_FILE} shader_compiler
@@ -40,7 +44,7 @@ foreach(SRC_FILE ${SMPL_SOURCE})
   set(BIN_FILES ${BIN_FILES} ${BIN_FILE})
   add_custom_command(
     OUTPUT ${BIN_FILE}
-    DEPENDS ${SRC_FILE} smpl_to_json
+    DEPENDS ${SRC_FILE} ${SHADER_BIN_FILES} smpl_to_json
     COMMAND smpl_to_json -i ${SRC_FILE} -o ${BIN_FILE}
     COMMENT "Covert smpl ${SRC_FILE} to json ${BIN_FILE}"
     # ${CMAKE_SOURCE_DIR}/resources
@@ -56,7 +60,7 @@ foreach(SRC_FILE ${ASSIMP_SOURCE})
   set(BIN_FILES ${BIN_FILES} ${BIN_FILE})
   add_custom_command(
     OUTPUT ${BIN_FILE}
-    DEPENDS ${SRC_FILE} assimp_to_json
+    DEPENDS ${SRC_FILE} ${SHADER_BIN_FILES} smpl_to_json
     COMMAND assimp_to_json -i ${SRC_FILE} -o ${BIN_FILE} -r ${RESOURCE_SRC} -b ${RESOURCE_BIN}
     COMMENT "Covert assimp ${SRC_FILE} to json ${BIN_FILE}"
     # ${CMAKE_SOURCE_DIR}/resources
