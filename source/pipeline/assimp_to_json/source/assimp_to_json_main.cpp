@@ -4,12 +4,8 @@
 #include <filesystem>
 
 #include <engine.hpp>
-#include <vengine/data/meta.hpp>
-#include <vengine/data/json.hpp>
+#include <vengine/core/resource_manager.hpp>
 #include <vengine/core/scene.hpp>
-#include <vengine/core/light.hpp>
-#include <vengine/core/light_component.hpp>
-#include <vengine/animation/animator_component.hpp>
 
 #include <assimp_handler.hpp>
 
@@ -79,6 +75,7 @@ int main(int argc, char* argv[])
     Context::GetInstance().SetConfigure(configure);
 
     Context::GetInstance().Init();
+    ResourceManager::GetInstance().Init();
     // ResourceManager::GetInstance().SetRoot(configure.resource_src);
     // ResourceLoader::GetInstance().AddSearchFolder("resource");
     // ResourceManager::GetInstance().AddSearchFolder("shader");
@@ -92,18 +89,20 @@ int main(int argc, char* argv[])
     vEngine::Pipeline::AssimpHandler handler;
 
     auto scene = handler.LoadFromAssimp(input);
+    ResourceManager::GetInstance().Save(scene, output);
     PRINT("Save to " << output.string());
-    auto j = ToJson(scene);
-    SaveJson(j, output);
+    // auto j = ToJson(scene);
+    // SaveJson(j, output);
 
     scene.reset();
 
     // auto path = ResourceLoader::GetInstance().GetFilePath("boblampclean.json");
-    Context::GetInstance().Clear();
+    // Context::GetInstance().Clear();
     // auto path = output;
-    auto new_scene = Scene::Load(output);
-    new_scene.reset();
+    // auto new_scene = Scene::Load(output);
+    // new_scene.reset();
 
+    ResourceManager::GetInstance().Deinit();
     Context::GetInstance().Deinit();
 
     return 0;

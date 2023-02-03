@@ -28,6 +28,22 @@ namespace vEngine
             this->loading_thread_.Quit();
             this->loading_thread_.Join();
         }
+        void ResourceManager::Init()
+        {
+            auto config = Context::GetInstance().CurrentConfigure();
+            auto path = config.resource_bin / config.context_name / "uuid.json";
+            if (!std::filesystem::exists(path)) return;
+
+            auto j = LoadJson(path);
+            FromJson(j, UUIDGenerator::GetInstance());
+        }
+        void ResourceManager::Deinit()
+        {
+            auto config = Context::GetInstance().CurrentConfigure();
+            auto path = config.resource_bin / config.context_name / "uuid.json";
+            auto j = ToJson(UUIDGenerator::GetInstance());
+            SaveJson(j, path);
+        }
 
         void ResourceManager::LoadAsync(const ResourceDescriptor& desc)
         {
@@ -40,39 +56,33 @@ namespace vEngine
 
         std::filesystem::path ResourceManager::GetFilePath(const std::string file_name)
         {
+            NOT_IMPL_ASSERT;
             auto config = Context::GetInstance().CurrentConfigure();
             auto root = config.resource_src;
             return root;
         }
 
-        void ResourceManager::Save(const GameObjectSharedPtr go, const std::filesystem::path root)
+        void ResourceManager::Save(const GameObjectSharedPtr go, const std::filesystem::path path)
         {
             this->UpdateReferencePath(go);
 
-            auto name = go->descriptor_.name;
-            auto type = "";//ToString(desc.type);
-
-            auto file_name = std::to_string(go->descriptor_.uuid.AsUint()) + "_" + name + "_" + type + ".json";
-
-            std::string illegal = ":\"\'<>%$*&+ ";
-            for (auto c : illegal)
-            {
-                std::replace(file_name.begin(), file_name.end(), c, '_');
-            }
-
-            auto ref_path = go->descriptor_.reference_path;
-            auto path = root / ref_path / file_name;
-
             auto folder = path.parent_path();
-            if(!std::filesystem::exists(folder)) std::filesystem::create_directories(folder);
+            if (!std::filesystem::exists(folder)) std::filesystem::create_directories(folder);
 
             auto j = ToJson(go);
-            std::ofstream outfile(path.string());
-            outfile << std::setw(2) << j << std::endl;
-            outfile.flush();
-            outfile.close();
-
+            SaveJson(j, path);
         }
+        GameObjectSharedPtr ResourceManager::Load(const std::filesystem::path path)
+        {
+            if (!std::filesystem::exists(path)) return nullptr;
+
+            auto j = LoadJson(path);
+            GameObjectDescriptor desc;
+            FromJson(j["meta"], desc);
+
+            return CreateAndLoadByDesc<GameObject>(desc);
+        }
+
         void ResourceManager::UpdateReferencePath(const GameObjectSharedPtr go)
         {
             auto config = Context::GetInstance().CurrentConfigure();

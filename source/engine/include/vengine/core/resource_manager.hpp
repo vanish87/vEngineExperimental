@@ -31,8 +31,8 @@ namespace vEngine
                 SINGLETON_CLASS(ResourceManager)
 
             public:
-                void Init() override{};
-                void Deinit() override{};
+                void Init() override;
+                void Deinit() override;
                 void Update() override{};
 
             public:
@@ -40,7 +40,8 @@ namespace vEngine
                 void LoadAsync(const ResourceDescriptor& desc);
                 void Load(const ResourceDescriptor& desc);
 
-                void Save(const GameObjectSharedPtr go, const std::filesystem::path root);
+                void Save(const GameObjectSharedPtr go, const std::filesystem::path path);
+                GameObjectSharedPtr Load(const std::filesystem::path path);
                 // void AddSync();
 
                 // std::filesystem::path GetFilePath(const std::string file_name);
