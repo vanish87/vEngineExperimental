@@ -107,8 +107,6 @@ namespace vEngine
         template <>
         VENGINE_API json ToJson(const GameObjectType& go_type);
 
-        // template <>
-        // VENGINE_API json ToJson(const std::vector<char>& vector);
 
         template <typename T>
         json ToJson(const std::vector<T>& vector)
@@ -121,6 +119,8 @@ namespace vEngine
             }
             return value;
         }
+        template <>
+        VENGINE_API json ToJson(const std::vector<char>& vector);
         // template <>
         // json ToJson(const std::vector<char>& vector)
         // {

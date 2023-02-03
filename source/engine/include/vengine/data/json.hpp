@@ -29,6 +29,7 @@
 #include <vengine/rendering/mesh_renderer_component.hpp>
 #include <vengine/core/mesh_component.hpp>
 #include <vengine/core/light.hpp>
+#include <vengine/core/light_component.hpp>
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/transform_component.hpp>
 #include <vengine/core/scene.hpp>

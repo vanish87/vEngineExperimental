@@ -122,6 +122,7 @@ namespace vEngine
 
             auto path = GameObjectToPath(desc);
             PRINT("Path " << path);
+            // PRINT("Type " << desc.type);
             // auto type = desc.type;
 
             switch (desc.type)
@@ -223,8 +224,8 @@ namespace vEngine
                 vector.push_back(v);
             }
         }
-        // template <>
-        // void FromJson(const json& j, std::vector<char>& vector);
+        template <>
+        VENGINE_API void FromJson(const json& j, std::vector<char>& vector);
 
         template <typename T>
         void FromJson(const json& j, std::list<T>& list)

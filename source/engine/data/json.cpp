@@ -35,11 +35,11 @@ namespace vEngine
         {
             return json(ToString<GameObjectType>(go_type));
         }
-        // template <>
-        // json ToJson(const std::vector<char>& vector)
-        // {
-        //     return json(std::string(vector.begin(), vector.end()));
-        // }
+        template <>
+        json ToJson(const std::vector<char>& vector)
+        {
+            return json(std::string(vector.begin(), vector.end()));
+        }
         template <>
         void FromJson(const json& j, UUID& uuid)
         {
@@ -72,16 +72,16 @@ namespace vEngine
             // UNUSED_PARAMETER(shader_type);
             // return json(ToString<GameObjectType>(go_type));
         }
-        // template <>
-        // void FromJson(const json& j, std::vector<char>& vector)
-        // {
-        //     vector.clear();
-        //     auto data = j.get<std::string>();
-        //     for (const auto& it : data)
-        //     {
-        //         vector.push_back(it);
-        //     }
-        // }
+        template <>
+        void FromJson(const json& j, std::vector<char>& vector)
+        {
+            vector.clear();
+            auto data = j.get<std::string>();
+            for (const auto& it : data)
+            {
+                vector.push_back(it);
+            }
+        }
         std::string ToString(const GameObjectType& obj)
         {
             switch (obj)
