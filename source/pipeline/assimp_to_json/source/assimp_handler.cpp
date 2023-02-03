@@ -79,15 +79,16 @@ namespace vEngine
         }
         void AssimpHandler::HandleMaterials(SceneSharedPtr scene, const aiScene* ai_scene)
         {
-            // auto vs = GameObjectFactory::Default<Shader>(ShaderType::VS);
-            // auto ps = GameObjectFactory::Default<Shader>(ShaderType::PS);
+            auto shader_path = Context::GetInstance().CurrentConfigure().resource_bin / "shader";
+            auto vs = std::dynamic_pointer_cast<Shader>(ResourceManager::GetInstance().Load(shader_path / "vs" / "vs.json"));
+            auto ps = std::dynamic_pointer_cast<Shader>(ResourceManager::GetInstance().Load(shader_path / "ps" / "ps.json"));
 
             for (uint32_t mid = 0; mid < ai_scene->mNumMaterials; ++mid)
             {
                 auto ai_mat = ai_scene->mMaterials[mid];
                 auto mat = GameObjectFactory::Create<GameObjectType::Material, Material>();
-                // mat->BindShader(ShaderType::VS, vs);
-                // mat->BindShader(ShaderType::PS, ps);
+                mat->BindShader(ShaderType::VS, vs);
+                mat->BindShader(ShaderType::PS, ps);
 
                 scene->AddMaterial(mat);
                 
