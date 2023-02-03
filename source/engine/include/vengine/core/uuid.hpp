@@ -22,7 +22,6 @@ namespace vEngine
         // very simple and intuitive uuid generate
         class UUIDGenerator
         {
-            friend class Context;
             public:
                 constexpr static auto properties()
                 {
