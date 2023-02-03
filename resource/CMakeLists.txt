@@ -3,6 +3,7 @@ set(RESOURCE_SRC ${CMAKE_CURRENT_SOURCE_DIR})
 set(RESOURCE_BIN ${CMAKE_CURRENT_BINARY_DIR}/bin)
 set(BIN_FILES)
 
+
 file(GLOB SHADER_VS_SOURCE "${RESOURCE_SRC}/shader/vs/*.hlsl")
 foreach(SRC_FILE ${SHADER_VS_SOURCE})
   get_filename_component(BIN_FILE ${SRC_FILE} NAME_WE)
@@ -56,7 +57,7 @@ foreach(SRC_FILE ${ASSIMP_SOURCE})
   add_custom_command(
     OUTPUT ${BIN_FILE}
     DEPENDS ${SRC_FILE} assimp_to_json
-    # COMMAND assimp_to_json -i ${SRC_FILE} -o ${BIN_FILE} -r ${RESOURCE_SRC} -b ${RESOURCE_BIN}
+    COMMAND assimp_to_json -i ${SRC_FILE} -o ${BIN_FILE} -r ${RESOURCE_SRC} -b ${RESOURCE_BIN}
     COMMENT "Covert assimp ${SRC_FILE} to json ${BIN_FILE}"
     # ${CMAKE_SOURCE_DIR}/resources
     # $<TARGET_FILE_DIR:resource>/resources
@@ -70,6 +71,12 @@ endforeach(SRC_FILE ${SMPL_SOURCE})
 #   resource ALL
 #   DEPENDS ${BIN_FILES}
 # )
+
+add_custom_target(
+  remove-all ALL
+  COMMAND ${CMAKE_COMMAND} -E remove_directory ${RESOURCE_BIN}
+  COMMENT "Clean ${RESOURCE_BIN}"
+)
   
 add_custom_target(
   resource-copy ALL
@@ -77,6 +84,7 @@ add_custom_target(
   COMMAND ${CMAKE_COMMAND} -E copy_directory
   ${RESOURCE_BIN}
   ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug/resource
+  COMMENT "Copy ${RESOURCE_BIN} to ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug/resource"
 )
 # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 #     COMMAND ${CMAKE_COMMAND} -E copy_directory
