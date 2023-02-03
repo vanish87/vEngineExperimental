@@ -96,14 +96,14 @@ namespace vEngine
             auto config = Context::GetInstance().CurrentConfigure();
             auto context_name = config.context_name;
 
-            std::filesystem::path path = context_name;
+            std::filesystem::path path;
             auto gn = std::dynamic_pointer_cast<GameNode>(go);
             while (gn != nullptr && gn->Parent().lock() != nullptr)
             {
                 path = gn->descriptor_.name / path;
                 gn = gn->Parent().lock();
             }
-            go->descriptor_.reference_path = path;
+            go->descriptor_.reference_path = context_name / path;
         }
 
         // std::filesystem::path ResourceManager::GetFilePath(const std::string file_name)

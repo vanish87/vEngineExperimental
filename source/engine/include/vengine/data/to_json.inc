@@ -53,6 +53,8 @@ namespace vEngine
         json ToJson(const std::shared_ptr<T>& ptr)
         {
             auto go = std::dynamic_pointer_cast<GameObject>(ptr);
+            ResourceManager::GetInstance().UpdateReferencePath(go);
+            
             auto type = go->descriptor_.type;
             if (type == GameObjectType::Component) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
             if (type == GameObjectType::Renderer) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
