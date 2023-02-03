@@ -26,14 +26,14 @@ namespace vEngine
         SceneManager::~SceneManager() {}
         void SceneManager::Load(const std::string scene_name)
         {
-            ResourceDescriptor desc;
-            desc.on_load_call_back = [&]()
-            {
-                auto path = ResourceManager::GetInstance().GetFilePath(scene_name);
-                this->scene_ = Scene::Load(path);;
-                return this->scene_;
-            };             
-            ResourceManager::GetInstance().LoadAsync(desc);
+            // ResourceDescriptor desc;
+            // desc.on_load_call_back = [&]()
+            // {
+            //     auto path = ResourceManager::GetInstance().GetFilePath(scene_name);
+            //     this->scene_ = Scene::Load(path);;
+            //     return this->scene_;
+            // };             
+            // ResourceManager::GetInstance().LoadAsync(desc);
         }
         void SceneManager::Init()
         {

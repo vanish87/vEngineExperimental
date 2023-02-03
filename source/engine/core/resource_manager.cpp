@@ -56,10 +56,18 @@ namespace vEngine
 
         std::filesystem::path ResourceManager::GetFilePath(const std::string file_name)
         {
-            NOT_IMPL_ASSERT;
             auto config = Context::GetInstance().CurrentConfigure();
             auto root = config.resource_src;
-            return root;
+            for (const auto& file : std::filesystem::recursive_directory_iterator{root})
+            {
+                if(file.is_regular_file() && file.path().filename() == file_name)
+                {
+                    return file.path();
+                }
+            }
+
+            CHECK_AND_ASSERT(false, "Cannot find file/folder " << file_name);
+            return nullptr;
         }
 
         void ResourceManager::Save(const GameObjectSharedPtr go, const std::filesystem::path path)
