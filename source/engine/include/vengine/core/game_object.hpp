@@ -74,10 +74,11 @@ namespace vEngine
                 constexpr static auto properties()
                 {
                     return std::make_tuple(
+                        property("uuid", &GameObjectDescriptor::uuid),
                         property("name", &GameObjectDescriptor::name),
                         property("type", &GameObjectDescriptor::type),
                         property("context", &GameObjectDescriptor::context),
-                        property("uuid", &GameObjectDescriptor::uuid)
+                        property("ref_path", &GameObjectDescriptor::reference_path)
                     );
                 }
         };
