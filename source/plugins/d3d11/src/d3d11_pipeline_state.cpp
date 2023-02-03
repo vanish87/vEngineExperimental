@@ -62,7 +62,9 @@ namespace vEngine
                         default:
                             break;
                     }
-                    auto path = s.second->path.string();
+                    // auto path = s.second->path.string();
+                    NOT_IMPL_ASSERT;
+                    auto path = std::string("test");
                     auto hr = D3DCompile(s.second->content.data(), s.second->content.size(), path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", target, 0, 0, blob.GetAddressOf(),
                                          error.GetAddressOf());
                     if (error != nullptr)

@@ -75,46 +75,8 @@ namespace vEngine
             NOT_IMPL_ASSERT;
             return Rendering::ShaderType::VS;
         }
-        std::string ToString(const GameObjectType& obj)
-        {
-            switch (obj)
-            {
-                ENUM_CASE_TO_STRING(GameObjectType::GameObject);
-                ENUM_CASE_TO_STRING(GameObjectType::GameNode);
-                ENUM_CASE_TO_STRING(GameObjectType::Component);
-                ENUM_CASE_TO_STRING(GameObjectType::Transform);
-                ENUM_CASE_TO_STRING(GameObjectType::TransformComponent);
-                ENUM_CASE_TO_STRING(GameObjectType::Camera);
-                ENUM_CASE_TO_STRING(GameObjectType::CameraComponent);
-                ENUM_CASE_TO_STRING(GameObjectType::Light);
-                ENUM_CASE_TO_STRING(GameObjectType::LightComponent);
-                ENUM_CASE_TO_STRING(GameObjectType::Mesh);
-                ENUM_CASE_TO_STRING(GameObjectType::MeshComponent);
-                ENUM_CASE_TO_STRING(GameObjectType::Scene);
+        VENGINE_API std::string ToString(const GameObjectType& obj);
 
-                ENUM_CASE_TO_STRING(GameObjectType::Serializer);
-
-                ENUM_CASE_TO_STRING(GameObjectType::Renderer);
-                ENUM_CASE_TO_STRING(GameObjectType::RendererComponent);
-                ENUM_CASE_TO_STRING(GameObjectType::MeshRenderer);
-                ENUM_CASE_TO_STRING(GameObjectType::MeshRendererComponent);
-                ENUM_CASE_TO_STRING(GameObjectType::Material);
-                ENUM_CASE_TO_STRING(GameObjectType::Texture);
-                ENUM_CASE_TO_STRING(GameObjectType::PipelineState);
-                ENUM_CASE_TO_STRING(GameObjectType::Shader);
-
-                ENUM_CASE_TO_STRING(GameObjectType::Bone);
-                ENUM_CASE_TO_STRING(GameObjectType::BoneComponent);
-                ENUM_CASE_TO_STRING(GameObjectType::Joint);
-                ENUM_CASE_TO_STRING(GameObjectType::AnimationClip);
-                ENUM_CASE_TO_STRING(GameObjectType::Animator);
-                ENUM_CASE_TO_STRING(GameObjectType::AnimatorComponent);
-                default:
-                    break;
-            }
-            NOT_IMPL_ASSERT;
-            return "NOT DEFINED";
-        }
         template <typename T, typename>
         std::string ToString(const GameObjectType& obj)
         {

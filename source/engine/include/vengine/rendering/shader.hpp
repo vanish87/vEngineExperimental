@@ -36,29 +36,27 @@ namespace vEngine
                     return std::tuple_cat(
                         Core::GameObject::properties(),
                         std::make_tuple(
-                            Core::property("path", &Shader::path), 
-                            Core::property("type", &Shader::type), 
+                            // Core::property("path", &Shader::path), 
+                            Core::property("type", &Shader::type),
                             Core::property("content", &Shader::content)
                         )
                     );
                 };
 
-                static ShaderSharedPtr Load(const std::filesystem::path path);
+                static ShaderSharedPtr Load(const std::string file_name);
                 static ShaderSharedPtr Default(ShaderType type)
                 {
                     switch (type)
                     {
                     case ShaderType::VS:
                     {
-                        auto path = Core::ResourceManager::GetInstance().GetFilePath("vs.hlsl");
-                        static auto vs = Shader::Load(path);
+                        static auto vs = Shader::Load("vs.hlsl");
                         vs->type = ShaderType::VS;
                         return vs;
                     }
                     case ShaderType::PS:
                     {
-                        auto path = Core::ResourceManager::GetInstance().GetFilePath("ps.hlsl");
-                        static auto ps = Shader::Load(path);
+                        static auto ps = Shader::Load("ps.hlsl");
                         ps->type = ShaderType::PS;
                         return ps;
                     }
@@ -76,7 +74,6 @@ namespace vEngine
                 Shader(const Core::GameObjectType type = Core::GameObjectType::Shader);
                 virtual ~Shader() {}
 
-                std::filesystem::path path;
                 std::vector<char> content;
                 ShaderType type;
 

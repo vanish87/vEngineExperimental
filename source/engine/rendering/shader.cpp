@@ -23,12 +23,12 @@ namespace vEngine
         /// constructor detailed defintion,
         /// should be 2 lines
         Shader::Shader(const GameObjectType type) : GameObject(type) {}
-        ShaderSharedPtr Shader::Load(const std::filesystem::path path)
+        ShaderSharedPtr Shader::Load(const std::string file_name)
         {
             auto shader = GameObjectFactory::Create<GameObjectType::Shader, Shader>();
-            shader->path = path;
+            auto path = std::filesystem::path("test");
 
-            std::ifstream fin(shader->path.string());
+            std::ifstream fin(path.string());
 
             if (!fin)
             {

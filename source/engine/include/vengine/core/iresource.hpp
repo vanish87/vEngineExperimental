@@ -12,6 +12,8 @@ namespace vEngine
         struct ResourceDescriptor
         {
                 std::function<GameObjectSharedPtr()> on_load_call_back;
+
+                // std::function<GameObjectSharedPtr()> on_load_call_back;
         };
 
         // Interface VENGINE_API IResource

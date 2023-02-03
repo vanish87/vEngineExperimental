@@ -36,18 +36,22 @@ namespace vEngine
                 void Update() override{};
 
             public:
+                std::filesystem::path GetFilePath(const std::string file_name);
                 void LoadAsync(const ResourceDescriptor& desc);
                 void Load(const ResourceDescriptor& desc);
+
+                void Save(const GameObjectSharedPtr go, const std::filesystem::path root);
                 // void AddSync();
 
-                std::filesystem::path GetFilePath(const std::string file_name);
-                std::filesystem::path GetFilePath(const GameObjectDescriptor& desc);
-                void SetRoot(const std::filesystem::path root);
-                std::filesystem::path GetRoot() const;
+                // std::filesystem::path GetFilePath(const std::string file_name);
+                // std::filesystem::path GetFilePath(const GameObjectDescriptor& desc);
+                void UpdateReferencePath(const GameObjectSharedPtr go);
+                // void SetRoot(const std::filesystem::path root);
+                // std::filesystem::path GetRoot() const;
                 // void AddSearchFolder(const std::string folder);
                 // void AddSearchPath(const std::filesystem::path path);
 
-                void DumpCurrentPath();
+                // void DumpCurrentPath();
 
                 void Register(const GameObjectSharedPtr go, bool isDynamic = false);
                 void Unregister(const GameObjectSharedPtr go);
@@ -56,7 +60,7 @@ namespace vEngine
             private:
                 ResourceLoadingThread loading_thread_;
 
-                std::filesystem::path resource_root_;
+                // std::filesystem::path resource_root_;
                 // std::unordered_map<std::string, std::filesystem::path> search_paths_;
                 // std::unordered_set<std::filesystem::path> search_paths_;
 

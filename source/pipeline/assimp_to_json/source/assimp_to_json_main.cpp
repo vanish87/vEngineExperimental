@@ -3,6 +3,7 @@
 #include <fstream>
 #include <filesystem>
 
+#include <engine.hpp>
 #include <vengine/data/meta.hpp>
 #include <vengine/data/json.hpp>
 #include <vengine/core/scene.hpp>
@@ -78,7 +79,7 @@ int main(int argc, char* argv[])
     Context::GetInstance().SetConfigure(configure);
 
     Context::GetInstance().Init();
-    ResourceManager::GetInstance().SetRoot(configure.resource_src);
+    // ResourceManager::GetInstance().SetRoot(configure.resource_src);
     // ResourceLoader::GetInstance().AddSearchFolder("resource");
     // ResourceManager::GetInstance().AddSearchFolder("shader");
     // ResourceManager::GetInstance().AddSearchFolder("sponza");

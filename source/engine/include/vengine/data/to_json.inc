@@ -97,25 +97,19 @@ namespace vEngine
             return ToJson(*go.get());
         }
         template <>
-        json ToJson(const std::filesystem::path& path)
-        {
-            return json(path.string());
-        }
+        VENGINE_API json ToJson(const std::filesystem::path& path);
         template <>
-        json ToJson(const UUID& uuid)
-        {
-            return json(uuid.AsUint());
-        }
+        VENGINE_API json ToJson(const UUID& uuid);
+
         template <>
-        json ToJson(const Rendering::ShaderType& shader_type)
-        {
-            return json(ToString<Rendering::ShaderType>(shader_type));
-        }
+        VENGINE_API json ToJson(const Rendering::ShaderType& shader_type);
+
         template <>
-        json ToJson(const GameObjectType& go_type)
-        {
-            return json(ToString<GameObjectType>(go_type));
-        }
+        VENGINE_API json ToJson(const GameObjectType& go_type);
+
+        // template <>
+        // VENGINE_API json ToJson(const std::vector<char>& vector);
+
         template <typename T>
         json ToJson(const std::vector<T>& vector)
         {
@@ -127,11 +121,11 @@ namespace vEngine
             }
             return value;
         }
-        template <>
-        json ToJson(const std::vector<char>& vector)
-        {
-            return json(std::string(vector.begin(), vector.end()));
-        }
+        // template <>
+        // json ToJson(const std::vector<char>& vector)
+        // {
+        //     return json(std::string(vector.begin(), vector.end()));
+        // }
         template <typename T>
         json ToJson(const std::list<T>& list)
         {

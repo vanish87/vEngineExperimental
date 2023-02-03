@@ -28,6 +28,7 @@
 #include <vengine/rendering/pipeline_state.hpp>
 #include <vengine/rendering/mesh_renderer_component.hpp>
 #include <vengine/core/mesh_component.hpp>
+#include <vengine/core/light.hpp>
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/transform_component.hpp>
 #include <vengine/core/scene.hpp>
@@ -36,6 +37,7 @@
 
 #include <vengine/animation/animation_clip.hpp>
 #include <vengine/animation/animator.hpp>
+#include <vengine/animation/animator_component.hpp>
 #include <vengine/animation/joint.hpp>
 
 namespace vEngine
@@ -56,9 +58,9 @@ namespace vEngine
                 static constexpr auto value = std::is_arithmetic<T>::value || std::is_same<T, std::string>::value;
         };
 
-        void SaveJson(const json& j, const std::filesystem::path& path);
-        std::filesystem::path GameObjectToPath(const GameObjectDescriptor& desc);
-        json LoadJson(const std::filesystem::path path);
+        VENGINE_API void SaveJson(const json& j, const std::filesystem::path& path);
+        VENGINE_API std::filesystem::path GameObjectToPath(const GameObjectDescriptor& desc);
+        VENGINE_API json LoadJson(const std::filesystem::path path);
         template <std::size_t I, class T, typename Src>
         auto CastByType(std::shared_ptr<Src> ptr);
 
@@ -100,7 +102,6 @@ namespace vEngine
 #include <vengine/data/to_json.inc>
 #include <vengine/data/from_json.inc>
 #include <vengine/data/from_to_string.inc>
-#include <vengine/data/json.inc>
 
 #ifdef _MSC_VER
     #pragma warning(pop)

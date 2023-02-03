@@ -48,38 +48,16 @@ namespace vEngine
         }
 
         template <>
-        void FromJson(const json& j, UUID& uuid)
-        {
-            auto id = j.get<uint64_t>();
-            uuid.Set(id);
-        }
+        VENGINE_API void FromJson(const json& j, UUID& uuid);
+
         template <>
-        void FromJson(const json& j, std::filesystem::path& path)
-        {
-            auto data = j.get<std::string>();
-            path = data;
-        }
-        // template <typename T, typename = std::enable_if_t<std::is_same<T, GameObjectType>::value, T>, typename = void>
+        VENGINE_API void FromJson(const json& j, std::filesystem::path& path);
+
         template <>
-        void FromJson(const json& j, GameObjectType& go_type)
-        {
-            auto data = j.get<std::string>();
-            go_type = FromString<GameObjectType>(data);
-            // NOT_IMPL_ASSERT;
-            // UNUSED_PARAMETER(j);
-            // UNUSED_PARAMETER(go_type);
-            // return json(ToString<GameObjectType>(go_type));
-        }
+        VENGINE_API void FromJson(const json& j, GameObjectType& go_type);
+
         template <>
-        void FromJson(const json& j, Rendering::ShaderType& shader_type)
-        {
-            auto data = j.get<std::string>();
-            shader_type = FromString<Rendering::ShaderType>(data);
-            // NOT_IMPL_ASSERT;
-            // UNUSED_PARAMETER(j);
-            // UNUSED_PARAMETER(shader_type);
-            // return json(ToString<GameObjectType>(go_type));
-        }
+        VENGINE_API void FromJson(const json& j, Rendering::ShaderType& shader_type);
 
         template <typename T>
         void FromJson(const json& j, std::weak_ptr<T>& ptr)
@@ -245,16 +223,9 @@ namespace vEngine
                 vector.push_back(v);
             }
         }
-        template <>
-        void FromJson(const json& j, std::vector<char>& vector)
-        {
-            vector.clear();
-            auto data = j.get<std::string>();
-            for (const auto& it : data)
-            {
-                vector.push_back(it);
-            }
-        }
+        // template <>
+        // void FromJson(const json& j, std::vector<char>& vector);
+
         template <typename T>
         void FromJson(const json& j, std::list<T>& list)
         {

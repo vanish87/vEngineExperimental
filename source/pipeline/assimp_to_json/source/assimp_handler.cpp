@@ -33,7 +33,7 @@ namespace vEngine
 
         SceneSharedPtr AssimpHandler::LoadFromAssimp(const std::filesystem::path path)
         {
-            ResourceManager::GetInstance().DumpCurrentPath();
+            // ResourceManager::GetInstance().DumpCurrentPath();
 
             Assimp::Importer importer;
             auto ai_scene = importer.ReadFile(path.string(), aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
