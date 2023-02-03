@@ -113,15 +113,15 @@ namespace vEngine
             // auto type = desc.type;
 
             // using type_list = std::tuple<ClassBar, ClassFoo>;
-            using type_list =
-                std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, TransformComponent, Mesh, MeshComponent, Rendering::MeshRenderer, Rendering::MeshRendererComponent, Camera, CameraComponent,
-                           Rendering::PipelineState, Rendering::Texture, Animation::AnimationClip, Animation::Joint, Animation::Bone, Animation::BoneComponent, GameNode, ClassFoo, ClassBar>;
+            // using type_list =
+            //     std::tuple<Rendering::Shader, Rendering::Material, Scene, Transform, TransformComponent, Mesh, MeshComponent, Rendering::MeshRenderer, Rendering::MeshRendererComponent, Camera, CameraComponent,
+            //                Rendering::PipelineState, Rendering::Texture, Animation::AnimationClip, Animation::Joint, Animation::Bone, Animation::BoneComponent, GameNode, ClassFoo, ClassBar>;
 
             GameObjectSharedPtr shared;
             // auto handled = false;
 
-            auto path = GameObjectToPath(desc);
-            PRINT("Path " << path);
+            // auto path = GameObjectToPath(desc);
+            // PRINT("Path " << path);
             // PRINT("Type " << desc.type);
             // auto type = desc.type;
 
@@ -204,7 +204,7 @@ namespace vEngine
             FromJson(j["meta"], desc);
 
             // 1. find by uuid
-            // ptr = GameObjectFactory::Find<T>(desc);
+            // ptr = ResourceManager::GetInstance().Load(desc));
             // if(ptr != nullptr) return;
             // CHECK_ASSERT(ptr == nullptr);
 
