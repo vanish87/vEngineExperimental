@@ -12,7 +12,7 @@ foreach(SRC_FILE ${SHADER_VS_SOURCE})
   add_custom_command(
     OUTPUT ${BIN_FILE}
     DEPENDS ${SRC_FILE} shader_compiler
-    COMMAND shader_compiler -i ${SRC_FILE} -o ${BIN_FILE} -p vs
+    COMMAND shader_compiler -i ${SRC_FILE} -o ${BIN_FILE} -p vs -r ${RESOURCE_SRC} -b ${RESOURCE_BIN}
     COMMENT "Compile vs ${SRC_FILE} to json ${BIN_FILE}"
   )
 endforeach(SRC_FILE ${SHADER_VS_SOURCE})
@@ -26,7 +26,7 @@ foreach(SRC_FILE ${SHADER_PS_SOURCE})
   add_custom_command(
     OUTPUT ${BIN_FILE}
     DEPENDS ${SRC_FILE} shader_compiler
-    COMMAND shader_compiler -i ${SRC_FILE} -o ${BIN_FILE} -p ps
+    COMMAND shader_compiler -i ${SRC_FILE} -o ${BIN_FILE} -p ps -r ${RESOURCE_SRC} -b ${RESOURCE_BIN}
     COMMENT "Compile ps ${SRC_FILE} to json ${BIN_FILE}"
   )
 endforeach(SRC_FILE ${SHADER_PS_SOURCE})
