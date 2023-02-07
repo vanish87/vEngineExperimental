@@ -11,8 +11,9 @@ namespace vEngine
             return std::dynamic_pointer_cast<std::tuple_element_t<I, T>>(ptr);
         }
         template <typename T>
-        auto GetTypeString(std::shared_ptr<T> prt)
+        auto GetTypeString(std::shared_ptr<T> ptr)
         {
+            UNUSED_PARAMETER(ptr);
             return typeid(T).name();
         }
         template <typename T, typename>
@@ -65,7 +66,7 @@ namespace vEngine
             return "NOT DEFINED";
         }
         template <typename T, typename>
-        const Rendering::ShaderType FromString(const std::string& obj)
+        Rendering::ShaderType FromString(const std::string& obj)
         {
             if (obj == "VS") return Rendering::ShaderType::VS;
             if (obj == "PS") return Rendering::ShaderType::PS;
@@ -83,7 +84,7 @@ namespace vEngine
             return ToString(obj);
         }
         template <typename T, typename>
-        const GameObjectType FromString(const std::string& str)
+        GameObjectType FromString(const std::string& str)
         {
             STRING_TO_ENUM(GameObjectType::GameObject, str);
             STRING_TO_ENUM(GameObjectType::GameNode, str);

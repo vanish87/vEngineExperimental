@@ -209,11 +209,11 @@ namespace vEngine
             private:
                 float3 local_translate_;
                 // float4x4 local_rotation_;
+                quaternion local_rotation_;
                 float3 local_scale_;
 
                 float4x4 local_to_world_;
 
-                quaternion local_rotation_;
 
             public:
                 /// \brief A brief function description.

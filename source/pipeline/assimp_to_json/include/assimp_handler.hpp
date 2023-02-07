@@ -14,9 +14,11 @@
 
 #include <filesystem>
 
+// #pragma clang diagnostic ignored "-Wmicrosoft-enum-value"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+// #pragma clang diagnostic warning "-Wmicrosoft-enum-value"
 
 #include <engine.hpp>
 #include <vengine/core/application.hpp>

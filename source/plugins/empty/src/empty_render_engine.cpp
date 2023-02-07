@@ -19,12 +19,13 @@ namespace vEngine
     }  // namespace Rendering
 }  // namespace vEngine
 
-extern "C" {
-    void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
+extern "C" 
+{
+    inline VENGINE_API void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
     {
         ptr = std::make_unique<vEngine::Rendering::EmptyRenderEngine>();
     }
-    void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
+    inline VENGINE_API void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
     {
         ptr.reset();
     }

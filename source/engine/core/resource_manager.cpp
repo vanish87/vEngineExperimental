@@ -67,7 +67,7 @@ namespace vEngine
             }
 
             CHECK_AND_ASSERT(false, "Cannot find file/folder " << file_name);
-            return nullptr;
+            return std::filesystem::path(file_name);
         }
 
         void ResourceManager::Save(const GameObjectSharedPtr go, const std::filesystem::path path)

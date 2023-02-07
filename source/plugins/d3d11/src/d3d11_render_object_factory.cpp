@@ -17,7 +17,7 @@ namespace vEngine
             // this->d3d_imm_context_.Reset();
             // this->d3d_device_.Reset();
         }
-        Core::GameObjectSharedPtr D3D11RenderObjectFactory::Create(std::any parameter) 
+        Core::GameObjectSharedPtr D3D11RenderObjectFactory::Create(std::any parameter)
         {
             // virtual PipelineStateSharedPtr Create(const PipelineStateDescriptor& pipeline_desc) = 0;
             // virtual TextureSharedPtr Create(const TextureDescriptor& desc) = 0;

@@ -25,6 +25,7 @@ namespace vEngine
         Shader::Shader(const GameObjectType type) : GameObject(type) {}
         ShaderSharedPtr Shader::Load(const std::string file_name)
         {
+            UNUSED_PARAMETER(file_name);
             auto shader = GameObjectFactory::Create<GameObjectType::Shader, Shader>();
             auto path = std::filesystem::path("test");
 
@@ -33,7 +34,7 @@ namespace vEngine
             if (!fin)
             {
                 PRINT_AND_BREAK("Cannot open hlsl File ");
-                return false;
+                return nullptr;
             }
 
             fin.seekg(0, std::ios_base::end);

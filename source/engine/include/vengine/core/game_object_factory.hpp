@@ -55,7 +55,7 @@ namespace vEngine
                 {
                     TYPE_AND_CREATE(GameObjectType::GameObject, GameObject);
                     TYPE_AND_CREATE(GameObjectType::GameNode, GameNode);
-                    if constexpr (Type == GameObjectType::Component) static_assert(false, "Cannot create component without game object type");
+                    if constexpr (Type == GameObjectType::Component) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
                     TYPE_AND_CREATE(GameObjectType::Transform, Transform);
                     TYPE_AND_CREATE(GameObjectType::TransformComponent, TransformComponent);
                     TYPE_AND_CREATE(GameObjectType::Camera, Camera);
@@ -68,8 +68,8 @@ namespace vEngine
 
                     TYPE_AND_CREATE(GameObjectType::Serializer, Data::Serializer);
 
-                    if constexpr (Type == GameObjectType::Renderer) static_assert(false, "Cannot create renderer without renderable type");
-                    if constexpr (Type == GameObjectType::RendererComponent) static_assert(false, "Cannot create renderer component without renderable type");
+                    if constexpr (Type == GameObjectType::Renderer) CHECK_AND_ASSERT(false, "Cannot create renderer without renderable type");
+                    if constexpr (Type == GameObjectType::RendererComponent) CHECK_AND_ASSERT(false, "Cannot create renderer component without renderable type");
                     TYPE_AND_CREATE(GameObjectType::MeshRenderer, Rendering::MeshRenderer);
                     TYPE_AND_CREATE(GameObjectType::MeshRendererComponent, Rendering::MeshRendererComponent);
                     TYPE_AND_CREATE(GameObjectType::Material, Rendering::Material);
@@ -152,6 +152,7 @@ namespace vEngine
             public:
                 virtual GameObjectSharedPtr Create(std::any parameter)
                 {
+                    UNUSED_PARAMETER(parameter);
                     NOT_IMPL_ASSERT;
                     // if(auto desc = std::any_cast<TextureDesc>(&parameter)) return new D3DTexture(desc);
                     return nullptr;

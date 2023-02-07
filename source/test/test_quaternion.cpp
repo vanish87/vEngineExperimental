@@ -29,4 +29,8 @@ TEST(Quaternion, Construct)
 	quaternion qx, py;
 	auto r = NLerp(qx, py, 0.5f);
 
+	UNUSED_PARAMETER(r);
+	UNUSED_PARAMETER(con);
+	UNUSED_PARAMETER(q4);
+
 }

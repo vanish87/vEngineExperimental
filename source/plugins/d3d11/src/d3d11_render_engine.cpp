@@ -251,33 +251,33 @@ namespace vEngine
             const auto config = Context::GetInstance().CurrentConfigure();
 
             D3D_FEATURE_LEVEL feature_level;
-            auto hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, 
-            this->d3d_device_.GetAddressOf(), &feature_level, this->d3d_imm_context_.GetAddressOf());
+            auto hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, this->d3d_device_.GetAddressOf(), &feature_level,
+                                        this->d3d_imm_context_.GetAddressOf());
             CHECK_ASSERT(hr == S_OK);
             CHECK_ASSERT_NOT_NULL(this->d3d_device_);
             CHECK_ASSERT_NOT_NULL(this->d3d_imm_context_);
 
-            if(config.graphics_configure.output == Output::Window)
+            if (config.graphics_configure.output == Output::Window)
             {
                 auto window = Context::GetInstance().CurrentWindow();
                 auto hwnd = static_cast<HWND>(window->WindowHandle());
                 auto width = config.graphics_configure.width;
                 auto height = config.graphics_configure.height;
 
-                // DXGI_SWAP_CHAIN_DESC scd;
-                // // clear out the struct for use
-                // ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
+// DXGI_SWAP_CHAIN_DESC scd;
+// // clear out the struct for use
+// ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
 
-                // // fill the swap chain description struct
-                // scd.BufferCount = 1;  // one back buffer
-                // scd.BufferDesc.Width = width;
-                // scd.BufferDesc.Height = height;
-                // scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;  // use 32-bit color
-                // scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;   // how swap chain is to be used
-                // scd.OutputWindow = hwnd;                             // the window to be used
-                // scd.SampleDesc.Count = 1;                            // how many multisamples
-                // scd.Windowed = true;                                 // windowed/full-screen mode
-
+// // fill the swap chain description struct
+// scd.BufferCount = 1;  // one back buffer
+// scd.BufferDesc.Width = width;
+// scd.BufferDesc.Height = height;
+// scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;  // use 32-bit color
+// scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;   // how swap chain is to be used
+// scd.OutputWindow = hwnd;                             // the window to be used
+// scd.SampleDesc.Count = 1;                            // how many multisamples
+// scd.Windowed = true;                                 // windowed/full-screen mode
+// #pragma clang diagnostic ignored "-Wlanguage-extension-token"
                 ComPtr<IDXGIDevice2> pDXGIDevice;
                 hr = this->d3d_device_->QueryInterface(__uuidof(IDXGIDevice2), (void**)pDXGIDevice.GetAddressOf());
 
@@ -286,6 +286,7 @@ namespace vEngine
 
                 ComPtr<IDXGIFactory2> pIDXGIFactory;
                 pDXGIAdapter->GetParent(__uuidof(IDXGIFactory2), (void**)pIDXGIFactory.GetAddressOf());
+// #pragma clang diagnostic warning "-Wlanguage-extension-token"
 
                 // hr = pIDXGIFactory->CreateSwapChainForHwnd(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &scd, &d3d_swap_chain_, &d3d_device_, nullptr,
                 // &d3d_imm_context_);
@@ -295,8 +296,8 @@ namespace vEngine
                 ZeroMemory(&scd1, sizeof(DXGI_SWAP_CHAIN_DESC1));
                 scd1.Width = width;
                 scd1.Height = height;
-                scd1.Format = DXGI_FORMAT_R8G8B8A8_UNORM;  // use 32-bit color
-                scd1.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;   // how swap chain is to be used
+                scd1.Format = DXGI_FORMAT_R8G8B8A8_UNORM;            // use 32-bit color
+                scd1.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;  // how swap chain is to be used
                 scd1.BufferCount = 2;
                 scd1.SampleDesc.Count = 1;
                 hr = pIDXGIFactory->CreateSwapChainForHwnd(this->d3d_device_.Get(), hwnd, &scd1, nullptr, nullptr, this->d3d_swap_chain_.GetAddressOf());
@@ -304,9 +305,11 @@ namespace vEngine
                 CHECK_ASSERT(hr == S_OK);
                 CHECK_ASSERT_NOT_NULL(this->d3d_swap_chain_);
 
+// #pragma clang diagnostic ignored "-Wlanguage-extension-token"
                 // get the address of the back buffer
                 ID3D11Texture2D* pBackBuffer;
                 hr = this->d3d_swap_chain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+// #pragma clang diagnostic warning "-Wlanguage-extension-token"
                 CHECK_ASSERT(hr == S_OK);
                 auto backBufferTexture = std::make_shared<D3D11Texture>(pBackBuffer);
 
@@ -352,8 +355,8 @@ namespace vEngine
         }
         void D3D11RenderEngine::Update()
         {
-            const float bg[4] = {0.0f, 0.2f, 0.4f, 1.0f};
-            auto color = std::dynamic_pointer_cast<D3D11Texture>(this->current_frame_buffer_->GetColor(0));
+            // const float bg[4] = {0.0f, 0.2f, 0.4f, 1.0f};
+            // auto color = std::dynamic_pointer_cast<D3D11Texture>(this->current_frame_buffer_->GetColor(0));
             // this->d3d_imm_context_->ClearRenderTargetView(color->AsRTV().Get(), bg);
             // this->TriangleDraw();
             // this->d3d_swap_chain_->Present(0, 0);
@@ -365,7 +368,7 @@ namespace vEngine
             this->d3d_device_.Reset();
             this->d3d_imm_context_.Reset();
 
-            if(this->d3d_swap_chain_ != nullptr) this->d3d_swap_chain_.Reset();
+            if (this->d3d_swap_chain_ != nullptr) this->d3d_swap_chain_.Reset();
         }
         void D3D11RenderEngine::Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice)
         {
@@ -561,6 +564,7 @@ namespace vEngine
         }
         void D3D11RenderEngine::Clear(const FrameBufferSharedPtr frame_buffer, const color color /*= float4(0.0f, 0.2f, 0.4f, 1.0f)*/)
         {
+            UNUSED_PARAMETER(frame_buffer);
             // const float bg[4] = {0.0f, 0.2f, 0.4f, 1.0f};
             auto color_buffer = std::dynamic_pointer_cast<D3D11Texture>(this->current_frame_buffer_->GetColor(0));
             auto depth_buffer = std::dynamic_pointer_cast<D3D11Texture>(this->current_frame_buffer_->GetDepthStencil());

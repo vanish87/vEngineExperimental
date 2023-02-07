@@ -61,8 +61,9 @@ namespace vEngine
 
                 virtual void OnBeginFrame()
                 {
+                    // const color color = color(0, 51, 102, 255);
                     // update per frame cbuffer
-                    this->Clear(this->current_frame_buffer_);
+                    this->Clear(this->current_frame_buffer_, color(0, 51, 102, 255));
                 };
                 virtual void OnEndFrame()
                 {
@@ -86,7 +87,8 @@ namespace vEngine
                 // virtual FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) = 0;
                 // virtual GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) = 0;
 
-                virtual void Clear(const FrameBufferSharedPtr frame_buffer, const color color = color(0, 51, 102, 255)) = 0;
+                // virtual void Clear(const FrameBufferSharedPtr frame_buffer, const color color = color(0, 51, 102, 255)) = 0;
+                virtual void Clear(const FrameBufferSharedPtr frame_buffer, const color color) = 0;
 
                 FrameBufferSharedPtr current_frame_buffer_;
                 FrameBufferSharedPtr back_buffer_;

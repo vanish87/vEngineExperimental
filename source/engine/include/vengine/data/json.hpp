@@ -90,13 +90,13 @@ namespace vEngine
         std::string ToString(const Rendering::ShaderType& obj);
 
         template <typename T, typename = std::enable_if_t<std::is_same<T, Rendering::ShaderType>::value, T>>
-        const Rendering::ShaderType FromString(const std::string& obj);
+        Rendering::ShaderType FromString(const std::string& obj);
 
         template <typename T, typename = std::enable_if_t<std::is_same<T, GameObjectType>::value, T>>
         std::string ToString(const GameObjectType& obj);
 
         template <typename T, typename = std::enable_if_t<std::is_same<T, Core::GameObjectType>::value, T>>
-        const Core::GameObjectType FromString(const std::string& obj);
+        Core::GameObjectType FromString(const std::string& obj);
     }  // namespace Core
 }  // namespace vEngine
 

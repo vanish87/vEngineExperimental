@@ -26,6 +26,7 @@ namespace vEngine
         SceneManager::~SceneManager() {}
         void SceneManager::Load(const std::string scene_name)
         {
+            UNUSED_PARAMETER(scene_name);
             // ResourceDescriptor desc;
             // desc.on_load_call_back = [&]()
             // {

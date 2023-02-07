@@ -61,7 +61,7 @@ namespace vEngine
             {
                 HINSTANCE hInstance = ::GetModuleHandle(nullptr);
 
-                WNDCLASS wcex = {0};
+                WNDCLASS wcex;
                 wcex.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;  // CS_OWNDC to create own device context
                 wcex.lpfnWndProc = WndProc;
                 wcex.hInstance = hInstance;
@@ -102,7 +102,7 @@ namespace vEngine
         }
         void Window::Update()
         {
-            MSG msg = {0};
+            MSG msg;
             if (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
             {
                 ::TranslateMessage(&msg);

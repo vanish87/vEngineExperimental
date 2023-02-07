@@ -72,7 +72,7 @@ namespace vEngine
             public:
                 virtual ~UUID(void){};
 
-                const uint64_t AsUint() const
+                uint64_t AsUint() const
                 {
                     return this->data_;
                 }

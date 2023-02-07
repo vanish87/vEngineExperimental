@@ -357,8 +357,8 @@ static void lodepng_set32bitInt(unsigned char* buffer, unsigned value) {
 static long lodepng_filesize(const char* filename) {
   FILE* file;
   long size;
-  file = fopen(filename, "rb");
-  if(!file) return -1;
+  auto err = fopen_s(&file, filename, "rb");
+  if(!file || err) return -1;
 
   if(fseek(file, 0, SEEK_END) != 0) {
     fclose(file);
@@ -377,8 +377,8 @@ static long lodepng_filesize(const char* filename) {
 static unsigned lodepng_buffer_file(unsigned char* out, size_t size, const char* filename) {
   FILE* file;
   size_t readsize;
-  file = fopen(filename, "rb");
-  if(!file) return 78;
+  auto err = fopen_s(&file, filename, "rb");
+  if(err || !file) return 78;
 
   readsize = fread(out, 1, size, file);
   fclose(file);
@@ -401,8 +401,8 @@ unsigned lodepng_load_file(unsigned char** out, size_t* outsize, const char* fil
 /*write given buffer to the file, overwriting the file, it doesn't append to it.*/
 unsigned lodepng_save_file(const unsigned char* buffer, size_t buffersize, const char* filename) {
   FILE* file;
-  file = fopen(filename, "wb" );
-  if(!file) return 79;
+  auto err = fopen_s(&file, filename, "wb");
+  if(err || !file) return 79;
   fwrite(buffer, 1, buffersize, file);
   fclose(file);
   return 0;

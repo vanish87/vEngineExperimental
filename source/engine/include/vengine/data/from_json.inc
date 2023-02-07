@@ -120,7 +120,7 @@ namespace vEngine
             GameObjectSharedPtr shared;
             // auto handled = false;
 
-            // auto path = GameObjectToPath(desc);
+            auto path = GameObjectToPath(desc);
             // PRINT("Path " << path);
             // PRINT("Type " << desc.type);
             // auto type = desc.type;
