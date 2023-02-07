@@ -200,7 +200,7 @@ namespace vEngine
             #elif VENGINE_PLATFORM_UNIX
             // reset errors
             dlerror();
-            auto function = reinterpret_cast<HandleRenderEngine>(dlsym(handle, func_name.c_str()));
+            auto function = reinterpret_cast<F>(dlsym(handle, func_name.c_str()));
             auto dlsym_error = dlerror();
             if (dlsym_error)
             {

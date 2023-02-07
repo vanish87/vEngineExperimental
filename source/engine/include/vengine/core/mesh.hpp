@@ -36,7 +36,7 @@ namespace vEngine
             float3 pos;
             float3 normal;
             float2 uv;
-            color color;
+            color col;
             int4 bone_id_0;
             float4 bone_weight_0;
             int4 bone_id_1;
@@ -47,7 +47,7 @@ namespace vEngine
                     property("position", &Vertex::pos),
                     property("normal", &Vertex::normal),
                     property("uv", &Vertex::uv),
-                    property("color", &Vertex::color),
+                    property("color", &Vertex::col),
                     property("bone_id_0", &Vertex::bone_id_0),
                     property("bone_id_1", &Vertex::bone_id_1),
                     property("bone_weight_0", &Vertex::bone_weight_0),

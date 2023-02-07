@@ -16,7 +16,6 @@
 
 #include <engine.hpp>
 #include <vengine/core/uuid.hpp>
-#include <vengine/core/game_object_factory.hpp>
 
 /// A brief namespace description.
 namespace vEngine

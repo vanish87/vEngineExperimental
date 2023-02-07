@@ -121,7 +121,7 @@ namespace vEngine
             }
             return value;
         }
-        template <>
+        template <char>
         VENGINE_API json ToJson(const std::vector<char>& vector);
         // template <>
         // json ToJson(const std::vector<char>& vector)
@@ -152,8 +152,9 @@ namespace vEngine
         template <typename T, int N>
         json ToJson(const std::array<T, N>& obj)
         {
+            UNUSED_PARAMETER(obj);
             NOT_IMPL_ASSERT;
-            static_assert(false, "Should used vengine data types for serializer") UNUSED_PARAMETER(obj);
+            static_assert(false, "Should used vengine data types for serializer");
             return json();
         }
         template <typename T, int N>

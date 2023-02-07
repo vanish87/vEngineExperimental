@@ -130,12 +130,12 @@ namespace vEngine
         constexpr auto property(const char* name, Attribute<T> Class::*member)
         {
             return Property<Class, Attribute<T>, T>{name, member};
-        };
+        }
         template <typename Class, typename T>
         constexpr auto property(const char* name, T Class::*member)
         {
             return Property<Class, T, T>{name, member};
-        };
+        }
 
     }  // namespace Data
 

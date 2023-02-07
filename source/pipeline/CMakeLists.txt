@@ -1,7 +1,10 @@
 
 add_subdirectory(shader_compiler)
 add_subdirectory(smpl_to_json)
-add_subdirectory(assimp_to_json)
+
+if(WIN32)
+    add_subdirectory(assimp_to_json)
+endif(WIN32)
 
 # add_custom_target(resource)
 
