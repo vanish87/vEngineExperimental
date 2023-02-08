@@ -142,6 +142,7 @@ namespace vEngine
                     NOT_IMPL_ASSERT;
                     if (auto p = std::any_cast<int>(&parameter))
                     {
+                        UNUSED_PARAMETER(p);
                         // if(*p == 117) return std::make_shared<MyObject>();
                     }
                     return nullptr;
@@ -163,9 +164,12 @@ namespace vEngine
 
 }  // namespace vEngine
 
-extern "C"
-{
-    VENGINE_API void CreateGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr);
-    VENGINE_API void DestoryGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr);
-}
+#ifdef VENGINE_STATIC_LINK
+// extern "C"
+// {
+    void CreateGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr);
+    void DestoryGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr);
+// }
+#endif
+
 #endif /* _VENGINE_CORE_GAME_OBJECT_FACTORY_HPP */

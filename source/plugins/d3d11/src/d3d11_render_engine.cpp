@@ -7,6 +7,7 @@
 #include <shlobj.h>
 
 #include <vengine/rendering/d3d11_render_engine.hpp>
+#include <D3D11_RENDERING_PLUGIN_API.hpp>
 
 #include <vengine/core/context.hpp>
 #include <vengine/core/window.hpp>
@@ -601,11 +602,11 @@ namespace vEngine
 
 extern "C"
 {
-    void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
+    D3D11_RENDERING_PLUGIN_API void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
     {
         ptr = std::make_unique<vEngine::Rendering::D3D11RenderEngine>();
     }
-    void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
+    D3D11_RENDERING_PLUGIN_API void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
     {
         ptr.reset();
     }

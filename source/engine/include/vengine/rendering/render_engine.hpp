@@ -99,9 +99,16 @@ namespace vEngine
     }  // namespace Rendering
 }  // namespace vEngine
 
-extern "C"
-{
-    VENGINE_API void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
-    VENGINE_API void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
-}
+// extern "C"
+// {
+//     VENGINE_API void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
+//     VENGINE_API void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
+// }
+#ifdef VENGINE_STATIC_LINK
+// extern "C"
+// {
+    void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
+    void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
+// }
+#endif
 #endif /* _VENGINE_RENDERING_RENDER_ENGINE_HPP */

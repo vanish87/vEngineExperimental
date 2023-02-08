@@ -21,11 +21,11 @@ namespace vEngine
 
 extern "C" 
 {
-    inline VENGINE_API void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
+    void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
     {
         ptr = std::make_unique<vEngine::Rendering::EmptyRenderEngine>();
     }
-    inline VENGINE_API void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
+    void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
     {
         ptr.reset();
     }

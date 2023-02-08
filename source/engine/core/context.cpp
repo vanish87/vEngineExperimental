@@ -3,7 +3,7 @@
 // #ifdef VENGINE_PLATFORM_WINDOWS
 // #include <windows.h>
 // #elif VENGINE_PLATFORM_UNIX
-#if VENGINE_PLATFORM_UNIX
+#ifdef VENGINE_PLATFORM_UNIX
     #include <dlfcn.h>
 #endif
 
@@ -17,6 +17,7 @@
 // #include <vengine/data/meta.hpp>
 // #include <vengine/data/json.hpp>
 // #include <fstream>
+
 
 namespace vEngine
 {
@@ -82,9 +83,9 @@ namespace vEngine
         {
             if (this->render_object_factory_ptr_ == nullptr)
             {
-                #ifdef VENGINE_PLATFORM_APPLE_STATIC
+                #ifdef VENGINE_STATIC_LINK
                 CreateGameObjectFactory(this->render_object_factory_ptr_);
-                #else
+                #elif VENGINE_DYNAMIC_LINK
                 ProcessSharedFunction<GameObjectFactory, HandleGameObjectFactory>("CreateGameObjectFactory", this->render_plugin_dll_handle_, this->render_object_factory_ptr_);
                 #endif
             }
@@ -95,9 +96,9 @@ namespace vEngine
         {
             if (this->render_engine_ptr_ == nullptr)
             {
-                #ifdef VENGINE_PLATFORM_APPLE_STATIC
+                #ifdef VENGINE_STATIC_LINK
                 CreateRenderEngine(this->render_engine_ptr_);
-                #else
+                #else VENGINE_DYNAMIC_LINK
                 ProcessSharedFunction<Rendering::RenderEngine, HandleRenderEngine>("CreateRenderEngine", this->render_plugin_dll_handle_, this->render_engine_ptr_);
                 #endif
             }
@@ -106,7 +107,7 @@ namespace vEngine
 
         void Context::LoadDll()
         {
-            #ifdef VENGINE_PLATFORM_APPLE_STATIC
+            #ifdef VENGINE_STATIC_LINK
             return;
             #endif
             this->FreeDll();

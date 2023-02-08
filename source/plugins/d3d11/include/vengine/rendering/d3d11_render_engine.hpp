@@ -84,4 +84,12 @@ namespace vEngine
     }  // namespace Rendering
 }  // namespace vEngine
 
+// #ifdef VENGINE_DYNAMIC_LINK
+// extern "C"
+// {
+//     VENGINE_API void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr, int x);
+//     VENGINE_API void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
+// }
+// #endif
+
 #endif /* _VENGINE_RENDERING_D3D11_RENDER_ENGINE_HPP */

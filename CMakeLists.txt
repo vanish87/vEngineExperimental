@@ -10,7 +10,7 @@ endif()
 set(VENGINE_BUILD_DOC OFF)
 
 # cmake setting
-set(CMAKE_VERBOSE_MAKEFILE OFF)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # Include cmake modules
 include(GenerateExportHeader)
@@ -79,21 +79,24 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_DEBUG_POSTFIX d)
 add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 
+set(PROJECT_NAME_U ${PROJECT_NAME})
+string(TOUPPER ${PROJECT_NAME_U} PROJECT_NAME_U)
+
 set(PROJECT_PLATFORM_MARCO ${PROJECT_NAME}_PLATFORM)
 string(TOUPPER ${PROJECT_PLATFORM_MARCO} PROJECT_PLATFORM_MARCO)
 
 if(WIN32)
     add_compile_definitions(${PROJECT_PLATFORM_MARCO}_WINDOWS)
+elseif(APPLE)
+    add_compile_definitions(${PROJECT_PLATFORM_MARCO}_APPLE)
 elseif(UNIX)
     add_compile_definitions(${PROJECT_PLATFORM_MARCO}_UNIX)
 endif()
 
-if(APPLE)
-    add_compile_definitions(${PROJECT_PLATFORM_MARCO}_APPLE)
-endif()
-
 if(VENGINE_BUILD_STATIC)
-    add_compile_definitions(${PROJECT_PLATFORM_MARCO}_APPLE_STATIC)
+    add_compile_definitions(${PROJECT_NAME_U}_STATIC_LINK)
+else()
+    add_compile_definitions(${PROJECT_NAME_U}_DYNAMIC_LINK)
 endif()
 
 add_subdirectory(source)

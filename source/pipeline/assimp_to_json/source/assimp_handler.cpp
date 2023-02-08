@@ -193,7 +193,7 @@ namespace vEngine
                     v.pos = hasPos ? float3(ai_mesh->mVertices[i].x, ai_mesh->mVertices[i].y, ai_mesh->mVertices[i].z) : float3(0, 0, 0);
                     v.normal = hasNormal ? float3(ai_mesh->mNormals[i].x, ai_mesh->mNormals[i].y, ai_mesh->mNormals[i].z) : float3(0, 0, 0);
                     v.uv = hasUV ? float2(ai_mesh->mTextureCoords[0][i].x, ai_mesh->mTextureCoords[0][i].y) : float2(0, 0);
-                    v.color = float4(1, 1, 1, 1);
+                    v.col = float4(1, 1, 1, 1);
 
                     v.bone_id_0 = v.bone_id_1 = int4(-1, -1, -1, -1);
                     v.bone_weight_0 = v.bone_weight_1 = float4::Zero();

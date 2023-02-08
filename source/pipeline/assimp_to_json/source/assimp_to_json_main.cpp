@@ -63,6 +63,7 @@ int main(int argc, char* argv[])
     // resource_bin = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin";
 
     Configure configure;
+    configure.app_name = "assimp_to_json";
     configure.graphics_configure.output = Output::CommandLine;
     configure.resource_src = resource_src;
     configure.resource_bin = resource_bin;

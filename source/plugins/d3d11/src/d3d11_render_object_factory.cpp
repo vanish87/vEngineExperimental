@@ -1,6 +1,7 @@
 
 #include <vengine/rendering/d3d11_render_object_factory.hpp>
 
+#include <D3D11_RENDERING_PLUGIN_API.hpp>
 #include <vengine/rendering/d3d11_frame_buffer.hpp>
 #include <vengine/rendering/d3d11_graphics_buffer.hpp>
 #include <vengine/rendering/d3d11_pipeline_state.hpp>
@@ -37,11 +38,11 @@ namespace vEngine
 
 extern "C"
 {
-    void CreateGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr)
+    D3D11_RENDERING_PLUGIN_API void CreateGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr)
     {
         ptr = std::make_unique<vEngine::Rendering::D3D11RenderObjectFactory>();
     }
-    void DestoryGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr)
+    D3D11_RENDERING_PLUGIN_API void DestoryGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr)
     {
         ptr.reset();
     }
