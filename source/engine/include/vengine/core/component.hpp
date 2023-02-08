@@ -11,11 +11,12 @@
 #define _VENGINE_CORE_COMPONENT_HPP
 
 #pragma once
-#include <engine.hpp>
 #include <memory>
+
+#include <engine.hpp>
+#include <vengine/core/icomponent.hpp>
 #include <vengine/core/game_node.hpp>
 #include <vengine/core/game_object_factory.hpp>
-#include <vengine/core/icomponent.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -30,6 +31,7 @@ namespace vEngine
         class Component : public GameNode, public IComponent
         {
                 static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
+                static_assert(std::is_same<Component, T>::value == false, "T should not be Component");
 
             public:
                 constexpr static auto properties()

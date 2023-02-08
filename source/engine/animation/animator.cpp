@@ -12,6 +12,8 @@
 #include <vengine/animation/animator.hpp>
 #include <vengine/animation/animation_clip.hpp>
 
+#include <vengine/core/game_object_factory.hpp>
+
 /// A detailed namespace description, it
 /// should be 2 lines at least.
 namespace vEngine
@@ -20,6 +22,11 @@ namespace vEngine
     {
         using namespace Core;
 
+        AnimatorSharedPtr Animator::Default()
+        {
+            const auto animator = GameObjectFactory::Create<Core::GameObjectType::Animator, Animator>();
+            return animator;
+        }
         /// constructor detailed defintion,
         /// should be 2 lines
         Animator::Animator(const GameObjectType type) : GameObject(type), current_time_{0} {}

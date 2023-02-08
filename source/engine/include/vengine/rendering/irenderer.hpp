@@ -1,3 +1,12 @@
+/// \file irenderer.hpp
+/// \brief Head file for Renderer Interface
+///
+/// A detailed file description.
+///
+/// \author author_name
+/// \version version_number
+/// \date xxxx-xx-xxx
+
 #ifndef _VENGINE_RENDERING_IRENDERER_HPP
 #define _VENGINE_RENDERING_IRENDERER_HPP
 

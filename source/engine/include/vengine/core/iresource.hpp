@@ -1,9 +1,18 @@
+/// \file iresource.hpp
+/// \brief Head file for Resource Interface
+///
+/// A detailed file description.
+///
+/// \author author_name
+/// \version version_number
+/// \date xxxx-xx-xxx
+
 #ifndef _VENGINE_CORE_IRESOURCE_HPP
 #define _VENGINE_CORE_IRESOURCE_HPP
 
 #pragma once
-#include <engine.hpp>
 #include <functional>
+#include <engine.hpp>
 
 namespace vEngine
 {

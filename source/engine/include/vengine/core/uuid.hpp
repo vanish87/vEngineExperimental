@@ -27,11 +27,9 @@ namespace vEngine
                 {
                     return std::tuple_cat(
                         // GameNode::properties(),
-                        std::make_tuple(
-                            property("current_id", &UUIDGenerator::current_id_)
-                        )
-                    );
+                        std::make_tuple(property("current_id", &UUIDGenerator::current_id_)));
                 }
+
             private:
                 explicit UUIDGenerator() : current_id_(0){};
                 UUIDGenerator(const UUIDGenerator& rhs)
@@ -40,7 +38,7 @@ namespace vEngine
                 };
                 UUIDGenerator& operator=(const UUIDGenerator& rhs)
                 {
-                    if(this != &rhs)
+                    if (this != &rhs)
                     {
                         this->current_id_ = rhs.current_id_;
                     }

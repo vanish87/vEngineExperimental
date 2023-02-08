@@ -13,7 +13,6 @@
 
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
-#include <vengine/core/iresource.hpp>
 #include <vengine/rendering/data_struct.hpp>
 #include <vengine/rendering/shader.hpp>
 

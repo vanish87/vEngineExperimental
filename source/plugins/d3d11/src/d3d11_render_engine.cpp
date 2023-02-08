@@ -12,6 +12,7 @@
 #include <vengine/core/context.hpp>
 #include <vengine/core/window.hpp>
 #include <vengine/core/vector.hpp>
+#include <vengine/core/math.hpp>
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/rendering/d3d11_frame_buffer.hpp>
 #include <vengine/rendering/d3d11_graphics_buffer.hpp>

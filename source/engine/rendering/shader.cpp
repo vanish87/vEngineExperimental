@@ -23,30 +23,6 @@ namespace vEngine
         /// constructor detailed defintion,
         /// should be 2 lines
         Shader::Shader(const GameObjectType type) : GameObject(type) {}
-        ShaderSharedPtr Shader::Load(const std::string file_name)
-        {
-            UNUSED_PARAMETER(file_name);
-            auto shader = GameObjectFactory::Create<GameObjectType::Shader, Shader>();
-            auto path = std::filesystem::path("test");
-
-            std::ifstream fin(path.string());
-
-            if (!fin)
-            {
-                PRINT_AND_BREAK("Cannot open hlsl File ");
-                return nullptr;
-            }
-
-            fin.seekg(0, std::ios_base::end);
-            auto size = fin.tellg();
-            fin.seekg(0, std::ios_base::beg);
-            shader->content.resize(size);
-
-            fin.read(shader->content.data(), size);
-            fin.close();
-
-            return shader;
-        }
 
         /// A detailed function description, it
         /// should be 2 lines at least.

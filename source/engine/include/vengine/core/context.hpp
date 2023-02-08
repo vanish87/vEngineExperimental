@@ -1,16 +1,19 @@
+/// \file context.hpp
+/// \brief Head file for Context
+///
+/// A detailed file description.
+///
+/// \author author_name
+/// \version version_number
+/// \date xxxx-xx-xxx
+
 #ifndef _VENGINE_CORE_CONTEXT_HPP
 #define _VENGINE_CORE_CONTEXT_HPP
 
 #pragma once
 
-// #include <unordered_map>
-
 #include <engine.hpp>
-// #include <vengine/core/game_object.hpp>
-// #include <vengine/data/meta.hpp>
 #include <vengine/core/configure.hpp>
-// #include <vengine/rendering/render_engine.hpp>
-// #include <vengine/core/iruntime_module.hpp>
 
 namespace vEngine
 {

@@ -13,6 +13,7 @@
 #pragma once
 
 #include <engine.hpp>
+#include <vengine/core/mesh.hpp>
 #include <vengine/rendering/renderer.hpp>
 
 /// A brief namespace description.
@@ -27,14 +28,12 @@ namespace vEngine
         class VENGINE_API MeshRenderer : public Renderer<Core::Mesh>
         {
             public:
-                static MeshRendererSharedPtr Default()
-                {
-                    return Core::GameObjectFactory::Create<Core::GameObjectType::MeshRenderer, MeshRenderer>();
-                }
+                static MeshRendererSharedPtr Default();
 
             public:
                 /// \brief brief constructor description.
                 MeshRenderer(const Core::GameObjectType type = Core::GameObjectType::MeshRenderer);
+                virtual ~MeshRenderer();
 
                 virtual void Render();
         };

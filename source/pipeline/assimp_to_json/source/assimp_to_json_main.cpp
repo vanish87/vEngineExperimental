@@ -6,11 +6,15 @@
 #include <engine.hpp>
 #include <vengine/core/resource_manager.hpp>
 #include <vengine/core/scene.hpp>
+#include <vengine/core/game_object_factory.hpp>
+#include <vengine/animation/bone_component.hpp>
 
 #include <assimp_handler.hpp>
 
 #include <vengine/data/json_test.hpp>
 #include <vengine/data/class_foo.hpp>
+
+using namespace vEngine::Core;
 
 void TestFunction(std::filesystem::path output)
 {

@@ -7,9 +7,9 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#include <vengine/core/context.hpp>
-#include <vengine/core/mesh.hpp>
 #include <vengine/rendering/mesh_renderer.hpp>
+#include <vengine/core/game_object_factory.hpp>
+#include <vengine/core/context.hpp>
 #include <vengine/rendering/mesh_renderer_component.hpp>
 #include <vengine/rendering/render_engine.hpp>
 #include <vengine/rendering/material.hpp>
@@ -22,12 +22,17 @@ namespace vEngine
     {
         using namespace Core;
 
+        MeshRendererSharedPtr MeshRenderer::Default()
+        {
+            return GameObjectFactory::Create<Core::GameObjectType::MeshRenderer, MeshRenderer>();
+        }
         /// constructor detailed defintion,
         /// should be 2 lines
         MeshRenderer::MeshRenderer(const GameObjectType type) : Renderer(type)
         {
             PRINT("Mesh renderer created");
         }
+        MeshRenderer::~MeshRenderer() {}
         void MeshRenderer::Render()
         {
             auto& re = Context::GetInstance().GetRenderEngine();
@@ -49,6 +54,6 @@ namespace vEngine
                 PRINT("Mesh is null");
             }
         }
-    }  // namespace Core
+    }  // namespace Rendering
 
 }  // namespace vEngine

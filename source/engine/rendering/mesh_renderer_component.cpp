@@ -9,6 +9,15 @@
 
 #include <vengine/rendering/mesh_renderer_component.hpp>
 #include <vengine/core/game_object_factory.hpp>
+#include <vengine/core/context.hpp>
+#include <vengine/core/mesh_component.hpp>
+#include <vengine/core/transform_component.hpp>
+#include <vengine/rendering/graphics_buffer.hpp>
+
+#include <vengine/rendering/render_engine.hpp>
+#include <vengine/rendering/shared/data_cbuffer.hpp>
+#include <vengine/animation/bone_component.hpp>
+
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.

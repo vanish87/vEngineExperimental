@@ -46,7 +46,7 @@ namespace vEngine
                     UNUSED_PARAMETER(vertice);
                     UNUSED_PARAMETER(indice);
                 }
-                void Clear(const FrameBufferSharedPtr frame_buffer, const color color) override
+                void Clear(const FrameBufferSharedPtr frame_buffer, const Core::color color) override
                 {
                     UNUSED_PARAMETER(frame_buffer);
                     UNUSED_PARAMETER(color);

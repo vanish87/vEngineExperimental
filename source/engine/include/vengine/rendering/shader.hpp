@@ -14,10 +14,7 @@
 #include <vector>
 #include <engine.hpp>
 #include <vengine/rendering/data_struct.hpp>
-#include <vengine/core/iresource.hpp>
 #include <vengine/core/game_object.hpp>
-#include <vengine/core/resource_manager.hpp>
-#include <vengine/core/game_object_factory.hpp>
 
 namespace vEngine
 {
@@ -42,32 +39,6 @@ namespace vEngine
                         )
                     );
                 };
-
-                static ShaderSharedPtr Load(const std::string file_name);
-                static ShaderSharedPtr Default(ShaderType type)
-                {
-                    switch (type)
-                    {
-                    case ShaderType::VS:
-                    {
-                        static auto vs = Shader::Load("vs.hlsl");
-                        vs->type = ShaderType::VS;
-                        return vs;
-                    }
-                    case ShaderType::PS:
-                    {
-                        static auto ps = Shader::Load("ps.hlsl");
-                        ps->type = ShaderType::PS;
-                        return ps;
-                    }
-                    default:
-                        break;
-                    }
-
-                    NOT_IMPL_ASSERT;
-
-                    return nullptr;
-                }
 
             public:
                 /// \brief brief constructor description.

@@ -14,6 +14,7 @@
 #pragma once
 
 #include <unordered_map>
+
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
 
@@ -29,11 +30,18 @@ namespace vEngine
         class VENGINE_API Animator : public Core::GameObject
         {
             public:
-                static AnimatorSharedPtr Default()
+                constexpr static auto properties()
                 {
-                    const static auto animator = Core::GameObjectFactory::Create<Core::GameObjectType::Animator, Animator>();
-                    return animator;
+                    return std::tuple_cat(
+                        GameObject::properties(),
+                        std::make_tuple(
+                            property("animations_", &Animator::animations_)
+                            // property("inverse_bind_pose_matrix", &Bone::inverse_bind_pose_matrix_)
+                        )
+                    );
                 }
+                static AnimatorSharedPtr Default();
+                
                 /// \brief brief constructor description.
                 Animator(const Core::GameObjectType type = Core::GameObjectType::Animator);
                 virtual ~Animator() {}

@@ -13,8 +13,8 @@
 #pragma once
 
 #include <engine.hpp>
-#include <vengine/core/component.hpp>
 #include <vengine/rendering/renderer.hpp>
+#include <vengine/core/component.hpp>
 
 /// A brief namespace description.
 namespace vEngine

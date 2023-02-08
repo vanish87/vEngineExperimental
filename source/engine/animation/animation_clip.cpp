@@ -13,6 +13,8 @@
 #include <vengine/core/vector.hpp>
 #include <vengine/core/math.hpp>
 #include <vengine/core/quaternion.hpp>
+#include <vengine/core/game_object_factory.hpp>
+
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -22,6 +24,11 @@ namespace vEngine
     {
         using namespace Math;
         using namespace Core;
+
+        AnimationClipSharedPtr AnimationClip::Default()
+        {
+            return GameObjectFactory::Create<Core::GameObjectType::AnimationClip, AnimationClip>();
+        }
 
         /// constructor detailed defintion,
         /// should be 2 lines

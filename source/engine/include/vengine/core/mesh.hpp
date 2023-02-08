@@ -15,7 +15,6 @@
 
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
-#include <vengine/core/iresource.hpp>
 #include <vengine/core/element.hpp>
 #include <vengine/core/vector.hpp>
 #include <vengine/animation/bone.hpp>

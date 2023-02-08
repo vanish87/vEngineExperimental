@@ -1,3 +1,11 @@
+/// \file iruntime_module.hpp
+/// \brief Head file for RuntimeModule Interface
+///
+/// A detailed file description.
+///
+/// \author author_name
+/// \version version_number
+/// \date xxxx-xx-xxx
 #ifndef _VENGINE_CORE_IRUNTIME_MODULE_HPP
 #define _VENGINE_CORE_IRUNTIME_MODULE_HPP
 

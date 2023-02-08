@@ -15,10 +15,6 @@
 #include <functional>
 #include <list>
 
-#include <VENGINE_API.hpp>
-#include <engine.hpp>
-// #include <vengine/core/matrix.hpp>
-// #include <vengine/core/transform_component.hpp>
 #include <vengine/core/game_object.hpp>
 
 /// A brief namespace description.

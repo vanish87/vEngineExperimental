@@ -139,7 +139,7 @@ namespace vEngine
             public:
                 virtual GameObjectSharedPtr Create(std::any parameter)
                 {
-                    NOT_IMPL_ASSERT;
+                    NOT_IMPLEMENTED;
                     if (auto p = std::any_cast<int>(&parameter))
                     {
                         UNUSED_PARAMETER(p);
@@ -153,8 +153,8 @@ namespace vEngine
             public:
                 virtual GameObjectSharedPtr Create(std::any parameter)
                 {
+                    NOT_IMPLEMENTED;
                     UNUSED_PARAMETER(parameter);
-                    NOT_IMPL_ASSERT;
                     // if(auto desc = std::any_cast<TextureDesc>(&parameter)) return new D3DTexture(desc);
                     return nullptr;
                 }

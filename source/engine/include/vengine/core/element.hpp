@@ -1,3 +1,12 @@
+/// \file element.hpp
+/// \brief Head file for Element
+///
+/// A detailed file description.
+///
+/// \author author_name
+/// \version version_number
+/// \date xxxx-xx-xxx
+
 #ifndef _VENGINE_CORE_ELEMENT_HPP
 #define _VENGINE_CORE_ELEMENT_HPP
 
@@ -16,4 +25,4 @@ namespace vEngine
     }  // namespace Core
 }  // namespace vEngine
 
-#endif /* _VENGINE_CORE_IELEMENT_HPP */
+#endif /* _VENGINE_CORE_ELEMENT_HPP */

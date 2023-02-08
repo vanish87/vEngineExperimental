@@ -11,8 +11,8 @@
 #define _VENGINE_CORE_MESH_COMPONENT_HPP
 
 #include <engine.hpp>
-#include <vengine/core/component.hpp>
 #include <vengine/core/mesh.hpp>
+#include <vengine/core/component.hpp>
 
 /// A brief namespace description.
 namespace vEngine

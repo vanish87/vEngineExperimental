@@ -1,3 +1,12 @@
+/// \file data_struct.hpp
+/// \brief Head file for Rendering Data
+///
+/// A detailed file description.
+///
+/// \author author_name
+/// \version version_number
+/// \date xxxx-xx-xxx
+
 #ifndef _VENGINE_RENDERING_DATA_STRUCT_HPP
 #define _VENGINE_RENDERING_DATA_STRUCT_HPP
 
@@ -7,7 +16,6 @@
 #include <unordered_map>
 #include <filesystem>
 #include <vengine/rendering/data_format.hpp>
-
 #include <vengine/data/meta.hpp>
 
 namespace vEngine

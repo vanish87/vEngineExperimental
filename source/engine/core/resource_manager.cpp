@@ -8,8 +8,11 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/core/resource_manager.hpp>
+#include <vengine/core/game_object_factory.hpp>
 #include <vengine/core/game_node.hpp>
 #include <vengine/data/json.hpp>
+
+#include <vengine/animation/bone_component.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.

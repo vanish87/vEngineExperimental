@@ -1,3 +1,12 @@
+/// \file timer.hpp
+/// \brief Head file for Thread
+///
+/// A detailed file description.
+///
+/// \author author_name
+/// \version version_number
+/// \date xxxx-xx-xxx
+
 #ifndef _VENGINE_CORE_TIMER_HPP
 #define _VENGINE_CORE_TIMER_HPP
 #pragma once

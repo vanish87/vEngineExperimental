@@ -10,17 +10,8 @@
 #ifndef _VENGINE_RENDERING_MESH_RENDERER_COMPONENT_HPP
 #define _VENGINE_RENDERING_MESH_RENDERER_COMPONENT_HPP
 
-#include <cstring>
-#include <vengine/core/component.hpp>
 #include <vengine/rendering/mesh_renderer.hpp>
-#include <vengine/core/mesh_component.hpp>
-#include <vengine/core/transform_component.hpp>
-#include <vengine/rendering/graphics_buffer.hpp>
-
-#include <vengine/core/context.hpp>
-#include <vengine/rendering/render_engine.hpp>
-#include <vengine/rendering/shared/data_cbuffer.hpp>
-#include <vengine/animation/bone_component.hpp>
+#include <vengine/core/component.hpp>
 
 /// A brief namespace description.
 namespace vEngine

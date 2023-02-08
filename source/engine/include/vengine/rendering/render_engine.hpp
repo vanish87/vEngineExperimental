@@ -1,22 +1,28 @@
+/// \file render_engine.hpp
+/// \brief Head file for Render Engine
+///
+/// A detailed file description.
+///
+/// \author author_name
+/// \version version_number
+/// \date xxxx-xx-xxx
+
 #ifndef _VENGINE_RENDERING_RENDER_ENGINE_HPP
 #define _VENGINE_RENDERING_RENDER_ENGINE_HPP
 
 #pragma once
-#include <map>
 
 #include <engine.hpp>
 #include <vengine/rendering/data_struct.hpp>
 #include <vengine/rendering/data_format.hpp>
 #include <vengine/core/iruntime_module.hpp>
-#include <vengine/core/transform.hpp>
+#include <vengine/core/vector.hpp>
 
 namespace vEngine
 {
     namespace Rendering
     {
-        using namespace Core;
-
-        class VENGINE_API RenderEngine : public vEngine::Core::IRuntimeModule
+        class VENGINE_API RenderEngine : public Core::IRuntimeModule
         {
             public:
                 virtual ~RenderEngine()
@@ -63,7 +69,7 @@ namespace vEngine
                 {
                     // const color color = color(0, 51, 102, 255);
                     // update per frame cbuffer
-                    this->Clear(this->current_frame_buffer_, color(0, 51, 102, 255));
+                    this->Clear(this->current_frame_buffer_, Core::color(0, 51, 102, 255));
                 };
                 virtual void OnEndFrame()
                 {
@@ -88,7 +94,7 @@ namespace vEngine
                 // virtual GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) = 0;
 
                 // virtual void Clear(const FrameBufferSharedPtr frame_buffer, const color color = color(0, 51, 102, 255)) = 0;
-                virtual void Clear(const FrameBufferSharedPtr frame_buffer, const color color) = 0;
+                virtual void Clear(const FrameBufferSharedPtr frame_buffer, const Core::color color) = 0;
 
                 FrameBufferSharedPtr current_frame_buffer_;
                 FrameBufferSharedPtr back_buffer_;

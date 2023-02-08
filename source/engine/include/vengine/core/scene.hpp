@@ -15,9 +15,6 @@
 #include <unordered_map>
 
 #include <engine.hpp>
-#include <vengine/data/meta.hpp>
-
-#include <vengine/core/iresource.hpp>
 #include <vengine/core/game_node.hpp>
 
 // struct aiNode;

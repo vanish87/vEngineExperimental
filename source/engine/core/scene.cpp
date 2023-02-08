@@ -29,6 +29,7 @@
 #include <vengine/animation/joint.hpp>
 #include <vengine/animation/animation_clip.hpp>
 #include <vengine/animation/animator_component.hpp>
+#include <vengine/rendering/render_engine.hpp>
 #include <vengine/rendering/material.hpp>
 #include <vengine/rendering/mesh_renderer_component.hpp>
 

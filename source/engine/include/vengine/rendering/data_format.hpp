@@ -1,5 +1,17 @@
+/// \file data_format.hpp
+/// \brief Head file for Rendering Data
+///
+/// A detailed file description.
+///
+/// \author author_name
+/// \version version_number
+/// \date xxxx-xx-xxx
 #ifndef _VENGINE_RENDERING_DATA_FORMAT_HPP
 #define _VENGINE_RENDERING_DATA_FORMAT_HPP
+
+#pragma once
+
+#include <engine.hpp>
 
 namespace vEngine
 {
@@ -26,6 +38,8 @@ namespace vEngine
             default:
                 break;
             }
+
+            NOT_IMPLEMENTED;
 
             return 0;
         }

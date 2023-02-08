@@ -40,7 +40,7 @@ namespace vEngine
                 // FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override;
                 // GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override;
 
-                void Clear(const FrameBufferSharedPtr frame_buffer, const color color) override;
+                void Clear(const FrameBufferSharedPtr frame_buffer, const Core::color color) override;
 
                 static uint32_t ToD3DBindFlag(GraphicsResourceType type);
                 static uint32_t ToD3DAccessFlag(GraphicsResourceUsage usage);

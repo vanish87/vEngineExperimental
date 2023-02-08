@@ -121,7 +121,7 @@ namespace vEngine
             }
             return value;
         }
-        template <char>
+        template <>
         VENGINE_API json ToJson(const std::vector<char>& vector);
         // template <>
         // json ToJson(const std::vector<char>& vector)
