@@ -33,6 +33,7 @@
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/transform_component.hpp>
 #include <vengine/core/scene.hpp>
+#include <vengine/core/resource_manager.hpp>
 #include <vengine/rendering/material.hpp>
 #include <vengine/rendering/texture.hpp>
 

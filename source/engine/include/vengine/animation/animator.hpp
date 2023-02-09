@@ -14,6 +14,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <vector>
 
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>

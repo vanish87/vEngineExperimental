@@ -54,14 +54,14 @@ namespace vEngine
             gladLoadGL(glfwGetProcAddress);
             glfwSwapInterval(1);
 
-            this->InitPipline();
+            this->InitPipeline();
         }
 
         void OpenGLRenderEngine::Update()
         {
             if (glfwWindowShouldClose(window))
             {
-                Context::GetInstance().AppInstance().Quit(true);
+                Context::GetInstance().QuitApplication();
                 return;
             }
             int width, height;
@@ -110,7 +110,7 @@ namespace vEngine
             "{\n"
             "    gl_FragColor = vec4(color, 1.0);\n"
             "}\n";
-        void OpenGLRenderEngine::InitPipline()
+        void OpenGLRenderEngine::InitPipeline()
         {
             glGenBuffers(1, &vertex_buffer);
             glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);

@@ -11,7 +11,10 @@ if(APPLE)
     set(CMAKE_OSX_ARCHITECTURES arm64)
 endif()
 
-set(VENGINE_BUILD_RESOURCE ON)
+if(WIN32)
+    set(VENGINE_BUILD_RESOURCE ON)
+endif()
+
 set(VENGINE_BUILD_DOC OFF)
 
 # cmake setting

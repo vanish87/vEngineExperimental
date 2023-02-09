@@ -10,6 +10,7 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/animation/animator.hpp>
+
 #include <vengine/animation/animation_clip.hpp>
 
 #include <vengine/core/game_object_factory.hpp>
@@ -24,8 +25,7 @@ namespace vEngine
 
         AnimatorSharedPtr Animator::Default()
         {
-            const auto animator = GameObjectFactory::Create<Core::GameObjectType::Animator, Animator>();
-            return animator;
+            return GameObjectFactory::Create<Core::GameObjectType::Animator, Animator>();
         }
         /// constructor detailed defintion,
         /// should be 2 lines
@@ -60,7 +60,7 @@ namespace vEngine
             // {
 
             // }
-        };
+        }
 
     }  // namespace Animation
 }  // namespace vEngine
