@@ -9,6 +9,19 @@ namespace Example
 {
     class OpenGLApp : public Application
     {
+            void OnInit() override
+            {
+                PRINT("User Create");
+
+                // auto mp = std::make_shared<MeshRendererComponent>();
+                // mp->game_object_ = std::make_shared<MeshRenderer>();
+                // // auto mp = std::make_shared<MeshRendererComponent>();
+                // // auto mp = std::make_shared<MeshComponent>();
+                // SceneManager::GetInstance().AddToSceneRoot(mp);
+
+                // SceneManager::GetInstance().Load()
+
+            }
     };
 }  // namespace Example
 
@@ -27,6 +40,6 @@ int main(int argc, char* argv[])
 
     Context::GetInstance().SetConfigure(configure);
 
-    Example::OpenGLApp myapp;
-    myapp.Run();
+    auto myapp = std::make_shared<Example::OpenGLApp>();
+    myapp->Run();
 }

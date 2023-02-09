@@ -64,6 +64,6 @@ int main(int argc, char* argv[])
 
     Context::GetInstance().SetConfigure(configure);
 
-    Example::ExampleApp app;
-    app.Run();
+    auto app = std::make_shared<Example::ExampleApp>();
+    app->Run();
 }
