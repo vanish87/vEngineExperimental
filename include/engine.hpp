@@ -17,7 +17,7 @@
 
 #include <debug.hpp>
 #include <interface.hpp>
-#include <predeclear.hpp>
+#include <predeclare.hpp>
 
 #include <VENGINE_API.hpp>
 

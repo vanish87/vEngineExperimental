@@ -1,5 +1,5 @@
-#ifndef _INCLUDE_PREDECLEAR_HPP
-#define _INCLUDE_PREDECLEAR_HPP
+#ifndef _INCLUDE_PREDECLARE_HPP
+#define _INCLUDE_PREDECLARE_HPP
 
 #pragma once
 
@@ -138,10 +138,14 @@ namespace vEngine
         // CLASS_AND_SHARED_POINTER(SkeletonComponent)
         // CLASS_AND_SHARED_POINTER(JointComponent)
     }
+    namespace Data
+    {
+        CLASS_AND_SHARED_POINTER(Serializer)
+    }
 
 #undef CLASS_AND_SHARED_POINTER
 #undef CLASS_AND_UNIQUE_POINTER
 #undef STRUCT_AND_SHARED_POINTER
 }  // namespace vEngine
 
-#endif /* _INCLUDE_PREDECLEAR_HPP */
+#endif /* _INCLUDE_PREDECLARE_HPP */
