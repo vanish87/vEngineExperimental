@@ -23,6 +23,23 @@ namespace vEngine
             obj = j.get<T>();
         }
 
+        VENGINE_API void FromJson(const json& j, UUID& uuid);
+        VENGINE_API void FromJson(const json& j, std::filesystem::path& path);
+        VENGINE_API void FromJson(const json& j, GameObjectType& go_type);
+        VENGINE_API void FromJson(const json& j, Rendering::ShaderType& shader_type);
+        VENGINE_API void FromJson(const json& j, std::vector<char>& vector);
+        template <typename T>
+        void FromJson(const json& j, std::vector<T>& vector)
+        {
+            vector.clear();
+            for (const auto& it : j)
+            {
+                T v;
+                FromJson(it, v);
+                vector.push_back(v);
+            }
+        }
+
         template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
         void FromJson(const json& j, T& object)
         {
@@ -47,23 +64,12 @@ namespace vEngine
                          });
         }
 
-        template <>
-        VENGINE_API void FromJson(const json& j, UUID& uuid);
-
-        template <>
-        VENGINE_API void FromJson(const json& j, std::filesystem::path& path);
-
-        template <>
-        VENGINE_API void FromJson(const json& j, GameObjectType& go_type);
-
-        template <>
-        VENGINE_API void FromJson(const json& j, Rendering::ShaderType& shader_type);
 
         template <typename T>
-        void FromJson(const json& j, std::weak_ptr<T>& ptr)
+        void FromJson([[maybe_unused]] const json& j, [[maybe_unused]] std::weak_ptr<T>& ptr)
         {
-            UNUSED_PARAMETER(j);
-            UNUSED_PARAMETER(ptr);
+            // UNUSED_PARAMETER(j);
+            // UNUSED_PARAMETER(ptr);
 
             // auto shared = std::shared_ptr<T>();
             // FromJson(j, shared);
@@ -71,18 +77,18 @@ namespace vEngine
         }
 
         //Not used
-        template <std::size_t I, class T, typename S>
-        bool HandleByType(std::shared_ptr<S>& ptr, const GameObjectDescriptor& desc)
-        {
-            using Type = typename std::tuple_element_t<I, T>;
-            // if(std::is_same<T, Type>::value)
-            if(typeid(Type).name() == ToString(desc.type))
-            {
-                FROM_JSON_BY_DESC(ptr, desc, Type, S);
-                return true;
-            }
-            return false;
-        }
+        // template <std::size_t I, class T, typename S>
+        // bool HandleByType(std::shared_ptr<S>& ptr, const GameObjectDescriptor& desc)
+        // {
+        //     using Type = typename std::tuple_element_t<I, T>;
+        //     // if(std::is_same<T, Type>::value)
+        //     if(typeid(Type).name() == ToString(desc.type))
+        //     {
+        //         FROM_JSON_BY_DESC(ptr, desc, Type, S);
+        //         return true;
+        //     }
+        //     return false;
+        // }
 
 #define CASE_AND_CREATE(ptr, etype, type)                   \
     case etype:                                             \
@@ -213,19 +219,6 @@ namespace vEngine
 
             // PRINT("Load " << ptr->descriptor_.uuid.AsUint() << " " << ToString(desc.type));
         }
-        template <typename T>
-        void FromJson(const json& j, std::vector<T>& vector)
-        {
-            vector.clear();
-            for (const auto& it : j)
-            {
-                T v;
-                FromJson(it, v);
-                vector.push_back(v);
-            }
-        }
-        template <>
-        VENGINE_API void FromJson(const json& j, std::vector<char>& vector);
 
         template <typename T>
         void FromJson(const json& j, std::list<T>& list)
@@ -238,6 +231,7 @@ namespace vEngine
                 list.push_back(v);
             }
         }
+
         template <typename T, typename S>
         void FromJson(const json& j, std::unordered_map<T, S>& map)
         {

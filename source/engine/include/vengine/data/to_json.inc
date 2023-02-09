@@ -8,6 +8,25 @@ namespace vEngine
         {
             return json(obj);
         }
+
+        VENGINE_API json ToJson(const std::vector<char>& vector);
+        VENGINE_API json ToJson(const std::filesystem::path& path);
+        VENGINE_API json ToJson(const UUID& uuid);
+        VENGINE_API json ToJson(const Rendering::ShaderType& shader_type);
+        VENGINE_API json ToJson(const GameObjectType& go_type);
+
+        template <typename T>
+        json ToJson(const std::vector<T>& vector)
+        {
+            json value;
+            auto id = 0;
+            for (const auto& e : vector)
+            {
+                value[id++] = ToJson(e);
+            }
+            return value;
+        }
+
         template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
         json ToJson(const T& obj)
         {
@@ -98,31 +117,21 @@ namespace vEngine
             // only return GameObject info(as a reference) here
             return ToJson(*go.get());
         }
-        template <>
-        VENGINE_API json ToJson(const std::filesystem::path& path);
-        template <>
-        VENGINE_API json ToJson(const UUID& uuid);
 
-        template <>
-        VENGINE_API json ToJson(const Rendering::ShaderType& shader_type);
-
-        template <>
-        VENGINE_API json ToJson(const GameObjectType& go_type);
-
-
-        template <typename T>
-        json ToJson(const std::vector<T>& vector)
-        {
-            json value;
-            auto id = 0;
-            for (const auto& e : vector)
-            {
-                value[id++] = ToJson(e);
-            }
-            return value;
-        }
-        template <>
-        VENGINE_API json ToJson(const std::vector<char>& vector);
+        // template <>
+        // {
+        //     return json(std::string(vector.begin(), vector.end()));
+        // }
+        // template <char>
+        // json ToJson(const std::vector<char>& vector)
+        // {
+        //     return json(std::string(vector.begin(), vector.end()));
+        // }
+        // template <std::vector<unsigned int>>
+        // json ToJson(const std::vector<unsigned int>& vector)
+        // {
+        //     return ToJson(vector);
+        // }
         // template <>
         // json ToJson(const std::vector<char>& vector)
         // {
@@ -154,7 +163,7 @@ namespace vEngine
         {
             UNUSED_PARAMETER(obj);
             NOT_IMPL_ASSERT;
-            static_assert(false, "Should used vengine data types for serializer");
+            // static_assert(false, "Should used vengine data types for serializer");
             return json();
         }
         template <typename T, int N>

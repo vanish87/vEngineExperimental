@@ -56,7 +56,9 @@ namespace vEngine
         template <typename T>
         struct is_basic_json_type
         {
-                static constexpr auto value = std::is_arithmetic<T>::value || std::is_same<T, std::string>::value;
+                static constexpr auto value = 
+                std::is_arithmetic<T>::value || std::is_same<T, std::string>::value
+                ;
         };
 
         VENGINE_API void SaveJson(const json& j, const std::filesystem::path& path);
@@ -100,9 +102,9 @@ namespace vEngine
     }  // namespace Core
 }  // namespace vEngine
 
+#include <vengine/data/from_to_string.inc>
 #include <vengine/data/to_json.inc>
 #include <vengine/data/from_json.inc>
-#include <vengine/data/from_to_string.inc>
 
 #ifdef _MSC_VER
     #pragma warning(pop)

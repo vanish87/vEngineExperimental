@@ -54,6 +54,16 @@ namespace vEngine
                 );
             }
         };
+		struct Index
+		{
+            uint32_t index;
+            Index(uint32_t i = 0) : index{i} {}
+            constexpr static auto properties()
+            {
+                return std::make_tuple(property("index", &Index::index));
+            }
+};
+
 		struct VertexWeight
 		{
 			uint32_t index;
@@ -83,7 +93,7 @@ namespace vEngine
                 virtual ~Mesh();
                 void UpdateGPUBuffer();
 
-                void SetVertexData(const std::vector<Vertex> vertices, const std::vector<uint32_t> indices);
+                void SetVertexData(const std::vector<Vertex> vertices, const std::vector<Index> indices);
                 void SetBoneData(const std::string name, const int id, std::vector<VertexWeight> weights, float4x4 inverse_bind_pose_matrix_);
 
                 // Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
@@ -92,7 +102,7 @@ namespace vEngine
                 Rendering::GraphicsBufferSharedPtr index_buffer_;
 
                 std::vector<Vertex> vertex_data_;
-                std::vector<uint32_t> index_data_;
+                std::vector<Index> index_data_;
                 //TODO add submesh index sets(offset, count) if possible
                 //TODO Verify if the usage of BoneComponentSharedPtr is a good mesh/bone design
                 //GameObject usually does not contain a GameNode object

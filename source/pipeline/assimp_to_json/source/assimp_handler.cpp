@@ -182,7 +182,7 @@ namespace vEngine
                 auto mesh = GameObjectFactory::Create<GameObjectType::Mesh, Mesh>();
 
                 std::vector<Vertex> vertices;
-                std::vector<uint32_t> indices;
+                std::vector<Index> indices;
 
                 auto hasPos = ai_mesh->HasPositions();
                 auto hasUV = ai_mesh->HasTextureCoords(0);

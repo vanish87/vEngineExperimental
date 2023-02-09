@@ -63,7 +63,7 @@ namespace vEngine
             return m;
         }
 
-        void Mesh::SetVertexData(const std::vector<Vertex> vertices, const std::vector<uint32_t> indices)
+        void Mesh::SetVertexData(const std::vector<Vertex> vertices, const std::vector<Index> indices)
         {
             this->vertex_data_ = vertices;
             this->index_data_ = indices;

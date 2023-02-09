@@ -15,44 +15,36 @@ namespace vEngine
 {
     namespace Core
     {
-        template <>
-        json ToJson(const std::filesystem::path& path)
-        {
-            return json(path.string());
-        }
-        template <>
-        json ToJson(const UUID& uuid)
-        {
-            return json(uuid.AsUint());
-        }
-        template <>
-        json ToJson(const Rendering::ShaderType& shader_type)
-        {
-            return json(ToString<Rendering::ShaderType>(shader_type));
-        }
-        template <>
-        json ToJson(const GameObjectType& go_type)
-        {
-            return json(ToString<GameObjectType>(go_type));
-        }
-        template <>
         json ToJson(const std::vector<char>& vector)
         {
             return json(std::string(vector.begin(), vector.end()));
         }
-        template <>
+        json ToJson(const std::filesystem::path& path)
+        {
+            return json(path.string());
+        }
+        json ToJson(const UUID& uuid)
+        {
+            return json(uuid.AsUint());
+        }
+        json ToJson(const Rendering::ShaderType& shader_type)
+        {
+            return json(ToString<Rendering::ShaderType>(shader_type));
+        }
+        json ToJson(const GameObjectType& go_type)
+        {
+            return json(ToString<GameObjectType>(go_type));
+        }
         void FromJson(const json& j, UUID& uuid)
         {
             auto id = j.get<uint64_t>();
             uuid.Set(id);
         }
-        template <>
         void FromJson(const json& j, std::filesystem::path& path)
         {
             auto data = j.get<std::string>();
             path = data;
         }
-        template <>
         void FromJson(const json& j, GameObjectType& go_type)
         {
             auto data = j.get<std::string>();
@@ -62,7 +54,6 @@ namespace vEngine
             // UNUSED_PARAMETER(go_type);
             // return json(ToString<GameObjectType>(go_type));
         }
-        template <>
         void FromJson(const json& j, Rendering::ShaderType& shader_type)
         {
             auto data = j.get<std::string>();
@@ -72,7 +63,6 @@ namespace vEngine
             // UNUSED_PARAMETER(shader_type);
             // return json(ToString<GameObjectType>(go_type));
         }
-        template <>
         void FromJson(const json& j, std::vector<char>& vector)
         {
             vector.clear();
