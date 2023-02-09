@@ -282,12 +282,15 @@ namespace vEngine
 // #pragma clang diagnostic ignored "-Wlanguage-extension-token"
                 ComPtr<IDXGIDevice2> pDXGIDevice;
                 hr = this->d3d_device_->QueryInterface(__uuidof(IDXGIDevice2), (void**)pDXGIDevice.GetAddressOf());
+                CHECK_ASSERT(hr == S_OK);
 
                 ComPtr<IDXGIAdapter> pDXGIAdapter;
                 hr = pDXGIDevice->GetParent(__uuidof(IDXGIAdapter), (void**)pDXGIAdapter.GetAddressOf());
+                CHECK_ASSERT(hr == S_OK);
 
                 ComPtr<IDXGIFactory2> pIDXGIFactory;
-                pDXGIAdapter->GetParent(__uuidof(IDXGIFactory2), (void**)pIDXGIFactory.GetAddressOf());
+                hr = pDXGIAdapter->GetParent(__uuidof(IDXGIFactory2), (void**)pIDXGIFactory.GetAddressOf());
+                CHECK_ASSERT(hr == S_OK);
 // #pragma clang diagnostic warning "-Wlanguage-extension-token"
 
                 // hr = pIDXGIFactory->CreateSwapChainForHwnd(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &scd, &d3d_swap_chain_, &d3d_device_, nullptr,
