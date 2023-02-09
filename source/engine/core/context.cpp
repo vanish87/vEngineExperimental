@@ -99,7 +99,7 @@ namespace vEngine
             {
                 #ifdef VENGINE_STATIC_LINK
                 CreateRenderEngine(this->render_engine_ptr_);
-                #else VENGINE_DYNAMIC_LINK
+                #elif VENGINE_DYNAMIC_LINK
                 ProcessSharedFunction<Rendering::RenderEngine, HandleRenderEngine>("CreateRenderEngine", this->render_plugin_dll_handle_, this->render_engine_ptr_);
                 #endif
             }

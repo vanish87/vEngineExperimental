@@ -1,6 +1,10 @@
 # cmake minium version required
 cmake_minimum_required(VERSION 3.13)
 
+# Linux Build Command
+# cmake -S . -B build_linux -DCMAKE_BUILD_TYPE=Debug
+# cmake --build ./build_linux/
+
 if(APPLE)
     set(VENGINE_BUILD_STATIC ON)
     set(VENGINE_BUILD_IOS OFF)
@@ -100,7 +104,10 @@ else()
 endif()
 
 add_subdirectory(source)
-add_subdirectory(resource)
+
+if(VENGINE_BUILD_RESOURCE)
+    add_subdirectory(resource)
+endif()
 
 # message(STATUS "CMAKE_SOURCE_DIR= ${CMAKE_SOURCE_DIR}")
 # add_custom_target(COPY_RESOURCE ALL
