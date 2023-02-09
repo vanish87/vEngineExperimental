@@ -30,7 +30,7 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                RendererComponent(const Core::GameObjectType type = Core::GameObjectType::RendererComponent) : Core::Component(type){};
+                RendererComponent(const Core::GameObjectType type = Core::GameObjectType::RendererComponent) : Core::Component<Renderer<T>>(type){};
         };
     }  // namespace Rendering
 }  // namespace vEngine

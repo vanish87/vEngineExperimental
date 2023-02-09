@@ -60,7 +60,7 @@ namespace vEngine
             cb.proj_matrix = cam->ProjectionMatrix();
             // cb.proj_matrix = Math::Transpose(cb.proj_matrix);
             auto data = this->camera_constant_buffer_->Map();
-            std::memcpy(data.data, &cb, sizeof(vEngineCameraConstantBuffer));
+            memcpy(data.data, &cb, sizeof(vEngineCameraConstantBuffer));
             // std::copy(&cb, &cb + sizeof(vEngineCameraConstantBuffer), data.data);
             this->camera_constant_buffer_->Unmap();
 

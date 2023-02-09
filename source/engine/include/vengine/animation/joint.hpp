@@ -12,6 +12,7 @@
 
 #pragma once
 
+#include <vector>
 #include <engine.hpp>
 #include <vengine/core/quaternion.hpp>
 #include <vengine/core/game_object.hpp>

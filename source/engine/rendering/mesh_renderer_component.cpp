@@ -7,6 +7,7 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
+#include <cstring>
 #include <vengine/rendering/mesh_renderer_component.hpp>
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/core/context.hpp>
@@ -94,11 +95,11 @@ namespace vEngine
             // PRINT(cb.local_to_world_matrix[2][2]);
 
             auto data = this->mesh_constant_buffer_->Map();
-            std::memcpy(data.data, &cb, sizeof(vEngineObjectConstantBuffer));
+            memcpy(data.data, &cb, sizeof(vEngineObjectConstantBuffer));
             this->mesh_constant_buffer_->Unmap();
 
             Context::GetInstance().GetRenderEngine()->OnBind(this->mesh_constant_buffer_);
-        };
+        }
 
         void MeshRendererComponent::OnUpdate()
         {
@@ -109,7 +110,7 @@ namespace vEngine
                 auto meshComponent = this->Owner()->FirstOf<MeshComponent>();
                 this->GO()->renderable_ = meshComponent->GO();
             }
-        };
+        }
 
     }  // namespace Rendering
 
