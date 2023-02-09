@@ -31,17 +31,8 @@ find_path(GLFW_INCLUDE_DIR GLFW/glfw3.h
 
 
 message("GLFW_INCLUDE_DIR ${GLFW_INCLUDE_DIR}")
-if(MSVC AND X64)
-    set(GLFW_PF "64")
-else()
-    set(GLFW_PF "86")
-endif()
 
-if(WIN32)	
-	set(GLFW_DLLPF "3dll")
-endif()
-
-find_library(GLFW_LIBRARY_RELEASE NAMES glfw${GLFW_DLLPF}
+find_library(GLFW_LIBRARY_RELEASE NAMES glfw3
     
     HINTS
     ${GLFW_INCLUDE_DIR}/..
@@ -63,9 +54,7 @@ find_library(GLFW_LIBRARY_RELEASE NAMES glfw${GLFW_DLLPF}
     DOC "The GLFW library (release)")
 
 
-# message("GLFW_LIBRARY_RELEASE ${GLFW_LIBRARY_RELEASE}")
-
-find_library(GLFW_LIBRARY_DEBUG NAMES glfw3ddll
+find_library(GLFW_LIBRARY_DEBUG NAMES glfw3d
     
     HINTS
     ${GLFW_INCLUDE_DIR}/..
@@ -95,6 +84,8 @@ elseif(GLFW_LIBRARY_RELEASE)
 elseif(GLFW_LIBRARY_DEBUG)
     set(GLFW_LIBRARIES ${GLFW_LIBRARY_DEBUG})
 endif()
+
+message("GLFW_LIBRARY ${GLFW_LIBRARIES}")
 
 if(WIN32)
 
