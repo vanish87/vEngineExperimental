@@ -61,7 +61,7 @@ namespace vEngine
             {
                 HINSTANCE hInstance = ::GetModuleHandle(nullptr);
 
-                WNDCLASS wcex;
+                WNDCLASS wcex = {0};
                 wcex.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;  // CS_OWNDC to create own device context
                 wcex.lpfnWndProc = WndProc;
                 wcex.hInstance = hInstance;
@@ -84,6 +84,7 @@ namespace vEngine
                 // PRINT("Window size " << width << " " << height);
 
                 hwnd = CreateWindow(wcex.lpszClassName, win_name.c_str(), WS_OVERLAPPEDWINDOW, left, top, width, height, nullptr, nullptr, hInstance, nullptr);
+                CHECK_ASSERT_NOT_NULL(hwnd);
                 ::ShowWindow(hwnd, SW_SHOWNORMAL);
 
                 this->default_wnd_proc_ = ::DefWindowProc;
