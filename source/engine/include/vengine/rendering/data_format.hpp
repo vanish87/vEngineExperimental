@@ -39,7 +39,7 @@ namespace vEngine
                 break;
             }
 
-            NOT_IMPLEMENTED;
+            NOT_IMPL_ASSERT;
 
             return 0;
         }
