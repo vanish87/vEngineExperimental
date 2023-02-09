@@ -2,6 +2,7 @@
 
 #include <vengine/core/application.hpp>
 #include <vengine/core/context.hpp>
+#include <OPENGL_RENDERING_PLUGIN_API.hpp>
 
 // Test include
 #include <glad/linmath.h>
@@ -161,13 +162,13 @@ namespace vEngine
 }  // namespace vEngine
 
 extern "C" {
-    void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
+    OPENGL_RENDERING_PLUGIN_API void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
     {
         ptr = std::make_unique<vEngine::Rendering::OpenGLRenderEngine>();
     }
     // it is not used but just keep it for reference
     // ptr.reset is be called on context
-    void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
+    OPENGL_RENDERING_PLUGIN_API void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
     {
         ptr.reset();
     }
