@@ -24,10 +24,13 @@ namespace vEngine
     {
         enum class ShaderType
         {
-            VS,
-            GS,
-            PS,
-            CS,
+            VertexShader,
+            HullShader,
+            TessellatorShader,
+            DomainShader,
+            GeometryShader,
+            PixelShader,
+            ComputeShader,
         };
         enum class GraphicsResourceType
         {

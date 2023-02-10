@@ -51,14 +51,13 @@ namespace vEngine
         {
             switch (obj)
             {
-                case Rendering::ShaderType::VS:
-                    return "VS";
-                case Rendering::ShaderType::GS:
-                    return "GS";
-                case Rendering::ShaderType::PS:
-                    return "PS";
-                case Rendering::ShaderType::CS:
-                    return "CS";
+                ENUM_CASE_TO_STRING(Rendering::ShaderType::VertexShader);
+                ENUM_CASE_TO_STRING(Rendering::ShaderType::HullShader);
+                ENUM_CASE_TO_STRING(Rendering::ShaderType::TessellatorShader);
+                ENUM_CASE_TO_STRING(Rendering::ShaderType::DomainShader);
+                ENUM_CASE_TO_STRING(Rendering::ShaderType::GeometryShader);
+                ENUM_CASE_TO_STRING(Rendering::ShaderType::PixelShader);
+                ENUM_CASE_TO_STRING(Rendering::ShaderType::ComputeShader);
                 default:
                     break;
             }
@@ -66,15 +65,18 @@ namespace vEngine
             return "NOT DEFINED";
         }
         template <typename T, typename>
-        Rendering::ShaderType FromString(const std::string& obj)
+        Rendering::ShaderType FromString(const std::string& str)
         {
-            if (obj == "VS") return Rendering::ShaderType::VS;
-            if (obj == "PS") return Rendering::ShaderType::PS;
-            // case Rendering::ShaderType::GS: return "GS";
-            // case Rendering::ShaderType::PS: return "PS";
-            // case Rendering::ShaderType::CS: return "CS";
+            STRING_TO_ENUM(Rendering::ShaderType::VertexShader, str);
+            STRING_TO_ENUM(Rendering::ShaderType::HullShader, str);
+            STRING_TO_ENUM(Rendering::ShaderType::TessellatorShader, str);
+            STRING_TO_ENUM(Rendering::ShaderType::DomainShader, str);
+            STRING_TO_ENUM(Rendering::ShaderType::GeometryShader, str);
+            STRING_TO_ENUM(Rendering::ShaderType::PixelShader, str);
+            STRING_TO_ENUM(Rendering::ShaderType::ComputeShader, str);
+
             NOT_IMPL_ASSERT;
-            return Rendering::ShaderType::VS;
+            return Rendering::ShaderType::VertexShader;
         }
         VENGINE_API std::string ToString(const GameObjectType& obj);
 

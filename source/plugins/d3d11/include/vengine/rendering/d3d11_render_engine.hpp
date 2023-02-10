@@ -49,6 +49,7 @@ namespace vEngine
                 static DataFormat D3DFormatToDataFormat(DXGI_FORMAT formart);
                 static D3D11_RASTERIZER_DESC ToD3D11RasterizerDesc(RasterizerDescriptor desc);
                 static D3D11_DEPTH_STENCIL_DESC ToD3D11DepthStencilDesc(DepthStencilDescriptor desc);
+                static std::string ShaderTypeToTarget(const ShaderType type);
 
                 /// \brief mainly used to create Resource Views(ie. RenderTargetView)
                 /// 

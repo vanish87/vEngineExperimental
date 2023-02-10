@@ -33,6 +33,7 @@ namespace vEngine
         {
             // PRINT("D3D11PipelineState Destructor");
         }
+
         void D3D11PipelineState::PrepareData()
         {
             if (this->vs_ == nullptr)
@@ -43,29 +44,16 @@ namespace vEngine
 
                 ComPtr<ID3DBlob> error;
                 ComPtr<ID3DBlob> blob;
-                auto target = "vs_5_0";
 
                 for (const auto& s : this->shaders_)
                 {
-                    switch (s.first)
-                    {
-                        case ShaderType::VS:
-                        {
-                            target = "vs_5_0";
-                        }
-                        break;
-                        case ShaderType::PS:
-                        {
-                            target = "ps_5_0";
-                        }
-
-                        default:
-                            break;
-                    }
                     // auto path = s.second->path.string();
+
+                    auto target = D3D11RenderEngine::ShaderTypeToTarget(s.first);
+
                     NOT_IMPL_ASSERT;
                     auto path = std::string("test");
-                    auto hr = D3DCompile(s.second->content.data(), s.second->content.size(), path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", target, 0, 0, blob.GetAddressOf(),
+                    auto hr = D3DCompile(s.second->content.data(), s.second->content.size(), path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", target.c_str(), 0, 0, blob.GetAddressOf(),
                                          error.GetAddressOf());
                     if (error != nullptr)
                     {
@@ -76,7 +64,7 @@ namespace vEngine
 
                     switch (s.first)
                     {
-                        case ShaderType::VS:
+                        case ShaderType::VertexShader:
                         {
                             hr = device->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, this->vs_.GetAddressOf());
                             CHECK_ASSERT(hr == S_OK);
@@ -95,7 +83,7 @@ namespace vEngine
                             CHECK_ASSERT(hr == S_OK);
                         }
                         break;
-                        case ShaderType::PS:
+                        case ShaderType::PixelShader:
                         {
                             hr = device->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, this->ps_.GetAddressOf());
                             CHECK_ASSERT(hr == S_OK);

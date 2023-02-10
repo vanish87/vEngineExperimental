@@ -57,14 +57,14 @@ namespace vEngine
         template <typename T>
         struct is_basic_json_type
         {
-                static constexpr auto value = 
-                std::is_arithmetic<T>::value || std::is_same<T, std::string>::value
-                ;
+                static constexpr auto value = std::is_arithmetic<T>::value || std::is_same<T, std::string>::value;
         };
 
         VENGINE_API void SaveJson(const json& j, const std::filesystem::path& path);
         VENGINE_API std::filesystem::path GameObjectToPath(const GameObjectDescriptor& desc);
         VENGINE_API json LoadJson(const std::filesystem::path path);
+
+
         template <std::size_t I, class T, typename Src>
         auto CastByType(std::shared_ptr<Src> ptr);
 

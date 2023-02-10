@@ -10,6 +10,19 @@
 using namespace vEngine::Core;
 using namespace vEngine::Rendering;
 
+ShaderType ProfileToShaderType(const std::string& profile)
+{
+    if(profile == "vs") return ShaderType::VertexShader;
+    if(profile == "hs") return ShaderType::HullShader;
+    if(profile == "ts") return ShaderType::TessellatorShader;
+    if(profile == "ds") return ShaderType::DomainShader;
+    if(profile == "gs") return ShaderType::GeometryShader;
+    if(profile == "ps") return ShaderType::PixelShader;
+    if(profile == "cs") return ShaderType::ComputeShader;
+
+    return ShaderType::VertexShader;
+}
+
 int main(int argc, char* argv[])
 {
     std::filesystem::path input;
@@ -49,7 +62,7 @@ int main(int argc, char* argv[])
     auto shader = std::dynamic_pointer_cast<Shader>(ResourceManager::GetInstance().Load(output));
     if (shader == nullptr) shader = GameObjectFactory::Create<GameObjectType::Shader, Shader>();
 
-    shader->type = profile == "vs" ? ShaderType::VS : ShaderType::PS;
+    shader->type = ProfileToShaderType(profile);
 
     std::ifstream fin(input);
 

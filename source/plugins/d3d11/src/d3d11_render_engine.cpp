@@ -211,6 +211,24 @@ namespace vEngine
 
             return DataFormat::Undefined;
         }
+        std::string D3D11RenderEngine::ShaderTypeToTarget(const ShaderType type)
+        {
+            std::string version = "5_0";
+            switch (type)
+            {
+                case ShaderType::VertexShader: return "vs_" + version;
+                case ShaderType::HullShader: return "hs_" + version;
+                case ShaderType::TessellatorShader: return "ts_" + version;
+                case ShaderType::DomainShader: return "ds_" + version;
+                case ShaderType::GeometryShader: return "gs_" + version;
+                case ShaderType::PixelShader: return "ps_" + version;
+                case ShaderType::ComputeShader: return "cs_" + version;
+                default:
+                    break;
+            }
+
+            return "";
+        }
 
         void D3D11RenderEngine::InitDebug()
         {

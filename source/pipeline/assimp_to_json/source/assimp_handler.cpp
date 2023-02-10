@@ -87,8 +87,8 @@ namespace vEngine
             {
                 auto ai_mat = ai_scene->mMaterials[mid];
                 auto mat = GameObjectFactory::Create<GameObjectType::Material, Material>();
-                mat->BindShader(ShaderType::VS, vs);
-                mat->BindShader(ShaderType::PS, ps);
+                mat->BindShader(ShaderType::VertexShader, vs);
+                mat->BindShader(ShaderType::PixelShader, ps);
 
                 scene->AddMaterial(mat);
                 
