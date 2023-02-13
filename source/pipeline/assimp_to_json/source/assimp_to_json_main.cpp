@@ -11,41 +11,7 @@
 
 #include <assimp_handler.hpp>
 
-#include <vengine/data/json_test.hpp>
-#include <vengine/data/class_foo.hpp>
-
 using namespace vEngine::Core;
-
-void TestFunction(std::filesystem::path output)
-{
-    GameObjectSharedPtr foo_class = GameObjectFactory::Create<GameObjectType::Custom, ClassFoo>();
-    auto foo = std::dynamic_pointer_cast<ClassFoo>(foo_class);
-    foo->pos = float4(1, 2, 3, 4);
-    foo->content = "this is new content";
-    foo->matrix = float4x4::Identity();
-
-    auto j = ToJson(foo_class);
-
-    std::ofstream outfile(output.string());
-    outfile << std::setw(2) << j << std::endl;
-    outfile.flush();
-    outfile.close();
-
-    Context::GetInstance().Clear();
-    GameObjectSharedPtr foo_ptr;
-    j = LoadJson(output);
-    FromJson(j, foo_ptr);
-
-    auto fptr = std::dynamic_pointer_cast<ClassFoo>(foo_ptr);
-    PRINT(fptr->content);
-    PRINT(fptr->matrix[1][1]);
-    PRINT(fptr->pos.x() << " " << fptr->pos.y() << " " << fptr->pos.z() << " " << fptr->pos.w());
-
-    // auto go = GameObjectFactory::Create<ClassFoo>();
-    // auto foo_p = std::dynamic_pointer_cast<ClassFoo>(go);
-
-    // PRINT(foo_p->content);
-}
 
 int main(int argc, char* argv[])
 {
@@ -61,10 +27,10 @@ int main(int argc, char* argv[])
         if (s == "-r") resource_src = argv[i + 1];
         if (s == "-b") resource_bin = argv[i + 1];
     }
-    // input = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource/boblamp/boblampclean.md5mesh";
-    // output = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin/assimp/boblampclean.json";
-    // resource_src = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource";
-    // resource_bin = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin";
+    input = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource/boblamp/boblampclean.md5mesh";
+    output = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin/assimp/boblampclean.json";
+    resource_src = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/resource";
+    resource_bin = "C:/Users/liyuan/Documents/Personal/vEngineExperimental/build_windows/resource/bin";
 
     Configure configure;
     configure.app_name = "assimp_to_json";

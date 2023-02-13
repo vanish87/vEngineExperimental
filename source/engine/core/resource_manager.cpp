@@ -73,6 +73,7 @@ namespace vEngine
             return std::filesystem::path(file_name);
         }
 
+        // Save to a None-Context folder
         void ResourceManager::Save(const GameObjectSharedPtr go, const std::filesystem::path path)
         {
             this->UpdateReferencePath(go);

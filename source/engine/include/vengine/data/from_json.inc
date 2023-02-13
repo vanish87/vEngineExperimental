@@ -1,5 +1,4 @@
 
-#include <vengine/data/class_foo.hpp>
 #include <vengine/core/game_object_factory.hpp>
     
 
