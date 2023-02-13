@@ -5,17 +5,6 @@ namespace vEngine
         #define ENUM_CASE_TO_STRING(x) case x : return #x;
         #define STRING_TO_ENUM(x, str) if(#x == str) return x;
 
-        template <std::size_t I, class T, typename S>
-        auto CastByType(std::shared_ptr<S> ptr)
-        {
-            return std::dynamic_pointer_cast<std::tuple_element_t<I, T>>(ptr);
-        }
-        template <typename T>
-        auto GetTypeString(std::shared_ptr<T> ptr)
-        {
-            UNUSED_PARAMETER(ptr);
-            return typeid(T).name();
-        }
         template <typename T, typename>
         std::string ToString(const T& obj)
         {

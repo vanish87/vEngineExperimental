@@ -1,17 +1,6 @@
 
 #include <vengine/core/game_object_factory.hpp>
     
-
-//TODO use Default for better obj creation: auto go = type_name::Default();                                 
-#define FROM_JSON_BY_DESC(ptr, desc, type_name, template_name)      \
-if (ToString(desc.type) == typeid(type_name).name())                \
-{                                                                   \
-    auto go = GameObjectFactory::Create<type_name>();               \
-    auto json = LoadJson(GameObjectToPath(desc));                   \
-    FromJson(json, *go.get());                                      \
-    ptr = std::dynamic_pointer_cast<template_name>(go);             \
-}
-
 namespace vEngine
 {
     namespace Core

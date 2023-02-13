@@ -60,16 +60,48 @@ namespace vEngine
                 static constexpr auto value = std::is_arithmetic<T>::value || std::is_same<T, std::string>::value;
         };
 
+
+        VENGINE_API json ToJson(const std::filesystem::path& path);
+        VENGINE_API json ToJson(const UUID& uuid);
+        VENGINE_API json ToJson(const Rendering::ShaderType& shader_type);
+        VENGINE_API json ToJson(const GameObjectType& go_type);
+        VENGINE_API json ToJson(const std::vector<char>& vector);
+
+        template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
+        json ToJson(const T& obj);
+
+        template <typename T>
+        json ToJson(const std::weak_ptr<T>& ptr);
+
+        template <typename T>
+        json ToJson(const std::shared_ptr<T>& ptr);
+
+        template <typename T>
+        json ToJson(const std::vector<T>& vector);
+
+        template <typename T>
+        json ToJson(const std::list<T>& list);
+
+        template <typename T, typename S>
+        json ToJson(const std::unordered_map<T, S>& umap);
+
+        template <typename T, int N>
+        json ToJson(const std::array<T, N>& arr);
+
+        template <typename T, int N>
+        json ToJson(const Vector<T, N>& vector);
+
+        template <typename T, int M, int N>
+        json ToJson(const Matrix<T, M, N>& matrix);
+
+        template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
+        json ToJson(const T& obj);
+
+
         VENGINE_API void SaveJson(const json& j, const std::filesystem::path& path);
         VENGINE_API std::filesystem::path GameObjectToPath(const GameObjectDescriptor& desc);
         VENGINE_API json LoadJson(const std::filesystem::path path);
 
-
-        template <std::size_t I, class T, typename Src>
-        auto CastByType(std::shared_ptr<Src> ptr);
-
-        template <typename T>
-        auto GetTypeString(std::shared_ptr<T> prt);
 
         template <typename T, typename = std::enable_if_t<std::is_integral<T>::value, T>>
         std::string ToString(const T& obj);

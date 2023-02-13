@@ -3,50 +3,12 @@ namespace vEngine
 {
     namespace Core
     {
-        template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
+        template <typename T, typename, typename>
         json ToJson(const T& obj)
         {
             return json(obj);
         }
 
-        VENGINE_API json ToJson(const std::vector<char>& vector);
-        VENGINE_API json ToJson(const std::filesystem::path& path);
-        VENGINE_API json ToJson(const UUID& uuid);
-        VENGINE_API json ToJson(const Rendering::ShaderType& shader_type);
-        VENGINE_API json ToJson(const GameObjectType& go_type);
-
-        template <typename T>
-        json ToJson(const std::vector<T>& vector)
-        {
-            json value;
-            auto id = 0;
-            for (const auto& e : vector)
-            {
-                value[id++] = ToJson(e);
-            }
-            return value;
-        }
-
-        template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
-        json ToJson(const T& obj)
-        {
-            json value;
-            constexpr auto nbProperties = std::tuple_size<decltype(T::properties())>::value;
-            //  using Type = typename decltype(property)::class_type;
-
-            // We iterate on the index sequence of size `nbProperties`
-            for_sequence(std::make_index_sequence<nbProperties>{},
-                         [&](auto i)
-                         {
-                             // get the property
-                             constexpr auto property = std::get<i>(T::properties());
-                             value[property.name] = ToJson(obj.*(property.member));
-                             //  ToJson(v, obj.*(property.member));
-                             // Or using streaming
-                             // stream << object.*(property.member);
-                         });
-            return value;
-        }
         template <typename T>
         json ToJson(const std::weak_ptr<T>& ptr)
         {
@@ -59,14 +21,14 @@ namespace vEngine
             return json();
         }
 
-#define CASE_AND_SAVE(etype, type)                       \
-    case etype:                                          \
-    {                                                    \
-        auto sub = std::dynamic_pointer_cast<type>(go);  \
-        auto path = GameObjectToPath(go->descriptor_);   \
-        SaveJson(ToJson(*sub.get()), path);              \
-    }                                                    \
-    break;
+        #define CASE_AND_SAVE(etype, type)                       \
+            case etype:                                          \
+            {                                                    \
+                auto sub = std::dynamic_pointer_cast<type>(go);  \
+                auto path = GameObjectToPath(go->descriptor_);   \
+                SaveJson(ToJson(*sub.get()), path);              \
+            }                                                    \
+            break;
 
         template <typename T>
         json ToJson(const std::shared_ptr<T>& ptr)
@@ -118,25 +80,18 @@ namespace vEngine
             return ToJson(*go.get());
         }
 
-        // template <>
-        // {
-        //     return json(std::string(vector.begin(), vector.end()));
-        // }
-        // template <char>
-        // json ToJson(const std::vector<char>& vector)
-        // {
-        //     return json(std::string(vector.begin(), vector.end()));
-        // }
-        // template <std::vector<unsigned int>>
-        // json ToJson(const std::vector<unsigned int>& vector)
-        // {
-        //     return ToJson(vector);
-        // }
-        // template <>
-        // json ToJson(const std::vector<char>& vector)
-        // {
-        //     return json(std::string(vector.begin(), vector.end()));
-        // }
+        template <typename T>
+        json ToJson(const std::vector<T>& vector)
+        {
+            json value;
+            auto id = 0;
+            for (const auto& e : vector)
+            {
+                value[id++] = ToJson(e);
+            }
+            return value;
+        }
+
         template <typename T>
         json ToJson(const std::list<T>& list)
         {
@@ -148,6 +103,7 @@ namespace vEngine
             }
             return value;
         }
+
         template <typename T, typename S>
         json ToJson(const std::unordered_map<T, S>& umap)
         {
@@ -158,8 +114,9 @@ namespace vEngine
             }
             return value;
         }
+
         template <typename T, int N>
-        json ToJson(const std::array<T, N>& obj)
+        json ToJson(const std::array<T, N>& arr)
         {
             UNUSED_PARAMETER(obj);
             NOT_IMPL_ASSERT;
@@ -186,6 +143,26 @@ namespace vEngine
             {
                 value[id++] = ToJson(row);
             }
+            return value;
+        }
+        template <typename T, typename>
+        json ToJson(const T& obj)
+        {
+            json value;
+            constexpr auto nbProperties = std::tuple_size<decltype(T::properties())>::value;
+            //  using Type = typename decltype(property)::class_type;
+
+            // We iterate on the index sequence of size `nbProperties`
+            for_sequence(std::make_index_sequence<nbProperties>{},
+                         [&](auto i)
+                         {
+                             // get the property
+                             constexpr auto property = std::get<i>(T::properties());
+                             value[property.name] = ToJson(obj.*(property.member));
+                             //  ToJson(v, obj.*(property.member));
+                             // Or using streaming
+                             // stream << object.*(property.member);
+                         });
             return value;
         }
 
