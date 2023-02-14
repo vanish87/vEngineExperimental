@@ -12,11 +12,6 @@
 
 #pragma once
 
-#ifdef _MSC_VER
-    #pragma warning(push)
-    #pragma warning(disable : 4505) 
-#endif
-
 #include <unordered_map>
 #include <fstream>
 
@@ -63,8 +58,8 @@ namespace vEngine
 
         VENGINE_API json ToJson(const std::filesystem::path& path);
         VENGINE_API json ToJson(const UUID& uuid);
-        VENGINE_API json ToJson(const Rendering::ShaderType& shader_type);
         VENGINE_API json ToJson(const GameObjectType& go_type);
+        VENGINE_API json ToJson(const Rendering::ShaderType& shader_type);
         VENGINE_API json ToJson(const std::vector<char>& vector);
 
         template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
@@ -102,6 +97,41 @@ namespace vEngine
         VENGINE_API std::filesystem::path GameObjectToPath(const GameObjectDescriptor& desc);
         VENGINE_API json LoadJson(const std::filesystem::path path);
 
+        VENGINE_API void FromJson(const json& j, std::filesystem::path& path);
+        VENGINE_API void FromJson(const json& j, UUID& uuid);
+        VENGINE_API void FromJson(const json& j, GameObjectType& go_type);
+        VENGINE_API void FromJson(const json& j, Rendering::ShaderType& shader_type);
+        VENGINE_API void FromJson(const json& j, std::vector<char>& vector);
+
+        template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
+        void FromJson(const json& j, T& obj);
+
+        template <typename T>
+        void FromJson([[maybe_unused]] const json& j, [[maybe_unused]] std::weak_ptr<T>& ptr);
+
+        template <typename T>
+        void FromJson(const json& j, std::shared_ptr<T>& ptr);
+
+        template <typename T>
+        void FromJson(const json& j, std::vector<T>& vector);
+
+        template <typename T>
+        void FromJson(const json& j, std::list<T>& list);
+
+        template <typename T, typename S>
+        void FromJson(const json& j, std::unordered_map<T, S>& map);
+
+        template <typename T, int N>
+        void FromJson(const json& j, Vector<T, N>& vector);
+
+        template <typename T, int M, int N>
+        void FromJson(const json& j, Matrix<T, M, N>& matrix);
+
+        template <typename T, int N>
+        void FromJson(const json& j, std::array<T, N>& arr);
+
+        template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
+        void FromJson(const json& j, T& object);
 
         template <typename T, typename = std::enable_if_t<std::is_integral<T>::value, T>>
         std::string ToString(const T& obj);
@@ -138,9 +168,5 @@ namespace vEngine
 #include <vengine/data/from_to_string.inc>
 #include <vengine/data/to_json.inc>
 #include <vengine/data/from_json.inc>
-
-#ifdef _MSC_VER
-    #pragma warning(pop)
-#endif
 
 #endif /* _VENGINE_DATA_JSON_HPP */
