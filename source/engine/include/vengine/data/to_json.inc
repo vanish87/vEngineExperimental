@@ -21,20 +21,21 @@ namespace vEngine
             return json();
         }
 
-        #define CASE_AND_SAVE(etype, type)                       \
-            case etype:                                          \
-            {                                                    \
-                auto sub = std::dynamic_pointer_cast<type>(go);  \
-                auto path = GameObjectToPath(go->descriptor_);   \
-                SaveJson(ToJson(*sub.get()), path);              \
-            }                                                    \
-            break;
 
         template <typename T>
         json ToJson(const std::shared_ptr<T>& ptr)
         {
+            #define CASE_AND_SAVE(etype, type)                       \
+                case etype:                                          \
+                {                                                    \
+                    auto sub = std::dynamic_pointer_cast<type>(go);  \
+                    ResourceManager::GetInstance().UpdateReferencePath(go);  \
+                    auto path =ResourceManager::GetInstance().GetGameObjectPath(go->descriptor_);   \
+                    ResourceManager::GetInstance().SaveJson(ToJson(*sub.get()), path);              \
+                }                                                    \
+                break;
+
             auto go = std::dynamic_pointer_cast<GameObject>(ptr);
-            ResourceManager::GetInstance().UpdateReferencePath(go);
             
             auto type = go->descriptor_.type;
             if (type == GameObjectType::Component) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
@@ -78,6 +79,8 @@ namespace vEngine
 
             // only return GameObject info(as a reference) here
             return ToJson(*go.get());
+
+            #undef CASE_AND_SAVE
         }
 
         template <typename T>

@@ -10,7 +10,6 @@
 #include <vengine/core/resource_manager.hpp>
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/core/game_node.hpp>
-#include <vengine/data/json.hpp>
 
 #include <vengine/animation/bone_component.hpp>
 
@@ -73,16 +72,22 @@ namespace vEngine
             return std::filesystem::path(file_name);
         }
 
+        void ResourceManager::SaveJson(const json& j, const std::filesystem::path path)
+        {
+            auto folder = path.parent_path();
+            if(!std::filesystem::exists(folder)) std::filesystem::create_directories(folder);
+
+            std::ofstream outfile(path.string());
+            outfile << std::setw(2) << j << std::endl;
+            outfile.flush();
+            outfile.close();
+        }
         // Save to a None-Context folder
         void ResourceManager::Save(const GameObjectSharedPtr go, const std::filesystem::path path)
         {
             this->UpdateReferencePath(go);
-
-            auto folder = path.parent_path();
-            if (!std::filesystem::exists(folder)) std::filesystem::create_directories(folder);
-
             auto j = ToJson(go);
-            SaveJson(j, path);
+            this->SaveJson(j, path);
         }
         GameObjectSharedPtr ResourceManager::Load(const std::filesystem::path path)
         {
@@ -95,8 +100,33 @@ namespace vEngine
             return CreateAndLoadByDesc<GameObject>(desc);
         }
 
+        std::filesystem::path ResourceManager::GetGameObjectPath(const GameObjectDescriptor& desc)
+        {
+            auto name = desc.name;
+            auto type = ToString(desc.type);
+
+            auto config = Context::GetInstance().CurrentConfigure();
+            auto root = config.resource_bin;
+            auto file_name = std::to_string(desc.uuid.AsUint()) + "_" + name + "_" + type + ".json";
+
+            std::string illegal = ":\"\'<>%$*&+ ";
+            for (auto c : illegal)
+            {
+                std::replace(file_name.begin(), file_name.end(), c, '_');
+            }
+
+            return root / desc.reference_path / file_name;
+
+        }
         void ResourceManager::UpdateReferencePath(const GameObjectSharedPtr go)
         {
+            std::string illegal = ":\"\'<>%$*&+ ";
+            if(go->descriptor_.name == "GameObject")
+            {
+                go->descriptor_.name = ToString(go->descriptor_.type);
+                for (auto c : illegal) std::replace(go->descriptor_.name.begin(), go->descriptor_.name.end(), c, '_');
+            }
+
             auto config = Context::GetInstance().CurrentConfigure();
             auto context_name = config.context_name;
 
@@ -107,7 +137,13 @@ namespace vEngine
                 path = gn->descriptor_.name / path;
                 gn = gn->Parent().lock();
             }
-            go->descriptor_.reference_path = context_name / path;
+
+            auto path_string = path.string();
+            for (auto c : illegal)
+            {
+                std::replace(path_string.begin(), path_string.end(), c, '_');
+            }
+            go->descriptor_.reference_path = std::filesystem::path(context_name) / path_string;
         }
 
         // std::filesystem::path ResourceManager::GetFilePath(const std::string file_name)

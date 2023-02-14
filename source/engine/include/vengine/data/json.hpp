@@ -55,7 +55,6 @@ namespace vEngine
                 static constexpr auto value = std::is_arithmetic<T>::value || std::is_same<T, std::string>::value;
         };
 
-
         VENGINE_API json ToJson(const std::filesystem::path& path);
         VENGINE_API json ToJson(const UUID& uuid);
         VENGINE_API json ToJson(const GameObjectType& go_type);
@@ -92,9 +91,8 @@ namespace vEngine
         template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
         json ToJson(const T& obj);
 
-
-        VENGINE_API void SaveJson(const json& j, const std::filesystem::path& path);
-        VENGINE_API std::filesystem::path GameObjectToPath(const GameObjectDescriptor& desc);
+        // VENGINE_API void SaveJson(const json& j, const std::filesystem::path& path);
+        // VENGINE_API std::filesystem::path GameObjectToPath(const GameObjectDescriptor& desc);
         VENGINE_API json LoadJson(const std::filesystem::path path);
 
         VENGINE_API void FromJson(const json& j, std::filesystem::path& path);

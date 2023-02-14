@@ -44,7 +44,7 @@ namespace vEngine
                 break;
 
             GameObjectSharedPtr shared;
-            auto path = GameObjectToPath(desc);
+            auto path = ResourceManager::GetInstance().GetGameObjectPath(desc);
 
             switch (desc.type)
             {
