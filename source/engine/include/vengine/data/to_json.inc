@@ -118,7 +118,7 @@ namespace vEngine
         template <typename T, int N>
         json ToJson(const std::array<T, N>& arr)
         {
-            UNUSED_PARAMETER(obj);
+            UNUSED_PARAMETER(arr);
             NOT_IMPL_ASSERT;
             // static_assert(false, "Should used vengine data types for serializer");
             return json();
