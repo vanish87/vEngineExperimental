@@ -123,14 +123,14 @@ namespace vEngine
             }
 
             // return root / desc.reference_path / file_name;
-            return root / file_name;
+            return root / config.context_name / file_name;
         }
         void ResourceManager::UpdateReferencePath(const GameObjectSharedPtr go)
         {
-            if (go->descriptor_.name == "GameObject")
-            {
-                go->descriptor_.name = ToString(go->descriptor_.type);
-            }
+            // if (go->descriptor_.name == "GameObject")
+            // {
+            //     go->descriptor_.name = ToString(go->descriptor_.type);
+            // }
 
             auto config = Context::GetInstance().CurrentConfigure();
             auto context_name = config.context_name;
