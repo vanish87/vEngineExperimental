@@ -334,7 +334,7 @@ namespace vEngine
                 auto mesh = scene->meshes_[scene_mesh_id];
                 PRINT("aiNode " << ai_node->mName.data << " with ai mesh name " << ai_mesh->mName.data);
 
-                auto mesh_component = GameObjectFactory::Create<GameObjectType::MeshComponent, MeshComponent>();
+                auto mesh_component = GameObjectFactory::Create<GameObjectType::MeshComponent, MeshComponent>(mesh);
                 // mesh_component->Reset(mesh);
                 mesh_node->AttachComponent(mesh_component);
 

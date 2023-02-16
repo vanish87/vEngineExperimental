@@ -27,8 +27,8 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                MeshComponent();
-                // MeshComponent(const MeshSharedPtr mesh);
+                // MeshComponent();
+                MeshComponent(const MeshSharedPtr mesh = Mesh::Default());
         };
     }  // namespace Core
 }  // namespace vEngine
