@@ -44,7 +44,7 @@ namespace vEngine
                         )
                     );
                 }
-                static SceneSharedPtr Load(const std::filesystem::path path);
+                // static SceneSharedPtr Load(const std::filesystem::path path);
             public:
                 /// \brief brief constructor description.
                 Scene(const GameObjectType type = GameObjectType::Scene);

@@ -25,14 +25,14 @@ namespace vEngine
         template <typename T>
         json ToJson(const std::shared_ptr<T>& ptr)
         {
-            #define CASE_AND_SAVE(etype, type)                       \
-                case etype:                                          \
-                {                                                    \
-                    auto sub = std::dynamic_pointer_cast<type>(go);  \
-                    ResourceManager::GetInstance().UpdateReferencePath(go);  \
-                    auto path =ResourceManager::GetInstance().GetGameObjectPath(go->descriptor_);   \
-                    ResourceManager::GetInstance().SaveJson(ToJson(*sub.get()), path);              \
-                }                                                    \
+            #define CASE_AND_SAVE(etype, type)                                                     \
+                case etype:                                                                        \
+                {                                                                                  \
+                    auto sub = std::dynamic_pointer_cast<type>(go);                                \
+                    ResourceManager::GetInstance().UpdateReferencePath(go);                        \
+                    auto path = ResourceManager::GetInstance().GetGameObjectPath(go->descriptor_); \
+                    ResourceManager::GetInstance().SaveJson(ToJson(*sub.get()), path);             \
+                }                                                                                  \
                 break;
 
             auto go = std::dynamic_pointer_cast<GameObject>(ptr);

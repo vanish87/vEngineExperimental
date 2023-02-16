@@ -91,10 +91,6 @@ namespace vEngine
         template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
         json ToJson(const T& obj);
 
-        // VENGINE_API void SaveJson(const json& j, const std::filesystem::path& path);
-        // VENGINE_API std::filesystem::path GameObjectToPath(const GameObjectDescriptor& desc);
-        VENGINE_API json LoadJson(const std::filesystem::path path);
-
         VENGINE_API void FromJson(const json& j, std::filesystem::path& path);
         VENGINE_API void FromJson(const json& j, UUID& uuid);
         VENGINE_API void FromJson(const json& j, GameObjectType& go_type);

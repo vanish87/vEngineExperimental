@@ -44,15 +44,15 @@ namespace vEngine
         using namespace Animation;
         using namespace Rendering;
 
-        SceneSharedPtr Scene::Load(const std::filesystem::path path)
-        {
-            // just a place holder;
-            // From json will overwrite this scene variable
-            SceneSharedPtr scene;
-            auto j = LoadJson(path);
-            FromJson(j, scene);
-            return scene;
-        }
+        // SceneSharedPtr Scene::Load(const std::filesystem::path path)
+        // {
+        //     // just a place holder;
+        //     // From json will overwrite this scene variable
+        //     SceneSharedPtr scene;
+        //     auto j = LoadJson(path);
+        //     FromJson(j, scene);
+        //     return scene;
+        // }
 
         /// constructor detailed defintion,
         /// should be 2 lines

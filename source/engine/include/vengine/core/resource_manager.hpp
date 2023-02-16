@@ -43,6 +43,7 @@ namespace vEngine
 
                 void Save(const GameObjectSharedPtr go, const std::filesystem::path path);
                 void SaveJson(const nlohmann::json& j, const std::filesystem::path path);
+                const nlohmann::json LoadJson(const std::filesystem::path path);
                 std::filesystem::path GetGameObjectPath(const GameObjectDescriptor& desc);
                 GameObjectSharedPtr Load(const std::filesystem::path path);
                 // void AddSync();

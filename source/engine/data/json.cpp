@@ -112,13 +112,6 @@ namespace vEngine
             NOT_IMPL_ASSERT;
             return "NOT DEFINED";
         }
-        json LoadJson(const std::filesystem::path path)
-        {
-            std::ifstream file(path.string());
-            auto j = json::parse(file);
-            file.close();
-            return j;
-        }
     }  // namespace Core
 
 }  // namespace vEngine

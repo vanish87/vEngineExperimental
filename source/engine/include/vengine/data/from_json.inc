@@ -25,26 +25,29 @@ namespace vEngine
         template <typename T>
         std::shared_ptr<T> CreateAndLoadByDesc(const GameObjectDescriptor& desc)
         {
-            #define CASE_AND_CREATE(ptr, etype, type)                   \
-                case etype:                                             \
-                {                                                       \
-                    auto go = GameObjectFactory::Create<etype, type>(); \
-                    FromJson(LoadJson(path), *go.get());                \
-                    ptr = go;                                           \
-                }                                                       \
+            #define CASE_AND_CREATE(ptr, etype, type)                                   \
+                case etype:                                                             \
+                {                                                                       \
+                    auto go = GameObjectFactory::Create<etype, type>();                 \
+                    auto path = ResourceManager::GetInstance().GetGameObjectPath(desc); \
+                    auto j = ResourceManager::GetInstance().LoadJson(path);             \
+                    FromJson(j, *go.get());                                             \
+                    ptr = go;                                                           \
+                }                                                                       \
                 break;
 
-            #define CASE_AND_CREATE_ARG(ptr, etype, type, args)             \
-                case etype:                                                 \
-                {                                                           \
-                    auto go = GameObjectFactory::Create<etype, type>(args); \
-                    FromJson(LoadJson(path), *go.get());                    \
-                    ptr = go;                                               \
-                }                                                           \
+            #define CASE_AND_CREATE_ARG(ptr, etype, type, args)                         \
+                case etype:                                                             \
+                {                                                                       \
+                    auto go = GameObjectFactory::Create<etype, type>(args);             \
+                    auto path = ResourceManager::GetInstance().GetGameObjectPath(desc); \
+                    auto j = ResourceManager::GetInstance().LoadJson(path);             \
+                    FromJson(j, *go.get());                                             \
+                    ptr = go;                                                           \
+                }                                                                       \
                 break;
 
             GameObjectSharedPtr shared;
-            auto path = ResourceManager::GetInstance().GetGameObjectPath(desc);
 
             switch (desc.type)
             {

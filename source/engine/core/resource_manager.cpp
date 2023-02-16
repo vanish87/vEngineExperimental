@@ -62,7 +62,7 @@ namespace vEngine
             auto root = config.resource_src;
             for (const auto& file : std::filesystem::recursive_directory_iterator{root})
             {
-                if(file.is_regular_file() && file.path().filename() == file_name)
+                if (file.is_regular_file() && file.path().filename() == file_name)
                 {
                     return file.path();
                 }
@@ -75,12 +75,19 @@ namespace vEngine
         void ResourceManager::SaveJson(const json& j, const std::filesystem::path path)
         {
             auto folder = path.parent_path();
-            if(!std::filesystem::exists(folder)) std::filesystem::create_directories(folder);
+            if (!std::filesystem::exists(folder)) std::filesystem::create_directories(folder);
 
             std::ofstream outfile(path.string());
             outfile << std::setw(2) << j << std::endl;
             outfile.flush();
             outfile.close();
+        }
+        const nlohmann::json ResourceManager::LoadJson(const std::filesystem::path path)
+        {
+            std::ifstream file(path.string());
+            auto j = json::parse(file);
+            file.close();
+            return j;
         }
         // Save to a None-Context folder
         void ResourceManager::Save(const GameObjectSharedPtr go, const std::filesystem::path path)
@@ -93,7 +100,7 @@ namespace vEngine
         {
             if (!std::filesystem::exists(path)) return nullptr;
 
-            auto j = LoadJson(path);
+            auto j = this->LoadJson(path);
             GameObjectDescriptor desc;
             FromJson(j["meta"], desc);
 
@@ -115,16 +122,14 @@ namespace vEngine
                 std::replace(file_name.begin(), file_name.end(), c, '_');
             }
 
-            return root / desc.reference_path / file_name;
-
+            // return root / desc.reference_path / file_name;
+            return root / file_name;
         }
         void ResourceManager::UpdateReferencePath(const GameObjectSharedPtr go)
         {
-            std::string illegal = ":\"\'<>%$*&+ ";
-            if(go->descriptor_.name == "GameObject")
+            if (go->descriptor_.name == "GameObject")
             {
                 go->descriptor_.name = ToString(go->descriptor_.type);
-                for (auto c : illegal) std::replace(go->descriptor_.name.begin(), go->descriptor_.name.end(), c, '_');
             }
 
             auto config = Context::GetInstance().CurrentConfigure();
@@ -139,6 +144,7 @@ namespace vEngine
             }
 
             auto path_string = path.string();
+            std::string illegal = ":\"\'<>%$*&+ ";
             for (auto c : illegal)
             {
                 std::replace(path_string.begin(), path_string.end(), c, '_');
