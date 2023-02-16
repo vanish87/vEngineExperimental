@@ -22,7 +22,7 @@ namespace vEngine
         GraphicsBuffer::GraphicsBuffer(const GraphicsBufferDescriptor& desc) 
         {
             PRINT("Graphic Buffer Base");
-            this->descriptor_ = desc;
+            this->buffer_descriptor_ = desc;
 
         }
         GraphicsBuffer::~GraphicsBuffer() {}

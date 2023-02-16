@@ -59,7 +59,7 @@ namespace vEngine
                 }
             public:
                 /// \brief brief constructor description.
-                Joint(const Core::GameObjectType type = Core::GameObjectType::Joint);
+                Joint();
                 virtual ~Joint();
 
                 std::vector<JointKey<Core::float3>> position_keys_;

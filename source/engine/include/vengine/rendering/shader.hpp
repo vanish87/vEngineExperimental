@@ -42,8 +42,8 @@ namespace vEngine
 
             public:
                 /// \brief brief constructor description.
-                Shader(const Core::GameObjectType type = Core::GameObjectType::Shader);
-                virtual ~Shader() {}
+                Shader();
+                ~Shader() {}
 
                 std::vector<char> content;
                 ShaderType type;

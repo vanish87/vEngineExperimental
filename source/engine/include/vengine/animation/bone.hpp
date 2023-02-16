@@ -41,7 +41,7 @@ namespace vEngine
                 static BoneSharedPtr Default();
             public:
                 /// \brief brief constructor description.
-                Bone(const Core::GameObjectType type = Core::GameObjectType::Bone);
+                Bone();
 
                 /// class variable description
                 int id_;

@@ -65,6 +65,11 @@ namespace vEngine
 
         struct GameObjectDescriptor
         {
+                void Set(const std::string name_ = "GameObject", const GameObjectType type_ = GameObjectType::GameObject)
+                {
+                    this->name = name_;
+                    this->type = type_;
+                }
                 UUID uuid;
                 std::string name = "GameObject";
                 GameObjectType type = GameObjectType::GameObject;
@@ -89,7 +94,7 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                GameObject(const GameObjectType type = GameObjectType::GameObject);
+                // GameObject(const GameObjectType type = GameObjectType::GameObject);
                 // GameObject(const GameObjectType type);
                 // GameObject(const GameObject& other);
                 // GameObject(const GameObject&& other);

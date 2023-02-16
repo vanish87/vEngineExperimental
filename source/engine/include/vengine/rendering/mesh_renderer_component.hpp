@@ -26,7 +26,7 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                MeshRendererComponent(const Core::GameObjectType type = Core::GameObjectType::MeshRendererComponent);
+                MeshRendererComponent();
 
                 void OnBeginRender();
                 virtual void OnUpdate() override;

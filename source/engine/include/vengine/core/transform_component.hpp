@@ -39,7 +39,7 @@ namespace vEngine
                 // }
             public:
                 /// \brief brief constructor description.
-                TransformComponent(const GameObjectType type = GameObjectType::TransformComponent);
+                TransformComponent();
 
                 virtual void OnUpdate() override;
         };

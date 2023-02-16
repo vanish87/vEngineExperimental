@@ -45,7 +45,7 @@ namespace vEngine
                 static CameraSharedPtr Default();
             public:
                 /// \brief brief constructor description.
-                Camera(const GameObjectType type = GameObjectType::Camera);
+                Camera();
 
                 Rendering::FrameBufferSharedPtr target;
 

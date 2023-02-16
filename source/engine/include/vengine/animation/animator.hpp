@@ -44,7 +44,7 @@ namespace vEngine
                 static AnimatorSharedPtr Default();
                 
                 /// \brief brief constructor description.
-                Animator(const Core::GameObjectType type = Core::GameObjectType::Animator);
+                Animator();
                 virtual ~Animator() {}
 
                 /// class variable description

@@ -24,7 +24,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        AnimatorComponent:: AnimatorComponent(const GameObjectType type): Component(type)
+        AnimatorComponent:: AnimatorComponent()
         {
             // timer = 0;
         }

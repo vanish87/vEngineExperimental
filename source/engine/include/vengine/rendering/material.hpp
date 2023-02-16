@@ -42,7 +42,7 @@ namespace vEngine
                 static MaterialSharedPtr Default();
 
                 /// \brief brief constructor description.
-                Material(const Core::GameObjectType type = Core::GameObjectType::Material);
+                Material();
                 ~Material();
                 // void SetShader(const std::filesystem::path path, const ShaderType type);
 

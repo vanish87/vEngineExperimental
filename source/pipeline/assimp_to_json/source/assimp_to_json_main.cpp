@@ -38,6 +38,7 @@ int main(int argc, char* argv[])
     configure.resource_src = resource_src;
     configure.resource_bin = resource_bin;
 
+
 #ifdef VENGINE_PLATFORM_WINDOWS
     configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
 #else
@@ -69,9 +70,9 @@ int main(int argc, char* argv[])
 
     // auto path = ResourceLoader::GetInstance().GetFilePath("boblampclean.json");
     // Context::GetInstance().Clear();
-    // auto path = output;
-    // auto new_scene = Scene::Load(output);
-    // new_scene.reset();
+    auto path = output;
+    auto new_scene = ResourceManager::GetInstance().Load(output);
+    new_scene.reset();
 
     ResourceManager::GetInstance().Deinit();
     Context::GetInstance().Deinit();

@@ -22,7 +22,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Shader::Shader(const GameObjectType type) : GameObject(type) {}
+        Shader::Shader(){}
 
         /// A detailed function description, it
         /// should be 2 lines at least.

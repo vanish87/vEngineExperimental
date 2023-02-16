@@ -34,11 +34,11 @@ namespace vEngine
                 /// class variable description
                 // int public_variable_;
 
-				GraphicsBufferDescriptor descriptor_;
 
                 GPUSubResource Map();
                 void Unmap();
 
+				GraphicsBufferDescriptor buffer_descriptor_;
             protected:
                 virtual GPUSubResource DoMap();
                 virtual void DoUnmap();

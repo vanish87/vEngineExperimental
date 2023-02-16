@@ -23,7 +23,7 @@ namespace vEngine
         using namespace Core;
         /// constructor detailed defintion,
         /// should be 2 lines
-        Material::Material(const GameObjectType type) : GameObject(type)
+        Material::Material()
         {
             PipelineStateDescriptor desc;
             this->pipeline_state_ = GameObjectFactory::Create<GameObjectType::PipelineState, PipelineState>(desc);

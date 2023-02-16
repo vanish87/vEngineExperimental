@@ -20,7 +20,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Joint::Joint(const Core::GameObjectType type) : GameObject(type) {}
+        Joint::Joint() {}
         Joint::~Joint() {}
         JointKey<Core::float3> Joint::PosAtTime(const float time)
         {

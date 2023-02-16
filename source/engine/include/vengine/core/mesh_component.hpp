@@ -27,7 +27,7 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                MeshComponent(const GameObjectType type = GameObjectType::MeshComponent);
+                MeshComponent();
                 // MeshComponent(const MeshSharedPtr mesh);
         };
     }  // namespace Core

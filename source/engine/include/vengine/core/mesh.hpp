@@ -89,7 +89,7 @@ namespace vEngine
             public:
                 /// \brief Construct a new empty Mesh object
                 ///
-                Mesh(const GameObjectType type = GameObjectType::Mesh);
+                Mesh();
                 virtual ~Mesh();
                 void UpdateGPUBuffer();
 

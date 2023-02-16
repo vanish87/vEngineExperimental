@@ -29,7 +29,7 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                LightComponent(const GameObjectType type = GameObjectType::LightComponent);
+                LightComponent();
         };
     }  // namespace Core
 }  // namespace vEngine

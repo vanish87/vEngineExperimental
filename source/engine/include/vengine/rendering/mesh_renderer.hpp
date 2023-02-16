@@ -32,8 +32,8 @@ namespace vEngine
 
             public:
                 /// \brief brief constructor description.
-                MeshRenderer(const Core::GameObjectType type = Core::GameObjectType::MeshRenderer);
-                virtual ~MeshRenderer();
+                MeshRenderer();
+                ~MeshRenderer();
 
                 virtual void Render();
         };

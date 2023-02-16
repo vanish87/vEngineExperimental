@@ -43,12 +43,23 @@ namespace vEngine
                 //then passing into Create function
                 virtual GameObjectSharedPtr Create(std::any parameter = nullptr) = 0;
 
-                    // static_assert(std::is_base_of<GameObject, type>::value, "T must derived from GameObject"); 
-                #define TYPE_AND_CREATE(etype, type)                                                        \
-                    if constexpr (Type == etype) return std::make_shared<type>(std::forward<Args>(args)...);
+                    // static_assert(std::is_base_of<GameObject, type>::value, "T must derived from GameObject");
+#define TYPE_AND_CREATE(etype, type)                                    \
+    if constexpr (Type == etype)                                        \
+    {                                                                   \
+        auto obj = std::make_shared<type>(std::forward<Args>(args)...); \
+        auto go = std::dynamic_pointer_cast<GameObject>(obj);           \
+        go->descriptor_.Set("name", etype);                             \
+        return obj;                                                     \
+    }
 
-                #define DYNAMIC_TYPE_AND_CREATE(etype, type) \
-                    if constexpr (Type == etype) return std::dynamic_pointer_cast<type>(Context::GetInstance().GetRenderObjectFactory()->Create(std::forward<Args>(args)...));
+#define DYNAMIC_TYPE_AND_CREATE(etype, type)                                                            \
+    if constexpr (Type == etype)                                                                        \
+    {                                                                                                   \
+        auto go = Context::GetInstance().GetRenderObjectFactory()->Create(std::forward<Args>(args)...); \
+        go->descriptor_.Set("name", etype);                                                             \
+        return std::dynamic_pointer_cast<type>(go);                                                     \
+    }
 
                 template <GameObjectType Type, typename T = GameObject, class... Args>
                 static std::shared_ptr<T> Create(Args&&... args)

@@ -28,7 +28,7 @@ namespace vEngine
         }
         /// constructor detailed defintion,
         /// should be 2 lines
-        MeshRenderer::MeshRenderer(const GameObjectType type) : Renderer(type)
+        MeshRenderer::MeshRenderer()
         {
             PRINT("Mesh renderer created");
         }

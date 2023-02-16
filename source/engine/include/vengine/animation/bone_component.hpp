@@ -29,7 +29,7 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                BoneComponent(const Core::GameObjectType type = Core::GameObjectType::BoneComponent);
+                BoneComponent();
                 virtual ~BoneComponent();
 
                 // void Update()

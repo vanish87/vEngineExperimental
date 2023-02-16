@@ -30,7 +30,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        MeshRendererComponent::MeshRendererComponent(const GameObjectType type) : Component(type)
+        MeshRendererComponent::MeshRendererComponent()
         {
             auto cbuffer_desc = GraphicsBufferDescriptor();
             cbuffer_desc.type = GraphicsResourceType::CBuffer;

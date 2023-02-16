@@ -47,12 +47,7 @@ namespace vEngine
 
             public:
                 /// \brief brief constructor description.
-                Component(const GameObjectType type = GameObjectType::Component)
-                    : GameNode(type),
-                      enabled_{false},
-                      game_object_{GameObjectFactory::Default<T>()} 
-                      {
-                      };
+                Component(const std::shared_ptr<T> go = GameObjectFactory::Default<T>()) : enabled_{false}, game_object_{go} {};
                 virtual ~Component(){};
 
                 virtual void OnInit() override
@@ -81,11 +76,6 @@ namespace vEngine
                     return this->game_object_;
                 }
 
-                void Reset(std::shared_ptr<T> new_go)
-                {
-                    // if (this->game_object_ != nullptr) this->game_object_.reset();
-                    this->game_object_ = new_go;
-                }
 
             private:
                 bool enabled_;

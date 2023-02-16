@@ -45,7 +45,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Mesh::Mesh(const GameObjectType type) : GameObject(type), vertex_buffer_{nullptr}, index_buffer_{nullptr}
+        Mesh::Mesh(): vertex_buffer_{nullptr}, index_buffer_{nullptr}
         {
             // PRINT("mesh object created");
         }

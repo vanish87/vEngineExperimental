@@ -36,7 +36,7 @@ namespace vEngine
 
             public:
                 /// \brief brief constructor description.
-                Renderer(const Core::GameObjectType type = Core::GameObjectType::Renderer) : GameObject(type) {}
+                Renderer(){}
                 bool UpdateRenderable()
                 {
                     return false;

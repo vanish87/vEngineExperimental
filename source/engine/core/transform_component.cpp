@@ -17,7 +17,7 @@ namespace vEngine
     namespace Core
     {
 
-        TransformComponent::TransformComponent(const GameObjectType type) : Component(type) {}
+        TransformComponent::TransformComponent(){}
         /// constructor detailed defintion,
         /// should be 2 lines
         void TransformComponent::OnUpdate()

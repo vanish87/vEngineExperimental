@@ -37,7 +37,7 @@ namespace vEngine
                 static LightSharedPtr Default();
             public:
                 /// \brief brief constructor description.
-                Light(const GameObjectType type = GameObjectType::Light);
+                Light();
 
                 protected:
                 float4 fall_off_;

@@ -56,7 +56,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Scene::Scene(const GameObjectType type) : GameNode(type) {}
+        Scene::Scene() {}
         Scene::~Scene() {}
         const CameraSharedPtr Scene::GetCamera(const uint32_t index) const
         {

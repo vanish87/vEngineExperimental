@@ -30,7 +30,7 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                AnimatorComponent(const Core::GameObjectType type = Core::GameObjectType::AnimatorComponent);
+                AnimatorComponent();
                 virtual ~AnimatorComponent();
                 virtual void OnInit() override;
                 virtual void OnUpdate() override;

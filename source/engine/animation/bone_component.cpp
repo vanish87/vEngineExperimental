@@ -19,7 +19,7 @@ namespace vEngine
         using namespace Core;
         /// constructor detailed defintion,
         /// should be 2 lines
-        BoneComponent::BoneComponent(const GameObjectType type) : Component(type) {}
+        BoneComponent::BoneComponent() {}
         BoneComponent::~BoneComponent() {}
         // void BoneComponent::Update()
         //         {

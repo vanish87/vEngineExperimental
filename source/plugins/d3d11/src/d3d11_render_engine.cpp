@@ -405,7 +405,7 @@ namespace vEngine
             auto v = std::dynamic_pointer_cast<D3D11GraphicsBuffer>(vertice);
             auto i = std::dynamic_pointer_cast<D3D11GraphicsBuffer>(indice);
 
-            UINT stride = v->descriptor_.resource.stride;
+            UINT stride = v->buffer_descriptor_.resource.stride;
             UINT offset = 0;
             this->d3d_imm_context_->IASetVertexBuffers(0, 1, v->buffer_.GetAddressOf(), &stride, &offset);
             this->d3d_imm_context_->IASetIndexBuffer(i->buffer_.Get(), DXGI_FORMAT_R32_UINT, 0);
@@ -414,7 +414,7 @@ namespace vEngine
             this->d3d_imm_context_->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
             // draw the vertex buffer to the back buffer
-            this->d3d_imm_context_->DrawIndexed((UINT)(i->descriptor_.resource.count), 0, 0);
+            this->d3d_imm_context_->DrawIndexed((UINT)(i->buffer_descriptor_.resource.count), 0, 0);
         }
         void D3D11RenderEngine::PrintInfo()
         {
@@ -576,7 +576,7 @@ namespace vEngine
         void D3D11RenderEngine::OnBind(const GraphicsBufferSharedPtr graphics_buffer)
         {
             auto d3d_gb = std::dynamic_pointer_cast<D3D11GraphicsBuffer>(graphics_buffer);
-            auto desc = d3d_gb->descriptor_;
+            auto desc = d3d_gb->buffer_descriptor_;
             this->d3d_imm_context_->VSSetConstantBuffers(static_cast<uint32_t>(desc.slot), 1, d3d_gb->buffer_.GetAddressOf());
         }
         void D3D11RenderEngine::OnBind(const TextureSharedPtr texture)

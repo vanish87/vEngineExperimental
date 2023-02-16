@@ -60,7 +60,7 @@ namespace vEngine
 
                 void Register(const GameObjectSharedPtr go, bool isDynamic = false);
                 void Unregister(const GameObjectSharedPtr go);
-                GameObjectSharedPtr HasObjectLoaded(const GameObjectDescriptor& desc);
+                GameObjectSharedPtr FindOrLoad(const GameObjectDescriptor& desc);
 
             private:
                 ResourceLoadingThread loading_thread_;
