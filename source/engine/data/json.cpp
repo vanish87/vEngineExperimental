@@ -54,26 +54,15 @@ namespace vEngine
         }
         void FromJson(const json& j, std::filesystem::path& path)
         {
-            auto data = j.get<std::string>();
-            path = data;
+            path = j.get<std::string>();
         }
         void FromJson(const json& j, GameObjectType& go_type)
         {
-            auto data = j.get<std::string>();
-            FromString(data, go_type);
-            // NOT_IMPL_ASSERT;
-            // UNUSED_PARAMETER(j);
-            // UNUSED_PARAMETER(go_type);
-            // return json(ToString<GameObjectType>(go_type));
+            FromString(j.get<std::string>(), go_type);
         }
         void FromJson(const json& j, Rendering::ShaderType& shader_type)
         {
-            auto data = j.get<std::string>();
-            FromString(data, shader_type);
-            // NOT_IMPL_ASSERT;
-            // UNUSED_PARAMETER(j);
-            // UNUSED_PARAMETER(shader_type);
-            // return json(ToString<GameObjectType>(go_type));
+            FromString(j.get<std::string>(), shader_type);
         }
         void FromJson(const json& j, std::vector<char>& vector)
         {

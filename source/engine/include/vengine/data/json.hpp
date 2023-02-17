@@ -61,7 +61,6 @@ namespace vEngine
         VENGINE_API const json LoadJson(const std::filesystem::path path);
 
         VENGINE_API json ToJson(const std::filesystem::path& path);
-        // VENGINE_API json ToJson(const UUID& uuid);
         VENGINE_API json ToJson(const GameObjectType& go_type);
         VENGINE_API json ToJson(const Rendering::ShaderType& shader_type);
         VENGINE_API json ToJson(const std::vector<char>& vector);
@@ -97,7 +96,6 @@ namespace vEngine
         json ToJson(const T& obj);
 
         VENGINE_API void FromJson(const json& j, std::filesystem::path& path);
-        // VENGINE_API void FromJson(const json& j, UUID& uuid);
         VENGINE_API void FromJson(const json& j, GameObjectType& go_type);
         VENGINE_API void FromJson(const json& j, Rendering::ShaderType& shader_type);
         VENGINE_API void FromJson(const json& j, std::vector<char>& vector);
