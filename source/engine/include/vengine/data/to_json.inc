@@ -71,7 +71,7 @@ namespace vEngine
                 CASE_AND_SAVE(GameObjectType::Animator, Animation::Animator);
                 CASE_AND_SAVE(GameObjectType::AnimatorComponent, Animation::AnimatorComponent);
                 default:
-                    PRINT(ToString(type));
+                    // PRINT(ToString(type));
                     NOT_IMPL_ASSERT;
                     break;
             }

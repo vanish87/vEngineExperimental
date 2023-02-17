@@ -94,7 +94,8 @@ namespace vEngine
         std::filesystem::path ResourceManager::GetGameObjectPath(const GameObjectDescriptor& desc)
         {
             auto name = desc.name;
-            auto type = ToString(desc.type);
+            auto type = std::string();
+            ToString(desc.type, type);
 
             auto config = Context::GetInstance().CurrentConfigure();
             auto root = config.resource_bin;

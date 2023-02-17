@@ -40,10 +40,6 @@ namespace vEngine
         {
             return json(path.string());
         }
-        // json ToJson(const UUID& uuid)
-        // {
-        //     return json(uuid.AsUint());
-        // }
         json ToJson(const Rendering::ShaderType& shader_type)
         {
             std::string str;
@@ -52,13 +48,10 @@ namespace vEngine
         }
         json ToJson(const GameObjectType& go_type)
         {
-            return json(ToString(go_type));
+            std::string str;
+            ToString(go_type, str);
+            return str;
         }
-        // void FromJson(const json& j, UUID& uuid)
-        // {
-        //     auto id = j.get<uint64_t>();
-        //     uuid.Set(id);
-        // }
         void FromJson(const json& j, std::filesystem::path& path)
         {
             auto data = j.get<std::string>();
@@ -67,7 +60,7 @@ namespace vEngine
         void FromJson(const json& j, GameObjectType& go_type)
         {
             auto data = j.get<std::string>();
-            go_type = FromString<GameObjectType>(data);
+            FromString(data, go_type);
             // NOT_IMPL_ASSERT;
             // UNUSED_PARAMETER(j);
             // UNUSED_PARAMETER(go_type);
@@ -90,82 +83,6 @@ namespace vEngine
             {
                 vector.push_back(it);
             }
-        }
-        void ToString(const std::string& obj, std::string& to)
-        {
-            to = obj;
-        }
-        void FromString(const std::string& obj, std::string& to)
-        {
-            to = obj;
-        }
-        void FromString(const std::string& str, Rendering::ShaderType& to)
-        {
-        #define STRING_TO_ST(x, str) if(#x == str) {to = x; return;}
-            STRING_TO_ST(Rendering::ShaderType::VertexShader, str);
-            STRING_TO_ST(Rendering::ShaderType::HullShader, str);
-            STRING_TO_ST(Rendering::ShaderType::TessellatorShader, str);
-            STRING_TO_ST(Rendering::ShaderType::DomainShader, str);
-            STRING_TO_ST(Rendering::ShaderType::GeometryShader, str);
-            STRING_TO_ST(Rendering::ShaderType::PixelShader, str);
-            STRING_TO_ST(Rendering::ShaderType::ComputeShader, str);
-
-            NOT_IMPL_ASSERT;
-        }
-        void ToString(const Rendering::ShaderType& obj, std::string& to)
-        {
-        #define IF_RETURN(x) if(obj == x) {to = #x; return;}
-            // switch (obj)
-            {
-                IF_RETURN(Rendering::ShaderType::VertexShader);
-                IF_RETURN(Rendering::ShaderType::HullShader);
-                IF_RETURN(Rendering::ShaderType::TessellatorShader);
-                IF_RETURN(Rendering::ShaderType::DomainShader);
-                IF_RETURN(Rendering::ShaderType::GeometryShader);
-                IF_RETURN(Rendering::ShaderType::PixelShader);
-                IF_RETURN(Rendering::ShaderType::ComputeShader);
-            }
-            NOT_IMPL_ASSERT;
-        }
-        std::string ToString(const GameObjectType& obj)
-        {
-            switch (obj)
-            {
-                ENUM_CASE_TO_STRING(GameObjectType::GameObject);
-                ENUM_CASE_TO_STRING(GameObjectType::GameNode);
-                ENUM_CASE_TO_STRING(GameObjectType::Component);
-                ENUM_CASE_TO_STRING(GameObjectType::Transform);
-                ENUM_CASE_TO_STRING(GameObjectType::TransformComponent);
-                ENUM_CASE_TO_STRING(GameObjectType::Camera);
-                ENUM_CASE_TO_STRING(GameObjectType::CameraComponent);
-                ENUM_CASE_TO_STRING(GameObjectType::Light);
-                ENUM_CASE_TO_STRING(GameObjectType::LightComponent);
-                ENUM_CASE_TO_STRING(GameObjectType::Mesh);
-                ENUM_CASE_TO_STRING(GameObjectType::MeshComponent);
-                ENUM_CASE_TO_STRING(GameObjectType::Scene);
-
-                ENUM_CASE_TO_STRING(GameObjectType::Serializer);
-
-                ENUM_CASE_TO_STRING(GameObjectType::Renderer);
-                ENUM_CASE_TO_STRING(GameObjectType::RendererComponent);
-                ENUM_CASE_TO_STRING(GameObjectType::MeshRenderer);
-                ENUM_CASE_TO_STRING(GameObjectType::MeshRendererComponent);
-                ENUM_CASE_TO_STRING(GameObjectType::Material);
-                ENUM_CASE_TO_STRING(GameObjectType::Texture);
-                ENUM_CASE_TO_STRING(GameObjectType::PipelineState);
-                ENUM_CASE_TO_STRING(GameObjectType::Shader);
-
-                ENUM_CASE_TO_STRING(GameObjectType::Bone);
-                ENUM_CASE_TO_STRING(GameObjectType::BoneComponent);
-                ENUM_CASE_TO_STRING(GameObjectType::Joint);
-                ENUM_CASE_TO_STRING(GameObjectType::AnimationClip);
-                ENUM_CASE_TO_STRING(GameObjectType::Animator);
-                ENUM_CASE_TO_STRING(GameObjectType::AnimatorComponent);
-                default:
-                    break;
-            }
-            NOT_IMPL_ASSERT;
-            return "NOT DEFINED";
         }
     }  // namespace Core
 
