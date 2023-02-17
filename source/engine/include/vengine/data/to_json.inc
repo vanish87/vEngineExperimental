@@ -31,7 +31,7 @@ namespace vEngine
                     auto sub = std::dynamic_pointer_cast<type>(go);                                \
                     ResourceManager::GetInstance().UpdateReferencePath(go);                        \
                     auto path = ResourceManager::GetInstance().GetGameObjectPath(go->descriptor_); \
-                    ResourceManager::GetInstance().SaveJson(ToJson(*sub.get()), path);             \
+                    SaveJson(ToJson(*sub.get()), path);             \
                 }                                                                                  \
                 break;
 

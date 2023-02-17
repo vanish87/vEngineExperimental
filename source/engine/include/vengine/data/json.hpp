@@ -55,6 +55,9 @@ namespace vEngine
                 static constexpr auto value = std::is_arithmetic<T>::value || std::is_same<T, std::string>::value;
         };
 
+        VENGINE_API void SaveJson(const json& j, const std::filesystem::path path);
+        VENGINE_API const json LoadJson(const std::filesystem::path path);
+
         VENGINE_API json ToJson(const std::filesystem::path& path);
         VENGINE_API json ToJson(const UUID& uuid);
         VENGINE_API json ToJson(const GameObjectType& go_type);

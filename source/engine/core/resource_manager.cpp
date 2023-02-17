@@ -10,6 +10,7 @@
 #include <vengine/core/resource_manager.hpp>
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/core/game_node.hpp>
+#include <vengine/data/json.hpp>
 
 #include <vengine/animation/bone_component.hpp>
 
@@ -72,35 +73,18 @@ namespace vEngine
             return std::filesystem::path(file_name);
         }
 
-        void ResourceManager::SaveJson(const json& j, const std::filesystem::path path)
-        {
-            auto folder = path.parent_path();
-            if (!std::filesystem::exists(folder)) std::filesystem::create_directories(folder);
-
-            std::ofstream outfile(path.string());
-            outfile << std::setw(2) << j << std::endl;
-            outfile.flush();
-            outfile.close();
-        }
-        const nlohmann::json ResourceManager::LoadJson(const std::filesystem::path path)
-        {
-            std::ifstream file(path.string());
-            auto j = json::parse(file);
-            file.close();
-            return j;
-        }
         // Save to a None-Context folder
         void ResourceManager::Save(const GameObjectSharedPtr go, const std::filesystem::path path)
         {
             this->UpdateReferencePath(go);
             auto j = ToJson(go);
-            this->SaveJson(j, path);
+            SaveJson(j, path);
         }
         GameObjectSharedPtr ResourceManager::Load(const std::filesystem::path path)
         {
             if (!std::filesystem::exists(path)) return nullptr;
 
-            auto j = this->LoadJson(path);
+            auto j = LoadJson(path);
             GameObjectDescriptor desc;
             FromJson(j["meta"], desc);
 

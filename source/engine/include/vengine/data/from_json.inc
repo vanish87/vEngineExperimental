@@ -30,7 +30,7 @@ namespace vEngine
                 {                                                                       \
                     auto go = GameObjectFactory::Create<etype, type>();                 \
                     auto path = ResourceManager::GetInstance().GetGameObjectPath(desc); \
-                    auto j = ResourceManager::GetInstance().LoadJson(path);             \
+                    auto j = LoadJson(path);             \
                     FromJson(j, *go.get());                                             \
                     ptr = go;                                                           \
                 }                                                                       \
@@ -41,7 +41,7 @@ namespace vEngine
                 {                                                                       \
                     auto go = GameObjectFactory::Create<etype, type>(args);             \
                     auto path = ResourceManager::GetInstance().GetGameObjectPath(desc); \
-                    auto j = ResourceManager::GetInstance().LoadJson(path);             \
+                    auto j = LoadJson(path);             \
                     FromJson(j, *go.get());                                             \
                     ptr = go;                                                           \
                 }                                                                       \

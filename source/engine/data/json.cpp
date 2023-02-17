@@ -15,6 +15,23 @@ namespace vEngine
 {
     namespace Core
     {
+        void SaveJson(const json& j, const std::filesystem::path path)
+        {
+            auto folder = path.parent_path();
+            if (!std::filesystem::exists(folder)) std::filesystem::create_directories(folder);
+
+            std::ofstream outfile(path.string());
+            outfile << std::setw(2) << j << std::endl;
+            outfile.flush();
+            outfile.close();
+        }
+        const json LoadJson(const std::filesystem::path path)
+        {
+            std::ifstream file(path.string());
+            auto j = json::parse(file);
+            file.close();
+            return j;
+        }
         json ToJson(const std::vector<char>& vector)
         {
             return json(std::string(vector.begin(), vector.end()));

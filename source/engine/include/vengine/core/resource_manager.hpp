@@ -17,7 +17,6 @@
 #include <filesystem>
 
 #include <engine.hpp>
-#include <vengine/data/json.hpp>
 #include <vengine/core/resource_loading_thread.hpp>
 #include <vengine/core/iruntime_module.hpp>
 #include <vengine/core/iresource.hpp>
@@ -42,8 +41,6 @@ namespace vEngine
                 void Load(const ResourceDescriptor& desc);
 
                 void Save(const GameObjectSharedPtr go, const std::filesystem::path path);
-                void SaveJson(const nlohmann::json& j, const std::filesystem::path path);
-                const nlohmann::json LoadJson(const std::filesystem::path path);
                 std::filesystem::path GetGameObjectPath(const GameObjectDescriptor& desc);
                 GameObjectSharedPtr Load(const std::filesystem::path path);
                 // void AddSync();
