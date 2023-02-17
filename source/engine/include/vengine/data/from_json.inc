@@ -142,7 +142,8 @@ namespace vEngine
             for (auto it = j.begin(); it != j.end(); ++it)
             {
                 // TODO ToJson should cast key to string in order to recover it here
-                auto k = FromString<T>(it.key());
+                T k;
+                FromString(it.key(), k);
                 FromJson(it.value(), map[k]);
             }
         }

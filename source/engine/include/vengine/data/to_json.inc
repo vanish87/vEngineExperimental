@@ -112,7 +112,9 @@ namespace vEngine
             json value;
             for (const auto& e : umap)
             {
-                value[ToString<T>(e.first)] = ToJson(e.second);
+                std::string k;
+                ToString(e.first, k);
+                value[k] = ToJson(e.second);
             }
             return value;
         }

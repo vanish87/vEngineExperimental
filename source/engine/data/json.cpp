@@ -40,23 +40,25 @@ namespace vEngine
         {
             return json(path.string());
         }
-        json ToJson(const UUID& uuid)
-        {
-            return json(uuid.AsUint());
-        }
+        // json ToJson(const UUID& uuid)
+        // {
+        //     return json(uuid.AsUint());
+        // }
         json ToJson(const Rendering::ShaderType& shader_type)
         {
-            return json(ToString<Rendering::ShaderType>(shader_type));
+            std::string str;
+            ToString(shader_type, str);
+            return str;
         }
         json ToJson(const GameObjectType& go_type)
         {
-            return json(ToString<GameObjectType>(go_type));
+            return json(ToString(go_type));
         }
-        void FromJson(const json& j, UUID& uuid)
-        {
-            auto id = j.get<uint64_t>();
-            uuid.Set(id);
-        }
+        // void FromJson(const json& j, UUID& uuid)
+        // {
+        //     auto id = j.get<uint64_t>();
+        //     uuid.Set(id);
+        // }
         void FromJson(const json& j, std::filesystem::path& path)
         {
             auto data = j.get<std::string>();
@@ -74,7 +76,7 @@ namespace vEngine
         void FromJson(const json& j, Rendering::ShaderType& shader_type)
         {
             auto data = j.get<std::string>();
-            shader_type = FromString<Rendering::ShaderType>(data);
+            FromString(data, shader_type);
             // NOT_IMPL_ASSERT;
             // UNUSED_PARAMETER(j);
             // UNUSED_PARAMETER(shader_type);
@@ -88,6 +90,42 @@ namespace vEngine
             {
                 vector.push_back(it);
             }
+        }
+        void ToString(const std::string& obj, std::string& to)
+        {
+            to = obj;
+        }
+        void FromString(const std::string& obj, std::string& to)
+        {
+            to = obj;
+        }
+        void FromString(const std::string& str, Rendering::ShaderType& to)
+        {
+        #define STRING_TO_ST(x, str) if(#x == str) {to = x; return;}
+            STRING_TO_ST(Rendering::ShaderType::VertexShader, str);
+            STRING_TO_ST(Rendering::ShaderType::HullShader, str);
+            STRING_TO_ST(Rendering::ShaderType::TessellatorShader, str);
+            STRING_TO_ST(Rendering::ShaderType::DomainShader, str);
+            STRING_TO_ST(Rendering::ShaderType::GeometryShader, str);
+            STRING_TO_ST(Rendering::ShaderType::PixelShader, str);
+            STRING_TO_ST(Rendering::ShaderType::ComputeShader, str);
+
+            NOT_IMPL_ASSERT;
+        }
+        void ToString(const Rendering::ShaderType& obj, std::string& to)
+        {
+        #define IF_RETURN(x) if(obj == x) {to = #x; return;}
+            // switch (obj)
+            {
+                IF_RETURN(Rendering::ShaderType::VertexShader);
+                IF_RETURN(Rendering::ShaderType::HullShader);
+                IF_RETURN(Rendering::ShaderType::TessellatorShader);
+                IF_RETURN(Rendering::ShaderType::DomainShader);
+                IF_RETURN(Rendering::ShaderType::GeometryShader);
+                IF_RETURN(Rendering::ShaderType::PixelShader);
+                IF_RETURN(Rendering::ShaderType::ComputeShader);
+            }
+            NOT_IMPL_ASSERT;
         }
         std::string ToString(const GameObjectType& obj)
         {

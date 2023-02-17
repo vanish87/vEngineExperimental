@@ -59,7 +59,7 @@ namespace vEngine
         VENGINE_API const json LoadJson(const std::filesystem::path path);
 
         VENGINE_API json ToJson(const std::filesystem::path& path);
-        VENGINE_API json ToJson(const UUID& uuid);
+        // VENGINE_API json ToJson(const UUID& uuid);
         VENGINE_API json ToJson(const GameObjectType& go_type);
         VENGINE_API json ToJson(const Rendering::ShaderType& shader_type);
         VENGINE_API json ToJson(const std::vector<char>& vector);
@@ -95,7 +95,7 @@ namespace vEngine
         json ToJson(const T& obj);
 
         VENGINE_API void FromJson(const json& j, std::filesystem::path& path);
-        VENGINE_API void FromJson(const json& j, UUID& uuid);
+        // VENGINE_API void FromJson(const json& j, UUID& uuid);
         VENGINE_API void FromJson(const json& j, GameObjectType& go_type);
         VENGINE_API void FromJson(const json& j, Rendering::ShaderType& shader_type);
         VENGINE_API void FromJson(const json& j, std::vector<char>& vector);
@@ -130,39 +130,10 @@ namespace vEngine
         template <typename T, typename = std::enable_if_t<!is_basic_json_type<T>::value, T>>
         void FromJson(const json& j, T& object);
 
-        template <typename T, typename = std::enable_if_t<std::is_integral<T>::value, T>>
-        std::string ToString(const T& obj);
-
-        template <typename T, typename = std::enable_if_t<std::is_integral<T>::value, T>>
-        const T FromString(const std::string& obj);
-
-        template <typename T, typename = std::enable_if_t<std::is_same<T, std::string>::value, T>>
-        std::string ToString(const std::string& obj);
-
-        template <typename T, typename = std::enable_if_t<std::is_same<T, std::string>::value, T>>
-        const std::string FromString(const std::string& obj);
-
-        template <typename T, typename = std::enable_if_t<std::is_same<T, Core::UUID>::value, T>>
-        std::string ToString(const Core::UUID& uuid);
-
-        template <typename T, typename = std::enable_if_t<std::is_same<T, Core::UUID>::value, T>>
-        const Core::UUID FromString(const std::string& obj);
-
-        template <typename T, typename = std::enable_if_t<std::is_same<T, Rendering::ShaderType>::value, T>>
-        std::string ToString(const Rendering::ShaderType& obj);
-
-        template <typename T, typename = std::enable_if_t<std::is_same<T, Rendering::ShaderType>::value, T>>
-        Rendering::ShaderType FromString(const std::string& obj);
-
-        template <typename T, typename = std::enable_if_t<std::is_same<T, GameObjectType>::value, T>>
-        std::string ToString(const GameObjectType& obj);
-
-        template <typename T, typename = std::enable_if_t<std::is_same<T, Core::GameObjectType>::value, T>>
-        Core::GameObjectType FromString(const std::string& obj);
     }  // namespace Core
 }  // namespace vEngine
 
-#include <vengine/data/from_to_string.inc>
+#include <vengine/data/from_to_string.hpp>
 #include <vengine/data/to_json.inc>
 #include <vengine/data/from_json.inc>
 
