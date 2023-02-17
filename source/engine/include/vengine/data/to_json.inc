@@ -29,15 +29,14 @@ namespace vEngine
                 case etype:                                                                        \
                 {                                                                                  \
                     auto sub = std::dynamic_pointer_cast<type>(go);                                \
-                    ResourceManager::GetInstance().UpdateReferencePath(go);                        \
                     auto path = ResourceManager::GetInstance().GetGameObjectPath(go->descriptor_); \
-                    SaveJson(ToJson(*sub.get()), path);             \
+                    SaveJson(ToJson(*sub.get()), path);                                            \
                 }                                                                                  \
                 break;
 
             auto go = std::dynamic_pointer_cast<GameObject>(ptr);
-            
             auto type = go->descriptor_.type;
+            
             if (type == GameObjectType::Component) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
             if (type == GameObjectType::Renderer) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
             if (type == GameObjectType::RendererComponent) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
