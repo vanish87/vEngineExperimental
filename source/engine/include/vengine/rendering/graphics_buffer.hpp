@@ -13,6 +13,7 @@
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
 #include <vengine/rendering/data_struct.hpp>
+#include <vengine/data/meta.hpp>
 
 namespace vEngine
 {
@@ -26,6 +27,17 @@ namespace vEngine
 		// template<typename T>
         class VENGINE_API GraphicsBuffer : public Core::GameObject
         {
+            public:
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        Core::GameObject::properties(),
+                        std::make_tuple(
+                            Core::property("buffer_descriptor", &GraphicsBuffer::buffer_descriptor_)
+                            )
+                    );
+                }
+
             public:
                 /// \brief brief constructor description.
                 GraphicsBuffer(const GraphicsBufferDescriptor& desc);

@@ -57,6 +57,7 @@ namespace vEngine
 
                 void Register(const GameObjectSharedPtr go, bool isDynamic = false);
                 void Unregister(const GameObjectSharedPtr go);
+                void SaveContext();
                 GameObjectSharedPtr FindOrLoad(const GameObjectDescriptor& desc);
 
             private:

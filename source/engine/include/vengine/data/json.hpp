@@ -33,11 +33,13 @@
 #include <vengine/core/resource_manager.hpp>
 #include <vengine/rendering/material.hpp>
 #include <vengine/rendering/texture.hpp>
+#include <vengine/rendering/graphics_buffer.hpp>
 
 #include <vengine/animation/animation_clip.hpp>
 #include <vengine/animation/animator.hpp>
 #include <vengine/animation/animator_component.hpp>
 #include <vengine/animation/joint.hpp>
+#include <vengine/animation/bone_component.hpp>
 
 namespace vEngine
 {
@@ -63,6 +65,7 @@ namespace vEngine
         VENGINE_API json ToJson(const std::filesystem::path& path);
         VENGINE_API json ToJson(const GameObjectType& go_type);
         VENGINE_API json ToJson(const Rendering::ShaderType& shader_type);
+        VENGINE_API json ToJson(const Rendering::GraphicsResourceType& type);
         VENGINE_API json ToJson(const std::vector<char>& vector);
 
         template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
@@ -98,6 +101,7 @@ namespace vEngine
         VENGINE_API void FromJson(const json& j, std::filesystem::path& path);
         VENGINE_API void FromJson(const json& j, GameObjectType& go_type);
         VENGINE_API void FromJson(const json& j, Rendering::ShaderType& shader_type);
+        VENGINE_API void FromJson(const json& j, Rendering::GraphicsResourceType& type);
         VENGINE_API void FromJson(const json& j, std::vector<char>& vector);
 
         template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>

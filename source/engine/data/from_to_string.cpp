@@ -16,8 +16,18 @@ namespace vEngine
 {
     namespace Core
     {
-        #define STRING_TO_ENUM(x, str) if(#x == str) {to = x; return;}
-        #define ENUM_TO_STRING(x, str) if(x == str)  {to = #x; return;}
+        #define STRING_TO_ENUM(x, str) \
+            if (#x == str)             \
+            {                          \
+                to = x;                \
+                return;                \
+            }
+        #define ENUM_TO_STRING(x, str) \
+            if (x == str)              \
+            {                          \
+                to = #x;               \
+                return;                \
+            }
 
         void ToString(const std::string& obj, std::string& to)
         {
@@ -27,61 +37,40 @@ namespace vEngine
         {
             to = obj;
         }
-        void FromString(const std::string& str, Rendering::ShaderType& to)
-        {
-            STRING_TO_ENUM(Rendering::ShaderType::VertexShader, str);
-            STRING_TO_ENUM(Rendering::ShaderType::HullShader, str);
-            STRING_TO_ENUM(Rendering::ShaderType::TessellatorShader, str);
-            STRING_TO_ENUM(Rendering::ShaderType::DomainShader, str);
-            STRING_TO_ENUM(Rendering::ShaderType::GeometryShader, str);
-            STRING_TO_ENUM(Rendering::ShaderType::PixelShader, str);
-            STRING_TO_ENUM(Rendering::ShaderType::ComputeShader, str);
-
-            NOT_IMPL_ASSERT;
-        }
-        void ToString(const Rendering::ShaderType& obj, std::string& to)
-        {
-                ENUM_TO_STRING(Rendering::ShaderType::VertexShader, obj);
-                ENUM_TO_STRING(Rendering::ShaderType::HullShader, obj);
-                ENUM_TO_STRING(Rendering::ShaderType::TessellatorShader, obj);
-                ENUM_TO_STRING(Rendering::ShaderType::DomainShader, obj);
-                ENUM_TO_STRING(Rendering::ShaderType::GeometryShader, obj);
-                ENUM_TO_STRING(Rendering::ShaderType::PixelShader, obj);
-                ENUM_TO_STRING(Rendering::ShaderType::ComputeShader, obj);
-            NOT_IMPL_ASSERT;
-        }
         void ToString(const GameObjectType& type, std::string& to)
         {
-                ENUM_TO_STRING(GameObjectType::GameObject, type);
-                ENUM_TO_STRING(GameObjectType::GameNode, type);
-                ENUM_TO_STRING(GameObjectType::Component, type);
-                ENUM_TO_STRING(GameObjectType::Transform, type);
-                ENUM_TO_STRING(GameObjectType::TransformComponent, type);
-                ENUM_TO_STRING(GameObjectType::Camera, type);
-                ENUM_TO_STRING(GameObjectType::CameraComponent, type);
-                ENUM_TO_STRING(GameObjectType::Light, type);
-                ENUM_TO_STRING(GameObjectType::LightComponent, type);
-                ENUM_TO_STRING(GameObjectType::Mesh, type);
-                ENUM_TO_STRING(GameObjectType::MeshComponent, type);
-                ENUM_TO_STRING(GameObjectType::Scene, type);
+            ENUM_TO_STRING(GameObjectType::GameObject, type);
+            ENUM_TO_STRING(GameObjectType::GameNode, type);
+            ENUM_TO_STRING(GameObjectType::Component, type);
+            ENUM_TO_STRING(GameObjectType::Transform, type);
+            ENUM_TO_STRING(GameObjectType::TransformComponent, type);
+            ENUM_TO_STRING(GameObjectType::Camera, type);
+            ENUM_TO_STRING(GameObjectType::CameraComponent, type);
+            ENUM_TO_STRING(GameObjectType::Light, type);
+            ENUM_TO_STRING(GameObjectType::LightComponent, type);
+            ENUM_TO_STRING(GameObjectType::Mesh, type);
+            ENUM_TO_STRING(GameObjectType::MeshComponent, type);
+            ENUM_TO_STRING(GameObjectType::Scene, type);
 
-                ENUM_TO_STRING(GameObjectType::Serializer, type);
+            ENUM_TO_STRING(GameObjectType::Serializer, type);
 
-                ENUM_TO_STRING(GameObjectType::Renderer, type);
-                ENUM_TO_STRING(GameObjectType::RendererComponent, type);
-                ENUM_TO_STRING(GameObjectType::MeshRenderer, type);
-                ENUM_TO_STRING(GameObjectType::MeshRendererComponent, type);
-                ENUM_TO_STRING(GameObjectType::Material, type);
-                ENUM_TO_STRING(GameObjectType::Texture, type);
-                ENUM_TO_STRING(GameObjectType::PipelineState, type);
-                ENUM_TO_STRING(GameObjectType::Shader, type);
+            ENUM_TO_STRING(GameObjectType::Renderer, type);
+            ENUM_TO_STRING(GameObjectType::RendererComponent, type);
+            ENUM_TO_STRING(GameObjectType::MeshRenderer, type);
+            ENUM_TO_STRING(GameObjectType::MeshRendererComponent, type);
+            ENUM_TO_STRING(GameObjectType::Material, type);
+            ENUM_TO_STRING(GameObjectType::Texture, type);
+            ENUM_TO_STRING(GameObjectType::PipelineState, type);
+            ENUM_TO_STRING(GameObjectType::Shader, type);
 
-                ENUM_TO_STRING(GameObjectType::Bone, type);
-                ENUM_TO_STRING(GameObjectType::BoneComponent, type);
-                ENUM_TO_STRING(GameObjectType::Joint, type);
-                ENUM_TO_STRING(GameObjectType::AnimationClip, type);
-                ENUM_TO_STRING(GameObjectType::Animator, type);
-                ENUM_TO_STRING(GameObjectType::AnimatorComponent, type);
+            ENUM_TO_STRING(GameObjectType::GraphicsBuffer, type);
+
+            ENUM_TO_STRING(GameObjectType::Bone, type);
+            ENUM_TO_STRING(GameObjectType::BoneComponent, type);
+            ENUM_TO_STRING(GameObjectType::Joint, type);
+            ENUM_TO_STRING(GameObjectType::AnimationClip, type);
+            ENUM_TO_STRING(GameObjectType::Animator, type);
+            ENUM_TO_STRING(GameObjectType::AnimatorComponent, type);
             NOT_IMPL_ASSERT;
         }
         void FromString(const std::string& str, GameObjectType& to)
@@ -119,5 +108,55 @@ namespace vEngine
 
             NOT_IMPL_ASSERT;
         }
-    }
-}
+    }  // namespace Core
+    namespace Rendering
+    {
+
+        void FromString(const std::string& str, ShaderType& to)
+        {
+            STRING_TO_ENUM(ShaderType::VertexShader, str);
+            STRING_TO_ENUM(ShaderType::HullShader, str);
+            STRING_TO_ENUM(ShaderType::TessellatorShader, str);
+            STRING_TO_ENUM(ShaderType::DomainShader, str);
+            STRING_TO_ENUM(ShaderType::GeometryShader, str);
+            STRING_TO_ENUM(ShaderType::PixelShader, str);
+            STRING_TO_ENUM(ShaderType::ComputeShader, str);
+
+            NOT_IMPL_ASSERT;
+        }
+        void ToString(const ShaderType& obj, std::string& to)
+        {
+            ENUM_TO_STRING(ShaderType::VertexShader, obj);
+            ENUM_TO_STRING(ShaderType::HullShader, obj);
+            ENUM_TO_STRING(ShaderType::TessellatorShader, obj);
+            ENUM_TO_STRING(ShaderType::DomainShader, obj);
+            ENUM_TO_STRING(ShaderType::GeometryShader, obj);
+            ENUM_TO_STRING(ShaderType::PixelShader, obj);
+            ENUM_TO_STRING(ShaderType::ComputeShader, obj);
+            NOT_IMPL_ASSERT;
+        }
+        void FromString(const std::string& str, GraphicsResourceType& to)
+        {
+            STRING_TO_ENUM(GraphicsResourceType::Index, str);
+            STRING_TO_ENUM(GraphicsResourceType::Vertex, str);
+            STRING_TO_ENUM(GraphicsResourceType::CBuffer, str);
+            STRING_TO_ENUM(GraphicsResourceType::TextureR, str);
+            STRING_TO_ENUM(GraphicsResourceType::TextureRW, str);
+            STRING_TO_ENUM(GraphicsResourceType::TextureW, str);
+            STRING_TO_ENUM(GraphicsResourceType::Depth, str);
+
+            NOT_IMPL_ASSERT;
+        }
+        void ToString(const GraphicsResourceType& obj, std::string& to)
+        {
+            ENUM_TO_STRING(GraphicsResourceType::Index, obj);
+            ENUM_TO_STRING(GraphicsResourceType::Vertex, obj);
+            ENUM_TO_STRING(GraphicsResourceType::CBuffer, obj);
+            ENUM_TO_STRING(GraphicsResourceType::TextureR, obj);
+            ENUM_TO_STRING(GraphicsResourceType::TextureRW, obj);
+            ENUM_TO_STRING(GraphicsResourceType::TextureW, obj);
+            ENUM_TO_STRING(GraphicsResourceType::Depth, obj);
+            NOT_IMPL_ASSERT;
+        }
+    }  // namespace Rendering
+}  // namespace vEngine

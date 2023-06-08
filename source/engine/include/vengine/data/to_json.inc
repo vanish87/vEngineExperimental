@@ -13,73 +13,18 @@ namespace vEngine
         json ToJson(const std::weak_ptr<T>& ptr)
         {
             auto shared = ptr.lock();
-            auto go = std::dynamic_pointer_cast<GameObject>(shared);
-            if (go != nullptr)
-            {
-                return ToJson(*go.get());
-            }
-            return json();
+            return ToJson(shared);
         }
 
 
         template <typename T>
         json ToJson(const std::shared_ptr<T>& ptr)
         {
-            #define CASE_AND_SAVE(etype, type)                                                     \
-                case etype:                                                                        \
-                {                                                                                  \
-                    auto sub = std::dynamic_pointer_cast<type>(go);                                \
-                    auto path = ResourceManager::GetInstance().GetGameObjectPath(go->descriptor_); \
-                    SaveJson(ToJson(*sub.get()), path);                                            \
-                }                                                                                  \
-                break;
 
             auto go = std::dynamic_pointer_cast<GameObject>(ptr);
-            auto type = go->descriptor_.type;
-            
-            if (type == GameObjectType::Component) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
-            if (type == GameObjectType::Renderer) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
-            if (type == GameObjectType::RendererComponent) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
-            switch (type)
-            {
-                CASE_AND_SAVE(GameObjectType::GameObject, GameObject);
-                CASE_AND_SAVE(GameObjectType::GameNode, GameNode);
-                CASE_AND_SAVE(GameObjectType::Transform, Transform);
-                CASE_AND_SAVE(GameObjectType::TransformComponent, TransformComponent);
-                CASE_AND_SAVE(GameObjectType::Camera, Camera);
-                CASE_AND_SAVE(GameObjectType::CameraComponent, CameraComponent);
-                CASE_AND_SAVE(GameObjectType::Light, Light);
-                CASE_AND_SAVE(GameObjectType::LightComponent, CameraComponent);
-                CASE_AND_SAVE(GameObjectType::Mesh, Mesh);
-                CASE_AND_SAVE(GameObjectType::MeshComponent, MeshComponent);
-                CASE_AND_SAVE(GameObjectType::Scene, Scene);
-
-                // CASE_AND_SAVE(GameObjectType::Serializer, Data::Serializer);
-
-                CASE_AND_SAVE(GameObjectType::MeshRenderer, Rendering::MeshRenderer);
-                CASE_AND_SAVE(GameObjectType::MeshRendererComponent, Rendering::MeshRendererComponent);
-                CASE_AND_SAVE(GameObjectType::Material, Rendering::Material);
-                CASE_AND_SAVE(GameObjectType::Texture, Rendering::Texture);
-                CASE_AND_SAVE(GameObjectType::PipelineState, Rendering::PipelineState);
-                CASE_AND_SAVE(GameObjectType::Shader, Rendering::Shader);
-
-
-                CASE_AND_SAVE(GameObjectType::Bone, Animation::Bone);
-                CASE_AND_SAVE(GameObjectType::BoneComponent, Animation::BoneComponent);
-                CASE_AND_SAVE(GameObjectType::Joint, Animation::Joint);
-                CASE_AND_SAVE(GameObjectType::AnimationClip, Animation::AnimationClip);
-                CASE_AND_SAVE(GameObjectType::Animator, Animation::Animator);
-                CASE_AND_SAVE(GameObjectType::AnimatorComponent, Animation::AnimatorComponent);
-                default:
-                    // PRINT(ToString(type));
-                    NOT_IMPL_ASSERT;
-                    break;
-            }
-
+            if (go == nullptr) return json();
             // only return GameObject info(as a reference) here
             return ToJson(*go.get());
-
-            #undef CASE_AND_SAVE
         }
 
         template <typename T>

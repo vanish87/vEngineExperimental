@@ -24,13 +24,20 @@ namespace vEngine
         void ToString(const std::string& obj, std::string& to);
         void FromString(const std::string& obj, std::string& to);
 
-        void ToString(const Rendering::ShaderType& obj, std::string& to);
-        void FromString(const std::string& obj, Rendering::ShaderType& to);
 
         void ToString(const GameObjectType& obj, std::string& to);
-        void FromString(const std::string& obj, Core::GameObjectType& to);
+        void FromString(const std::string& obj, GameObjectType& to);
+
 
     }  // namespace Core
+    namespace Rendering
+    {
+        void ToString(const ShaderType& obj, std::string& to);
+        void FromString(const std::string& obj, ShaderType& to);
+
+        void ToString(const GraphicsResourceType& obj, std::string& to);
+        void FromString(const std::string& obj, GraphicsResourceType& to);
+    }
 }  // namespace vEngine
 
 

@@ -17,6 +17,7 @@
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
 #include <vengine/core/context.hpp>
+#include <vengine/core/resource_manager.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -50,6 +51,7 @@ namespace vEngine
         auto obj = std::make_shared<type>(std::forward<Args>(args)...); \
         auto go = std::dynamic_pointer_cast<GameObject>(obj);           \
         go->descriptor_.Set("name", etype);                             \
+        ResourceManager::GetInstance().Register(obj);                   \
         return obj;                                                     \
     }
 
@@ -57,6 +59,7 @@ namespace vEngine
     if constexpr (Type == etype)                                                                        \
     {                                                                                                   \
         auto go = Context::GetInstance().GetRenderObjectFactory()->Create(std::forward<Args>(args)...); \
+        ResourceManager::GetInstance().Register(go);                                                   \
         go->descriptor_.Set("name", etype);                                                             \
         return std::dynamic_pointer_cast<type>(go);                                                     \
     }

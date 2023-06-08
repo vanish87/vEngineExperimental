@@ -199,6 +199,15 @@ namespace vEngine
         };
         struct GraphicsBufferDescriptor
         {
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        // GameObject::properties(),
+                        std::make_tuple(
+                            // Core::property("shaders", &PipelineStateDescriptor::shaders)
+                            Core::property("type", &GraphicsBufferDescriptor::type)));
+                            // Core::property("usage", &GraphicsBufferDescriptor::usage)));
+                };
                 GraphicsResourceType type;
                 GraphicsResourceUsage usage;
                 ElementLayout layout;

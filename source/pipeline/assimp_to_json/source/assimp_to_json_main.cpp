@@ -62,6 +62,7 @@ int main(int argc, char* argv[])
 
     auto scene = handler.LoadFromAssimp(input);
     ResourceManager::GetInstance().Save(scene, output);
+    ResourceManager::GetInstance().SaveContext();
     PRINT("Save to " << output.string());
     // auto j = ToJson(scene);
     // SaveJson(j, output);
@@ -70,9 +71,9 @@ int main(int argc, char* argv[])
 
     // auto path = ResourceLoader::GetInstance().GetFilePath("boblampclean.json");
     // Context::GetInstance().Clear();
-    auto path = output;
-    auto new_scene = ResourceManager::GetInstance().Load(output);
-    new_scene.reset();
+    // auto path = output;
+    // auto new_scene = ResourceManager::GetInstance().Load(output);
+    // new_scene.reset();
 
     ResourceManager::GetInstance().Deinit();
     Context::GetInstance().Deinit();
