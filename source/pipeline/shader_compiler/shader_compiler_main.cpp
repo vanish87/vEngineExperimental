@@ -83,5 +83,6 @@ int main(int argc, char* argv[])
     ResourceManager::GetInstance().Save(shader, output);
 
     ResourceManager::GetInstance().Deinit();
+    Context::GetInstance().Deinit();
     return 0;
 }
