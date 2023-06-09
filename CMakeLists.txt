@@ -1,5 +1,5 @@
 # cmake minium version required
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.8)
 
 # Linux Build Command
 # cmake -S . -B build_linux -DCMAKE_BUILD_TYPE=Debug
@@ -7,8 +7,9 @@ cmake_minimum_required(VERSION 3.13)
 
 if(APPLE)
     set(VENGINE_BUILD_STATIC ON)
-    set(VENGINE_BUILD_IOS OFF)
+    set(VENGINE_BUILD_IOS ON)
     set(CMAKE_OSX_ARCHITECTURES arm64)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "13.0")
 endif()
 
 if(WIN32)

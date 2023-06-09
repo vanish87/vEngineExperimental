@@ -35,7 +35,7 @@
  - (void)app_main_loop: (void*) view
  {
 	 //Trigger app main loop here
-	 AppleAppMain(view);
+	 AppleAppMain(view_);
  }
 - (void)viewDidLoad
 {
@@ -48,9 +48,10 @@
     mtkView.delegate = self;
     //------------------finish this
     // view_ = new MTK::View(mtkView, *device_);
-    // view_ = new MTK::View();
+    view_ = MTK::View::alloc();
+    view_->setDevice(device_);
 
-    // [self performSelectorInBackground:@selector(app_main_loop:) withObject:view_];
+     [self performSelectorInBackground:@selector(app_main_loop:) withObject:nil];
     //-----------------------------
 
     // self.device_ = MTL::CreateSystemDefaultDevice();
@@ -71,7 +72,7 @@
 - (void)dealloc
 {
     [super dealloc];
-    // delete device_;
+    //delete device_;
     device_ = nullptr;
 
 }
