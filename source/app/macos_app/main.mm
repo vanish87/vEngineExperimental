@@ -39,11 +39,10 @@ void AppleAppMain(void* wnd)
     configure.graphics_configure.height = 720;
     configure.graphics_configure.render_plugin_name = "metal_rendering_plugin";
 
-    vEngine::Core::Context::GetInstance().ConfigureWith(configure);
-    vEngine::Rendering::RenderEngine& re = vEngine::Core::Context::GetInstance().GetRenderEngine();
-    re.PrintInfo();
+    vEngine::Core::Context::GetInstance().SetConfigure(configure);
+    auto& re = vEngine::Core::Context::GetInstance().GetRenderEngine();
+    // re.PrintInfo();
 
-    AppleApp::ExampleApp app;
-    app.Init(wnd);
-    app.Run();
+    auto app = std::make_shared<AppleApp::ExampleApp>();
+    app->Run();
 }

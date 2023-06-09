@@ -7,9 +7,10 @@ message("${CMAKE_OSX_ARCHITECTURES}")
 
 set(RESOURCES
   Main.storyboard
-  ${CMAKE_SOURCE_DIR}/resources
+  # ${CMAKE_SOURCE_DIR}/resources
   # LaunchScreen.storyboard
 )
+message("${RESOURCES}")
 
 add_executable(${PROJECT_NAME} 
 	MACOSX_BUNDLE

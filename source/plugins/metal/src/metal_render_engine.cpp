@@ -1,6 +1,7 @@
 
 #include <vengine/rendering/metal_render_engine.hpp>
 #include <vengine/core/context.hpp>
+#include <vengine/core/window.hpp>
 
 namespace vEngine
 {
@@ -51,7 +52,7 @@ namespace vEngine
     )";
         void MetalRenderEngine::InitPipeline()
         {
-            auto window = Context::GetInstance().AppInstance().CurrentWindow();
+            auto window = Context::GetInstance().CurrentWindow();
             this->view_ = static_cast<MTK::View*>(window->WindowHandle());
             auto device = this->view_->device();
 
@@ -67,7 +68,7 @@ namespace vEngine
             MTL::Library* pLibrary = device->newLibrary(NS::String::string(shaderSrc, NS::UTF8StringEncoding), nullptr, &pError);
             if (!pLibrary)
             {
-                std::count << pError->localizedDescription()->utf8String() << std::endl;
+                std::cout << pError->localizedDescription()->utf8String() << std::endl;
                 assert(false);
             }
 
@@ -82,7 +83,7 @@ namespace vEngine
             this->current_pipeline_state_ = device->newRenderPipelineState(pDesc, &pError);
             if (!this->current_pipeline_state_)
             {
-                std::count << pError->localizedDescription()->utf8String() << std::endl;
+                std::cout << pError->localizedDescription()->utf8String() << std::endl;
                 assert(false);
             }
 
@@ -112,12 +113,12 @@ namespace vEngine
             vertex_buffer_->didModifyRange(NS::Range::Make(0, vertex_buffer_->length()));
             color_buffer_->didModifyRange(NS::Range::Make(0, color_buffer_->length()));
 
-            this->command_queue_ = device.makeCommandQueue();
+            this->command_queue_ = device->newCommandQueue();
         }
         void MetalRenderEngine::DeinitPipeline()
         {
             this->vertex_buffer_->release();
-            this->color_buffer->release();
+            this->color_buffer_->release();
             this->current_pipeline_state_->release();
             // this->device_->release();
         }
@@ -144,8 +145,8 @@ namespace vEngine
     }  // namespace Rendering
 }  // namespace vEngine
 
-extern "C"
-{
+// extern "C"
+// {
     void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
     {
         ptr = std::make_unique<vEngine::Rendering::MetalRenderEngine>();
@@ -154,4 +155,4 @@ extern "C"
     {
         ptr.reset();
     }
-}
+// }

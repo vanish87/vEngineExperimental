@@ -2,7 +2,8 @@
 #import "app_view_controller.hpp"
 #import "app_main.hpp"
 #import <engine.hpp>
-// #import <vengine/core/window.hpp>
+#include <Metal/Metal.hpp>
+#include <MetalKit/MTKView.hpp>
 
 
 @implementation AppViewController
@@ -41,13 +42,16 @@
     [super viewDidLoad];
     [self CreateViewControllerManully];
 
-    self.device_ = MTL::CreateSystemDefaultDevice();
+    device_ = MTL::CreateSystemDefaultDevice();
     NSAssert(device_, @"Metal is not supported on this device");
     MTKView *mtkView = (MTKView *)self.view;
     mtkView.delegate = self;
-    self.view_ = new MTK::View(mtkView, *device_);
+    //------------------finish this
+    // view_ = new MTK::View(mtkView, *device_);
+    // view_ = new MTK::View();
 
-    [self performSelectorInBackground:@selector(app_main_loop:) withObject:self.view_];
+    // [self performSelectorInBackground:@selector(app_main_loop:) withObject:view_];
+    //-----------------------------
 
     // self.device_ = MTL::CreateSystemDefaultDevice();
 
@@ -67,7 +71,7 @@
 - (void)dealloc
 {
     [super dealloc];
-    delete device_;
+    // delete device_;
     device_ = nullptr;
 
 }
