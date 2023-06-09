@@ -36,8 +36,8 @@ namespace vEngine
     }  // namespace Rendering
 }  // namespace vEngine
 
-// extern "C"
-// {
+extern "C"
+{
     METAL_RENDERING_PLUGIN_API void CreateGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr)
     {
         ptr = std::make_unique<vEngine::Rendering::MetalRenderObjectFactory>();
@@ -46,4 +46,4 @@ namespace vEngine
     {
         ptr.reset();
     }
-// }
+}

@@ -179,11 +179,11 @@ namespace vEngine
 }  // namespace vEngine
 
 #ifdef VENGINE_STATIC_LINK
-// extern "C"
-// {
+extern "C"
+{
     void CreateGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr);
     void DestoryGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr);
-// }
+}
 #endif
 
 #endif /* _VENGINE_CORE_GAME_OBJECT_FACTORY_HPP */

@@ -111,10 +111,10 @@ namespace vEngine
 //     VENGINE_API void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
 // }
 #ifdef VENGINE_STATIC_LINK
-// extern "C"
-// {
+extern "C"
+{
     void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
     void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
-// }
+}
 #endif
 #endif /* _VENGINE_RENDERING_RENDER_ENGINE_HPP */

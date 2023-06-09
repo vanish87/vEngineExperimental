@@ -148,22 +148,14 @@ namespace vEngine
     }  // namespace Rendering
 }  // namespace vEngine
 
-// extern "C"
-// {
-    void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
+extern "C"
+{
+    METAL_RENDERING_PLUGIN_API void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
     {
         ptr = std::make_unique<vEngine::Rendering::MetalRenderEngine>();
     }
-    void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
+    METAL_RENDERING_PLUGIN_API void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
     {
         ptr.reset();
     }
-    METAL_RENDERING_PLUGIN_API void CreateGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr)
-    {
-        ptr = std::make_unique<vEngine::Rendering::MetalRenderObjectFactory>();
-    }
-    METAL_RENDERING_PLUGIN_API void DestoryGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr)
-    {
-        ptr.reset();
-    }
-// }
+}
