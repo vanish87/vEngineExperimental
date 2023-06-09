@@ -19,6 +19,8 @@ aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/external external_source)
 # endif()
 
 add_library(${PROJECT_NAME} 
+    ${PROJECT_SOURCE_DIR}/include
+
     ${core_source}
     ${rendering_source}
     ${animation_source}

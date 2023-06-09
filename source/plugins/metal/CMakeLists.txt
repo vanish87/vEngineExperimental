@@ -16,7 +16,11 @@ aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src metal_source)
 
 # metal.cpp contains implementation
 # compiled as static/dynamic lib
-add_library(${PROJECT_NAME} ${metal_source})
+add_library(${PROJECT_NAME} 
+  ${PROJECT_SOURCE_DIR}/include
+
+  ${metal_source}
+)
 add_library(engine::metal_rendering_plugin ALIAS ${PROJECT_NAME})
 
 
