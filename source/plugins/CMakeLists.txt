@@ -1,5 +1,6 @@
 if(WIN32)
 	add_subdirectory(d3d11)
+	add_subdirectory(empty)
 endif()
 
 if(UNIX)
@@ -7,7 +8,6 @@ if(UNIX)
 		add_subdirectory(metal)
 	else()
 		add_subdirectory(opengl)
+		add_subdirectory(empty)
 	endif()
 endif()
-
-add_subdirectory(empty)

@@ -161,6 +161,7 @@ namespace vEngine
 
         void* LoadLibrary(const std::string lib_name)
         {
+            auto handle = nullptr;
             #ifdef DEBUG
             auto dll_name = VENGINE_SHARED_LIB_PREFIX + lib_name + VENGINE_SHARED_LIB_DEBUG_POSTFIX + VENGINE_SHARED_LIB_EXT;
             #else
@@ -168,20 +169,19 @@ namespace vEngine
             #endif
 
             #ifdef VENGINE_PLATFORM_WINDOWS
-            auto handle = ::LoadLibrary(dll_name.c_str());
+            handle = ::LoadLibrary(dll_name.c_str());
             if (!handle)
             {
                 PRINT_AND_BREAK("could not load the dynamic library");
             }
             #elif VENGINE_PLATFORM_UNIX
             dlerror();
-            auto handle = dlopen(dll_name.c_str(), RTLD_LAZY);
+            handle = dlopen(dll_name.c_str(), RTLD_LAZY);
             if (!handle)
             {
                 PRINT_AND_BREAK("Cannot open library: " + std::string(dlerror()));
             }
             #endif
-
             return handle;
         }
 
@@ -197,12 +197,13 @@ namespace vEngine
         template <typename T, typename F>
         void ProcessSharedFunction(const std::string func_name, void* handle, std::unique_ptr<T>& ptr)
         {
+            F function;
             #ifdef VENGINE_PLATFORM_WINDOWS
-            auto function = reinterpret_cast<F>(::GetProcAddress(reinterpret_cast<HMODULE>(handle), func_name.c_str()));
+            function = reinterpret_cast<F>(::GetProcAddress(reinterpret_cast<HMODULE>(handle), func_name.c_str()));
             #elif VENGINE_PLATFORM_UNIX
             // reset errors
             dlerror();
-            auto function = reinterpret_cast<F>(dlsym(handle, func_name.c_str()));
+            function = reinterpret_cast<F>(dlsym(handle, func_name.c_str()));
             auto dlsym_error = dlerror();
             if (dlsym_error)
             {
