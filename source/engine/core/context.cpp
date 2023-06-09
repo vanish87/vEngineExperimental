@@ -161,7 +161,6 @@ namespace vEngine
 
         void* LoadLibrary(const std::string lib_name)
         {
-            auto handle = nullptr;
             #ifdef DEBUG
             auto dll_name = VENGINE_SHARED_LIB_PREFIX + lib_name + VENGINE_SHARED_LIB_DEBUG_POSTFIX + VENGINE_SHARED_LIB_EXT;
             #else
@@ -169,18 +168,20 @@ namespace vEngine
             #endif
 
             #ifdef VENGINE_PLATFORM_WINDOWS
-            handle = ::LoadLibrary(dll_name.c_str());
+            auto handle = ::LoadLibrary(dll_name.c_str());
             if (!handle)
             {
                 PRINT_AND_BREAK("could not load the dynamic library");
             }
             #elif VENGINE_PLATFORM_UNIX
             dlerror();
-            handle = dlopen(dll_name.c_str(), RTLD_LAZY);
+            auto handle = dlopen(dll_name.c_str(), RTLD_LAZY);
             if (!handle)
             {
                 PRINT_AND_BREAK("Cannot open library: " + std::string(dlerror()));
             }
+            #else
+            auto handle = nullptr;
             #endif
             return handle;
         }

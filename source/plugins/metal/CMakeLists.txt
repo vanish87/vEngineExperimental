@@ -12,14 +12,11 @@ set(METAL_AS_FRAMEWORK OFF)
 # add_library(engine::metal_cpp ALIAS ${PROJECT_NAME})
 # set(single_header_file_dir ${CMAKE_CURRENT_SOURCE_DIR}/SingleHeader/include)
 # target_include_directories(${PROJECT_NAME} INTERFACE ${single_header_file_dir})
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src metal_source)
 
 # metal.cpp contains implementation
 # compiled as static/dynamic lib
-add_library(${PROJECT_NAME} 
-	src/metal.cpp
-	src/metal_render_engine.cpp
-	src/metal_render_object_factory.cpp
-	)
+add_library(${PROJECT_NAME} ${metal_source})
 add_library(engine::metal_rendering_plugin ALIAS ${PROJECT_NAME})
 
 

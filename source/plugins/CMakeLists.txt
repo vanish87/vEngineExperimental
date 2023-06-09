@@ -1,5 +1,6 @@
 if(WIN32)
 	add_subdirectory(d3d11)
+	add_subdirectory(opengl)
 	add_subdirectory(empty)
 endif()
 
