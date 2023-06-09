@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
     // std::string prefix = "C:/Users/vanis/Documents/Code/vEngineExperimental";
     // std::string prefix = "C:/Users/liyuan/Documents/Personal/vEngineExperimental";
     // input = prefix + "/resource/boblamp/boblampclean.md5mesh";
-    // output = prefix + "/resource/assimp/boblampclean.json";
+    // output = prefix + "/build_windows/resource/bin/assimp/boblampclean.json";
     // resource_src = prefix + "/resource";
     // resource_bin = prefix + "/build_windows/resource/bin";
 

@@ -13,18 +13,19 @@ namespace vEngine
         json ToJson(const std::weak_ptr<T>& ptr)
         {
             auto shared = ptr.lock();
-            return ToJson(shared);
+            auto go = std::dynamic_pointer_cast<GameObject>(shared);
+            return ToJson(go);
         }
 
 
         template <typename T>
         json ToJson(const std::shared_ptr<T>& ptr)
         {
-
-            auto go = std::dynamic_pointer_cast<GameObject>(ptr);
-            if (go == nullptr) return json();
+            // auto go = std::dynamic_pointer_cast<GameObject>(ptr);
+            // if (go == nullptr) return json();
             // only return GameObject info(as a reference) here
-            return ToJson(*go.get());
+            if(ptr == nullptr) return json();
+            return ToJson(*ptr.get());
         }
 
         template <typename T>
