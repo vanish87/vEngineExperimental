@@ -1,5 +1,8 @@
 
 #include <vengine/rendering/metal_render_engine.hpp>
+
+#include <METAL_RENDERING_PLUGIN_API.hpp>
+#include <vengine/rendering/metal_render_object_factory.hpp>
 #include <vengine/core/context.hpp>
 #include <vengine/core/window.hpp>
 
@@ -152,6 +155,14 @@ namespace vEngine
         ptr = std::make_unique<vEngine::Rendering::MetalRenderEngine>();
     }
     void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr)
+    {
+        ptr.reset();
+    }
+    METAL_RENDERING_PLUGIN_API void CreateGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr)
+    {
+        ptr = std::make_unique<vEngine::Rendering::MetalRenderObjectFactory>();
+    }
+    METAL_RENDERING_PLUGIN_API void DestoryGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr)
     {
         ptr.reset();
     }
