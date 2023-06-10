@@ -69,6 +69,8 @@ namespace vEngine
         /// \brief E constant
         float const E = 2.718281828f;
 
+        /// \brief float Epsilon constant
+        float const Epsilon = 1.192092896e-07f;
         //=================================================
         // float related functions
 
