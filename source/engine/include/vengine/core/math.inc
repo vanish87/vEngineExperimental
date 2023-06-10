@@ -423,6 +423,7 @@ namespace vEngine
         template <typename T>
         T Norm(const T& value)
         {
+            UNUSED_PARAMETER(value);
             return nullptr;
         }
 
