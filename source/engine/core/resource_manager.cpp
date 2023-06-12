@@ -160,7 +160,75 @@ namespace vEngine
                     NOT_IMPL_ASSERT;
                     break;
             }
-#undef CASE_AND_SAVE
+            #undef CASE_AND_SAVE
+        }
+        GameObjectSharedPtr ResourceManager::Load(const GameObjectDescriptor& desc)
+        {
+            #define CASE_AND_CREATE(ptr, etype, type)                                   \
+                case etype:                                                             \
+                {                                                                       \
+                    auto go = GameObjectFactory::Create<etype, type>();                 \
+                    auto path = ResourceManager::GetInstance().GetGameObjectPath(desc); \
+                    auto j = LoadJson(path);             \
+                    FromJson(j, *go.get());                                             \
+                    ptr = go;                                                           \
+                }                                                                       \
+                break;
+
+            #define CASE_AND_CREATE_ARG(ptr, etype, type, args)                         \
+                case etype:                                                             \
+                {                                                                       \
+                    auto go = GameObjectFactory::Create<etype, type>(args);             \
+                    auto path = ResourceManager::GetInstance().GetGameObjectPath(desc); \
+                    auto j = LoadJson(path);             \
+                    FromJson(j, *go.get());                                             \
+                    ptr = go;                                                           \
+                }                                                                       \
+                break;
+
+            GameObjectSharedPtr shared;
+
+            switch (desc.type)
+            {
+                CASE_AND_CREATE(shared, GameObjectType::GameObject, GameObject);
+                CASE_AND_CREATE(shared, GameObjectType::GameNode, GameNode);
+                // CASE_AND_CREATE(shared, GameObjectType::Component, GameNode);
+                CASE_AND_CREATE(shared, GameObjectType::Transform, Transform);
+                CASE_AND_CREATE(shared, GameObjectType::TransformComponent, TransformComponent);
+                CASE_AND_CREATE(shared, GameObjectType::Camera, Camera);
+                CASE_AND_CREATE(shared, GameObjectType::CameraComponent, CameraComponent);
+                CASE_AND_CREATE(shared, GameObjectType::Light, Light);
+                CASE_AND_CREATE(shared, GameObjectType::LightComponent, LightComponent);
+                CASE_AND_CREATE(shared, GameObjectType::Mesh, Mesh);
+                CASE_AND_CREATE(shared, GameObjectType::MeshComponent, MeshComponent);
+                CASE_AND_CREATE(shared, GameObjectType::Scene, Scene);
+                
+                // CASE_AND_CREATE(shared, GameObjectType::Serializer, Data::Serializer);
+
+
+                // CASE_AND_CREATE(shared, GameObjectType::Renderer, Rendering::Renderer);
+                CASE_AND_CREATE(shared, GameObjectType::MeshRenderer, Rendering::MeshRenderer);
+                CASE_AND_CREATE(shared, GameObjectType::MeshRendererComponent, Rendering::MeshRendererComponent);
+                CASE_AND_CREATE(shared, GameObjectType::Material, Rendering::Material);
+                CASE_AND_CREATE_ARG(shared, GameObjectType::Texture, Rendering::Texture, Rendering::TextureDescriptor::Default());
+                CASE_AND_CREATE_ARG(shared, GameObjectType::PipelineState, Rendering::PipelineState, Rendering::PipelineStateDescriptor::Default());
+                CASE_AND_CREATE(shared, GameObjectType::Shader, Rendering::Shader);
+
+                CASE_AND_CREATE(shared, GameObjectType::Bone, Animation::Bone);
+                CASE_AND_CREATE(shared, GameObjectType::BoneComponent, Animation::BoneComponent);
+                CASE_AND_CREATE(shared, GameObjectType::Joint, Animation::Joint);
+                CASE_AND_CREATE(shared, GameObjectType::AnimationClip, Animation::AnimationClip);
+                CASE_AND_CREATE(shared, GameObjectType::Animator, Animation::Animator);
+                CASE_AND_CREATE(shared, GameObjectType::AnimatorComponent, Animation::AnimatorComponent);
+                default:
+                    NOT_IMPL_ASSERT;
+                    break;
+            }
+
+            return shared;
+
+            #undef CASE_AND_CREATE
+            #undef CASE_AND_CREATE_ARG
         }
         void ResourceManager::SaveContext()
         {
@@ -188,7 +256,20 @@ namespace vEngine
             GameObjectDescriptor desc;
             FromJson(j["meta"], desc);
 
-            return CreateAndLoadByDesc<GameObject>(desc);
+            return this->FindOrLoad(desc);
+        }
+
+        GameObjectSharedPtr ResourceManager::FindOrLoad(const GameObjectDescriptor& desc)
+        {
+            auto ret = this->runtime_objects_.find(desc.uuid);
+            if(ret == this->runtime_objects_.end())
+            {
+                return this->Load(desc);
+            }
+            else
+            {
+                return ret->second;
+            }
         }
 
         std::filesystem::path ResourceManager::GetGameObjectPath(const GameObjectDescriptor& desc)

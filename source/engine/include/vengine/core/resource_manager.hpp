@@ -60,6 +60,7 @@ namespace vEngine
                 void Unregister(const GameObjectSharedPtr go);
                 void AddPendingSave(const GameObjectSharedPtr go);
                 void Save(const GameObjectSharedPtr go);
+                GameObjectSharedPtr Load(const GameObjectDescriptor&  desc);
                 void SaveContext();
                 void FlushPending();
                 GameObjectSharedPtr FindOrLoad(const GameObjectDescriptor& desc);

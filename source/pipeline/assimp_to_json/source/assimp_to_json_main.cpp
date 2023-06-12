@@ -73,9 +73,9 @@ int main(int argc, char* argv[])
 
     // auto path = ResourceLoader::GetInstance().GetFilePath("boblampclean.json");
     // Context::GetInstance().Clear();
-    // auto path = output;
-    // auto new_scene = ResourceManager::GetInstance().Load(output);
-    // new_scene.reset();
+    auto path = output;
+    auto new_scene = ResourceManager::GetInstance().Load(output);
+    new_scene.reset();
 
     ResourceManager::GetInstance().Deinit();
     Context::GetInstance().Deinit();
