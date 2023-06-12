@@ -12,7 +12,11 @@ namespace vEngine
         template <typename T>
         json ToJson(const std::weak_ptr<T>& ptr)
         {
-            return ToJson(ptr.lock());
+            auto p = ptr.lock();
+            if(p == nullptr) return json();
+
+            auto go = std::dynamic_pointer_cast<GameObject>(p);
+            return ToJson(*go.get());
         }
 
 
@@ -23,6 +27,7 @@ namespace vEngine
             // if(byValue) return ToJson(*ptr.get());
 
             auto go = std::dynamic_pointer_cast<GameObject>(ptr);
+            ResourceManager::GetInstance().AddPendingSave(go);
             return ToJson(*go.get());
         }
 

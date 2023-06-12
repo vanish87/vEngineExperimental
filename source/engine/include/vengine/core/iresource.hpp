@@ -20,7 +20,7 @@ namespace vEngine
     {
         struct ResourceDescriptor
         {
-                std::function<GameObjectSharedPtr()> on_load_call_back;
+                std::function<void()> on_load_call_back;
 
                 // std::function<GameObjectSharedPtr()> on_load_call_back;
         };

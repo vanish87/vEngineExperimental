@@ -78,20 +78,92 @@ namespace vEngine
         // Save to a None-Context folder
         void ResourceManager::Save(const GameObjectSharedPtr go, const std::filesystem::path path)
         {
-            this->UpdateReferencePath(go);
             auto j = ToJson(go);
             SaveJson(j, path);
         }
-        void ResourceManager::SaveContext()
+        void ResourceManager::AddPendingSave(const GameObjectSharedPtr go)
         {
-            #define CASE_AND_SAVE(etype, type)                                                     \
-                case etype:                                                                        \
-                {                                                                                  \
-                    auto sub = std::dynamic_pointer_cast<type>(go);                                \
-                    SaveJson(ToJson(*sub.get()), path);                                            \
-                }                                                                                  \
+            const auto k = go->descriptor_.uuid;
+            const auto v = go;
+            if(this->pending_uuids_.find(k) != this->pending_uuids_.end()) return;
+
+            this->UpdateReferencePath(v);
+            this->pending_uuids_.insert(k);
+            this->pending_objects_.push(v);
+        }
+        void ResourceManager::FlushPending()
+        {
+            auto count = 0;
+            while (!this->pending_objects_.empty())
+            {
+                const auto go = this->pending_objects_.top();
+                this->pending_objects_.pop();
+                // ResourceDescriptor desc;
+                // desc.on_load_call_back =([&]()
+                // {
+                    this->Save(go);
+                // });
+                // this->LoadAsync(desc);
+                count++;
+            }
+            PRINT("The num of pending objects saved " << count);
+        }
+        void ResourceManager::Save(const GameObjectSharedPtr go)
+        {
+            #define CASE_AND_SAVE(etype, type)                      \
+                case etype:                                         \
+                {                                                   \
+                    auto sub = std::dynamic_pointer_cast<type>(go); \
+                    SaveJson(ToJson(*sub.get()), path);             \
+                }                                                   \
                 break;
 
+            auto type = go->descriptor_.type;
+            auto path = this->GetGameObjectPath(go->descriptor_);
+
+            if (type == GameObjectType::Component) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
+            if (type == GameObjectType::Renderer) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
+            if (type == GameObjectType::RendererComponent) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
+            switch (type)
+            {
+                CASE_AND_SAVE(GameObjectType::GameObject, GameObject);
+                CASE_AND_SAVE(GameObjectType::GameNode, GameNode);
+                CASE_AND_SAVE(GameObjectType::Transform, Transform);
+                CASE_AND_SAVE(GameObjectType::TransformComponent, TransformComponent);
+                CASE_AND_SAVE(GameObjectType::Camera, Camera);
+                CASE_AND_SAVE(GameObjectType::CameraComponent, CameraComponent);
+                CASE_AND_SAVE(GameObjectType::Light, Light);
+                CASE_AND_SAVE(GameObjectType::LightComponent, CameraComponent);
+                CASE_AND_SAVE(GameObjectType::Mesh, Mesh);
+                CASE_AND_SAVE(GameObjectType::MeshComponent, MeshComponent);
+                CASE_AND_SAVE(GameObjectType::Scene, Scene);
+
+                // CASE_AND_SAVE(GameObjectType::Serializer, Data::Serializer);
+
+                CASE_AND_SAVE(GameObjectType::MeshRenderer, Rendering::MeshRenderer);
+                CASE_AND_SAVE(GameObjectType::MeshRendererComponent, Rendering::MeshRendererComponent);
+                CASE_AND_SAVE(GameObjectType::Material, Rendering::Material);
+                CASE_AND_SAVE(GameObjectType::Texture, Rendering::Texture);
+                CASE_AND_SAVE(GameObjectType::PipelineState, Rendering::PipelineState);
+                CASE_AND_SAVE(GameObjectType::Shader, Rendering::Shader);
+
+                CASE_AND_SAVE(GameObjectType::GraphicsBuffer, Rendering::GraphicsBuffer);
+
+                CASE_AND_SAVE(GameObjectType::Bone, Animation::Bone);
+                CASE_AND_SAVE(GameObjectType::BoneComponent, Animation::BoneComponent);
+                CASE_AND_SAVE(GameObjectType::Joint, Animation::Joint);
+                CASE_AND_SAVE(GameObjectType::AnimationClip, Animation::AnimationClip);
+                CASE_AND_SAVE(GameObjectType::Animator, Animation::Animator);
+                CASE_AND_SAVE(GameObjectType::AnimatorComponent, Animation::AnimatorComponent);
+                default:
+                    // PRINT(ToString(type));
+                    NOT_IMPL_ASSERT;
+                    break;
+            }
+#undef CASE_AND_SAVE
+        }
+        void ResourceManager::SaveContext()
+        {
             for (const auto& rt : this->runtime_objects_)
             {
                 this->UpdateReferencePath(rt.second);
@@ -99,51 +171,8 @@ namespace vEngine
 
             for (const auto& rt : this->runtime_objects_)
             {
-                auto go = rt.second;
-                auto type = go->descriptor_.type;
-                auto path = this->GetGameObjectPath(go->descriptor_);
-
-                if (type == GameObjectType::Component) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
-                if (type == GameObjectType::Renderer) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
-                if (type == GameObjectType::RendererComponent) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
-                switch (type)
-                {
-                    CASE_AND_SAVE(GameObjectType::GameObject, GameObject);
-                    CASE_AND_SAVE(GameObjectType::GameNode, GameNode);
-                    CASE_AND_SAVE(GameObjectType::Transform, Transform);
-                    CASE_AND_SAVE(GameObjectType::TransformComponent, TransformComponent);
-                    CASE_AND_SAVE(GameObjectType::Camera, Camera);
-                    CASE_AND_SAVE(GameObjectType::CameraComponent, CameraComponent);
-                    CASE_AND_SAVE(GameObjectType::Light, Light);
-                    CASE_AND_SAVE(GameObjectType::LightComponent, CameraComponent);
-                    CASE_AND_SAVE(GameObjectType::Mesh, Mesh);
-                    CASE_AND_SAVE(GameObjectType::MeshComponent, MeshComponent);
-                    CASE_AND_SAVE(GameObjectType::Scene, Scene);
-
-                    // CASE_AND_SAVE(GameObjectType::Serializer, Data::Serializer);
-
-                    CASE_AND_SAVE(GameObjectType::MeshRenderer, Rendering::MeshRenderer);
-                    CASE_AND_SAVE(GameObjectType::MeshRendererComponent, Rendering::MeshRendererComponent);
-                    CASE_AND_SAVE(GameObjectType::Material, Rendering::Material);
-                    CASE_AND_SAVE(GameObjectType::Texture, Rendering::Texture);
-                    CASE_AND_SAVE(GameObjectType::PipelineState, Rendering::PipelineState);
-                    CASE_AND_SAVE(GameObjectType::Shader, Rendering::Shader);
-
-                    CASE_AND_SAVE(GameObjectType::GraphicsBuffer, Rendering::GraphicsBuffer);
-
-                    CASE_AND_SAVE(GameObjectType::Bone, Animation::Bone);
-                    CASE_AND_SAVE(GameObjectType::BoneComponent, Animation::BoneComponent);
-                    CASE_AND_SAVE(GameObjectType::Joint, Animation::Joint);
-                    CASE_AND_SAVE(GameObjectType::AnimationClip, Animation::AnimationClip);
-                    CASE_AND_SAVE(GameObjectType::Animator, Animation::Animator);
-                    CASE_AND_SAVE(GameObjectType::AnimatorComponent, Animation::AnimatorComponent);
-                    default:
-                        // PRINT(ToString(type));
-                        NOT_IMPL_ASSERT;
-                        break;
-                }
+                this->Save(rt.second);
             }
-            #undef CASE_AND_SAVE
         }
         void ResourceManager::Register(const GameObjectSharedPtr go, bool isDynamic)
         {

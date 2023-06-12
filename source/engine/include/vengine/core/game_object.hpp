@@ -110,5 +110,17 @@ namespace vEngine
         };
     }  // namespace Core
 }  // namespace vEngine
+namespace std
+{
+    template <>
+    struct hash<vEngine::Core::GameObjectSharedPtr>
+    {
+            vEngine::uint64_t operator()(vEngine::Core::GameObjectSharedPtr const& value) const
+            {
+                hash<vEngine::uint64_t> HashFunc;
+                return HashFunc(value->descriptor_.uuid.AsUint());
+            }
+    };
+}  // namespace std
 
 #endif /* _VENGINE_CORE_GAME_OBJECT_HPP */

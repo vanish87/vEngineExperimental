@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 
     auto scene = handler.LoadFromAssimp(input);
     ResourceManager::GetInstance().Save(scene, output);
-    ResourceManager::GetInstance().SaveContext();
+    ResourceManager::GetInstance().FlushPending();
     PRINT("Save to " << output.string());
     // auto j = ToJson(scene);
     // SaveJson(j, output);

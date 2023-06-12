@@ -13,7 +13,8 @@
 #pragma once
 
 #include <unordered_map>
-// #include <unordered_set>
+#include <stack>
+#include <unordered_set>
 #include <filesystem>
 
 #include <engine.hpp>
@@ -57,7 +58,10 @@ namespace vEngine
 
                 void Register(const GameObjectSharedPtr go, bool isDynamic = false);
                 void Unregister(const GameObjectSharedPtr go);
+                void AddPendingSave(const GameObjectSharedPtr go);
+                void Save(const GameObjectSharedPtr go);
                 void SaveContext();
+                void FlushPending();
                 GameObjectSharedPtr FindOrLoad(const GameObjectDescriptor& desc);
 
             private:
@@ -68,6 +72,8 @@ namespace vEngine
                 // std::unordered_set<std::filesystem::path> search_paths_;
 
                 std::unordered_map<UUID, GameObjectSharedPtr> runtime_objects_;
+                std::stack<GameObjectSharedPtr> pending_objects_;
+                std::unordered_set<UUID> pending_uuids_;
                 std::unordered_map<UUID, GameObjectSharedPtr> runtime_dynamic_objects_;// context related objects
         };
 
