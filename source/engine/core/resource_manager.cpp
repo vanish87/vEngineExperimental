@@ -8,6 +8,7 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/core/resource_manager.hpp>
+#include <algorithm>
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/core/game_node.hpp>
 #include <vengine/data/json.hpp>
@@ -285,7 +286,9 @@ namespace vEngine
             std::string illegal = ":\"\'<>%$*&+ ";
             for (auto c : illegal)
             {
-                std::replace(file_name.begin(), file_name.end(), c, '_');
+                // std::replace(file_name.begin(), file_name.end(), c, '_');
+                file_name.erase(std::remove(file_name.begin(), file_name.end(), c), file_name.end());
+                // std::erase(std::remove(file_name.begin(), file_name.end(), c), file_name.end());
             }
 
             // return root / desc.reference_path / file_name;
@@ -314,7 +317,7 @@ namespace vEngine
             std::string illegal = ":\"\'<>%$*&+ ";
             for (auto c : illegal)
             {
-                std::replace(path_string.begin(), path_string.end(), c, '_');
+                path_string.erase(std::remove(path_string.begin(), path_string.end(), c), path_string.end());
             }
             go->descriptor_.reference_path = root / path_string;
 
