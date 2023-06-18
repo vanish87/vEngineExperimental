@@ -231,18 +231,6 @@ namespace vEngine
             #undef CASE_AND_CREATE
             #undef CASE_AND_CREATE_ARG
         }
-        void ResourceManager::SaveContext()
-        {
-            for (const auto& rt : this->runtime_objects_)
-            {
-                this->UpdateReferencePath(rt.second);
-            }
-
-            for (const auto& rt : this->runtime_objects_)
-            {
-                this->Save(rt.second);
-            }
-        }
         void ResourceManager::Register(const GameObjectSharedPtr go, bool isDynamic)
         {
             UNUSED_PARAMETER(isDynamic);
