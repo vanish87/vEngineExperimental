@@ -38,7 +38,7 @@ namespace vEngine
             FromJson(j["meta"], desc);
 
             // 1. find by uuid
-            auto go = ResourceManager::GetInstance().FindOrLoad(desc);
+            auto go = ResourceManager::GetInstance().FindOrCreate(desc);
             ptr = std::dynamic_pointer_cast<T>(go);
             // if(ptr != nullptr) return;
             // CHECK_ASSERT(ptr == nullptr);

@@ -48,6 +48,7 @@ namespace vEngine
             ToString(desc.type, type);
             auto file_name = std::to_string(desc.uuid.AsUint()) + "_" + name + "_" + type + ".json";
             auto file_path = this->GetHierarchyPath();
+            file_path = "";
 
             auto path_string = (context_root / file_path / file_name).string();
             const std::string illegal = ":\"\'<>%$*&+ ";

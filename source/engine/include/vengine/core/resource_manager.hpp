@@ -42,18 +42,18 @@ namespace vEngine
                 void Load(const ResourceDescriptor& desc);
 
                 void SaveAsReference(const GameObjectSharedPtr go, const std::filesystem::path path);
-                GameObjectSharedPtr Load(const std::filesystem::path path);
+                GameObjectSharedPtr LoadAsReference(const std::filesystem::path path);
 
                 void Register(const GameObjectSharedPtr go, bool isDynamic = false);
                 void Unregister(const GameObjectSharedPtr go);
 
 
                 void SaveAsValue(const GameObjectSharedPtr go);
-                GameObjectSharedPtr Load(const GameObjectDescriptor&  desc);
+                GameObjectSharedPtr LoadAsValue(const GameObjectDescriptor& desc);
 
                 void AddPendingSave(const GameObjectSharedPtr go);
                 void FlushPending();
-                GameObjectSharedPtr FindOrLoad(const GameObjectDescriptor& desc);
+                GameObjectSharedPtr FindOrCreate(const GameObjectDescriptor& desc);
 
             private:
                 ResourceLoadingThread loading_thread_;

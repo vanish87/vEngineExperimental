@@ -162,25 +162,25 @@ namespace vEngine
             }
             #undef CASE_AND_SAVE
         }
-        GameObjectSharedPtr ResourceManager::Load(const GameObjectDescriptor& desc)
+        GameObjectSharedPtr ResourceManager::LoadAsValue(const GameObjectDescriptor& desc)
         {
-#define CASE_AND_CREATE(ptr, etype, type)                   \
-    case etype:                                             \
-    {                                                       \
-        auto go = GameObjectFactory::Create<etype, type>(); \
-        FromJson(j, *go.get());                             \
-        ptr = go;                                           \
-    }                                                       \
-    break;
+            #define CASE_AND_CREATE(ptr, etype, type)                   \
+                case etype:                                             \
+                {                                                       \
+                    auto go = GameObjectFactory::Create<etype, type>(); \
+                    FromJson(j, *go.get());                             \
+                    ptr = go;                                           \
+                }                                                       \
+                break;
 
-#define CASE_AND_CREATE_ARG(ptr, etype, type, args)             \
-    case etype:                                                 \
-    {                                                           \
-        auto go = GameObjectFactory::Create<etype, type>(args); \
-        FromJson(j, *go.get());                                 \
-        ptr = go;                                               \
-    }                                                           \
-    break;
+            #define CASE_AND_CREATE_ARG(ptr, etype, type, args)             \
+                case etype:                                                 \
+                {                                                           \
+                    auto go = GameObjectFactory::Create<etype, type>(args); \
+                    FromJson(j, *go.get());                                 \
+                    ptr = go;                                               \
+                }                                                           \
+                break;
 
             GameObjectSharedPtr shared;
             auto path = desc.AbsolutePath();
@@ -222,10 +222,11 @@ namespace vEngine
                     break;
             }
 
+            this->Register(shared);
             return shared;
 
-#undef CASE_AND_CREATE
-#undef CASE_AND_CREATE_ARG
+            #undef CASE_AND_CREATE
+            #undef CASE_AND_CREATE_ARG
         }
         void ResourceManager::Register(const GameObjectSharedPtr go, bool isDynamic)
         {
@@ -233,7 +234,7 @@ namespace vEngine
             // CHECK_ASSERT(this->runtime_objects_.find(go) == std::unordered_map::end());
             this->runtime_objects_[go->UUID()] = go;
         }
-        GameObjectSharedPtr ResourceManager::Load(const std::filesystem::path path)
+        GameObjectSharedPtr ResourceManager::LoadAsReference(const std::filesystem::path path)
         {
             if (!std::filesystem::exists(path)) return nullptr;
 
@@ -241,15 +242,15 @@ namespace vEngine
             GameObjectDescriptor desc;
             FromJson(j["meta"], desc);
 
-            return this->FindOrLoad(desc);
+            return this->FindOrCreate(desc);
         }
 
-        GameObjectSharedPtr ResourceManager::FindOrLoad(const GameObjectDescriptor& desc)
+        GameObjectSharedPtr ResourceManager::FindOrCreate(const GameObjectDescriptor& desc)
         {
             auto ret = this->runtime_objects_.find(desc.uuid);
             if (ret == this->runtime_objects_.end())
             {
-                return this->Load(desc);
+                return this->LoadAsValue(desc);
             }
             else
             {

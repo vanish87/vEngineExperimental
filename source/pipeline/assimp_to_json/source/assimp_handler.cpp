@@ -80,8 +80,8 @@ namespace vEngine
         void AssimpHandler::HandleMaterials(SceneSharedPtr scene, const aiScene* ai_scene)
         {
             auto shader_path = Context::GetInstance().CurrentConfigure().resource_bin / "shader";
-            auto vs = std::dynamic_pointer_cast<Shader>(ResourceManager::GetInstance().Load(shader_path / "vs" / "vs.json"));
-            auto ps = std::dynamic_pointer_cast<Shader>(ResourceManager::GetInstance().Load(shader_path / "ps" / "ps.json"));
+            auto vs = std::dynamic_pointer_cast<Shader>(ResourceManager::GetInstance().LoadAsReference(shader_path / "vs" / "vs.json"));
+            auto ps = std::dynamic_pointer_cast<Shader>(ResourceManager::GetInstance().LoadAsReference(shader_path / "ps" / "ps.json"));
 
             for (uint32_t mid = 0; mid < ai_scene->mNumMaterials; ++mid)
             {

@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
 
     ResourceManager::GetInstance().Init();
 
-    auto shader = std::dynamic_pointer_cast<Shader>(ResourceManager::GetInstance().Load(output));
+    auto shader = std::dynamic_pointer_cast<Shader>(ResourceManager::GetInstance().LoadAsReference(output));
     if (shader == nullptr) shader = GameObjectFactory::Create<GameObjectType::Shader, Shader>();
 
     shader->type = ProfileToShaderType(profile);
