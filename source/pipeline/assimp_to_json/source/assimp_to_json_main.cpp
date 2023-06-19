@@ -78,6 +78,7 @@ int main(int argc, char* argv[])
     // Context::GetInstance().Clear();
     auto path = output;
     auto new_scene = ResourceManager::GetInstance().LoadAsReference(path);
+    ResourceManager::GetInstance().PrintDebug();
     new_scene.reset();
 
     ResourceManager::GetInstance().Deinit();

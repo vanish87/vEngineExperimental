@@ -108,6 +108,13 @@ namespace vEngine
             }
             PRINT("The num of pending objects saved " << count);
         }
+        void ResourceManager::PrintDebug()
+        {
+            for(const auto& go : this->runtime_objects_)
+            {
+                PRINT(go.second->ReferencePath());
+            }
+        }
         void ResourceManager::SaveAsValue(const GameObjectSharedPtr go)
         {
             #define CASE_AND_SAVE(etype, type)                      \

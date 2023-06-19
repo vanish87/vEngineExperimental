@@ -33,6 +33,10 @@ namespace vEngine
         {
             return this->descriptor_.AbsolutePath();
         }
+        const std::filesystem::path GameObject::ReferencePath() const
+        {
+            return this->descriptor_.ReferencePath();
+        }
         const std::filesystem::path GameObject::GetHierarchyPath() const
         {
             return std::filesystem::path();

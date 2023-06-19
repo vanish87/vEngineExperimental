@@ -128,6 +128,7 @@ namespace vEngine
 
                 void UpdateReferencePath();
                 const std::filesystem::path AbsolutePath() const;
+                const std::filesystem::path ReferencePath() const;
 
                 constexpr static auto properties()
                 {
