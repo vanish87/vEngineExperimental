@@ -121,6 +121,8 @@ namespace vEngine
             auto type = go->Type();
             auto path = go->AbsolutePath();
 
+            // PRINT("Save to " << path);
+
             if (type == GameObjectType::Component) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
             if (type == GameObjectType::Renderer) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
             if (type == GameObjectType::RendererComponent) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
@@ -184,6 +186,7 @@ namespace vEngine
 
             GameObjectSharedPtr shared;
             auto path = desc.AbsolutePath();
+            // PRINT("Load " << path);
             auto j = LoadJson(path);
 
             switch (desc.type)
@@ -254,6 +257,7 @@ namespace vEngine
             }
             else
             {
+                PRINT(desc.uuid.AsUint() << " Already Loaded");
                 return ret->second;
             }
         }

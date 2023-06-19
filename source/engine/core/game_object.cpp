@@ -46,17 +46,18 @@ namespace vEngine
             auto name = desc.name;
             std::string type;
             ToString(desc.type, type);
-            auto file_name = std::to_string(desc.uuid.AsUint()) + "_" + name + "_" + type + ".json";
+            auto file_name = std::to_string(desc.uuid.AsUint()) + "_" + name + "_" + type;
+            auto file_ext = ".json";
             auto file_path = this->GetHierarchyPath();
-            file_path = "";
+            // file_path = "";
 
             auto path_string = (context_root / file_path / file_name).string();
-            const std::string illegal = ":\"\'<>%$*&+ ";
+            const std::string illegal = ":\"\'<>%$*&+ .";
             for (const auto& c : illegal)
             {
                 path_string.erase(std::remove(path_string.begin(), path_string.end(), c), path_string.end());
             }
-            this->descriptor_.reference_path = path_string;
+            this->descriptor_.reference_path = path_string + file_ext;
         }
         GameObject::~GameObject() {}
     }  // namespace Core

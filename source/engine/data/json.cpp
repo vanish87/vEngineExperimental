@@ -21,6 +21,7 @@ namespace vEngine
             if (!std::filesystem::exists(folder)) std::filesystem::create_directories(folder);
 
             std::ofstream outfile(path.string());
+            CHECK_AND_ASSERT(outfile.is_open(), "File Open Failed");
             outfile << std::setw(2) << j << std::endl;
             outfile.flush();
             outfile.close();
