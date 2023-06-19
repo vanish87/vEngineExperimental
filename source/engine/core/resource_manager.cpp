@@ -112,7 +112,7 @@ namespace vEngine
         {
             for(const auto& go : this->runtime_objects_)
             {
-                PRINT(go.second->ReferencePath());
+                PRINT(go.second->Name() + " " + go.second->ReferencePath().string());
             }
         }
         void ResourceManager::SaveAsValue(const GameObjectSharedPtr go)
