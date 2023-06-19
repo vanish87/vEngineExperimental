@@ -45,6 +45,9 @@ namespace vEngine
                             property("children", &GameNode::children_))
                     );
                 }
+                protected:
+                    const virtual std::filesystem::path GetHierarchyPath() const override;
+
             public:
                 // std::string name_;
 

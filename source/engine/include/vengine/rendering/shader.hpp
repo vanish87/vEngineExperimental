@@ -35,7 +35,7 @@ namespace vEngine
                         std::make_tuple(
                             // Core::property("path", &Shader::path), 
                             Core::property("type", &Shader::type),
-                            Core::property("content", &Shader::content)
+                            Core::property("source", &Shader::source)
                         )
                     );
                 };
@@ -45,7 +45,7 @@ namespace vEngine
                 Shader();
                 ~Shader() {}
 
-                std::vector<char> content;
+                std::vector<char> source;
                 ShaderType type;
 
 

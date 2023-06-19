@@ -95,7 +95,7 @@ namespace vEngine
                 aiString szPath;
                 if (AI_SUCCESS == ai_mat->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), szPath))
                 {
-                    auto texture_path = ResourceManager::GetInstance().GetFilePath(szPath.data);
+                    auto texture_path = ResourceManager::GetInstance().GetSourceFilePath(szPath.data);
                     if (!scene->HasTexture(texture_path.string()))
                     {
                         std::vector<byte> out;
@@ -247,11 +247,11 @@ namespace vEngine
                 // each animation is an AnimationClip
                 auto anim = ai_scene->mAnimations[i];
 
-                animation->descriptor_.name = anim->mName.data;
+                animation->SetName(anim->mName.data);
                 animation->Duration() = static_cast<float>(anim->mDuration);
                 animation->TicksPerSecond() = static_cast<float>(anim->mTicksPerSecond);
                 animation->TotalFrame() = Math::FloorToInt(anim->mDuration * anim->mTicksPerSecond);
-                PRINT("handling " << animation->descriptor_.name << " animation with " << animation->TotalFrame() << " frames")
+                PRINT("handling " << animation->Name() << " animation with " << animation->TotalFrame() << " frames")
                 for (uint32_t c = 0; c < anim->mNumChannels; ++c)
                 {
                     // Each channel defines node/bone it controls
@@ -262,7 +262,7 @@ namespace vEngine
                     PRINT("channel " << node->mNodeName.data << " has " << node->mNumPositionKeys << " Key values");
 
                     auto joint = GameObjectFactory::Create<GameObjectType::Joint, Joint>();
-                    joint->descriptor_.name = node->mNodeName.data;
+                    joint->SetName(node->mNodeName.data);
 
                     uint32_t k = 0;
                     for (k = 0; k < node->mNumPositionKeys; ++k)
@@ -282,7 +282,7 @@ namespace vEngine
                     }
 
                     // TODO: use unordered_map for fast access
-                    animation->AddJoint(joint->descriptor_.name, joint);
+                    animation->AddJoint(joint->Name(), joint);
                 }
 
                 scene->AddAnimation(animation);
@@ -310,11 +310,11 @@ namespace vEngine
             auto node = GameObjectFactory::Create<GameObjectType::GameNode, GameNode>();
             auto transform = GameObjectFactory::Create<GameObjectType::TransformComponent, TransformComponent>();
             node->AttachComponent(transform);
-            node->descriptor_.name = ai_node->mName.data;
+            node->SetName(ai_node->mName.data);
 
             this->HandleBoneNode(scene, ai_node, node);
 
-            node->descriptor_.name = ai_node->mName.data;
+            node->SetName(ai_node->mName.data);
             // set transformation here
             // auto transform = ai_node->mTransformation;
             // parent->AddChild(game_node);

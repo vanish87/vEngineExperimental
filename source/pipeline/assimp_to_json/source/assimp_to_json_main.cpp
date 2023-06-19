@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
     vEngine::Pipeline::AssimpHandler handler;
 
     auto scene = handler.LoadFromAssimp(input);
-    ResourceManager::GetInstance().Save(scene, output);
+    ResourceManager::GetInstance().SaveAsReference(scene, output);
     ResourceManager::GetInstance().FlushPending();
     PRINT("Save to " << output.string());
     // auto j = ToJson(scene);

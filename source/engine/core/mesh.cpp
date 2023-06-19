@@ -71,7 +71,7 @@ namespace vEngine
         void Mesh::SetBoneData(const std::string name, const int id, std::vector<VertexWeight> weights, float4x4 inverse_bind_pose_matrix)
         {
             auto bone = GameObjectFactory::Create<GameObjectType::BoneComponent, Animation::BoneComponent>();
-            bone->descriptor_.name = name;
+            bone->SetName(name);
             auto go = bone->GO();
             go->id_ = id;
             go->inverse_bind_pose_matrix_ = inverse_bind_pose_matrix;
@@ -114,10 +114,10 @@ namespace vEngine
                     }
                 }
             }
-            CHECK_ASSERT(this->bone_data_.find(bone->descriptor_.name) == this->bone_data_.end());
-            this->bone_data_[bone->descriptor_.name] = bone;
+            CHECK_ASSERT(this->bone_data_.find(bone->Name()) == this->bone_data_.end());
+            this->bone_data_[bone->Name()] = bone;
 
-            PRINT("Bone " << bone->descriptor_.name << " id " << id);
+            PRINT("Bone " << bone->Name() << " id " << id);
         }
 
         /// Create GPU related buffer

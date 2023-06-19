@@ -21,9 +21,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        GameNode::GameNode()
-        {
-        }
+        GameNode::GameNode() {}
         GameNode::~GameNode() {}
 
         // TransformSharedPtr GameNode::Transform()
@@ -69,6 +67,17 @@ namespace vEngine
         {
             game_node->parent_.reset();
             this->children_.remove(game_node);
+        }
+        const std::filesystem::path GameNode::GetHierarchyPath() const
+        {
+            std::filesystem::path path;
+            auto parent = this->parent_.lock();
+            while (parent != nullptr)
+            {
+                path = parent->Name() / path;
+                parent = parent->Parent().lock();
+            }
+            return path;
         }
     }  // namespace Core
 

@@ -75,12 +75,12 @@ int main(int argc, char* argv[])
     fin.seekg(0, std::ios_base::end);
     auto size = fin.tellg();
     fin.seekg(0, std::ios_base::beg);
-    shader->content.resize(size);
+    shader->source.resize(size);
 
-    fin.read(shader->content.data(), size);
+    fin.read(shader->source.data(), size);
     fin.close();
 
-    ResourceManager::GetInstance().Save(shader, output);
+    ResourceManager::GetInstance().SaveAsReference(shader, output);
     ResourceManager::GetInstance().FlushPending();
 
     ResourceManager::GetInstance().Deinit();

@@ -53,7 +53,7 @@ namespace vEngine
 
                     NOT_IMPL_ASSERT;
                     auto path = std::string("test");
-                    auto hr = D3DCompile(s.second->content.data(), s.second->content.size(), path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", target.c_str(), 0, 0, blob.GetAddressOf(),
+                    auto hr = D3DCompile(s.second->source.data(), s.second->source.size(), path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", target.c_str(), 0, 0, blob.GetAddressOf(),
                                          error.GetAddressOf());
                     if (error != nullptr)
                     {

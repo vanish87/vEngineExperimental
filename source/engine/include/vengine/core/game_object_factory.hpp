@@ -32,25 +32,24 @@ namespace vEngine
         ///
         class VENGINE_API GameObjectFactory
         {
-            // auto mesh = GameObjectFactory::Create<GameObjectType::Mesh>(p1, p2);
-            // auto custom = GameObjectFactory::Create<GameObjectType::Custom>(117);
-            // auto desc = TextureDescriptor;
-            // auto texture = GameObjectFactory::Create<GameObjectType::Texture>(desc);
+                // auto mesh = GameObjectFactory::Create<GameObjectType::Mesh>(p1, p2);
+                // auto custom = GameObjectFactory::Create<GameObjectType::Custom>(117);
+                // auto desc = TextureDescriptor;
+                // auto texture = GameObjectFactory::Create<GameObjectType::Texture>(desc);
             public:
                 virtual ~GameObjectFactory() {}
-                //all parameters should be passed by value with std::any to avoid confusion
-                //then use if(auto p = std::any_cast<int>(&parameter)) to check type cast
-                //When creating dynamic objects, parameter should be packed into one(like TextureDescriptor)
-                //then passing into Create function
+                // all parameters should be passed by value with std::any to avoid confusion
+                // then use if(auto p = std::any_cast<int>(&parameter)) to check type cast
+                // When creating dynamic objects, parameter should be packed into one(like TextureDescriptor)
+                // then passing into Create function
                 virtual GameObjectSharedPtr Create(std::any parameter = nullptr) = 0;
 
-                    // static_assert(std::is_base_of<GameObject, type>::value, "T must derived from GameObject");
+                // static_assert(std::is_base_of<GameObject, type>::value, "T must derived from GameObject");
 #define TYPE_AND_CREATE(etype, type)                                    \
     if constexpr (Type == etype)                                        \
     {                                                                   \
         auto obj = std::make_shared<type>(std::forward<Args>(args)...); \
-        auto go = std::dynamic_pointer_cast<GameObject>(obj);           \
-        go->descriptor_.Set("name", etype);                             \
+        obj->SetType(etype);                                             \
         ResourceManager::GetInstance().Register(obj);                   \
         return obj;                                                     \
     }
@@ -59,13 +58,13 @@ namespace vEngine
     if constexpr (Type == etype)                                                                        \
     {                                                                                                   \
         auto go = Context::GetInstance().GetRenderObjectFactory()->Create(std::forward<Args>(args)...); \
-        ResourceManager::GetInstance().Register(go);                                                   \
-        go->descriptor_.Set("name", etype);                                                             \
+        go->SetType(etype);                                                                             \
+        ResourceManager::GetInstance().Register(go);                                                    \
         return std::dynamic_pointer_cast<type>(go);                                                     \
     }
 
                 template <GameObjectType Type, typename T = GameObject, class... Args>
-                static std::shared_ptr<T> Create(Args&&... args)
+                constexpr static std::shared_ptr<T> Create(Args&&... args)
                 {
                     TYPE_AND_CREATE(GameObjectType::GameObject, GameObject);
                     TYPE_AND_CREATE(GameObjectType::GameNode, GameNode);
@@ -143,7 +142,6 @@ namespace vEngine
                 //     return nullptr;
                 // }
 
-
                 // static GameNodeSharedPtr Create(const GameNodeDescription& desc);
                 // static TransformNodeSharedPtr Create();
         };
@@ -173,7 +171,7 @@ namespace vEngine
                     return nullptr;
                 }
         };
-            
+
     }  // namespace Core
 
 }  // namespace vEngine

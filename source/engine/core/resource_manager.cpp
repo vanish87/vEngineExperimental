@@ -60,7 +60,7 @@ namespace vEngine
             desc.on_load_call_back();
         }
 
-        std::filesystem::path ResourceManager::GetFilePath(const std::string file_name)
+        std::filesystem::path ResourceManager::GetSourceFilePath(const std::string file_name)
         {
             auto config = Context::GetInstance().CurrentConfigure();
             auto root = config.resource_src;
@@ -77,18 +77,17 @@ namespace vEngine
         }
 
         // Save to a None-Context folder
-        void ResourceManager::Save(const GameObjectSharedPtr go, const std::filesystem::path path)
+        void ResourceManager::SaveAsReference(const GameObjectSharedPtr go, const std::filesystem::path path)
         {
-            auto j = ToJson(go);
-            SaveJson(j, path);
+            SaveJson(ToJson(go), path);
         }
         void ResourceManager::AddPendingSave(const GameObjectSharedPtr go)
         {
-            const auto k = go->descriptor_.uuid;
+            const auto k = go->UUID();
             const auto v = go;
-            if(this->pending_uuids_.find(k) != this->pending_uuids_.end()) return;
+            if (this->pending_uuids_.find(k) != this->pending_uuids_.end()) return;
 
-            this->UpdateReferencePath(v);
+            v->UpdateReferencePath();
             this->pending_uuids_.insert(k);
             this->pending_objects_.push(v);
         }
@@ -102,14 +101,14 @@ namespace vEngine
                 // ResourceDescriptor desc;
                 // desc.on_load_call_back =([&]()
                 // {
-                    this->Save(go);
+                this->SaveAsValue(go);
                 // });
                 // this->LoadAsync(desc);
                 count++;
             }
             PRINT("The num of pending objects saved " << count);
         }
-        void ResourceManager::Save(const GameObjectSharedPtr go)
+        void ResourceManager::SaveAsValue(const GameObjectSharedPtr go)
         {
             #define CASE_AND_SAVE(etype, type)                      \
                 case etype:                                         \
@@ -119,8 +118,8 @@ namespace vEngine
                 }                                                   \
                 break;
 
-            auto type = go->descriptor_.type;
-            auto path = this->GetGameObjectPath(go->descriptor_);
+            auto type = go->Type();
+            auto path = go->AbsolutePath();
 
             if (type == GameObjectType::Component) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
             if (type == GameObjectType::Renderer) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
@@ -165,29 +164,27 @@ namespace vEngine
         }
         GameObjectSharedPtr ResourceManager::Load(const GameObjectDescriptor& desc)
         {
-            #define CASE_AND_CREATE(ptr, etype, type)                                   \
-                case etype:                                                             \
-                {                                                                       \
-                    auto go = GameObjectFactory::Create<etype, type>();                 \
-                    auto path = ResourceManager::GetInstance().GetGameObjectPath(desc); \
-                    auto j = LoadJson(path);             \
-                    FromJson(j, *go.get());                                             \
-                    ptr = go;                                                           \
-                }                                                                       \
-                break;
+#define CASE_AND_CREATE(ptr, etype, type)                   \
+    case etype:                                             \
+    {                                                       \
+        auto go = GameObjectFactory::Create<etype, type>(); \
+        FromJson(j, *go.get());                             \
+        ptr = go;                                           \
+    }                                                       \
+    break;
 
-            #define CASE_AND_CREATE_ARG(ptr, etype, type, args)                         \
-                case etype:                                                             \
-                {                                                                       \
-                    auto go = GameObjectFactory::Create<etype, type>(args);             \
-                    auto path = ResourceManager::GetInstance().GetGameObjectPath(desc); \
-                    auto j = LoadJson(path);             \
-                    FromJson(j, *go.get());                                             \
-                    ptr = go;                                                           \
-                }                                                                       \
-                break;
+#define CASE_AND_CREATE_ARG(ptr, etype, type, args)             \
+    case etype:                                                 \
+    {                                                           \
+        auto go = GameObjectFactory::Create<etype, type>(args); \
+        FromJson(j, *go.get());                                 \
+        ptr = go;                                               \
+    }                                                           \
+    break;
 
             GameObjectSharedPtr shared;
+            auto path = desc.AbsolutePath();
+            auto j = LoadJson(path);
 
             switch (desc.type)
             {
@@ -203,9 +200,8 @@ namespace vEngine
                 CASE_AND_CREATE(shared, GameObjectType::Mesh, Mesh);
                 CASE_AND_CREATE(shared, GameObjectType::MeshComponent, MeshComponent);
                 CASE_AND_CREATE(shared, GameObjectType::Scene, Scene);
-                
-                // CASE_AND_CREATE(shared, GameObjectType::Serializer, Data::Serializer);
 
+                // CASE_AND_CREATE(shared, GameObjectType::Serializer, Data::Serializer);
 
                 // CASE_AND_CREATE(shared, GameObjectType::Renderer, Rendering::Renderer);
                 CASE_AND_CREATE(shared, GameObjectType::MeshRenderer, Rendering::MeshRenderer);
@@ -228,14 +224,14 @@ namespace vEngine
 
             return shared;
 
-            #undef CASE_AND_CREATE
-            #undef CASE_AND_CREATE_ARG
+#undef CASE_AND_CREATE
+#undef CASE_AND_CREATE_ARG
         }
         void ResourceManager::Register(const GameObjectSharedPtr go, bool isDynamic)
         {
             UNUSED_PARAMETER(isDynamic);
             // CHECK_ASSERT(this->runtime_objects_.find(go) == std::unordered_map::end());
-            this->runtime_objects_[go->descriptor_.uuid] = go;
+            this->runtime_objects_[go->UUID()] = go;
         }
         GameObjectSharedPtr ResourceManager::Load(const std::filesystem::path path)
         {
@@ -251,7 +247,7 @@ namespace vEngine
         GameObjectSharedPtr ResourceManager::FindOrLoad(const GameObjectDescriptor& desc)
         {
             auto ret = this->runtime_objects_.find(desc.uuid);
-            if(ret == this->runtime_objects_.end())
+            if (ret == this->runtime_objects_.end())
             {
                 return this->Load(desc);
             }
@@ -260,78 +256,6 @@ namespace vEngine
                 return ret->second;
             }
         }
-
-        std::filesystem::path ResourceManager::GetGameObjectPath(const GameObjectDescriptor& desc)
-        {
-            auto name = desc.name;
-            auto type = std::string();
-            ToString(desc.type, type);
-
-            auto config = Context::GetInstance().CurrentConfigure();
-            auto root = config.resource_bin;
-            auto file_name = std::to_string(desc.uuid.AsUint()) + "_" + name + "_" + type + ".json";
-
-            std::string illegal = ":\"\'<>%$*&+ ";
-            for (auto c : illegal)
-            {
-                // std::replace(file_name.begin(), file_name.end(), c, '_');
-                file_name.erase(std::remove(file_name.begin(), file_name.end(), c), file_name.end());
-                // std::erase(std::remove(file_name.begin(), file_name.end(), c), file_name.end());
-            }
-
-            // return root / desc.reference_path / file_name;
-            return root / config.context_name / file_name;
-        }
-        void ResourceManager::UpdateReferencePath(const GameObjectSharedPtr go)
-        {
-            // if (go->descriptor_.name == "GameObject")
-            // {
-            //     go->descriptor_.name = ToString(go->descriptor_.type);
-            // }
-
-            auto config = Context::GetInstance().CurrentConfigure();
-            auto root = std::filesystem::path(config.context_name);
-
-            std::filesystem::path path;
-            auto current = std::dynamic_pointer_cast<GameNode>(go);
-            auto gn = current;
-            while (current != nullptr && current->Parent().lock() != nullptr)
-            {
-                path = current->descriptor_.name / path;
-                current = current->Parent().lock();
-            }
-
-            auto path_string = path.string();
-            std::string illegal = ":\"\'<>%$*&+ ";
-            for (auto c : illegal)
-            {
-                path_string.erase(std::remove(path_string.begin(), path_string.end(), c), path_string.end());
-            }
-            go->descriptor_.reference_path = root / path_string;
-
-            // if (gn != nullptr)
-            // {
-            //     gn->ForEachChild<GameObject>([&](GameObjectSharedPtr node) { this->UpdateReferencePath(node); });
-            // }
-        }
-
-        // std::filesystem::path ResourceManager::GetFilePath(const std::string file_name)
-        // {
-        //     for (const auto& file : std::filesystem::recursive_directory_iterator{this->resource_root_})
-        //     {
-        //         if(file.is_regular_file() && file.path().filename() == file_name)
-        //         {
-        //             return file.path();
-        //         }
-        //     }
-
-        //     CHECK_AND_ASSERT(false, "Cannot find file/folder " << file_name);
-        //     return nullptr;
-        // }
-        // void ResourceManager::DumpCurrentPath()
-        // {
-        //     PRINT("Current Root Path: " << this->resource_root_.string());
-        // }
 
     }  // namespace Core
 
