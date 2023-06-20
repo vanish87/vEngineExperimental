@@ -234,7 +234,6 @@ namespace vEngine
                     NOT_IMPL_ASSERT;
                     break;
             }
-            // this->PrintDebug();
 
             return shared;
 
