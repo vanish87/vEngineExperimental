@@ -108,7 +108,7 @@ namespace vEngine
         void FromJson(const json& j, T& obj);
 
         template <typename T>
-        void FromJson([[maybe_unused]] const json& j, [[maybe_unused]] std::weak_ptr<T>& ptr);
+        void FromJson(const json& j, std::weak_ptr<T>& ptr);
 
         template <typename T>
         void FromJson(const json& j, std::shared_ptr<T>& ptr);

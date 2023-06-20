@@ -115,7 +115,7 @@ namespace vEngine
             {
                 std::string t;
                 ToString(go->Type(), t);
-                PRINT(go->GetUUID().AsUint() << " " << go.use_count() << " " << t << " " << go->ReferencePath().string());
+                PRINT(go->GetUUID().AsUint() << " " << go->Name() << " Ref Count " << go.use_count() << " " << t << " " << go->ReferencePath().string());
             }
         }
         void ResourceManager::SaveAsValue(const GameObjectSharedPtr go)
@@ -196,10 +196,8 @@ namespace vEngine
 
             GameObjectSharedPtr shared;
             auto path = desc.AbsolutePath();
-            // PRINT("Load " << path);
             auto j = LoadJson(path);
 
-            // this->PrintDebug();
 
             switch (desc.type)
             {

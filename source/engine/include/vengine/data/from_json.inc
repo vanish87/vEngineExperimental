@@ -12,20 +12,20 @@ namespace vEngine
         }
 
         template <typename T>
-        void FromJson([[maybe_unused]] const json& j, [[maybe_unused]] std::weak_ptr<T>& ptr)
+        void FromJson(const json& j, std::weak_ptr<T>& ptr)
         {
-            // UNUSED_PARAMETER(j);
-            // UNUSED_PARAMETER(ptr);
+            if(j.is_null())
+            {
+                PRINT("json is null, it should be a nullptr");
+                return;
+            }
+            GameObjectDescriptor desc;
+            FromJson(j["meta"], desc);
 
-            // auto shared = std::shared_ptr<T>();
-            // FromJson(j, shared);
-            // ptr = shared;
+            auto go = ResourceManager::GetInstance().FindOrCreate(desc);
+            ptr = std::dynamic_pointer_cast<T>(go);
         }
 
-        template <typename T>
-        std::shared_ptr<T> CreateAndLoadByDesc(const GameObjectDescriptor& desc)
-        {
-        }
         template <typename T>
         void FromJson(const json& j, std::shared_ptr<T>& ptr)
         {
