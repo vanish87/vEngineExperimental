@@ -29,7 +29,7 @@ namespace vEngine
         {
             return this->reference_path;
         }
-        const UUID GameObjectDescriptor::UUID() const
+        const UUID GameObjectDescriptor::GetUUID() const
         {
             return this->uuid;
         }

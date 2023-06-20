@@ -78,7 +78,7 @@ namespace vEngine
             protected:
                 const std::filesystem::path AbsolutePath() const;
                 const std::filesystem::path ReferencePath() const;
-                const UUID UUID() const;
+                const UUID GetUUID() const;
 
             public:
                 constexpr static auto properties()
@@ -106,7 +106,7 @@ namespace vEngine
                 virtual ~GameObject();
 
             public:
-                const UUID& UUID() const
+                const UUID GetUUID() const
                 {
                     return this->descriptor_.uuid;
                 }
@@ -118,7 +118,7 @@ namespace vEngine
                 {
                     return this->descriptor_.name;
                 }
-                const GameObjectType Type() const
+                GameObjectType Type() const
                 {
                     return this->descriptor_.type;
                 }
@@ -140,7 +140,7 @@ namespace vEngine
                     /// \brief conpare all element of vector
                     bool operator==(const GameObject& other) const noexcept
                     {
-                        return this->UUID() == other.UUID();
+                        return this->GetUUID() == other.GetUUID();
                     }
 
                 protected:
@@ -159,7 +159,7 @@ namespace std
             vEngine::uint64_t operator()(vEngine::Core::GameObjectSharedPtr const& value) const
             {
                 hash<vEngine::uint64_t> HashFunc;
-                return HashFunc(value->UUID().AsUint());
+                return HashFunc(value->GetUUID().AsUint());
             }
     };
 }  // namespace std

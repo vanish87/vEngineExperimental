@@ -83,7 +83,7 @@ namespace vEngine
         }
         void ResourceManager::AddPendingSave(const GameObjectSharedPtr go)
         {
-            const auto k = go->UUID();
+            const auto k = go->GetUUID();
             const auto v = go;
             if (this->pending_uuids_.find(k) != this->pending_uuids_.end()) return;
 
@@ -115,7 +115,7 @@ namespace vEngine
             {
                 std::string t;
                 ToString(go->Type(), t);
-                PRINT(go->UUID().AsUint() << " " << go.use_count() << " " << t << " " << go->ReferencePath().string());
+                PRINT(go->GetUUID().AsUint() << " " << go.use_count() << " " << t << " " << go->ReferencePath().string());
             }
         }
         void ResourceManager::SaveAsValue(const GameObjectSharedPtr go)
@@ -249,7 +249,7 @@ namespace vEngine
             // CHECK_ASSERT(this->runtime_objects_.find(go) == std::unordered_map::end());
             for (const auto& obj : this->runtime_objects_)
             {
-                if (obj->UUID() == go->UUID())
+                if (obj->GetUUID() == go->GetUUID())
                 {
                     CHECK_ASSERT(false);
                 }
@@ -271,7 +271,7 @@ namespace vEngine
         {
             for (const auto& obj : this->runtime_objects_)
             {
-                if (obj->UUID() == desc.UUID()) return obj;
+                if (obj->GetUUID() == desc.GetUUID()) return obj;
             }
             return this->LoadAsValue(desc);
         }
