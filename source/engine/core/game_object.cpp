@@ -29,6 +29,10 @@ namespace vEngine
         {
             return this->reference_path;
         }
+        const UUID GameObjectDescriptor::UUID() const
+        {
+            return this->uuid;
+        }
         const std::filesystem::path GameObject::AbsolutePath() const
         {
             return this->descriptor_.AbsolutePath();

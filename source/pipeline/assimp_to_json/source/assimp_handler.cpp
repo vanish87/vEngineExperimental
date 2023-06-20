@@ -247,7 +247,7 @@ namespace vEngine
                 // each animation is an AnimationClip
                 auto anim = ai_scene->mAnimations[i];
 
-                animation->SetName(anim->mName.data);
+                animation->SetName("Animation" + std::string(anim->mName.data));
                 animation->Duration() = static_cast<float>(anim->mDuration);
                 animation->TicksPerSecond() = static_cast<float>(anim->mTicksPerSecond);
                 animation->TotalFrame() = Math::FloorToInt(anim->mDuration * anim->mTicksPerSecond);

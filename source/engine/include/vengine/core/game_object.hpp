@@ -78,6 +78,7 @@ namespace vEngine
             protected:
                 const std::filesystem::path AbsolutePath() const;
                 const std::filesystem::path ReferencePath() const;
+                const UUID UUID() const;
 
             public:
                 constexpr static auto properties()
@@ -134,6 +135,13 @@ namespace vEngine
                 {
                     return std::make_tuple(property("meta", &GameObject::descriptor_));
                 }
+
+                public:
+                    /// \brief conpare all element of vector
+                    bool operator==(const GameObject& other) const noexcept
+                    {
+                        return this->UUID() == other.UUID();
+                    }
 
                 protected:
                     const virtual std::filesystem::path GetHierarchyPath() const;

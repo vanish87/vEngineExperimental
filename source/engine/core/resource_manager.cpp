@@ -106,13 +106,16 @@ namespace vEngine
                 // this->LoadAsync(desc);
                 count++;
             }
+            this->pending_uuids_.clear();
             PRINT("The num of pending objects saved " << count);
         }
         void ResourceManager::PrintDebug()
         {
             for(const auto& go : this->runtime_objects_)
             {
-                PRINT(go.second->Name() + " " + go.second->ReferencePath().string());
+                std::string t;
+                ToString(go->Type(), t);
+                PRINT(go->UUID().AsUint() << " " << go.use_count() << " " << t << " " << go->ReferencePath().string());
             }
         }
         void ResourceManager::SaveAsValue(const GameObjectSharedPtr go)
@@ -196,6 +199,8 @@ namespace vEngine
             // PRINT("Load " << path);
             auto j = LoadJson(path);
 
+            // this->PrintDebug();
+
             switch (desc.type)
             {
                 CASE_AND_CREATE(shared, GameObjectType::GameObject, GameObject);
@@ -231,8 +236,8 @@ namespace vEngine
                     NOT_IMPL_ASSERT;
                     break;
             }
+            // this->PrintDebug();
 
-            this->Register(shared);
             return shared;
 
             #undef CASE_AND_CREATE
@@ -242,7 +247,14 @@ namespace vEngine
         {
             UNUSED_PARAMETER(isDynamic);
             // CHECK_ASSERT(this->runtime_objects_.find(go) == std::unordered_map::end());
-            this->runtime_objects_[go->UUID()] = go;
+            for (const auto& obj : this->runtime_objects_)
+            {
+                if (obj->UUID() == go->UUID())
+                {
+                    CHECK_ASSERT(false);
+                }
+            }
+            this->runtime_objects_.push_back(go);
         }
         GameObjectSharedPtr ResourceManager::LoadAsReference(const std::filesystem::path path)
         {
@@ -257,16 +269,11 @@ namespace vEngine
 
         GameObjectSharedPtr ResourceManager::FindOrCreate(const GameObjectDescriptor& desc)
         {
-            auto ret = this->runtime_objects_.find(desc.uuid);
-            if (ret == this->runtime_objects_.end())
+            for (const auto& obj : this->runtime_objects_)
             {
-                return this->LoadAsValue(desc);
+                if (obj->UUID() == desc.UUID()) return obj;
             }
-            else
-            {
-                PRINT(desc.uuid.AsUint() << " Already Loaded");
-                return ret->second;
-            }
+            return this->LoadAsValue(desc);
         }
 
     }  // namespace Core

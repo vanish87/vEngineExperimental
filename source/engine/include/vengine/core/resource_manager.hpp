@@ -64,7 +64,7 @@ namespace vEngine
                 // std::unordered_map<std::string, std::filesystem::path> search_paths_;
                 // std::unordered_set<std::filesystem::path> search_paths_;
 
-                std::unordered_map<UUID, GameObjectSharedPtr> runtime_objects_;
+                std::vector<GameObjectSharedPtr> runtime_objects_;
                 std::stack<GameObjectSharedPtr> pending_objects_;
                 std::unordered_set<UUID> pending_uuids_;
         };
