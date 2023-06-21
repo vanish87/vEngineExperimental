@@ -6,7 +6,7 @@
 // #include <vengine/core/configure.hpp>
 #include <vengine/core/constants.hpp>
 #include <vengine/core/context.hpp>
-// #include <vengine/core/scene_manager.hpp>
+#include <vengine/core/resource_manager.hpp>
 #include <vengine/core/timer.hpp>
 // #include <vengine/rendering/render_engine.hpp>
 
@@ -29,11 +29,13 @@ namespace vEngine
 
             Context::GetInstance().Init();
             Context::GetInstance().RegisterAppInstance(this->shared_from_this());
+            ResourceManager::GetInstance().Init();
             this->OnInit();
         }
         void Application::Deinit()
         {
             this->OnDeinit();
+            ResourceManager::GetInstance().Deinit();
             Context::GetInstance().Deinit();
 
             // Destroy RenderEngine etc;

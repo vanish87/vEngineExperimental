@@ -41,47 +41,31 @@ int main(int argc, char* argv[])
     configure.resource_bin = resource_bin;
 
 
-#ifdef VENGINE_PLATFORM_WINDOWS
+    #ifdef VENGINE_PLATFORM_WINDOWS
     configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
-#else
+    #else
     configure.graphics_configure.render_plugin_name = "opengl_rendering_plugin";
-#endif
+    #endif
     Context::GetInstance().SetConfigure(configure);
 
     Context::GetInstance().Init();
     ResourceManager::GetInstance().Init();
-    // ResourceManager::GetInstance().SetRoot(configure.resource_src);
-    // ResourceLoader::GetInstance().AddSearchFolder("resource");
-    // ResourceManager::GetInstance().AddSearchFolder("shader");
-    // ResourceManager::GetInstance().AddSearchFolder("sponza");
-    // ResourceManager::GetInstance().AddSearchFolder("bob");
-    // ResourceManager::GetInstance().AddSearchFolder("boblamp");
-
-    // PRINT(resource_src.string());
-    // PRINT(resource_bin.string());
 
     vEngine::Pipeline::AssimpHandler handler;
-
     auto scene = handler.LoadFromAssimp(input);
     ResourceManager::GetInstance().SaveAsReference(scene, output);
     ResourceManager::GetInstance().FlushPending();
-    PRINT("Save to " << output.string());
-    // auto j = ToJson(scene);
-    // SaveJson(j, output);
-
+    // PRINT("Save to " << output.string());
     scene.reset();
-
     ResourceManager::GetInstance().Deinit();
 
-    ResourceManager::GetInstance().Init();
-    // auto path = ResourceLoader::GetInstance().GetFilePath("boblampclean.json");
-    // Context::GetInstance().Clear();
-    auto path = output;
-    auto new_scene = ResourceManager::GetInstance().LoadAsReference(path);
-    ResourceManager::GetInstance().PrintDebug();
-    new_scene.reset();
+    // ResourceManager::GetInstance().Init();
+    // auto path = output;
+    // auto new_scene = ResourceManager::GetInstance().LoadAsReference(path);
+    // ResourceManager::GetInstance().PrintDebug();
+    // new_scene.reset();
+    // ResourceManager::GetInstance().Deinit();
 
-    ResourceManager::GetInstance().Deinit();
     Context::GetInstance().Deinit();
 
     return 0;
