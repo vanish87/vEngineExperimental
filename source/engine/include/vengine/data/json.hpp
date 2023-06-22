@@ -66,6 +66,7 @@ namespace vEngine
         VENGINE_API json ToJson(const GameObjectType& go_type);
         VENGINE_API json ToJson(const Rendering::ShaderType& shader_type);
         VENGINE_API json ToJson(const Rendering::GraphicsResourceType& type);
+        VENGINE_API json ToJson(const Rendering::DataFormat& type);
         VENGINE_API json ToJson(const std::vector<char>& vector);
 
         template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
@@ -102,6 +103,7 @@ namespace vEngine
         VENGINE_API void FromJson(const json& j, GameObjectType& go_type);
         VENGINE_API void FromJson(const json& j, Rendering::ShaderType& shader_type);
         VENGINE_API void FromJson(const json& j, Rendering::GraphicsResourceType& type);
+        VENGINE_API void FromJson(const json& j, Rendering::DataFormat& type);
         VENGINE_API void FromJson(const json& j, std::vector<char>& vector);
 
         template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>

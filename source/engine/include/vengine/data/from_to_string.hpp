@@ -37,6 +37,9 @@ namespace vEngine
 
         void ToString(const GraphicsResourceType& obj, std::string& to);
         void FromString(const std::string& obj, GraphicsResourceType& to);
+
+        void ToString(const DataFormat& obj, std::string& to);
+        void FromString(const std::string& obj, DataFormat& to);
     }
 }  // namespace vEngine
 

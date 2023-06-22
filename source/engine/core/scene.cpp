@@ -383,6 +383,7 @@ namespace vEngine
                     c->OnBeginCamera();
 
                     auto cam = c->GO();
+                    if (cam->target == nullptr) cam->target = Context::GetInstance().GetRenderEngine()->back_buffer_;
                     auto frameBuffer = cam->target;
                     auto& re = Context::GetInstance().GetRenderEngine();
                     re->Bind(frameBuffer);

@@ -59,7 +59,7 @@ namespace vEngine
 
         MeshSharedPtr Default()
         {
-            static auto m = std::make_shared<Mesh>();
+            static auto m = GameObjectFactory::Create<GameObjectType::Mesh, Mesh>();
             return m;
         }
 

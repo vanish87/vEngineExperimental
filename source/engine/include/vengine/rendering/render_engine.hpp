@@ -54,6 +54,7 @@ namespace vEngine
                 
                 virtual void Bind(const TextureSharedPtr texture)
                 {
+                    // texture->PrepareData();
                     this->OnBind(texture);
                 }
                 virtual void OnBind(const TextureSharedPtr texture) = 0;

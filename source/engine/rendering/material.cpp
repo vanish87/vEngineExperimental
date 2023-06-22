@@ -48,10 +48,9 @@ namespace vEngine
         void Material::UpdateGPUResource()
         {
             Context::GetInstance().GetRenderEngine()->Bind(this->pipeline_state_);
-            if (this->textures_.size() > 0)
+            for (const auto& tex : this->textures_)
             {
-                auto tex = this->textures_[0];
-                Context::GetInstance().GetRenderEngine()->Bind(tex);
+                Context::GetInstance().GetRenderEngine()->Bind(tex.second);
             }
         }
 

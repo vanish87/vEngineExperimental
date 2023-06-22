@@ -29,8 +29,6 @@ namespace vEngine
             const auto path = ResourceManager::GetInstance().GetResourceBinFilePath(scene_name);
             auto go = ResourceManager::GetInstance().LoadAsReference(path);
             this->scene_ = std::dynamic_pointer_cast<Scene>(go);
-
-
         }
         void SceneManager::Init()
         {

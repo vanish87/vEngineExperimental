@@ -67,7 +67,7 @@ namespace vEngine
 
             scene->AddChild(gn);
 
-            // scene->AddCamera(camera);
+            // scene->AddCamera(camera->GO());
             // if (scene->cameras_.size() == 0)
             {
                 // auto cam = GameObjectFactory::Default<Camera>();

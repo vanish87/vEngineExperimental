@@ -49,6 +49,7 @@ namespace vEngine
             Material,
             Texture,
             GraphicsBuffer,
+            FrameBuffer,
             PipelineState,
             Shader,
 

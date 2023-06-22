@@ -158,5 +158,30 @@ namespace vEngine
             ENUM_TO_STRING(GraphicsResourceType::Depth, obj);
             NOT_IMPL_ASSERT;
         }
+        void FromString(const std::string& str, DataFormat& to)
+        {
+            STRING_TO_ENUM(DataFormat::Undefined, str);
+            STRING_TO_ENUM(DataFormat::RGBA32, str);
+            STRING_TO_ENUM(DataFormat::RGFloat, str);
+            STRING_TO_ENUM(DataFormat::RGBFloat, str);
+            STRING_TO_ENUM(DataFormat::RGBAFloat, str);
+            STRING_TO_ENUM(DataFormat::R32Int, str);
+            STRING_TO_ENUM(DataFormat::RGBAInt, str);
+            STRING_TO_ENUM(DataFormat::D24U8, str);
+
+            NOT_IMPL_ASSERT;
+        }
+        void ToString(const DataFormat& obj, std::string& to)
+        {
+            ENUM_TO_STRING(DataFormat::Undefined, obj);
+            ENUM_TO_STRING(DataFormat::RGBA32, obj);
+            ENUM_TO_STRING(DataFormat::RGFloat, obj);
+            ENUM_TO_STRING(DataFormat::RGBFloat, obj);
+            ENUM_TO_STRING(DataFormat::RGBAFloat, obj);
+            ENUM_TO_STRING(DataFormat::R32Int, obj);
+            ENUM_TO_STRING(DataFormat::RGBAInt, obj);
+            ENUM_TO_STRING(DataFormat::D24U8, obj);
+            NOT_IMPL_ASSERT;
+        }
     }  // namespace Rendering
 }  // namespace vEngine

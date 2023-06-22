@@ -64,7 +64,7 @@ namespace vEngine
             {
                 if (this->current_joints_.find(j.first) == this->current_joints_.end())
                 {
-                    this->current_joints_[j.first] = std::make_shared<Joint>();
+                    this->current_joints_[j.first] = GameObjectFactory::Create<GameObjectType::Joint, Joint>();
                     this->current_joints_[j.first]->position_keys_.emplace_back(0.0f, float3::Zero());
                     this->current_joints_[j.first]->rotation_keys_.emplace_back(0.0f, quaternion::Identity());
                     this->current_joints_[j.first]->scale_keys_.emplace_back(0.0f, float3::One());

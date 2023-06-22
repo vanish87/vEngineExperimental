@@ -54,6 +54,12 @@ namespace vEngine
             ToString(type, str);
             return str;
         }
+        json ToJson(const Rendering::DataFormat& type)
+        {
+            std::string str;
+            ToString(type, str);
+            return str;
+        }
         json ToJson(const GameObjectType& go_type)
         {
             std::string str;
@@ -69,6 +75,10 @@ namespace vEngine
             FromString(j.get<std::string>(), go_type);
         }
         void FromJson(const json& j, Rendering::GraphicsResourceType& type)
+        {
+            FromString(j.get<std::string>(), type);
+        }
+        void FromJson(const json& j, Rendering::DataFormat& type)
         {
             FromString(j.get<std::string>(), type);
         }
