@@ -34,20 +34,9 @@ namespace vEngine
         }
         void ResourceManager::Init()
         {
-            auto config = Context::GetInstance().CurrentConfigure();
-            auto path = config.resource_bin / config.context_name / "uuid.json";
-            if (!std::filesystem::exists(path)) return;
-
-            auto j = LoadJson(path);
-            FromJson(j, UUIDGenerator::GetInstance());
         }
         void ResourceManager::Deinit()
         {
-            auto config = Context::GetInstance().CurrentConfigure();
-            auto path = config.resource_bin / config.context_name / "uuid.json";
-            auto j = ToJson(UUIDGenerator::GetInstance());
-            SaveJson(j, path);
-
             this->runtime_objects_.clear();
         }
 
@@ -60,7 +49,7 @@ namespace vEngine
             desc.on_load_call_back();
         }
 
-        std::filesystem::path ResourceManager::GetSourceFilePath(const std::string file_name)
+        std::filesystem::path ResourceManager::GetResourceSrcFilePath(const std::string file_name)
         {
             auto config = Context::GetInstance().CurrentConfigure();
             auto root = config.resource_src;
@@ -68,7 +57,22 @@ namespace vEngine
             {
                 if (file.is_regular_file() && file.path().filename() == file_name)
                 {
-                    return file.path();
+                    return std::filesystem::absolute(file.path());
+                }
+            }
+
+            CHECK_AND_ASSERT(false, "Cannot find file/folder " << file_name);
+            return std::filesystem::path(file_name);
+        }
+        std::filesystem::path ResourceManager::GetResourceBinFilePath(const std::string file_name)
+        {
+            auto config = Context::GetInstance().CurrentConfigure();
+            auto root = config.resource_bin;
+            for (const auto& file : std::filesystem::recursive_directory_iterator{root})
+            {
+                if (file.is_regular_file() && file.path().filename() == file_name)
+                {
+                    return std::filesystem::absolute(file.path());
                 }
             }
 

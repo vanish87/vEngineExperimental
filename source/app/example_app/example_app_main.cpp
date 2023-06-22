@@ -3,8 +3,6 @@
 #include <vengine/core/application.hpp>
 #include <vengine/core/context.hpp>
 #include <vengine/core/scene_manager.hpp>
-#include <vengine/core/mesh.hpp>
-#include <vengine/rendering/mesh_renderer_component.hpp>
 
 using namespace vEngine::Core;
 
@@ -15,20 +13,13 @@ namespace Example
     class ExampleApp : public Application
     {
         private:
-            Mesh mesh;
             /// \brief user function for create
             /// 
             void OnInit() override
             {
                 PRINT("User Create");
 
-                // auto mp = std::make_shared<MeshRendererComponent>();
-                // mp->game_object_ = std::make_shared<MeshRenderer>();
-                // // auto mp = std::make_shared<MeshRendererComponent>();
-                // // auto mp = std::make_shared<MeshComponent>();
-                // SceneManager::GetInstance().AddToSceneRoot(mp);
-
-                // SceneManager::GetInstance().Load()
+                SceneManager::GetInstance().Load("boblampclean.json");
 
             }
             /// \brief user function for update

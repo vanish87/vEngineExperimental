@@ -13,6 +13,7 @@
 #include <vengine/core/window.hpp>
 #include <vengine/core/application.hpp>
 #include <vengine/core/game_object_factory.hpp>
+#include <vengine/data./json.hpp>
 // #include <vengine/core/resource_loader.hpp>
 
 // #include <vengine/data/meta.hpp>
@@ -48,6 +49,10 @@ namespace vEngine
         {
             this->LoadDll();
 
+            auto config = this->configure_;
+            auto path = config.resource_bin / config.context_name / "uuid.json";
+            if (std::filesystem::exists(path)) FromJson(LoadJson(path), UUIDGenerator::GetInstance());
+
             auto graphics = this->configure_.graphics_configure;
 
             if (graphics.output == Output::Window)
@@ -67,6 +72,10 @@ namespace vEngine
             this->Clear();
 
             this->window_.reset();
+
+            auto config = this->configure_;
+            auto path = config.resource_bin / config.context_name / "uuid.json";
+            SaveJson(ToJson(UUIDGenerator::GetInstance()), path);
 
             this->GetRenderEngine()->Deinit();
             this->render_engine_ptr_.reset();

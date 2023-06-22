@@ -37,7 +37,8 @@ namespace vEngine
                 void Update() override{};
 
             public:
-                std::filesystem::path GetSourceFilePath(const std::string file_name);
+                std::filesystem::path GetResourceSrcFilePath(const std::string file_name);
+                std::filesystem::path GetResourceBinFilePath(const std::string file_name);
                 void LoadAsync(const ResourceDescriptor& desc);
                 void Load(const ResourceDescriptor& desc);
 

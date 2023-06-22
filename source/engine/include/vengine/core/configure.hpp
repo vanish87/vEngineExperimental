@@ -36,8 +36,8 @@ namespace vEngine
         {
                 std::string app_name = "vEngineApp";
                 std::string context_name = "default_context";
-                std::filesystem::path resource_src;
-                std::filesystem::path resource_bin;
+                std::filesystem::path resource_src = "./resource";
+                std::filesystem::path resource_bin = "./resource";
                 GraphicsConfigure graphics_configure;
         };
 

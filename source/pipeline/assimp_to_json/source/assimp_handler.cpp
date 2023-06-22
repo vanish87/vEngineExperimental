@@ -95,7 +95,7 @@ namespace vEngine
                 aiString szPath;
                 if (AI_SUCCESS == ai_mat->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), szPath))
                 {
-                    auto texture_path = ResourceManager::GetInstance().GetSourceFilePath(szPath.data);
+                    auto texture_path = ResourceManager::GetInstance().GetResourceSrcFilePath(szPath.data);
                     if (!scene->HasTexture(texture_path.string()))
                     {
                         std::vector<byte> out;

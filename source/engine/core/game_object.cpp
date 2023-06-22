@@ -22,7 +22,7 @@ namespace vEngine
         const std::filesystem::path GameObjectDescriptor::AbsolutePath() const
         {
             auto config = Context::GetInstance().CurrentConfigure();
-            return config.resource_bin / this->reference_path;
+            return std::filesystem::absolute(config.resource_bin / this->reference_path);
         }
 
         const std::filesystem::path GameObjectDescriptor::ReferencePath() const
@@ -57,7 +57,7 @@ namespace vEngine
             auto file_name = std::to_string(desc.uuid.AsUint()) + "_" + name + "_" + type;
             auto file_ext = ".json";
             auto file_path = this->GetHierarchyPath();
-            // file_path = "";
+            file_path = "";
 
             auto path_string = (context_root / file_path / file_name).string();
             const std::string illegal = ":\"\'<>%$*&+ .";

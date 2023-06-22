@@ -7,6 +7,7 @@
 #include <vengine/core/constants.hpp>
 #include <vengine/core/context.hpp>
 #include <vengine/core/resource_manager.hpp>
+#include <vengine/core/scene_manager.hpp>
 #include <vengine/core/timer.hpp>
 // #include <vengine/rendering/render_engine.hpp>
 
@@ -28,8 +29,8 @@ namespace vEngine
             // SceneManager::GetInstance().Init();
 
             Context::GetInstance().Init();
-            Context::GetInstance().RegisterAppInstance(this->shared_from_this());
             ResourceManager::GetInstance().Init();
+            Context::GetInstance().RegisterAppInstance(this->shared_from_this());
             this->OnInit();
         }
         void Application::Deinit()
@@ -57,8 +58,7 @@ namespace vEngine
             this->OnUpdate();
 
             // update other context module
-            //  Context::Update();
-            // SceneManager::GetInstance().Update();
+            SceneManager::GetInstance().Update();
             // call here or PAINT event in Window Class
             // Context::GetInstance().GetRenderEngine().Update();
         }
