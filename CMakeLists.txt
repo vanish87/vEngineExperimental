@@ -73,8 +73,8 @@ endif()
 
 # include setting
 # set configure include path
-set(CONFIGURE_INCLUDE "${CMAKE_BINARY_DIR}/configure/include")
-set(API_EXPORT_DIR "${CMAKE_BINARY_DIR}/api")
+set(CONFIGURE_INCLUDE ${CMAKE_BINARY_DIR}/configure/include)
+set(API_EXPORT_DIR ${CMAKE_BINARY_DIR}/api)
 include_directories(include)
 include_directories(${CONFIGURE_INCLUDE})
 include_directories(${API_EXPORT_DIR})
