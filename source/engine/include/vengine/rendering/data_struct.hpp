@@ -178,6 +178,7 @@ namespace vEngine
                         Core::property("format", &TextureDescriptor::format),
                         Core::property("type", &TextureDescriptor::type),
                         Core::property("usage", &TextureDescriptor::usage),
+                        Core::property("sub_resource", &TextureDescriptor::resource),
                         Core::property("raw_data", &TextureDescriptor::raw_data)
                     );
                 };
