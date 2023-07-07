@@ -162,7 +162,7 @@ namespace vEngine
                     return std::make_tuple(
                         Core::property("offset", &GPUSubResource::offset), 
                         Core::property("stride", &GPUSubResource::stride), 
-                        Core::property("count", &GPUSubResource::count), 
+                        Core::property("count", &GPUSubResource::count) 
                     );
                 };
         };
