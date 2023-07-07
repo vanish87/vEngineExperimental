@@ -352,7 +352,6 @@ namespace vEngine
                 tdesc.dimension = TextureDimension::TD_2D;
                 tdesc.type = GraphicsResourceType::Depth;
                 tdesc.usage = GraphicsResourceUsage::GPU_ReadWrite;
-                tdesc.resource.data = nullptr;
                 auto depth_tex = GameObjectFactory::Create<GameObjectType::Texture, Texture>(tdesc);
 
                 this->back_buffer_->BindColor(backBufferTexture, 0);

@@ -15,6 +15,7 @@
 #include <engine.hpp>
 #include <vengine/rendering/data_struct.hpp>
 #include <vengine/rendering/data_format.hpp>
+#include <vengine/rendering/shared/data_cbuffer.hpp>
 #include <vengine/core/iruntime_module.hpp>
 #include <vengine/core/vector.hpp>
 
@@ -24,6 +25,12 @@ namespace vEngine
     {
         class VENGINE_API RenderEngine : public Core::IRuntimeModule
         {
+            public:
+                static GPUSubResource GetGPUSubResource(const TextureDescriptor& desc);
+                static GPUSubResource GetGPUSubResource(const vEngineCameraConstantBuffer& desc);
+                // static GPUSubResource GetGPUSubResource(const TextureDescriptor& desc);
+                // static GPUSubResource GetGPUSubResource(const TextureDescriptor& desc);
+
             public:
                 virtual ~RenderEngine()
                 {

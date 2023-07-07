@@ -145,9 +145,6 @@ namespace vEngine
                         tdesc.type = GraphicsResourceType::TextureR;
                         tdesc.usage = GraphicsResourceUsage::GPU_Read_Only;
                         tdesc.raw_data = out;
-                        tdesc.resource.data = out.data();
-                        tdesc.resource.count = out.size();
-                        tdesc.resource.pitch = sizeof(byte) * GetByteSize(format) * width;
                         tdesc.slot = GraphicsBufferSlot::Slot0;
 
                         auto tex = GameObjectFactory::Create<GameObjectType::Texture, Texture>(tdesc);

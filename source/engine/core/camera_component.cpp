@@ -31,14 +31,7 @@ namespace vEngine
             GraphicsBufferDescriptor cbuffer_desc;
             cbuffer_desc.type = GraphicsResourceType::CBuffer;
             cbuffer_desc.usage = GraphicsResourceUsage::CPU_Write_GPU_Read;
-            cbuffer_desc.resource.offset = 0;
-            cbuffer_desc.resource.stride = sizeof(vEngineCameraConstantBuffer);
-            cbuffer_desc.resource.count = 1;
-            cbuffer_desc.resource.total_byte_size = cbuffer_desc.resource.count * cbuffer_desc.resource.stride;
             cbuffer_desc.slot = static_cast<GraphicsBufferSlot>(vEngineConstantBufferPerCamera);
-
-            vEngineCameraConstantBuffer cb;
-            cbuffer_desc.resource.data = &cb;
 
             this->camera_constant_buffer_ = GameObjectFactory::Create<GameObjectType::GraphicsBuffer, GraphicsBuffer>(cbuffer_desc);
         }

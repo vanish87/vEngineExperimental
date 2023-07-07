@@ -150,37 +150,30 @@ namespace vEngine
         struct GPUSubResource
         {
                 uint32_t offset = 0;
-                uint32_t stride = 0; // size of individual element
-                uint64_t count = 0;  // the number of element
+                uint32_t stride = 0;  // size of individual element
+                uint64_t count = 0;   // the number of element
 
-                //can be calculated from parameters above
-                uint32_t pitch = 0;  // use for texture, which is the size of one row in texture
-                uint64_t total_byte_size = 0; // total data size
+                // can be calculated from parameters above
+                uint32_t pitch = 0;            // use for texture, which is the size of one row in texture
+                uint64_t total_byte_size = 0;  // total data size
                 void* data = nullptr;
-                constexpr static auto properties()
-                {
-                    return std::make_tuple(
-                        Core::property("offset", &GPUSubResource::offset), 
-                        Core::property("stride", &GPUSubResource::stride), 
-                        Core::property("count", &GPUSubResource::count) 
-                    );
-                };
+                // constexpr static auto properties()
+                // {
+                //     return std::make_tuple(
+                //         Core::property("offset", &GPUSubResource::offset),
+                //         Core::property("stride", &GPUSubResource::stride),
+                //         Core::property("count", &GPUSubResource::count)
+                //     );
+                // };
         };
         struct TextureDescriptor
         {
                 constexpr static auto properties()
                 {
-                    return std::make_tuple(
-                        Core::property("dimension", &TextureDescriptor::dimension), 
-                        Core::property("width", &TextureDescriptor::width), 
-                        Core::property("height", &TextureDescriptor::height),
-                        Core::property("depth", &TextureDescriptor::depth),
-                        Core::property("format", &TextureDescriptor::format),
-                        Core::property("type", &TextureDescriptor::type),
-                        Core::property("usage", &TextureDescriptor::usage),
-                        Core::property("sub_resource", &TextureDescriptor::resource),
-                        Core::property("raw_data", &TextureDescriptor::raw_data)
-                    );
+                    return std::make_tuple(Core::property("dimension", &TextureDescriptor::dimension), Core::property("width", &TextureDescriptor::width),
+                                           Core::property("height", &TextureDescriptor::height), Core::property("depth", &TextureDescriptor::depth),
+                                           Core::property("format", &TextureDescriptor::format), Core::property("type", &TextureDescriptor::type), Core::property("usage", &TextureDescriptor::usage),
+                                           Core::property("raw_data", &TextureDescriptor::raw_data));
                 };
                 TextureDimension dimension;
                 uint32_t width;
@@ -191,7 +184,7 @@ namespace vEngine
                 GraphicsResourceUsage usage;
                 std::vector<uint8_t> raw_data;
 
-                GPUSubResource resource;
+                // GPUSubResource resource;
                 GraphicsBufferSlot slot;
 
                 // std::vector<byte> raw_data;
@@ -219,19 +212,14 @@ namespace vEngine
                 constexpr static auto properties()
                 {
                     return std::tuple_cat(
-                        // GameObject::properties(),
                         std::make_tuple(
-                            // Core::property("shaders", &PipelineStateDescriptor::shaders)
-                            Core::property("type", &GraphicsBufferDescriptor::type)));
-                            // Core::property("usage", &GraphicsBufferDescriptor::usage)));
+                            Core::property("type", &GraphicsBufferDescriptor::type),
+                            Core::property("usage", &GraphicsBufferDescriptor::usage)));
                 };
                 GraphicsResourceType type;
                 GraphicsResourceUsage usage;
                 ElementLayout layout;
                 // DataFormat format;// undefined format for compute buffer
-                // std::vector<std::pair<
-
-                GPUSubResource resource;
                 GraphicsBufferSlot slot;
         };
 
@@ -254,8 +242,7 @@ namespace vEngine
                         // GameObject::properties(),
                         std::make_tuple(
                             // Core::property("shaders", &PipelineStateDescriptor::shaders)
-                            Core::property("rasterizer", &PipelineStateDescriptor::rasterizer_descriptor), 
-                            Core::property("depth_stencil", &PipelineStateDescriptor::depth_stencil_descriptor)));
+                            Core::property("rasterizer", &PipelineStateDescriptor::rasterizer_descriptor), Core::property("depth_stencil", &PipelineStateDescriptor::depth_stencil_descriptor)));
                 };
                 // similar design as https://docs.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_graphics_pipeline_state_desc
                 // std::unordered_map<ShaderType, std::filesystem::path> shaders;
