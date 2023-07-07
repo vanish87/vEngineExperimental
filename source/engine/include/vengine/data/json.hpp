@@ -22,24 +22,6 @@
 
 #include <vengine/core/game_object.hpp>
 #include <vengine/rendering/data_struct.hpp>
-#include <vengine/rendering/pipeline_state.hpp>
-#include <vengine/rendering/mesh_renderer_component.hpp>
-#include <vengine/core/mesh_component.hpp>
-#include <vengine/core/light.hpp>
-#include <vengine/core/light_component.hpp>
-#include <vengine/core/camera_component.hpp>
-#include <vengine/core/transform_component.hpp>
-#include <vengine/core/scene.hpp>
-#include <vengine/core/resource_manager.hpp>
-#include <vengine/rendering/material.hpp>
-#include <vengine/rendering/texture.hpp>
-#include <vengine/rendering/graphics_buffer.hpp>
-
-#include <vengine/animation/animation_clip.hpp>
-#include <vengine/animation/animator.hpp>
-#include <vengine/animation/animator_component.hpp>
-#include <vengine/animation/joint.hpp>
-#include <vengine/animation/bone_component.hpp>
 
 namespace vEngine
 {
@@ -67,6 +49,8 @@ namespace vEngine
         VENGINE_API json ToJson(const Rendering::ShaderType& shader_type);
         VENGINE_API json ToJson(const Rendering::GraphicsResourceType& type);
         VENGINE_API json ToJson(const Rendering::DataFormat& type);
+        VENGINE_API json ToJson(const Rendering::TextureDimension& dim);
+        VENGINE_API json ToJson(const Rendering::GraphicsResourceUsage& usage);
         VENGINE_API json ToJson(const std::vector<char>& vector);
 
         template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>
@@ -104,6 +88,8 @@ namespace vEngine
         VENGINE_API void FromJson(const json& j, Rendering::ShaderType& shader_type);
         VENGINE_API void FromJson(const json& j, Rendering::GraphicsResourceType& type);
         VENGINE_API void FromJson(const json& j, Rendering::DataFormat& type);
+        VENGINE_API void FromJson(const json& j, Rendering::TextureDimension& dim);
+        VENGINE_API void FromJson(const json& j, Rendering::GraphicsResourceUsage& usage);
         VENGINE_API void FromJson(const json& j, std::vector<char>& vector);
 
         template <typename T, typename = std::enable_if_t<is_basic_json_type<T>::value, T>, typename = void>

@@ -13,7 +13,24 @@
 #include <vengine/core/game_node.hpp>
 #include <vengine/data/json.hpp>
 
-// #include <vengine/animation/bone_component.hpp>
+#include <vengine/rendering/pipeline_state.hpp>
+#include <vengine/rendering/mesh_renderer_component.hpp>
+#include <vengine/core/mesh_component.hpp>
+#include <vengine/core/light.hpp>
+#include <vengine/core/light_component.hpp>
+#include <vengine/core/camera_component.hpp>
+#include <vengine/core/transform_component.hpp>
+#include <vengine/core/scene.hpp>
+#include <vengine/core/resource_manager.hpp>
+#include <vengine/rendering/material.hpp>
+#include <vengine/rendering/texture.hpp>
+#include <vengine/rendering/graphics_buffer.hpp>
+
+#include <vengine/animation/animation_clip.hpp>
+#include <vengine/animation/animator.hpp>
+#include <vengine/animation/animator_component.hpp>
+#include <vengine/animation/joint.hpp>
+#include <vengine/animation/bone_component.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.

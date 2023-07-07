@@ -28,7 +28,7 @@ namespace vEngine
             auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re.get());
             auto device = d3d_re->Device();
             D3D11_BUFFER_DESC d3d_desc;
-            d3d_desc.ByteWidth = static_cast<uint32_t>(desc.resource.total_size);
+            d3d_desc.ByteWidth = static_cast<uint32_t>(desc.resource.total_byte_size);
             d3d_desc.StructureByteStride = desc.resource.stride;
             d3d_desc.Usage = D3D11RenderEngine::ToD3DUsage(desc.usage);
             d3d_desc.BindFlags = D3D11RenderEngine::ToD3DBindFlag(desc.type);

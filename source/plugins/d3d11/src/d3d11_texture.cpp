@@ -36,7 +36,10 @@ namespace vEngine
                 switch (desc.dimension)
                 {
                     case TextureDimension::TD_1D:
-                        break;
+                    {
+                        NOT_IMPL_ASSERT;
+                    }
+                    break;
                     case TextureDimension::TD_2D:
                     {
                         D3D11_TEXTURE2D_DESC d3d_desc;
@@ -67,12 +70,15 @@ namespace vEngine
                     break;
                     case TextureDimension::TD_3D:
                     {
+                        NOT_IMPL_ASSERT;
                     }
                     break;
-                        break;
 
                     default:
-                        break;
+                    {
+                        NOT_IMPL_ASSERT;
+                    }
+                    break;
                 }
             }
         }

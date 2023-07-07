@@ -149,23 +149,36 @@ namespace vEngine
         // https://docs.microsoft.com/en-us/windows/win32/direct3d11/how-to--use-dynamic-resources
         struct GPUSubResource
         {
-                uint32_t offset;
-                uint32_t stride;
-                uint32_t pitch;  // use for texture, which is the size of one row in texture
-                uint64_t count;
-                uint64_t total_size;
-                void* data;
+                uint32_t offset = 0;
+                uint32_t stride = 0; // size of individual element
+                uint64_t count = 0;  // the number of element
+
+                //can be calculated from parameters above
+                uint32_t pitch = 0;  // use for texture, which is the size of one row in texture
+                uint64_t total_byte_size = 0; // total data size
+                void* data = nullptr;
+                constexpr static auto properties()
+                {
+                    return std::make_tuple(
+                        Core::property("offset", &GPUSubResource::offset), 
+                        Core::property("stride", &GPUSubResource::stride), 
+                        Core::property("count", &GPUSubResource::count), 
+                    );
+                };
         };
         struct TextureDescriptor
         {
                 constexpr static auto properties()
                 {
                     return std::make_tuple(
+                        Core::property("dimension", &TextureDescriptor::dimension), 
                         Core::property("width", &TextureDescriptor::width), 
                         Core::property("height", &TextureDescriptor::height),
+                        Core::property("depth", &TextureDescriptor::depth),
                         Core::property("format", &TextureDescriptor::format),
-                        Core::property("type", &TextureDescriptor::type)
-                        // Core::property("usage", &TextureDescriptor::usage)
+                        Core::property("type", &TextureDescriptor::type),
+                        Core::property("usage", &TextureDescriptor::usage),
+                        Core::property("raw_data", &TextureDescriptor::raw_data)
                     );
                 };
                 TextureDimension dimension;
@@ -175,6 +188,7 @@ namespace vEngine
                 DataFormat format;
                 GraphicsResourceType type;
                 GraphicsResourceUsage usage;
+                std::vector<uint8_t> raw_data;
 
                 GPUSubResource resource;
                 GraphicsBufferSlot slot;

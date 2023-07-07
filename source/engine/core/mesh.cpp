@@ -133,7 +133,7 @@ namespace vEngine
                 desc.resource.offset = 0;
                 desc.resource.stride = sizeof(Vertex);
                 desc.resource.count = this->vertex_data_.size();
-                desc.resource.total_size = desc.resource.count * desc.resource.stride;
+                desc.resource.total_byte_size = desc.resource.count * desc.resource.stride;
                 desc.resource.data = this->vertex_data_.data();
 
                 // Not used
@@ -157,7 +157,7 @@ namespace vEngine
                 desc.resource.offset = 0;
                 desc.resource.stride = sizeof(uint32_t);
                 desc.resource.count = this->index_data_.size();
-                desc.resource.total_size = desc.resource.count * desc.resource.stride;
+                desc.resource.total_byte_size = desc.resource.count * desc.resource.stride;
                 desc.resource.data = this->index_data_.data();
                 this->index_buffer_ = GameObjectFactory::Create<GameObjectType::GraphicsBuffer, GraphicsBuffer>(desc);
             }

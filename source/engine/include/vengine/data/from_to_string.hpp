@@ -40,6 +40,12 @@ namespace vEngine
 
         void ToString(const DataFormat& obj, std::string& to);
         void FromString(const std::string& obj, DataFormat& to);
+
+        void ToString(const TextureDimension& obj, std::string& to);
+        void FromString(const std::string& obj, TextureDimension& to);
+
+        void ToString(const GraphicsResourceUsage& obj, std::string& to);
+        void FromString(const std::string& obj, GraphicsResourceUsage& to);
     }
 }  // namespace vEngine
 

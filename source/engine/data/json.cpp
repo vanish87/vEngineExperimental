@@ -15,6 +15,18 @@ namespace vEngine
 {
     namespace Core
     {
+#define TYPE_STRING_TO_FROM_JSON(x)          \
+    json ToJson(const x& to)                 \
+    {                                        \
+        std::string str;                     \
+        ToString(to, str);                   \
+        return str;                          \
+    }                                        \
+    void FromJson(const json& j, x& e)       \
+    {                                        \
+        FromString(j.get<std::string>(), e); \
+    }
+
         void SaveJson(const json& j, const std::filesystem::path path)
         {
             auto folder = path.parent_path();
@@ -95,6 +107,10 @@ namespace vEngine
                 vector.push_back(it);
             }
         }
+
+        TYPE_STRING_TO_FROM_JSON(Rendering::TextureDimension);
+        TYPE_STRING_TO_FROM_JSON(Rendering::GraphicsResourceUsage);
+
     }  // namespace Core
 
 }  // namespace vEngine

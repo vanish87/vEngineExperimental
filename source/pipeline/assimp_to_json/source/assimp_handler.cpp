@@ -98,7 +98,7 @@ namespace vEngine
                     auto texture_path = ResourceManager::GetInstance().GetResourceSrcFilePath(szPath.data);
                     if (!scene->HasTexture(texture_path.string()))
                     {
-                        std::vector<byte> out;
+                        std::vector<uint8_t> out;
 
                         uint32_t width = 0;
                         uint32_t height = 0;
@@ -144,12 +144,13 @@ namespace vEngine
                         tdesc.dimension = TextureDimension::TD_2D;
                         tdesc.type = GraphicsResourceType::TextureR;
                         tdesc.usage = GraphicsResourceUsage::GPU_Read_Only;
+                        tdesc.raw_data = out;
                         tdesc.resource.data = out.data();
+                        tdesc.resource.count = out.size();
                         tdesc.resource.pitch = sizeof(byte) * GetByteSize(format) * width;
                         tdesc.slot = GraphicsBufferSlot::Slot0;
 
                         auto tex = GameObjectFactory::Create<GameObjectType::Texture, Texture>(tdesc);
-                        tex->SetRawData(out);
                         scene->SetTexture(texture_path.string(), tex);
 
                         PRINT(texture_path.string() << " Loaded");
