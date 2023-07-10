@@ -40,8 +40,17 @@ namespace vEngine
                 {
                     switch (usage)
                     {
-                    case GraphicsResourceUsage::CPU_GPU_ReadWrite: return D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
-                    default: return D3D11_BIND_SHADER_RESOURCE;
+                        case GraphicsResourceUsage::CPU_GPU_ReadWrite:
+                            return D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
+                        case GraphicsResourceUsage::CPU_Write_GPU_Read:
+                            return D3D11_BIND_SHADER_RESOURCE;
+                        case GraphicsResourceUsage::GPU_Read_Only:
+                            return D3D11_BIND_SHADER_RESOURCE;
+                        case GraphicsResourceUsage::GPU_ReadWrite:
+                            return D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
+                        default:
+                            NOT_IMPLEMENTED;
+                            return D3D11_BIND_SHADER_RESOURCE;
                     }
                 }
                 case GraphicsResourceType::Depth:
@@ -218,13 +227,20 @@ namespace vEngine
             std::string version = "5_0";
             switch (type)
             {
-                case ShaderType::VertexShader: return "vs_" + version;
-                case ShaderType::HullShader: return "hs_" + version;
-                case ShaderType::TessellatorShader: return "ts_" + version;
-                case ShaderType::DomainShader: return "ds_" + version;
-                case ShaderType::GeometryShader: return "gs_" + version;
-                case ShaderType::PixelShader: return "ps_" + version;
-                case ShaderType::ComputeShader: return "cs_" + version;
+                case ShaderType::VertexShader:
+                    return "vs_" + version;
+                case ShaderType::HullShader:
+                    return "hs_" + version;
+                case ShaderType::TessellatorShader:
+                    return "ts_" + version;
+                case ShaderType::DomainShader:
+                    return "ds_" + version;
+                case ShaderType::GeometryShader:
+                    return "gs_" + version;
+                case ShaderType::PixelShader:
+                    return "ps_" + version;
+                case ShaderType::ComputeShader:
+                    return "cs_" + version;
                 default:
                     break;
             }
@@ -286,20 +302,20 @@ namespace vEngine
                 auto width = config.graphics_configure.width;
                 auto height = config.graphics_configure.height;
 
-// DXGI_SWAP_CHAIN_DESC scd;
-// // clear out the struct for use
-// ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
+                // DXGI_SWAP_CHAIN_DESC scd;
+                // // clear out the struct for use
+                // ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
 
-// // fill the swap chain description struct
-// scd.BufferCount = 1;  // one back buffer
-// scd.BufferDesc.Width = width;
-// scd.BufferDesc.Height = height;
-// scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;  // use 32-bit color
-// scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;   // how swap chain is to be used
-// scd.OutputWindow = hwnd;                             // the window to be used
-// scd.SampleDesc.Count = 1;                            // how many multisamples
-// scd.Windowed = true;                                 // windowed/full-screen mode
-// #pragma clang diagnostic ignored "-Wlanguage-extension-token"
+                // // fill the swap chain description struct
+                // scd.BufferCount = 1;  // one back buffer
+                // scd.BufferDesc.Width = width;
+                // scd.BufferDesc.Height = height;
+                // scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;  // use 32-bit color
+                // scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;   // how swap chain is to be used
+                // scd.OutputWindow = hwnd;                             // the window to be used
+                // scd.SampleDesc.Count = 1;                            // how many multisamples
+                // scd.Windowed = true;                                 // windowed/full-screen mode
+                // #pragma clang diagnostic ignored "-Wlanguage-extension-token"
                 ComPtr<IDXGIDevice2> pDXGIDevice;
                 hr = this->d3d_device_->QueryInterface(__uuidof(IDXGIDevice2), (void**)pDXGIDevice.GetAddressOf());
                 CHECK_ASSERT(hr == S_OK);
@@ -311,7 +327,7 @@ namespace vEngine
                 ComPtr<IDXGIFactory2> pIDXGIFactory;
                 hr = pDXGIAdapter->GetParent(__uuidof(IDXGIFactory2), (void**)pIDXGIFactory.GetAddressOf());
                 CHECK_ASSERT(hr == S_OK);
-// #pragma clang diagnostic warning "-Wlanguage-extension-token"
+                // #pragma clang diagnostic warning "-Wlanguage-extension-token"
 
                 // hr = pIDXGIFactory->CreateSwapChainForHwnd(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &scd, &d3d_swap_chain_, &d3d_device_, nullptr,
                 // &d3d_imm_context_);
@@ -330,11 +346,11 @@ namespace vEngine
                 CHECK_ASSERT(hr == S_OK);
                 CHECK_ASSERT_NOT_NULL(this->d3d_swap_chain_);
 
-// #pragma clang diagnostic ignored "-Wlanguage-extension-token"
+                // #pragma clang diagnostic ignored "-Wlanguage-extension-token"
                 // get the address of the back buffer
                 ID3D11Texture2D* pBackBuffer;
                 hr = this->d3d_swap_chain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
-// #pragma clang diagnostic warning "-Wlanguage-extension-token"
+                // #pragma clang diagnostic warning "-Wlanguage-extension-token"
                 CHECK_ASSERT(hr == S_OK);
                 auto backBufferTexture = std::make_shared<D3D11Texture>(pBackBuffer);
 

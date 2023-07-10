@@ -40,7 +40,7 @@ namespace vEngine
             sub.SysMemPitch = desc.resource.pitch;
             sub.SysMemSlicePitch = desc.resource.slice_pitch;
 
-            auto hr = device->CreateBuffer(&d3d_desc, &sub, this->buffer_.GetAddressOf());
+            auto hr = device->CreateBuffer(&d3d_desc, desc.resource.data == nullptr ? nullptr : &sub, this->buffer_.GetAddressOf());
             if (FAILED(hr))
             {
                 PRINT_AND_BREAK("Cannot create buffer");
