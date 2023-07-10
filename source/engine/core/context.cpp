@@ -13,7 +13,7 @@
 #include <vengine/core/window.hpp>
 #include <vengine/core/application.hpp>
 #include <vengine/core/game_object_factory.hpp>
-#include <vengine/data./json.hpp>
+#include <vengine/data/json.hpp>
 // #include <vengine/core/resource_loader.hpp>
 
 // #include <vengine/data/meta.hpp>
