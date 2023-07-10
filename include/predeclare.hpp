@@ -36,6 +36,7 @@ namespace vEngine
     typedef std::int64_t int64_t;
 
     typedef unsigned char byte;
+    typedef std::uint8_t color_chanel;
     typedef std::uint8_t uint8_t;
     typedef std::uint16_t uint16_t;
     typedef std::uint32_t uint32_t;

@@ -25,6 +25,7 @@ namespace vEngine
             // virtual FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) = 0;
             // virtual GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) = 0;
             if (auto desc = std::any_cast<TextureDescriptor>(&parameter)) return std::make_shared<D3D11Texture>(*desc);
+            if (auto ptr = std::any_cast<ID3D11Texture2D*>(&parameter)) return std::make_shared<D3D11Texture>(*ptr);
             if (auto desc = std::any_cast<PipelineStateDescriptor>(&parameter)) return std::make_shared<D3D11PipelineState>(*desc);
             if (auto desc = std::any_cast<FrameBufferDescriptor>(&parameter)) return std::make_shared<D3D11FrameBuffer>(*desc);
             if (auto desc = std::any_cast<GraphicsBufferDescriptor>(&parameter)) return std::make_shared<D3D11GraphicsBuffer>(*desc);

@@ -23,7 +23,6 @@ namespace vEngine
         /// should be 2 lines
         D3D11Texture::D3D11Texture(const TextureDescriptor& desc) : Texture(desc)
         {
-            this->PrepareData();
         }
         void D3D11Texture::PrepareData()
         {
@@ -91,6 +90,8 @@ namespace vEngine
 
             this->descriptor_.dimension = TextureDimension::TD_2D;
             this->descriptor_.format = D3D11RenderEngine::D3DFormatToDataFormat(d3d_desc.Format);
+            this->descriptor_.width = d3d_desc.Width;
+            this->descriptor_.height = d3d_desc.Height;
             // this->descriptor_.format = D3D11RenderEngine::D3DFormatToDataFormat(d3d_desc.Format);
 
             this->tex2D_ = backBuffer;
@@ -98,6 +99,7 @@ namespace vEngine
 
         ComPtr<ID3D11ShaderResourceView> D3D11Texture::AsSRV()
         {
+            this->PrepareData();
             if (this->sr_view_ == nullptr)
             {
                 auto& re = Core::Context::GetInstance().GetRenderEngine();
@@ -117,6 +119,7 @@ namespace vEngine
         }
         ComPtr<ID3D11RenderTargetView> D3D11Texture::AsRTV()
         {
+            this->PrepareData();
             if (this->rt_view_ == nullptr)
             {
                 auto& re = Core::Context::GetInstance().GetRenderEngine();
@@ -129,6 +132,7 @@ namespace vEngine
         }
         ComPtr<ID3D11DepthStencilView> D3D11Texture::AsDSV()
         {
+            this->PrepareData();
             if (this->ds_view_ == nullptr)
             {
                 auto& re = Core::Context::GetInstance().GetRenderEngine();

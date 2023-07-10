@@ -179,7 +179,7 @@ namespace vEngine
                 GraphicsResourceUsage usage;
                 GraphicsBufferSlot slot;
 
-                std::vector<byte> raw_data;
+                std::vector<color_chanel> raw_data;
 
                 GPUSubResource resource;
 

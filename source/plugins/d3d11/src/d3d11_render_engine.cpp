@@ -352,7 +352,7 @@ namespace vEngine
                 hr = this->d3d_swap_chain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
                 // #pragma clang diagnostic warning "-Wlanguage-extension-token"
                 CHECK_ASSERT(hr == S_OK);
-                auto backBufferTexture = std::make_shared<D3D11Texture>(pBackBuffer);
+                auto backBufferTexture = GameObjectFactory::Create<GameObjectType::Texture, Texture>(pBackBuffer);
 
                 FrameBufferDescriptor desc;
                 desc.colorFormat = DataFormat::RGBA32;
@@ -360,7 +360,7 @@ namespace vEngine
                 desc.width = width;
                 desc.height = height;
                 desc.usage = GraphicsResourceUsage::GPU_ReadWrite;
-                this->back_buffer_ = std::make_shared<D3D11FrameBuffer>(desc);
+                this->back_buffer_ = GameObjectFactory::Create<GameObjectType::FrameBuffer, FrameBuffer>(desc);
 
                 TextureDescriptor tdesc;
                 tdesc.width = desc.width;

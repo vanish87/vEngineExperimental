@@ -34,6 +34,7 @@ namespace vEngine
             switch (f)
             {
             case DataFormat::RGBA32: return 4;
+            case DataFormat::D24U8: return 4;
             case DataFormat::RGFloat: return 8;
             default:
                 break;
