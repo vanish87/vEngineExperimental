@@ -39,9 +39,6 @@ namespace vEngine
             cbuffer_desc.count = 1;
             cbuffer_desc.slot = static_cast<GraphicsBufferSlot>(vEngineConstantBufferPerObject);
 
-            vEngineObjectConstantBuffer cb;
-            cbuffer_desc.resource.data = &cb;
-
             this->mesh_constant_buffer_ = GameObjectFactory::Create<GameObjectType::GraphicsBuffer, GraphicsBuffer>(cbuffer_desc);
         }
         void MeshRendererComponent::OnBeginRender()
