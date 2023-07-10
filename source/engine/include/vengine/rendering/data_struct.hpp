@@ -238,7 +238,8 @@ namespace vEngine
                         // GameObject::properties(),
                         std::make_tuple(
                             // Core::property("shaders", &PipelineStateDescriptor::shaders)
-                            Core::property("rasterizer", &PipelineStateDescriptor::rasterizer_descriptor), Core::property("depth_stencil", &PipelineStateDescriptor::depth_stencil_descriptor)));
+                            Core::property("rasterizer", &PipelineStateDescriptor::rasterizer_descriptor), 
+                            Core::property("depth_stencil", &PipelineStateDescriptor::depth_stencil_descriptor)));
                 };
                 // similar design as https://docs.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_graphics_pipeline_state_desc
                 // std::unordered_map<ShaderType, std::filesystem::path> shaders;

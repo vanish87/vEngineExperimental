@@ -32,7 +32,7 @@ namespace vEngine
         /// should be 2 lines
         MeshRendererComponent::MeshRendererComponent()
         {
-            auto cbuffer_desc = GraphicsBufferDescriptor();
+            GraphicsBufferDescriptor cbuffer_desc;
             cbuffer_desc.type = GraphicsResourceType::CBuffer;
             cbuffer_desc.usage = GraphicsResourceUsage::CPU_Write_GPU_Read;
             cbuffer_desc.stride = sizeof(vEngineObjectConstantBuffer);
