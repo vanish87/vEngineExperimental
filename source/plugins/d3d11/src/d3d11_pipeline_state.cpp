@@ -13,6 +13,7 @@
 #include <vengine/rendering/d3d11_pipeline_state.hpp>
 #include <vengine/rendering/d3d11_render_engine.hpp>
 #include <vengine/rendering/shader.hpp>
+#include <vengine/rendering/d3d11_shader_include.hpp>
 // #include <vengine/rendering/d3d11_texture.hpp>
 
 /// A detailed namespace description, it
@@ -44,6 +45,8 @@ namespace vEngine
 
                 ComPtr<ID3DBlob> error;
                 ComPtr<ID3DBlob> blob;
+                D3D11ShaderInclude my_include;
+
 
                 for (const auto& s : this->shaders_)
                 {
@@ -53,7 +56,8 @@ namespace vEngine
 
                     NOT_IMPL_ASSERT;
                     auto path = std::string("test");
-                    auto hr = D3DCompile(s.second->source.data(), s.second->source.size(), path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", target.c_str(), 0, 0, blob.GetAddressOf(),
+                    // auto hr = D3DCompile(s.second->source.data(), s.second->source.size(), path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", target.c_str(), 0, 0, blob.GetAddressOf(),
+                    auto hr = D3DCompile(s.second->source.data(), s.second->source.size(), path.c_str(), nullptr, &my_include, "main", target.c_str(), 0, 0, blob.GetAddressOf(),
                                          error.GetAddressOf());
                     if (error != nullptr)
                     {
