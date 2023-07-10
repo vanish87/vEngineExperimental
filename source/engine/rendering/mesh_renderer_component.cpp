@@ -35,10 +35,8 @@ namespace vEngine
             auto cbuffer_desc = GraphicsBufferDescriptor();
             cbuffer_desc.type = GraphicsResourceType::CBuffer;
             cbuffer_desc.usage = GraphicsResourceUsage::CPU_Write_GPU_Read;
-            cbuffer_desc.resource.offset = 0;
-            cbuffer_desc.resource.stride = sizeof(vEngineObjectConstantBuffer);
-            cbuffer_desc.resource.count = 1;
-            cbuffer_desc.resource.total_byte_size = cbuffer_desc.resource.count * cbuffer_desc.resource.stride;
+            cbuffer_desc.stride = sizeof(vEngineObjectConstantBuffer);
+            cbuffer_desc.count = 1;
             cbuffer_desc.slot = static_cast<GraphicsBufferSlot>(vEngineConstantBufferPerObject);
 
             vEngineObjectConstantBuffer cb;

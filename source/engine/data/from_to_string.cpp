@@ -139,9 +139,9 @@ namespace vEngine
             ENUM_TO_STRING(GraphicsResourceType::Index, type, str);
             ENUM_TO_STRING(GraphicsResourceType::Vertex, type, str);
             ENUM_TO_STRING(GraphicsResourceType::CBuffer, type, str);
-            ENUM_TO_STRING(GraphicsResourceType::TextureR, type, str);
-            ENUM_TO_STRING(GraphicsResourceType::TextureRW, type, str);
-            ENUM_TO_STRING(GraphicsResourceType::TextureW, type, str);
+            ENUM_TO_STRING(GraphicsResourceType::Texture, type, str);
+            // ENUM_TO_STRING(GraphicsResourceType::TextureRW, type, str);
+            // ENUM_TO_STRING(GraphicsResourceType::TextureW, type, str);
             ENUM_TO_STRING(GraphicsResourceType::Depth, type, str);
             NOT_IMPL_ASSERT;
         }
@@ -150,9 +150,9 @@ namespace vEngine
             STRING_TO_ENUM(GraphicsResourceType::Index, str, type);
             STRING_TO_ENUM(GraphicsResourceType::Vertex, str, type);
             STRING_TO_ENUM(GraphicsResourceType::CBuffer, str, type);
-            STRING_TO_ENUM(GraphicsResourceType::TextureR, str, type);
-            STRING_TO_ENUM(GraphicsResourceType::TextureRW, str, type);
-            STRING_TO_ENUM(GraphicsResourceType::TextureW, str, type);
+            STRING_TO_ENUM(GraphicsResourceType::Texture, str, type);
+            // STRING_TO_ENUM(GraphicsResourceType::TextureRW, str, type);
+            // STRING_TO_ENUM(GraphicsResourceType::TextureW, str, type);
             STRING_TO_ENUM(GraphicsResourceType::Depth, str, type);
 
             NOT_IMPL_ASSERT;

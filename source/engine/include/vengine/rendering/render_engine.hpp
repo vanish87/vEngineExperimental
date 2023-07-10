@@ -26,9 +26,9 @@ namespace vEngine
         class VENGINE_API RenderEngine : public Core::IRuntimeModule
         {
             public:
-                static GPUSubResource GetGPUSubResource(const TextureDescriptor& desc);
-                static GPUSubResource GetGPUSubResource(const vEngineCameraConstantBuffer& desc);
                 // static GPUSubResource GetGPUSubResource(const TextureDescriptor& desc);
+                // static GPUSubResource GetGPUSubResource(const vEngineCameraConstantBuffer& desc);
+                // static GPUSubResource GetGPUSubResource(const GraphicsBufferDescriptor& desc);
                 // static GPUSubResource GetGPUSubResource(const TextureDescriptor& desc);
 
             public:

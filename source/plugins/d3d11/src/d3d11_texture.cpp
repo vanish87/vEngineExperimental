@@ -48,7 +48,7 @@ namespace vEngine
                         d3d_desc.Format = D3D11RenderEngine::ToD3DFormat(desc.format);
                         d3d_desc.Usage = D3D11RenderEngine::ToD3DUsage(desc.usage);
                         d3d_desc.CPUAccessFlags = D3D11RenderEngine::ToD3DAccessFlag(desc.usage);
-                        d3d_desc.BindFlags = D3D11RenderEngine::ToD3DBindFlag(desc.type);
+                        d3d_desc.BindFlags = D3D11RenderEngine::ToD3DBindFlag(desc.type, desc.usage);
 
                         d3d_desc.ArraySize = 1;
                         d3d_desc.MipLevels = 1;
@@ -56,14 +56,13 @@ namespace vEngine
                         d3d_desc.SampleDesc.Count = 1;
                         d3d_desc.SampleDesc.Quality = 0;
 
-                        auto resource = RenderEngine::GetGPUSubResource(desc);
 
                         D3D11_SUBRESOURCE_DATA init_data;
-                        init_data.pSysMem = resource.data;
-                        init_data.SysMemPitch = resource.pitch;
-                        init_data.SysMemSlicePitch = 0;
+                        init_data.pSysMem = desc.resource.data= desc.raw_data.data();
+                        init_data.SysMemPitch = desc.resource.pitch = GetByteSize(desc.format) * desc.width;
+                        init_data.SysMemSlicePitch = desc.resource.slice_pitch = 0;
 
-                        auto hr = device->CreateTexture2D(&d3d_desc, resource.data == nullptr ? nullptr : &init_data, this->tex2D_.GetAddressOf());
+                        auto hr = device->CreateTexture2D(&d3d_desc, desc.resource.data == nullptr ? nullptr : &init_data, this->tex2D_.GetAddressOf());
                         if (FAILED(hr))
                         {
                             PRINT_AND_BREAK("Cannot create Texture2D");

@@ -142,10 +142,11 @@ namespace vEngine
                         tdesc.depth = 1;
                         tdesc.format = format;
                         tdesc.dimension = TextureDimension::TD_2D;
-                        tdesc.type = GraphicsResourceType::TextureR;
+                        tdesc.type = GraphicsResourceType::Texture;
                         tdesc.usage = GraphicsResourceUsage::GPU_Read_Only;
-                        tdesc.raw_data = out;
                         tdesc.slot = GraphicsBufferSlot::Slot0;
+
+                        tdesc.raw_data = out;
 
                         auto tex = GameObjectFactory::Create<GameObjectType::Texture, Texture>(tdesc);
                         scene->SetTexture(texture_path.string(), tex);

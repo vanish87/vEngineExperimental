@@ -37,9 +37,10 @@ namespace vEngine
             Index,
             Vertex,
             CBuffer,
-            TextureR,   // Read only texture
-            TextureRW,  // as Shader Resource and Render Target
-            TextureW,   // as Render Target only
+            Texture,
+            // TextureR,   // Read only texture
+            // TextureRW,  // as Shader Resource and Render Target
+            // TextureW,   // as Render Target only
             Depth,
         };
 
@@ -147,33 +148,27 @@ namespace vEngine
         };
 
         // https://docs.microsoft.com/en-us/windows/win32/direct3d11/how-to--use-dynamic-resources
+        // Runtime struct, should not be serialized
         struct GPUSubResource
         {
-                uint32_t offset = 0;
-                uint32_t stride = 0;  // size of individual element
-                uint64_t count = 0;   // the number of element
-
-                // can be calculated from parameters above
-                uint32_t pitch = 0;            // use for texture, which is the size of one row in texture
-                uint64_t total_byte_size = 0;  // total data size
                 void* data = nullptr;
-                // constexpr static auto properties()
-                // {
-                //     return std::make_tuple(
-                //         Core::property("offset", &GPUSubResource::offset),
-                //         Core::property("stride", &GPUSubResource::stride),
-                //         Core::property("count", &GPUSubResource::count)
-                //     );
-                // };
+                uint32_t pitch = 0;        // use for texture only, which is the size of one row in texture
+                uint32_t slice_pitch = 0;  // use for texture only, which is the size of one row in texture
         };
         struct TextureDescriptor
         {
                 constexpr static auto properties()
                 {
-                    return std::make_tuple(Core::property("dimension", &TextureDescriptor::dimension), Core::property("width", &TextureDescriptor::width),
-                                           Core::property("height", &TextureDescriptor::height), Core::property("depth", &TextureDescriptor::depth),
-                                           Core::property("format", &TextureDescriptor::format), Core::property("type", &TextureDescriptor::type), Core::property("usage", &TextureDescriptor::usage),
-                                           Core::property("raw_data", &TextureDescriptor::raw_data));
+                    return std::make_tuple(
+                        Core::property("dimension", &TextureDescriptor::dimension), 
+                        Core::property("width", &TextureDescriptor::width),
+                        Core::property("height", &TextureDescriptor::height), 
+                        Core::property("depth", &TextureDescriptor::depth),
+                        Core::property("format", &TextureDescriptor::format), 
+                        Core::property("type", &TextureDescriptor::type), 
+                        Core::property("usage", &TextureDescriptor::usage),
+                        Core::property("raw_data", &TextureDescriptor::raw_data)
+                    );
                 };
                 TextureDimension dimension;
                 uint32_t width;
@@ -182,12 +177,11 @@ namespace vEngine
                 DataFormat format;
                 GraphicsResourceType type;
                 GraphicsResourceUsage usage;
-                std::vector<uint8_t> raw_data;
-
-                // GPUSubResource resource;
                 GraphicsBufferSlot slot;
 
-                // std::vector<byte> raw_data;
+                std::vector<byte> raw_data;
+
+                GPUSubResource resource;
 
                 static const TextureDescriptor& Default()
                 {
@@ -221,6 +215,10 @@ namespace vEngine
                 ElementLayout layout;
                 // DataFormat format;// undefined format for compute buffer
                 GraphicsBufferSlot slot;
+
+                uint32_t stride = 0;  // byte size of the individual element
+                uint64_t count = 0;   // the number of elements
+                GPUSubResource resource;
         };
 
         struct FrameBufferDescriptor
@@ -230,8 +228,6 @@ namespace vEngine
                 DataFormat colorFormat;
                 DataFormat depthStencilFormat;
                 GraphicsResourceUsage usage;
-                // TextureUsage usage;
-                // std::vector<std::pair<
         };
 
         struct PipelineStateDescriptor

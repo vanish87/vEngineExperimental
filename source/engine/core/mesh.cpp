@@ -130,10 +130,8 @@ namespace vEngine
                 GraphicsBufferDescriptor desc;
                 desc.type = GraphicsResourceType::Vertex;
                 desc.usage = GraphicsResourceUsage::GPU_Read_Only;
-                desc.resource.offset = 0;
-                desc.resource.stride = sizeof(Vertex);
-                desc.resource.count = this->vertex_data_.size();
-                desc.resource.total_byte_size = desc.resource.count * desc.resource.stride;
+                desc.stride = sizeof(Vertex);
+                desc.count = this->vertex_data_.size();
                 desc.resource.data = this->vertex_data_.data();
 
                 // Not used
@@ -154,10 +152,8 @@ namespace vEngine
                 GraphicsBufferDescriptor desc;
                 desc.type = GraphicsResourceType::Index;
                 desc.usage = GraphicsResourceUsage::GPU_Read_Only;
-                desc.resource.offset = 0;
-                desc.resource.stride = sizeof(uint32_t);
-                desc.resource.count = this->index_data_.size();
-                desc.resource.total_byte_size = desc.resource.count * desc.resource.stride;
+                desc.stride = sizeof(uint32_t);
+                desc.count = this->index_data_.size();
                 desc.resource.data = this->index_data_.data();
                 this->index_buffer_ = GameObjectFactory::Create<GameObjectType::GraphicsBuffer, GraphicsBuffer>(desc);
             }

@@ -26,7 +26,7 @@ namespace vEngine
         using namespace vEngine::Core;
         using namespace vEngine::Math;
 
-        uint32_t D3D11RenderEngine::ToD3DBindFlag(GraphicsResourceType type)
+        uint32_t D3D11RenderEngine::ToD3DBindFlag(GraphicsResourceType type, GraphicsResourceUsage usage)
         {
             switch (type)
             {
@@ -36,12 +36,14 @@ namespace vEngine
                     return D3D11_BIND_VERTEX_BUFFER;
                 case GraphicsResourceType::CBuffer:
                     return D3D11_BIND_CONSTANT_BUFFER;
-                case GraphicsResourceType::TextureR:
-                    return D3D11_BIND_SHADER_RESOURCE;
-                case GraphicsResourceType::TextureRW:
-                    return D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
-                case GraphicsResourceType::TextureW:
-                    return D3D11_BIND_RENDER_TARGET;
+                case GraphicsResourceType::Texture:
+                {
+                    switch (usage)
+                    {
+                    case GraphicsResourceUsage::CPU_GPU_ReadWrite: return D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
+                    default: return D3D11_BIND_SHADER_RESOURCE;
+                    }
+                }
                 case GraphicsResourceType::Depth:
                     return D3D11_BIND_DEPTH_STENCIL;
                 default:
@@ -404,7 +406,7 @@ namespace vEngine
             auto v = std::dynamic_pointer_cast<D3D11GraphicsBuffer>(vertice);
             auto i = std::dynamic_pointer_cast<D3D11GraphicsBuffer>(indice);
 
-            UINT stride = v->buffer_descriptor_.resource.stride;
+            UINT stride = v->buffer_descriptor_.stride;
             UINT offset = 0;
             this->d3d_imm_context_->IASetVertexBuffers(0, 1, v->buffer_.GetAddressOf(), &stride, &offset);
             this->d3d_imm_context_->IASetIndexBuffer(i->buffer_.Get(), DXGI_FORMAT_R32_UINT, 0);
@@ -413,7 +415,7 @@ namespace vEngine
             this->d3d_imm_context_->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
             // draw the vertex buffer to the back buffer
-            this->d3d_imm_context_->DrawIndexed((UINT)(i->buffer_descriptor_.resource.count), 0, 0);
+            this->d3d_imm_context_->DrawIndexed((UINT)(i->buffer_descriptor_.count), 0, 0);
         }
         void D3D11RenderEngine::PrintInfo()
         {

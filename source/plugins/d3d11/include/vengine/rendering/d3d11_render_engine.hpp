@@ -42,7 +42,7 @@ namespace vEngine
 
                 void Clear(const FrameBufferSharedPtr frame_buffer, const Core::color color) override;
 
-                static uint32_t ToD3DBindFlag(GraphicsResourceType type);
+                static uint32_t ToD3DBindFlag(GraphicsResourceType type, GraphicsResourceUsage usage);
                 static uint32_t ToD3DAccessFlag(GraphicsResourceUsage usage);
                 static D3D11_USAGE ToD3DUsage(GraphicsResourceUsage usage);
                 static DXGI_FORMAT ToD3DFormat(DataFormat formart);
