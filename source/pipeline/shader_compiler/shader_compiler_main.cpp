@@ -1,5 +1,6 @@
 
 #include <fstream>
+#include <sstream>
 #include <filesystem>
 
 #include <engine.hpp>
@@ -12,13 +13,13 @@ using namespace vEngine::Rendering;
 
 ShaderType ProfileToShaderType(const std::string& profile)
 {
-    if(profile == "vs") return ShaderType::VertexShader;
-    if(profile == "hs") return ShaderType::HullShader;
-    if(profile == "ts") return ShaderType::TessellatorShader;
-    if(profile == "ds") return ShaderType::DomainShader;
-    if(profile == "gs") return ShaderType::GeometryShader;
-    if(profile == "ps") return ShaderType::PixelShader;
-    if(profile == "cs") return ShaderType::ComputeShader;
+    if (profile == "vs") return ShaderType::VertexShader;
+    if (profile == "hs") return ShaderType::HullShader;
+    if (profile == "ts") return ShaderType::TessellatorShader;
+    if (profile == "ds") return ShaderType::DomainShader;
+    if (profile == "gs") return ShaderType::GeometryShader;
+    if (profile == "ps") return ShaderType::PixelShader;
+    if (profile == "cs") return ShaderType::ComputeShader;
 
     return ShaderType::VertexShader;
 }
@@ -50,11 +51,11 @@ int main(int argc, char* argv[])
     configure.graphics_configure.output = Output::CommandLine;
     configure.resource_src = resource_src;
     configure.resource_bin = resource_bin;
-    #ifdef VENGINE_PLATFORM_WINDOWS
+#ifdef VENGINE_PLATFORM_WINDOWS
     configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
-    #else
+#else
     configure.graphics_configure.render_plugin_name = "opengl_rendering_plugin";
-    #endif
+#endif
 
     Context::GetInstance().SetConfigure(configure);
     Context::GetInstance().Init();
@@ -74,12 +75,9 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    fin.seekg(0, std::ios_base::end);
-    auto size = fin.tellg();
-    fin.seekg(0, std::ios_base::beg);
-    shader->source.resize(size);
-
-    fin.read(shader->source.data(), size);
+    std::stringstream str_stream;
+    str_stream << fin.rdbuf();
+    shader->source = str_stream.str();
     fin.close();
 
     ResourceManager::GetInstance().SaveAsReference(shader, output);

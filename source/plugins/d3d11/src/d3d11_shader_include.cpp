@@ -22,38 +22,19 @@ namespace vEngine
                 const auto path = Core::ResourceManager::GetInstance().GetResourceBinFilePath(file_name);
 
                 std::ifstream fin(path);
-
-
                 if (!fin)
                 {
                     PRINT_AND_BREAK("Cannot open hlsl File ");
                     return E_FAIL;
                 }
-
                 std::stringstream str_stream;
                 str_stream << fin.rdbuf();
-
-                // auto file = str_stream.str();
-                // const auto size = file.size();
-                // auto buffer = new char[size+1];
-                // strcpy_s(buffer, size+1, file.c_str());
-                // fin.close();
-
-                // auto size = std::filesystem::file_size(path);
-
-                // auto buffer = new char[size];
-                // fin.read(buffer, size);
-                // fin.close();
-
                 this->file_map_[file_name] = str_stream.str();
                 fin.close();
-
             }
 
             *data = this->file_map_[file_name].c_str();
             *bytes = static_cast<uint32_t>(this->file_map_[file_name].size());
-            // *data = buffer;
-            // *bytes = static_cast<uint32_t>(size);
             return S_OK;
         }
         HRESULT D3D11ShaderInclude::Close(LPCVOID data)
