@@ -59,7 +59,8 @@ namespace vEngine
 
                     PRINT(s.second->source);
 
-                    auto source_name = std::string("resource/shader/ps/ps.json");
+                    // auto source_name = std::string("resource/shader/ps/ps.json");
+                    auto source_name = target;
                     auto hr = D3DCompile(s.second->source.data(), s.second->source.size(), source_name.c_str(),
                                             macros.data(), &my_include, 
                                             "main", target.c_str(), 0, 0, blob.GetAddressOf(),

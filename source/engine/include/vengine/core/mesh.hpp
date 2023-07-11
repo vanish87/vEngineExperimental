@@ -122,7 +122,8 @@ namespace vEngine
                         GameObject::properties(),
                         std::make_tuple(
                             property("vertices", &Mesh::vertex_data_),
-                            property("indices", &Mesh::index_data_)
+                            property("indices", &Mesh::index_data_),
+                            property("bones", &Mesh::bone_data_)
                             )
                     );
                 }

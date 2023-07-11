@@ -16,6 +16,7 @@ namespace vEngine
             if(p == nullptr) return json();
 
             auto go = std::dynamic_pointer_cast<GameObject>(p);
+            ResourceManager::GetInstance().AddPendingSave(go);
             return ToJson(*go.get());
         }
 
