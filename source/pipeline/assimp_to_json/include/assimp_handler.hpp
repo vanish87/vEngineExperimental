@@ -38,6 +38,7 @@ namespace vEngine
                 void HandleMaterials(Core::SceneSharedPtr scene, const aiScene* ai_scene);
                 void HandleMeshes(Core::SceneSharedPtr scene, const aiScene* ai_scene);
                 void HandleAnimations(Core::SceneSharedPtr scene, const aiScene* ai_scene);
+                void HandleAnimator(Core::SceneSharedPtr scene, const aiScene* ai_scene);
                 Core::GameNodeSharedPtr HandleNode(Core::SceneSharedPtr scene, const aiNode* ai_node, const aiScene* ai_scene);
                 void HandleBoneNode(Core::SceneSharedPtr scene, const aiNode* ai_node, const Core::GameNodeSharedPtr game_node);
         };

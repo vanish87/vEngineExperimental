@@ -44,11 +44,25 @@ namespace vEngine
             // // this->CreateTextures(scene);
             this->HandleCameras(scene, ai_scene);
             this->HandleAnimations(scene, ai_scene);
+            this->HandleAnimator(scene, ai_scene);
 
             auto root = this->HandleNode(scene, ai_scene->mRootNode, ai_scene);
             scene->AddChild(root);
 
             return scene;
+        }
+        void AssimpHandler::HandleAnimator(SceneSharedPtr scene, const aiScene* ai_scene)
+        {
+            // UNUSED_PARAMETER(scene);
+            UNUSED_PARAMETER(ai_scene);
+            auto gn = GameObjectFactory::Create<GameObjectType::GameNode, GameNode>();
+
+            auto animator = GameObjectFactory::Create<GameObjectType::AnimatorComponent, AnimatorComponent>();
+            animator->GO()->SetAnimations(scene->GetAnimations());
+            animator->SetAnimationRoot(scene);
+            gn->AddChild(animator);
+
+            scene->AddChild(gn);
         }
         void AssimpHandler::HandleCameras(SceneSharedPtr scene, const aiScene* ai_scene)
         {
@@ -61,6 +75,7 @@ namespace vEngine
             camera->GO()->target = Context::GetInstance().GetRenderEngine()->back_buffer_;
 
             auto transform = GameObjectFactory::Create<GameObjectType::TransformComponent, TransformComponent>();
+            transform->GO()->Translate() = float3(0, 0, -250);
 
             gn->AttachComponent(camera);
             gn->AttachComponent(transform);
