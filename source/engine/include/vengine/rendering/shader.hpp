@@ -45,7 +45,7 @@ namespace vEngine
                 Shader();
                 ~Shader() {}
 
-                std::vector<char> source;
+                std::string source;
                 ShaderType type;
 
 

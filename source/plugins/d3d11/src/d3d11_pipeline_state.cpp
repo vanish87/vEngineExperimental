@@ -47,6 +47,9 @@ namespace vEngine
                 ComPtr<ID3DBlob> blob;
                 D3D11ShaderInclude my_include;
 
+                std::array<D3D_SHADER_MACRO, 1> macros = {{
+                    {nullptr, nullptr},
+                }};
 
                 for (const auto& s : this->shaders_)
                 {
@@ -54,11 +57,13 @@ namespace vEngine
 
                     auto target = D3D11RenderEngine::ShaderTypeToTarget(s.first);
 
-                    NOT_IMPL_ASSERT;
-                    auto path = std::string("test");
-                    // auto hr = D3DCompile(s.second->source.data(), s.second->source.size(), path.c_str(), nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, "main", target.c_str(), 0, 0, blob.GetAddressOf(),
-                    auto hr = D3DCompile(s.second->source.data(), s.second->source.size(), path.c_str(), nullptr, &my_include, "main", target.c_str(), 0, 0, blob.GetAddressOf(),
-                                         error.GetAddressOf());
+                    PRINT(s.second->source);
+
+                    auto source_name = std::string("resource/shader/ps/ps.json");
+                    auto hr = D3DCompile(s.second->source.data(), s.second->source.size(), source_name.c_str(),
+                                            macros.data(), &my_include, 
+                                            "main", target.c_str(), 0, 0, blob.GetAddressOf(),
+                                            error.GetAddressOf());
                     if (error != nullptr)
                     {
                         std::string err(static_cast<char*>(error->GetBufferPointer()), error->GetBufferSize());

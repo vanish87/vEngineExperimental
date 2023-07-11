@@ -62,3 +62,4 @@ struct_def vEngineObjectConstantBuffer register_def(b1)
 };
 
 #endif /* _VENGINE_RENDERING_DATA_CBUFFER_HPP */
+
