@@ -14,6 +14,7 @@
 
 #include <unordered_map>
 #include <fstream>
+#include <list>
 
 #include <engine.hpp>
 #include <external/json.hpp>
@@ -21,6 +22,7 @@
 #include <vengine/data/from_to_string.hpp>
 
 #include <vengine/core/game_object.hpp>
+#include <vengine/core/resource_manager.hpp>
 #include <vengine/rendering/data_struct.hpp>
 
 namespace vEngine

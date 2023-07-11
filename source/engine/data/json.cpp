@@ -108,8 +108,8 @@ namespace vEngine
             }
         }
 
-        TYPE_STRING_TO_FROM_JSON(Rendering::TextureDimension);
-        TYPE_STRING_TO_FROM_JSON(Rendering::GraphicsResourceUsage);
+        TYPE_STRING_TO_FROM_JSON(Rendering::TextureDimension)
+        TYPE_STRING_TO_FROM_JSON(Rendering::GraphicsResourceUsage)
 
     }  // namespace Core
 
