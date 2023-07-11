@@ -41,7 +41,6 @@ namespace vEngine
         {
             auto cam = this->GO();
             vEngineCameraConstantBuffer cb;
-            cb.camera_pos = float4(0, 0, 100, 1);
 
             auto trans = this->Owner()->FirstOf<TransformComponent>();
             // TODO use rot to rotate forward/up vector
