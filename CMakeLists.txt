@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.8)
 
 if(APPLE)
     set(VENGINE_BUILD_STATIC ON)
-    set(VENGINE_BUILD_IOS ON)
+    set(VENGINE_BUILD_IOS OFF)
     set(CMAKE_OSX_ARCHITECTURES arm64)
     set(CMAKE_OSX_DEPLOYMENT_TARGET "13.0")
 endif()
