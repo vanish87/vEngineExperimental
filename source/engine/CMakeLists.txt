@@ -45,6 +45,7 @@ GENERATE_EXPORT_HEADER( ${PROJECT_NAME}
 
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include
+    PUBLIC ${PROJECT_SOURCE_DIR}/include/apple
     # PUBLIC ${LUA_INCLUDE_DIR}
 )
 
