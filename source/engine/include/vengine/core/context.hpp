@@ -62,8 +62,10 @@ namespace vEngine
                 ApplicationWeakPtr app_;
                 WindowSharedPtr window_;
 
-                void* render_plugin_dll_handle_;
+                void* custom_plugin_dll_handle_;
                 GameObjectFactoryUniquePtr custom_object_factory_ptr_;
+
+                void* render_plugin_dll_handle_;
                 GameObjectFactoryUniquePtr render_object_factory_ptr_;
                 Rendering::RenderEngineUniquePtr render_engine_ptr_;
 
