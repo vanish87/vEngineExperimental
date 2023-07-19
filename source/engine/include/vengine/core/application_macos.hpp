@@ -3,6 +3,7 @@
 
 #ifdef VENGINE_PLATFORM_APPLE
 #include <vengine/core/application.hpp>
+#include <apple/define.hpp>
 
 namespace vEngine
 {
