@@ -32,6 +32,7 @@ namespace vEngine
 
             public:
                 virtual void Run();
+                virtual void RunAsync();
                 virtual void Quit();
 
             protected:

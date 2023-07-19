@@ -55,14 +55,37 @@ namespace vEngine
     )";
         void MetalRenderEngine::InitPipeline()
         {
-            auto window = Context::GetInstance().CurrentWindow();
-            this->view_ = static_cast<MTK::View*>(window->WindowHandle());
-            auto device = this->view_->device();
+            this->mtl_device_ = MTL::CreateSystemDefaultDevice();
+            auto device = this->mtl_device_;
+
+            this->mtk_view_ = MTK::View::alloc()->init(frame, device);
+            this->mtk_view_->setColorPixelFormat(MTL::PixelFormat::PixelFormatBGRA8Unorm_sRGB);
+            this->mtk_view_->setClearColor(MTL::ClearColor::Make(1.0, 0.0, 0.0, 1.0));
+
+            this->mtk_view_delegate_ = new MetalMTKViewDelegate(device);
+            this->mtk_view_->setDelegate(this->mtk_view_delegate_);
+
+
+            #ifdef APPLE_PLATFORM_TARGET_DARWIN
+            auto window = reinterpret_cast<NS::Window*>(Context::GetInstance().CurrentWindow());
+            window->setContentView(this->mtk_view_);
+            window->setTitle(NS::String::string("00 - Window", NS::StringEncoding::UTF8StringEncoding));
+            window->makeKeyAndOrderFront(nullptr);
+
+            // NS::Application* pApp = reinterpret_cast<NS::Application*>(Context::GetInstance().);
+            // pApp->activateIgnoringOtherApps(true);
+            #elif APPLE_PLATFORM_TARGET_IOS
+            this->ui_view_controller_ = UI::ViewController::alloc()->init( nil, nil );
+            auto ui_view = (UI::View *)this->mtk_view_;
+            ui_view->setAutoresizingMask( UI::ViewAutoresizingFlexibleWidth | UI::ViewAutoresizingFlexibleHeight );
+            this->ui_view_controller_->view()->addSubview( ui_view );
+
+            auto window = reinterpret_cast<UI::Window*>(Context::GetInstance().CurrentWindow());
+            window->setRootViewController( this->ui_view_controller_ );
+            window->makeKeyAndVisible();
+            #endif
 
             std::cout << "Metal " << device->name()->cString(NS::UTF8StringEncoding) << std::endl;
-
-            this->view_->setColorPixelFormat(MTL::PixelFormat::PixelFormatBGRA8Unorm_sRGB);
-            this->view_->setClearColor(MTL::ClearColor::Make(1.0, 0.0, 0.0, 1.0));
 
             auto res_path = NS::Bundle::mainBundle()->resourcePath();
             std::cout << "Resource Path: " << res_path->cString(NS::UTF8StringEncoding) << std::endl;

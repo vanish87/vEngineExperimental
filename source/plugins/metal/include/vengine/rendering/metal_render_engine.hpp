@@ -81,7 +81,11 @@ namespace vEngine
 
             private:
                 // MTL::Device device_;
-                MTK::View* view_;
+                UI::ViewController* ui_view_controller_;
+                MTL::Device* mtl_device_;
+                MetalMTKViewDelegate* mtk_view_delegate = nullptr;
+                MTK::View* mtk_view_;
+
                 MTL::CommandQueue* command_queue_;
                 MTL::RenderPipelineState* current_pipeline_state_;
                 MTL::Buffer* vertex_buffer_;
