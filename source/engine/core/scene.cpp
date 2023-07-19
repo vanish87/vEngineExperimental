@@ -81,19 +81,19 @@ namespace vEngine
             this->meshes_[id] = mesh;
         }
 
-        void Scene::SetTexture(const std::string path, const TextureSharedPtr texture)
+        void Scene::SetTexture(const std::string name, const TextureSharedPtr texture)
         {
-            CHECK_ASSERT(!this->HasTexture(path));
-            this->textures_[path] = texture;
+            CHECK_ASSERT(!this->HasTexture(name));
+            this->textures_[name] = texture;
         }
-        bool Scene::HasTexture(const std::string path)
+        bool Scene::HasTexture(const std::string name)
         {
-            return this->textures_.find(path) != this->textures_.end();
+            return this->textures_.find(name) != this->textures_.end();
         }
-        TextureSharedPtr Scene::GetTexture(const std::string path)
+        TextureSharedPtr Scene::GetTexture(const std::string name)
         {
-            CHECK_ASSERT(this->HasTexture(path));
-            return this->textures_[path];
+            CHECK_ASSERT(this->HasTexture(name));
+            return this->textures_[name];
         }
         // bool Scene::Load(const ResourceDescriptorSharedPtr descriptor)
         // {

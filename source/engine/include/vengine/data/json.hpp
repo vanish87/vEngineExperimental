@@ -13,6 +13,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <unordered_set>
 #include <fstream>
 #include <list>
 
@@ -70,6 +71,9 @@ namespace vEngine
         template <typename T>
         json ToJson(const std::list<T>& list);
 
+        template <typename T>
+        json ToJson(const std::unordered_set<T>& set);
+
         template <typename T, typename S>
         json ToJson(const std::unordered_map<T, S>& umap);
 
@@ -109,6 +113,9 @@ namespace vEngine
         template <typename T>
         void FromJson(const json& j, std::list<T>& list);
 
+        template <typename T>
+        void FromJson(const json& j, std::unordered_set<T>& set);
+        
         template <typename T, typename S>
         void FromJson(const json& j, std::unordered_map<T, S>& map);
 

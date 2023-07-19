@@ -56,11 +56,22 @@ namespace vEngine
             return value;
         }
 
-        template <typename T, typename S>
-        json ToJson(const std::unordered_map<T, S>& umap)
+        template <typename T>
+        json ToJson(const std::unordered_set<T>& set)
         {
             json value;
-            for (const auto& e : umap)
+            for (const auto& e : set)
+            {
+                auto hash = std::hash<GameObjectSharedPtr>{}(e);
+                value[hash] = ToJson(e);
+            }
+            return value;
+        }
+        template <typename T, typename S>
+        json ToJson(const std::unordered_map<T, S>& map)
+        {
+            json value;
+            for (const auto& e : map)
             {
                 std::string k;
                 ToString(e.first, k);

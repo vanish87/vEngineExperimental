@@ -63,25 +63,28 @@ int main(int argc, char* argv[])
     ResourceManager::GetInstance().Init();
 
     auto shader = std::dynamic_pointer_cast<Shader>(ResourceManager::GetInstance().LoadAsReference(output));
-    if (shader == nullptr) shader = GameObjectFactory::Create<GameObjectType::Shader, Shader>();
-
-    shader->type = ProfileToShaderType(profile);
-
-    std::ifstream fin(input);
-
-    if (!fin)
+    if (shader == nullptr) 
     {
-        PRINT_AND_BREAK("Cannot open hlsl File ");
-        return -1;
+        shader = GameObjectFactory::Create<GameObjectType::Shader, Shader>();
+
+        shader->type = ProfileToShaderType(profile);
+
+        std::ifstream fin(input);
+
+        if (!fin)
+        {
+            PRINT_AND_BREAK("Cannot open hlsl File ");
+            return -1;
+        }
+
+        std::stringstream str_stream;
+        str_stream << fin.rdbuf();
+        shader->source = str_stream.str();
+        fin.close();
+
+        ResourceManager::GetInstance().SaveAsReference(shader, output);
+        ResourceManager::GetInstance().FlushPending();
     }
-
-    std::stringstream str_stream;
-    str_stream << fin.rdbuf();
-    shader->source = str_stream.str();
-    fin.close();
-
-    ResourceManager::GetInstance().SaveAsReference(shader, output);
-    ResourceManager::GetInstance().FlushPending();
 
     ResourceManager::GetInstance().Deinit();
     Context::GetInstance().Deinit();

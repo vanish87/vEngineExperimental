@@ -94,9 +94,11 @@ namespace vEngine
         }
         void AssimpHandler::HandleMaterials(SceneSharedPtr scene, const aiScene* ai_scene)
         {
-            auto shader_path = Context::GetInstance().CurrentConfigure().resource_bin / "shader";
-            auto vs = std::dynamic_pointer_cast<Shader>(ResourceManager::GetInstance().LoadAsReference(shader_path / "vs" / "vs.json"));
-            auto ps = std::dynamic_pointer_cast<Shader>(ResourceManager::GetInstance().LoadAsReference(shader_path / "ps" / "ps.json"));
+            auto vs_path = ResourceManager::GetInstance().GetResourceBinFilePath("vs.json");
+            auto vs = std::dynamic_pointer_cast<Shader>(ResourceManager::GetInstance().LoadAsReference(vs_path));
+
+            auto ps_path = ResourceManager::GetInstance().GetResourceBinFilePath("ps.json");
+            auto ps = std::dynamic_pointer_cast<Shader>(ResourceManager::GetInstance().LoadAsReference(ps_path));
 
             for (uint32_t mid = 0; mid < ai_scene->mNumMaterials; ++mid)
             {
@@ -111,7 +113,8 @@ namespace vEngine
                 if (AI_SUCCESS == ai_mat->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), szPath))
                 {
                     auto texture_path = ResourceManager::GetInstance().GetResourceSrcFilePath(szPath.data);
-                    if (!scene->HasTexture(texture_path.string()))
+                    auto texture_name = texture_path.stem().string();
+                    if (!scene->HasTexture(texture_name))
                     {
                         std::vector<uint8_t> out;
 
@@ -164,12 +167,13 @@ namespace vEngine
                         tdesc.raw_data = out;
 
                         auto tex = GameObjectFactory::Create<GameObjectType::Texture, Texture>(tdesc);
-                        scene->SetTexture(texture_path.string(), tex);
+                        tex->SetName(texture_name);
+                        scene->SetTexture(texture_name, tex);
 
                         PRINT(texture_path.string() << " Loaded");
                     }
 
-                    mat->BindTexture("diffuse", scene->GetTexture(texture_path.string()));
+                    mat->BindTexture("diffuse", scene->GetTexture(texture_name));
                 }
             }
             // if (this->materials_.size() == 0)

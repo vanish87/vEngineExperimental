@@ -72,6 +72,17 @@ namespace vEngine
             }
         }
 
+        template <typename T>
+        void FromJson(const json& j, std::unordered_set<T>& set)
+        {
+            for (auto it = j.begin(); it != j.end(); ++it)
+            {
+                // TODO ToJson should cast key to string in order to recover it here
+                T value;
+                FromJson(it.value(), value);
+                set.insert(value);
+            }
+        }
         template <typename T, typename S>
         void FromJson(const json& j, std::unordered_map<T, S>& map)
         {
