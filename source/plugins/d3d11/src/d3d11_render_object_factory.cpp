@@ -43,7 +43,7 @@ extern "C"
     {
         ptr = std::make_unique<vEngine::Rendering::D3D11RenderObjectFactory>();
     }
-    D3D11_RENDERING_PLUGIN_API void DestoryGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr)
+    D3D11_RENDERING_PLUGIN_API void DestroyGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr)
     {
         ptr.reset();
     }

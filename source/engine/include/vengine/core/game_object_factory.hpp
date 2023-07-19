@@ -185,7 +185,7 @@ namespace vEngine
 extern "C"
 {
     void CreateGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr);
-    void DestoryGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr);
+    void DestroyGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr);
 }
 #endif
 

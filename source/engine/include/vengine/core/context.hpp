@@ -63,6 +63,7 @@ namespace vEngine
                 WindowSharedPtr window_;
 
                 void* render_plugin_dll_handle_;
+                GameObjectFactoryUniquePtr custom_object_factory_ptr_;
                 GameObjectFactoryUniquePtr render_object_factory_ptr_;
                 Rendering::RenderEngineUniquePtr render_engine_ptr_;
 
