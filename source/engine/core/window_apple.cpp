@@ -17,8 +17,11 @@ namespace vEngine
             else
             {
                 #ifdef APPLE_PLATFORM_TARGET_DARWIN
-                    CGRect frame = (CGRect){ {100.0, 100.0}, {512.0, 512.0} };
-                    this->wnd_ = NS::Window::alloc()->init(frame, NS::WindowStyleMaskClosable | NS::WindowStyleMaskTitled, NS::BackingStoreBuffered, false);
+                CGRect frame = (CGRect){{100.0, 100.0}, {512.0, 512.0}};
+                this->wnd_ = NS::Window::alloc()->init(frame, NS::WindowStyleMaskClosable | NS::WindowStyleMaskTitled, NS::BackingStoreBuffered, false);
+                #elif APPLE_PLATFORM_TARGET_IOS
+                CGRect frame = UI::Screen::mainScreen()->bounds();
+                this->wnd_ = UI::Window::alloc()->init(frame);
                 #endif
             }
         }
