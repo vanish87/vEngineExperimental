@@ -21,7 +21,7 @@ namespace vEngine
     namespace Core
     {
         /// \brief A brief class description.
-        ///
+        //
         /// A detailed class description, it
         /// should be 2 lines at least.
         class VENGINE_API Application : public std::enable_shared_from_this<Application>

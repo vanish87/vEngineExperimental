@@ -1,6 +1,11 @@
 #ifndef _VENGINE_RENDERING_METAL_MTK_VIEW_DELEGATE_HPP
 #define _VENGINE_RENDERING_METAL_MTK_VIEW_DELEGATE_HPP
 
+#include <Foundation/Foundation.hpp>
+#include <QuartzCore/QuartzCore.hpp>
+#include <Metal/Metal.hpp>
+#include <MetalKit/MetalKit.hpp>
+
 namespace vEngine
 {
     namespace Rendering

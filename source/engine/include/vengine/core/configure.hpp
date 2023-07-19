@@ -39,7 +39,10 @@ namespace vEngine
                 std::string custom_plugin_name = "custom_plugin";
                 std::filesystem::path resource_src = "./resource";
                 std::filesystem::path resource_bin = "./resource";
+                int argc;
+                char** argv;
                 GraphicsConfigure graphics_configure;
+            
         };
 
     }  // namespace Core

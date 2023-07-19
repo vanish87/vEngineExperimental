@@ -57,6 +57,9 @@ namespace vEngine
         {
             this->mtl_device_ = MTL::CreateSystemDefaultDevice();
             auto device = this->mtl_device_;
+            
+            
+            CGRect frame = (CGRect){ {100.0, 100.0}, {512.0, 512.0} };
 
             this->mtk_view_ = MTK::View::alloc()->init(frame, device);
             this->mtk_view_->setColorPixelFormat(MTL::PixelFormat::PixelFormatBGRA8Unorm_sRGB);
@@ -152,18 +155,18 @@ namespace vEngine
         {
             NS::AutoreleasePool* pPool = NS::AutoreleasePool::alloc()->init();
 
-            MTL::CommandBuffer* pCmd = this->command_queue_->commandBuffer();
-            MTL::RenderPassDescriptor* pRpd = this->view_->currentRenderPassDescriptor();
-            MTL::RenderCommandEncoder* pEnc = pCmd->renderCommandEncoder(pRpd);
-
-            pEnc->setRenderPipelineState(this->current_pipeline_state_);
-            pEnc->setVertexBuffer(this->vertex_buffer_, 0, 0);
-            pEnc->setVertexBuffer(this->color_buffer_, 0, 1);
-            pEnc->drawPrimitives(MTL::PrimitiveType::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3));
-
-            pEnc->endEncoding();
-            pCmd->presentDrawable(this->view_->currentDrawable());
-            pCmd->commit();
+//            MTL::CommandBuffer* pCmd = this->command_queue_->commandBuffer();
+//            MTL::RenderPassDescriptor* pRpd = this->view_->currentRenderPassDescriptor();
+//            MTL::RenderCommandEncoder* pEnc = pCmd->renderCommandEncoder(pRpd);
+//
+//            pEnc->setRenderPipelineState(this->current_pipeline_state_);
+//            pEnc->setVertexBuffer(this->vertex_buffer_, 0, 0);
+//            pEnc->setVertexBuffer(this->color_buffer_, 0, 1);
+//            pEnc->drawPrimitives(MTL::PrimitiveType::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3));
+//
+//            pEnc->endEncoding();
+//            pCmd->presentDrawable(this->view_->currentDrawable());
+//            pCmd->commit();
 
             pPool->release();
         }

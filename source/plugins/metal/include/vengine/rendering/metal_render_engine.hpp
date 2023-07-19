@@ -4,7 +4,9 @@
 
 #include <Metal/Metal.hpp>
 #include <MetalKit/MTKView.hpp>
+#include <UIKit/UIKit.hpp>
 #include <vengine/rendering/render_engine.hpp>
+#include <vengine/rendering/metal_mtk_view_delegate.hpp>
 namespace vEngine
 {
     namespace Rendering
@@ -83,7 +85,7 @@ namespace vEngine
                 // MTL::Device device_;
                 UI::ViewController* ui_view_controller_;
                 MTL::Device* mtl_device_;
-                MetalMTKViewDelegate* mtk_view_delegate = nullptr;
+                MetalMTKViewDelegate* mtk_view_delegate_ = nullptr;
                 MTK::View* mtk_view_;
 
                 MTL::CommandQueue* command_queue_;

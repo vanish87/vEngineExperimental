@@ -5,7 +5,7 @@ namespace vEngine
 {
     namespace Rendering
     {
-        MetalMTKViewDelegate::MetalMTKViewDelegate(MTL::Device* pDevice) : MTL::ViewDelegate() {}
+        MetalMTKViewDelegate::MetalMTKViewDelegate(MTL::Device* pDevice) : MTK::ViewDelegate() {}
         MetalMTKViewDelegate::~MetalMTKViewDelegate() {}
         void MetalMTKViewDelegate::drawInMTKView(MTK::View* pView) {}
 
