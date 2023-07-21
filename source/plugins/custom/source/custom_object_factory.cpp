@@ -1,5 +1,6 @@
 
 #include <vengine/custom/custom_object_factory.hpp>
+#include <vengine/custom/custom_object_example.hpp>
 
 namespace vEngine
 {
@@ -11,7 +12,8 @@ namespace vEngine
         GameObjectSharedPtr CustomObjectFactory::Create(std::any parameter)
         {
             UNUSED_PARAMETER(parameter);
-            return nullptr;
+            PRINT("Custom Create");
+            return std::make_shared<CustomObject>();
         }
 
     }  // namespace Custom

@@ -3,6 +3,7 @@
 #include <vengine/core/application.hpp>
 #include <vengine/core/context.hpp>
 #include <vengine/core/scene_manager.hpp>
+#include <vengine/core/game_object_factory.hpp>
 
 using namespace vEngine::Core;
 
@@ -19,6 +20,7 @@ namespace Example
             {
                 PRINT("User Create");
 
+                auto cgo = GameObjectFactory::Create<GameObjectType::Custom>();
                 SceneManager::GetInstance().Load("boblampclean.json");
 
             }
