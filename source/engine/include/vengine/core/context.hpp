@@ -21,7 +21,6 @@ namespace vEngine
     {
         class VENGINE_API Context
         {
-                // friend class GameObjectFactory;
                 SINGLETON_CLASS(Context)
 
             public:
@@ -34,11 +33,11 @@ namespace vEngine
 
                 WindowSharedPtr CurrentWindow() const;
                 // Application& AppInstance() const;
-                // RenderFactory& RenderFactoty();
 
             public:
                 Rendering::RenderEngineUniquePtr& GetRenderEngine();
                 GameObjectFactoryUniquePtr& GetRenderObjectFactory();
+                GameObjectFactoryUniquePtr& GetCustomObjectFactory();
 
             public:
                 void SetConfigure(const Configure& configure);
@@ -46,16 +45,9 @@ namespace vEngine
                 void Deinit();
                 void Update();
 
-                void Clear()
-                {
-                    // this->runtime_game_objects_.clear();
-                }
-
             private:
-                void LoadDll();
-                void FreeDll();
-                // GameObjectSharedPtr Find(const UUID& uuid);
-                // void Register(const GameObjectSharedPtr& go);
+                void LoadDLL();
+                void FreeDLL();
 
             private:
                 Configure configure_;
@@ -68,15 +60,6 @@ namespace vEngine
                 void* render_plugin_dll_handle_;
                 GameObjectFactoryUniquePtr render_object_factory_ptr_;
                 Rendering::RenderEngineUniquePtr render_engine_ptr_;
-
-                // std::unordered_map<UUID, GameObjectSharedPtr> runtime_game_objects_;
-
-            public:
-                // constexpr static auto properties()
-                // {
-                //     return std::make_tuple(
-                //         property("context_objects", &Context::runtime_game_objects_));
-                // }
         };
 
         void* LoadLibrary(const std::string lib_name);

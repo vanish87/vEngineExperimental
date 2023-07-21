@@ -47,7 +47,7 @@ namespace vEngine
 
         void Context::Init()
         {
-            this->LoadDll();
+            this->LoadDLL();
 
             auto config = this->configure_;
             auto path = config.resource_bin / config.context_name / "uuid.json";
@@ -69,8 +69,6 @@ namespace vEngine
         }
         void Context::Deinit()
         {
-            this->Clear();
-
             this->window_.reset();
 
             auto config = this->configure_;
@@ -80,9 +78,10 @@ namespace vEngine
             this->GetRenderEngine()->Deinit();
             this->render_engine_ptr_.reset();
             this->render_object_factory_ptr_.reset();
+            this->custom_object_factory_ptr_.reset();
             // prt.reset() does same thing as this->ProcessRenderEngine("DestoryRenderEngine");
 
-            this->FreeDll();
+            this->FreeDLL();
         }
         void Context::Update()
         {
@@ -101,6 +100,18 @@ namespace vEngine
             }
             return this->render_object_factory_ptr_;
         }
+        GameObjectFactoryUniquePtr& Context::GetCustomObjectFactory()
+        {
+            if (this->custom_object_factory_ptr_ == nullptr)
+            {
+                #ifdef VENGINE_STATIC_LINK
+                CreateCustomGameObjectFactory(this->custom_object_factory_ptr_);
+                #elif VENGINE_DYNAMIC_LINK
+                ProcessSharedFunction<GameObjectFactory, HandleGameObjectFactory>("CreateCustomGameObjectFactory", this->custom_plugin_dll_handle_, this->custom_object_factory_ptr_);
+                #endif
+            }
+            return this->custom_object_factory_ptr_;
+        }
 
         Rendering::RenderEngineUniquePtr& Context::GetRenderEngine()
         {
@@ -115,40 +126,29 @@ namespace vEngine
             return this->render_engine_ptr_;
         }
 
-        void Context::LoadDll()
+        void Context::LoadDLL()
         {
             #ifdef VENGINE_STATIC_LINK
             return;
             #endif
-            this->FreeDll();
+            this->FreeDLL();
 
-            auto render_dll_name = this->configure_.graphics_configure.render_plugin_name;
-            this->render_plugin_dll_handle_ = LoadLibrary(render_dll_name);
+            this->render_plugin_dll_handle_ = LoadLibrary(this->configure_.graphics_configure.render_plugin_name);
+            this->custom_plugin_dll_handle_ = LoadLibrary(this->configure_.custom_plugin_name);
         }
-        void Context::FreeDll()
+        void Context::FreeDLL()
         {
             if (this->render_plugin_dll_handle_ != nullptr)
             {
                 FreeLibrary(this->render_plugin_dll_handle_);
                 this->render_plugin_dll_handle_ = nullptr;
             }
+            if (this->custom_plugin_dll_handle_ != nullptr)
+            {
+                FreeLibrary(this->custom_plugin_dll_handle_);
+                this->custom_plugin_dll_handle_ = nullptr;
+            }
         }
-
-        // GameObjectSharedPtr Context::Find(const UUID& uuid)
-        // {
-        //     if (this->runtime_game_objects_.find(uuid) != this->runtime_game_objects_.end())
-        //     {
-        //         return this->runtime_game_objects_[uuid];
-        //     }
-        //     return nullptr;
-        // }
-        // void Context::Register(const GameObjectSharedPtr& go)
-        // {
-        //     // UNUSED_PARAMETER(go);
-        //     const auto& uuid = go->descriptor_.uuid;
-        //     CHECK_ASSERT(this->runtime_game_objects_.find(uuid) == this->runtime_game_objects_.end());
-        //     this->runtime_game_objects_[uuid] = go;
-        // }
 
         void Context::RegisterAppInstance(ApplicationSharedPtr app)
         {

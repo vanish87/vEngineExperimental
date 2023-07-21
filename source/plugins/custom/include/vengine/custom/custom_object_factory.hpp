@@ -18,4 +18,12 @@ namespace vEngine
         };
     }  // namespace Custom
 }  // namespace vEngine
+
+#ifdef VENGINE_STATIC_LINK
+extern "C"
+{
+    void CreateCustomGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr);
+    void DestroyCustomGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr);
+}
+#endif
 #endif /* _VENGINE_CUSTOM_CUSTOM_OBJECT_FACTORY_HPP */

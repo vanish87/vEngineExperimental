@@ -54,10 +54,19 @@ namespace vEngine
                         return obj;                                                     \
                     }
 
-                #define DYNAMIC_TYPE_AND_CREATE(etype, type)                                                            \
+                #define DYNAMIC_RENDER_TYPE_AND_CREATE(etype, type)                                                            \
                     if constexpr (Type == etype)                                                                        \
                     {                                                                                                   \
                         auto go = Context::GetInstance().GetRenderObjectFactory()->Create(std::forward<Args>(args)...); \
+                        go->SetType(etype);                                                                             \
+                        ResourceManager::GetInstance().Register(go);                                                    \
+                        return std::dynamic_pointer_cast<type>(go);                                                     \
+                    }
+
+                #define DYNAMIC_CUSTOM_TYPE_AND_CREATE(etype, type)                                                            \
+                    if constexpr (Type == etype)                                                                        \
+                    {                                                                                                   \
+                        auto go = Context::GetInstance().GetCustomObjectFactory()->Create(std::forward<Args>(args)...); \
                         go->SetType(etype);                                                                             \
                         ResourceManager::GetInstance().Register(go);                                                    \
                         return std::dynamic_pointer_cast<type>(go);                                                     \
@@ -86,10 +95,10 @@ namespace vEngine
                     TYPE_AND_CREATE(GameObjectType::MeshRenderer, Rendering::MeshRenderer);
                     TYPE_AND_CREATE(GameObjectType::MeshRendererComponent, Rendering::MeshRendererComponent);
                     TYPE_AND_CREATE(GameObjectType::Material, Rendering::Material);
-                    DYNAMIC_TYPE_AND_CREATE(GameObjectType::Texture, Rendering::Texture);
-                    DYNAMIC_TYPE_AND_CREATE(GameObjectType::GraphicsBuffer, Rendering::GraphicsBuffer);
-                    DYNAMIC_TYPE_AND_CREATE(GameObjectType::FrameBuffer, Rendering::FrameBuffer);
-                    DYNAMIC_TYPE_AND_CREATE(GameObjectType::PipelineState, Rendering::PipelineState);
+                    DYNAMIC_RENDER_TYPE_AND_CREATE(GameObjectType::Texture, Rendering::Texture);
+                    DYNAMIC_RENDER_TYPE_AND_CREATE(GameObjectType::GraphicsBuffer, Rendering::GraphicsBuffer);
+                    DYNAMIC_RENDER_TYPE_AND_CREATE(GameObjectType::FrameBuffer, Rendering::FrameBuffer);
+                    DYNAMIC_RENDER_TYPE_AND_CREATE(GameObjectType::PipelineState, Rendering::PipelineState);
                     TYPE_AND_CREATE(GameObjectType::Shader, Rendering::Shader);
 
                     TYPE_AND_CREATE(GameObjectType::Bone, Animation::Bone);
@@ -99,7 +108,7 @@ namespace vEngine
                     TYPE_AND_CREATE(GameObjectType::Animator, Animation::Animator);
                     TYPE_AND_CREATE(GameObjectType::AnimatorComponent, Animation::AnimatorComponent);
 
-                    DYNAMIC_TYPE_AND_CREATE(GameObjectType::Custom, T);
+                    DYNAMIC_CUSTOM_TYPE_AND_CREATE(GameObjectType::Custom, T);
 
                     // if constexpr (Type == GameObjectType::Camera) return Context::GetInstance().CreateTest<Camera>(std::forward<Args>(args)...);
                     // if constexpr (Type == GameObjectType::Light) return Context::GetInstance().CreateTest<Light>(std::forward<Args>(args)...);
