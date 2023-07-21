@@ -6,7 +6,6 @@ endif(WIN32)
 	
 if(UNIX)
 	if(APPLE)
-		add_subdirectory(ios_app)
 		add_subdirectory(macos_app)
 	else()
 		add_subdirectory(opengl_app)

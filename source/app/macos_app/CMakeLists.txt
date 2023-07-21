@@ -1,6 +1,5 @@
-project(macos_app)
 
-set(APP_BUNDLE_IDENTIFIER "com.vanish87.my-macos-app") 
+set(APP_BUNDLE_IDENTIFIER "com.vanish87.my-ios-app") 
 set(APP_DEVELOPMENT_TEAM_ID KH98AQQ5YQ)
 # set(CMAKE_CXX_STANDARD 17)
 
@@ -11,57 +10,25 @@ set(APP_DEVELOPMENT_TEAM_ID KH98AQQ5YQ)
 
 message("${CMAKE_OSX_SYSROOT}")
 
+set(COMMON_HEADER_FILES
+	${CMAKE_CURRENT_SOURCE_DIR}/define.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/app_main.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/app_delegate.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/app_view_controller.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/apple_app.hpp
+)
+
 set(COMMON_SOURCE_FILES
-	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/main.mm
+	${CMAKE_CURRENT_SOURCE_DIR}/app_delegate.mm
+	${CMAKE_CURRENT_SOURCE_DIR}/app_view_controller.mm
 )
 
-
-# set(CMAKE_SYSTEM_NAME iOS)
-# set(CMAKE_OSX_SYSROOT iphoneos)
-message("${CMAKE_OSX_SYSROOT}")
-message("${CMAKE_OSX_ARCHITECTURES}")
-
-set(RESOURCES
-  resource/Main.storyboard
-  # ${CMAKE_SOURCE_DIR}/resources
-  # LaunchScreen.storyboard
-)
-message("${RESOURCES}")
-
-add_executable(${PROJECT_NAME} 
-	MACOSX_BUNDLE
-	${COMMON_HEADER_FILES}
-	${COMMON_SOURCE_FILES}
-	${RESOURCES}
-)
-
-# target_link_libraries(${PROJECT_NAME} "-framework Foundation")
-target_link_libraries(${PROJECT_NAME} "-framework AppKit")
-target_link_libraries(${PROJECT_NAME} engine::metal_rendering_plugin)
-target_link_libraries(${PROJECT_NAME} engine::core)
-
-# target_include_directories(${PROJECT_NAME}
-#     PUBLIC ${metal_cpp_framework_SOURCE_DIR}
-#     PUBLIC ${vengine_SOURCE_DIR}
-# )
-
-set_target_properties(${PROJECT_NAME} PROPERTIES
-                    #   XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf-with-dsym"
-                    #   XCODE_ATTRIBUTE_GCC_PREFIX_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/Prefix.pch"
-                        RESOURCE "${RESOURCES}"
-                    #   XCODE_ATTRIBUTE_GCC_PRECOMPILE_PREFIX_HEADER "YES"
-                    #   XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET ${DEPLOYMENT_TARGET}
-                    #   XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY ${CODE_SIGN_IDENTITY}
-                    #   XCODE_ATTRIBUTE_DEVELOPMENT_TEAM ${DEVELOPMENT_TEAM_ID}
-                    #   XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY ${DEVICE_FAMILY}
-                        MACOSX_BUNDLE_GUI_IDENTIFIER ${APP_BUNDLE_IDENTIFIER}
-                        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/resource/plist.in
-                    #   XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC YES
-                    #   XCODE_ATTRIBUTE_COMBINE_HIDPI_IMAGES NO
-                    #   XCODE_ATTRIBUTE_INSTALL_PATH "$(LOCAL_APPS_DIR)"
-                    #   XCODE_ATTRIBUTE_ENABLE_TESTABILITY YES
-                    #   XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN YES
-)
+if(VENGINE_BUILD_IOS)
+  add_subdirectory(ios)
+else()
+  add_subdirectory(macos)
+endif()
 
 
 # set(RESOURCES
