@@ -195,6 +195,8 @@ extern "C"
 {
     void CreateGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr);
     void DestroyGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr);
+    void CreateCustomGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr);
+    void DestroyCustomGameObjectFactory(std::unique_ptr<vEngine::Core::GameObjectFactory>& ptr);
 }
 #endif
 

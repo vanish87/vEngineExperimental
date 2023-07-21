@@ -8,18 +8,11 @@
 #endif
 
 #include <vengine/core/context.hpp>
-// #include <vengine/core/application.hpp>
-#include <vengine/rendering/render_engine.hpp>
+#include <vengine/data/json.hpp>
 #include <vengine/core/window.hpp>
 #include <vengine/core/application.hpp>
 #include <vengine/core/game_object_factory.hpp>
-#include <vengine/data/json.hpp>
-// #include <vengine/core/resource_loader.hpp>
-
-// #include <vengine/data/meta.hpp>
-// #include <vengine/data/json.hpp>
-// #include <fstream>
-
+#include <vengine/rendering/render_engine.hpp>
 
 namespace vEngine
 {
@@ -130,11 +123,12 @@ namespace vEngine
         {
             #ifdef VENGINE_STATIC_LINK
             return;
-            #endif
+            #else
             this->FreeDLL();
 
             this->render_plugin_dll_handle_ = LoadLibrary(this->configure_.graphics_configure.render_plugin_name);
             this->custom_plugin_dll_handle_ = LoadLibrary(this->configure_.custom_plugin_name);
+            #endif
         }
         void Context::FreeDLL()
         {
