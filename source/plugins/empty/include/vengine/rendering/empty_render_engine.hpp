@@ -1,5 +1,5 @@
-#ifndef _EMPTY_INCLUDE_EMPTY_RENDER_ENGINE_HPP
-#define _EMPTY_INCLUDE_EMPTY_RENDER_ENGINE_HPP
+#ifndef _VENGINE_RENDERING_EMPTY_RENDER_ENGINE_HPP
+#define _VENGINE_RENDERING_EMPTY_RENDER_ENGINE_HPP
 
 #pragma once
 
@@ -55,4 +55,4 @@ namespace vEngine
     }  // namespace Rendering
 }  // namespace vEngine
 
-#endif /* _EMPTY_INCLUDE_EMPTY_RENDER_ENGINE_HPP */
+#endif /* _VENGINE_RENDERING_EMPTY_RENDER_ENGINE_HPP */

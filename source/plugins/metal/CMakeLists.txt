@@ -12,7 +12,7 @@ set(METAL_AS_FRAMEWORK OFF)
 # add_library(engine::metal_cpp ALIAS ${PROJECT_NAME})
 # set(single_header_file_dir ${CMAKE_CURRENT_SOURCE_DIR}/SingleHeader/include)
 # target_include_directories(${PROJECT_NAME} INTERFACE ${single_header_file_dir})
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src metal_source)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/source metal_source)
 
 # metal.cpp contains implementation
 # compiled as static/dynamic lib

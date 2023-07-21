@@ -7,9 +7,10 @@ find_package(glfw REQUIRED)
 # Add a library with the above sources
 # add_library(${PROJECT_NAME} src/vector.cpp)
 # add_library(engine::core ALIAS ${PROJECT_NAME})
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/source opengl_source)
 
 add_library(${PROJECT_NAME}
-    src/opengl_render_engine.cpp
+    ${opengl_source}
     )
 add_library(engine::opengl_rendering_plugin ALIAS ${PROJECT_NAME})
 
