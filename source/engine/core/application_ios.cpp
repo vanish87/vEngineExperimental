@@ -1,6 +1,7 @@
 
 #ifdef VENGINE_PLATFORM_APPLE
 #include <vengine/core/application_ios.hpp>
+#include <vengine/core/context.hpp>
 
 namespace vEngine
 {
@@ -8,8 +9,10 @@ namespace vEngine
     {
         void ApplicationIOS::Run()
         {
+            auto configure = Context::GetInstance().CurrentConfigure();
+
             auto auto_release_pool = NS::AutoreleasePool::alloc()->init();
-            UI::ApplicationMain(argc, argv, this);
+            UI::ApplicationMain(configure.argc, configure.argv, this);
             auto_release_pool->release();
         }
 

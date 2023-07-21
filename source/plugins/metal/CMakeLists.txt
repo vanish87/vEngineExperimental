@@ -45,6 +45,7 @@ target_link_libraries(${PROJECT_NAME} "-framework Metal")
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include
     PUBLIC ${vengine_SOURCE_DIR}/include
+    PUBLIC ${vengine_SOURCE_DIR}/include/apple
 )
 
 # target_link_libraries( ${PROJECT_NAME}

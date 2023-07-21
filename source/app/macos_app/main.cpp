@@ -12,6 +12,8 @@ int main( int argc, const char* argv[] )
     configure.graphics_configure.width = 1280;
     configure.graphics_configure.height = 720;
     configure.graphics_configure.render_plugin_name = "metal_rendering_plugin";
+    configure.argc = argc;
+    //configure.argv = argv;
 
     vEngine::Core::Context::GetInstance().SetConfigure(configure);
     auto& re = vEngine::Core::Context::GetInstance().GetRenderEngine();

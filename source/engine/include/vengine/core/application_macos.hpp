@@ -4,6 +4,7 @@
 #ifdef VENGINE_PLATFORM_APPLE
 #include <vengine/core/application.hpp>
 #include <apple/define.hpp>
+#include <AppKit/AppKit.hpp>
 
 namespace vEngine
 {
@@ -13,9 +14,12 @@ namespace vEngine
         class ApplicationMacOS : public Application, public NS::ApplicationDelegate
         {
             public:
-                virtual void applicationWillFinishLaunching(NS::Notification* pNotification) override;
+            ApplicationMacOS(){}
+            virtual ~ApplicationMacOS(){}
+            virtual void applicationWillFinishLaunching(NS::Notification* pNotification) override{};
                 virtual void applicationDidFinishLaunching(NS::Notification* pNotification) override;
-                virtual bool applicationShouldTerminateAfterLastWindowClosed(NS::Application* pSender) override;
+            virtual bool applicationShouldTerminateAfterLastWindowClosed(NS::Application* pSender) override{};
+                virtual void Run() override;
         };
     }  // namespace Core
 }  // namespace vEngine

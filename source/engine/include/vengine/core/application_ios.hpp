@@ -16,6 +16,7 @@ namespace vEngine
             public:
                 bool applicationDidFinishLaunching(UI::Application *pApp, NS::Value *options) override;
                 void applicationWillTerminate(UI::Application *pApp) override;
+                virtual void Run() override;
         };
     }  // namespace Core
 }  // namespace vEngine
