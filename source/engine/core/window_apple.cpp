@@ -1,6 +1,6 @@
 #ifdef VENGINE_PLATFORM_APPLE
 #include <vengine/core/window.hpp>
-#include <apple/define.hpp>
+#include <apple/target_define.hpp>
 // #include <AppKit/AppKit.hpp>
 // #include <UIKit/UIKit.hpp>
 

@@ -1,7 +1,7 @@
 
-#import "define.hpp"
+#import <apple/target_define.hpp>
 
-#if defined(APP_PLATFORM_TARGET_DARWIN)
+#if defined(VENGINE_PLATFORM_TARGET_DARWIN)
 #import <Cocoa/Cocoa.h>
 #else
 #import <Availability.h>
@@ -10,12 +10,11 @@
 #endif
 
 #import "apple_app.hpp"
-#import "app_main.hpp"
 #import <vengine/core/context.hpp>
 #import <vengine/core/configure.hpp>
 #import <vengine/rendering/render_engine.hpp>
 
-#if defined(APP_PLATFORM_TARGET_DARWIN)
+#if defined(VENGINE_PLATFORM_TARGET_DARWIN)
 int main(int argc, const char * argv[])
 {
     return NSApplicationMain(argc, argv);
@@ -30,7 +29,7 @@ int main(int argc, char * argv[])
 #endif
 
 
-void AppleAppMain(void* wnd)
+void AppleAppMain()
 {
     std::cout << "Version " + std::string(Version) << std::endl;
 

@@ -3,22 +3,27 @@
 
 @implementation AppDelegate
 
-#if defined(APP_PLATFORM_TARGET_DARWIN)
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender 
+#if defined(VENGINE_PLATFORM_TARGET_DARWIN)
+- (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppleAppMain();
+    });
+//    NSLog(@"applicationDidFinishLaunching");
+//    [self performSelectorInBackground:@selector(app_main_loop) withObject:nil afterDelay:0.0];
 
-    return YES;
 }
 #else
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
+//    NSLog(@"didFinishLaunchingWithOptions");
+    //NSLog(@"%@",NSStringFromCGRect(self.window.bounds));
 //    [self performSelectorInBackground:@selector(app_main_loop) withObject:nil afterDelay:0.0];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppleAppMain();
+    });
     return YES;
 }
 #endif
-//- (void)app_main_loop: (void*) view
-//{
-//    //Trigger app main loop here
-//    AppleAppMain(view);
-//}
+
 @end
