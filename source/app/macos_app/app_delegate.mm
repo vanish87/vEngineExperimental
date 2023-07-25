@@ -8,6 +8,7 @@
 {
     // dispatch_async(dispatch_get_main_queue(), ^{
     AppleAppMain(0, nullptr);
+    //[notification.object activateIgnoringOtherApps:true];
     // });
 //    NSLog(@"applicationDidFinishLaunching");
 //    [self performSelectorInBackground:@selector(app_main_loop) withObject:nil afterDelay:0.0];

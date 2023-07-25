@@ -2,9 +2,13 @@
 #define _VENGINE_RENDERING_METAL_RENDER_ENGINE_HPP
 #pragma once
 
+#include <apple/target_define.hpp>
 #include <Metal/Metal.hpp>
 #include <MetalKit/MTKView.hpp>
+#include <UIKit/UIKit.hpp>
 #include <vengine/rendering/render_engine.hpp>
+#include <METAL_RENDERING_PLUGIN_API.hpp>
+
 namespace vEngine
 {
     namespace Rendering
@@ -80,8 +84,10 @@ namespace vEngine
                 void TriangleDraw();
 
             private:
-                // MTL::Device device_;
-                MTK::View* view_;
+                UI::ViewController* ui_view_controller_;
+
+                MTL::Device* device_;
+                MTK::View* mtk_view_;
                 MTL::CommandQueue* command_queue_;
                 MTL::RenderPipelineState* current_pipeline_state_;
                 MTL::Buffer* vertex_buffer_;
