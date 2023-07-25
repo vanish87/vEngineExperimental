@@ -19,6 +19,7 @@ int main(int argc, char* argv[])
     std::filesystem::path output;
     std::filesystem::path resource_src;
     std::filesystem::path resource_bin;
+    std::filesystem::path library_bin;
     for (auto i = 0; i < argc; ++i)
     {
         auto s = std::string(argv[i]);
@@ -26,6 +27,7 @@ int main(int argc, char* argv[])
         if (s == "-o") output = argv[i + 1];
         if (s == "-r") resource_src = argv[i + 1];
         if (s == "-b") resource_bin = argv[i + 1];
+        if (s == "-l") library_bin = argv[i + 1];
     }
     // std::string prefix = "C:/Users/vanis/Documents/Code/vEngineExperimental";
     // std::string prefix = "C:/Users/liyuan/Documents/Personal/vEngineExperimental";
@@ -39,6 +41,7 @@ int main(int argc, char* argv[])
     configure.graphics_configure.output = Output::CommandLine;
     configure.resource_src = resource_src;
     configure.resource_bin = resource_bin;
+    configure.library_bin = library_bin;
 
 
     #ifdef VENGINE_PLATFORM_WINDOWS

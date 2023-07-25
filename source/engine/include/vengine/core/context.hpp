@@ -49,6 +49,11 @@ namespace vEngine
                 void LoadDLL();
                 void FreeDLL();
 
+                static void* LoadLibrary(const std::string lib_name,const std::filesystem:: path lib_bin);
+                static void FreeLibrary(void* handle);
+                template <typename T, typename F>
+                static void ProcessSharedFunction(const std::string func_name, void* handle, std::unique_ptr<T>& ptr);
+
             private:
                 Configure configure_;
                 ApplicationWeakPtr app_;
@@ -62,10 +67,6 @@ namespace vEngine
                 Rendering::RenderEngineUniquePtr render_engine_ptr_;
         };
 
-        void* LoadLibrary(const std::string lib_name);
-        void FreeLibrary(void* handle);
-        template <typename T, typename F>
-        void ProcessSharedFunction(const std::string func_name, void* handle, std::unique_ptr<T>& ptr);
 
     }  // namespace Core
 

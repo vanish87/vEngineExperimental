@@ -126,8 +126,9 @@ namespace vEngine
             #else
             this->FreeDLL();
 
-            this->render_plugin_dll_handle_ = LoadLibrary(this->configure_.graphics_configure.render_plugin_name);
-            this->custom_plugin_dll_handle_ = LoadLibrary(this->configure_.custom_plugin_name);
+            const auto config = this->configure_;
+            this->render_plugin_dll_handle_ = LoadLibrary(config.graphics_configure.render_plugin_name, config.library_bin);
+            this->custom_plugin_dll_handle_ = LoadLibrary(config.custom_plugin_name, config.library_bin);
             #endif
         }
         void Context::FreeDLL()
@@ -162,23 +163,26 @@ namespace vEngine
         //     return *(this->app_instance_);
         // }
 
-        void* LoadLibrary(const std::string lib_name)
+        void* Context::LoadLibrary(const std::string lib_name, const std::filesystem::path lib_bin)
         {
             #ifdef DEBUG
-            auto dll_name = VENGINE_SHARED_LIB_PREFIX + lib_name + VENGINE_SHARED_LIB_DEBUG_POSTFIX + VENGINE_SHARED_LIB_EXT;
+            auto dll_name = lib_name + VENGINE_SHARED_LIB_DEBUG_POSTFIX + VENGINE_SHARED_LIB_EXT;
             #else
-            auto dll_name = VENGINE_SHARED_LIB_PREFIX + lib_name + VENGINE_SHARED_LIB_EXT;
+            auto dll_name = lib_name + VENGINE_SHARED_LIB_DEBUG_POSTFIX + VENGINE_SHARED_LIB_EXT;
             #endif
 
+            auto path = lib_bin / dll_name;
+            if (!std::filesystem::exists(path)) return nullptr;
+
             #ifdef VENGINE_PLATFORM_WINDOWS
-            auto handle = ::LoadLibrary(dll_name.c_str());
+            auto handle = ::LoadLibrary(path.string().c_str());
             if (!handle)
             {
                 PRINT_AND_BREAK("could not load the dynamic library: " << dll_name);
             }
             #elif VENGINE_PLATFORM_UNIX
             dlerror();
-            auto handle = dlopen(dll_name.c_str(), RTLD_LAZY);
+            auto handle = dlopen(path.string().c_str(), RTLD_LAZY);
             if (!handle)
             {
                 PRINT_AND_BREAK("Cannot open library: " + std::string(dlerror()));
@@ -189,17 +193,17 @@ namespace vEngine
             return handle;
         }
 
-        void FreeLibrary(void* handle)
+        void Context::FreeLibrary(void* handle)
         {
             #ifdef VENGINE_PLATFORM_WINDOWS
-            ::FreeLibrary(reinterpret_cast<HMODULE>(handle));
+            if (handle != nullptr) ::FreeLibrary(reinterpret_cast<HMODULE>(handle));
             #elif VENGINE_PLATFORM_UNIX
             dlclose(handle);
             #endif
         }
 
         template <typename T, typename F>
-        void ProcessSharedFunction(const std::string func_name, void* handle, std::unique_ptr<T>& ptr)
+        void Context::ProcessSharedFunction(const std::string func_name, void* handle, std::unique_ptr<T>& ptr)
         {
             F function;
             #ifdef VENGINE_PLATFORM_WINDOWS

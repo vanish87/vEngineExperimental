@@ -40,6 +40,7 @@ namespace vEngine
                 std::string custom_plugin_name = "custom_plugin";
                 std::filesystem::path resource_src = "./resource";
                 std::filesystem::path resource_bin = "./resource";
+                std::filesystem::path library_bin = "./";
                 std::vector<std::string> argv;
                 GraphicsConfigure graphics_configure;
 

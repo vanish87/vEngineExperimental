@@ -1,6 +1,7 @@
 
 set(RESOURCE_SRC ${CMAKE_CURRENT_SOURCE_DIR})
 set(RESOURCE_BIN ${CMAKE_CURRENT_BINARY_DIR}/bin)
+set(LIBRARY_BIN ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/$<CONFIG>)
 set(BIN_FILES)
 set(SHADER_BIN_FILES)
 
@@ -16,7 +17,7 @@ foreach(SRC_FILE ${SHADER_VS_SOURCE})
   add_custom_command(
     OUTPUT ${BIN_FILE}
     DEPENDS ${SRC_FILE} shader_compiler
-    COMMAND shader_compiler -i ${SRC_FILE} -o ${BIN_FILE} -p vs -r ${RESOURCE_SRC} -b ${RESOURCE_BIN}
+    COMMAND shader_compiler -i ${SRC_FILE} -o ${BIN_FILE} -p vs -r ${RESOURCE_SRC} -b ${RESOURCE_BIN} -l ${LIBRARY_BIN}
     COMMENT "Compile vs ${SRC_FILE} to json ${BIN_FILE}"
   )
 endforeach(SRC_FILE ${SHADER_VS_SOURCE})
@@ -31,7 +32,7 @@ foreach(SRC_FILE ${SHADER_PS_SOURCE})
   add_custom_command(
     OUTPUT ${BIN_FILE}
     DEPENDS ${SRC_FILE} shader_compiler
-    COMMAND shader_compiler -i ${SRC_FILE} -o ${BIN_FILE} -p ps -r ${RESOURCE_SRC} -b ${RESOURCE_BIN}
+    COMMAND shader_compiler -i ${SRC_FILE} -o ${BIN_FILE} -p ps -r ${RESOURCE_SRC} -b ${RESOURCE_BIN} -l ${LIBRARY_BIN}
     COMMENT "Compile ps ${SRC_FILE} to json ${BIN_FILE}"
   )
 endforeach(SRC_FILE ${SHADER_PS_SOURCE})
@@ -45,7 +46,7 @@ foreach(SRC_FILE ${SMPL_SOURCE})
   add_custom_command(
     OUTPUT ${BIN_FILE}
     DEPENDS ${SRC_FILE} ${SHADER_BIN_FILES} smpl_to_json
-    COMMAND smpl_to_json -i ${SRC_FILE} -o ${BIN_FILE}
+    COMMAND smpl_to_json -i ${SRC_FILE} -o ${BIN_FILE} -l ${LIBRARY_BIN}
     COMMENT "Covert smpl ${SRC_FILE} to json ${BIN_FILE}"
     # ${CMAKE_SOURCE_DIR}/resources
     # $<TARGET_FILE_DIR:resource>/resources
@@ -61,7 +62,7 @@ foreach(SRC_FILE ${ASSIMP_SOURCE})
   add_custom_command(
     OUTPUT ${BIN_FILE}
     DEPENDS ${SRC_FILE} ${SHADER_BIN_FILES} smpl_to_json
-    COMMAND assimp_to_json -i ${SRC_FILE} -o ${BIN_FILE} -r ${RESOURCE_SRC} -b ${RESOURCE_BIN}
+    COMMAND assimp_to_json -i ${SRC_FILE} -o ${BIN_FILE} -r ${RESOURCE_SRC} -b ${RESOURCE_BIN} -l ${LIBRARY_BIN}
     COMMENT "Covert assimp ${SRC_FILE} to json ${BIN_FILE}"
     # ${CMAKE_SOURCE_DIR}/resources
     # $<TARGET_FILE_DIR:resource>/resources
