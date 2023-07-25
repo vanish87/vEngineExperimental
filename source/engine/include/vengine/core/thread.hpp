@@ -14,6 +14,7 @@
 
 #include <string>
 #include <thread>
+#include <engine.hpp>
 
 namespace vEngine
 {
@@ -24,7 +25,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Thread
+        class VENGINE_API Thread
         {
             public:
                 /// \brief brief constructor description.

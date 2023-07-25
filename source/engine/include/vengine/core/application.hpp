@@ -13,7 +13,7 @@
 #pragma once
 
 #include <engine.hpp>
-// #include <vengine/core/iruntime_module.hpp>
+#include <vengine/core/thread.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -24,7 +24,7 @@ namespace vEngine
         //
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class VENGINE_API Application : public std::enable_shared_from_this<Application>
+        class VENGINE_API Application : public std::enable_shared_from_this<Application>, public Thread
         {
             public:
                 Application();
@@ -33,6 +33,8 @@ namespace vEngine
             public:
                 virtual void Run();
                 virtual void RunAsync();
+
+                virtual int Main(void* para) override;
                 virtual void Quit();
 
             protected:

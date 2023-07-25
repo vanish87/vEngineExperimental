@@ -13,6 +13,7 @@
 #pragma once
 
 #include <filesystem>
+#include <vector>
 
 namespace vEngine
 {
@@ -39,10 +40,17 @@ namespace vEngine
                 std::string custom_plugin_name = "custom_plugin";
                 std::filesystem::path resource_src = "./resource";
                 std::filesystem::path resource_bin = "./resource";
-                int argc;
-                char** argv;
+                std::vector<std::string> argv;
                 GraphicsConfigure graphics_configure;
-            
+
+                void ImportArgs(const int argc, const char* argv_in[])
+                {
+                    this->argv.clear();
+                    for(auto i = 0; i < argc; ++i)
+                    {
+                        this->argv.push_back(argv_in[i]);
+                    }
+                }
         };
 
     }  // namespace Core

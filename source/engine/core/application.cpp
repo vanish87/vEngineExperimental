@@ -65,13 +65,11 @@ namespace vEngine
         void Application::RunAsync()
         {
             this->Init();
-            this->Update();
-            this->Deinit();
+            this->Create();
         }
-
-        void Application::Run()
+        int Application::Main(void* para)
         {
-            this->Init();
+            UNUSED_PARAMETER(para);
 
             Timer update_timer;
             auto previous = update_timer.Time();
@@ -93,6 +91,14 @@ namespace vEngine
                 }
             }
             this->Deinit();
+
+            return 0;
+        }
+
+        void Application::Run()
+        {
+            this->Init();
+            this->Main(nullptr);
         }
 
         void Application::OnInit() {}

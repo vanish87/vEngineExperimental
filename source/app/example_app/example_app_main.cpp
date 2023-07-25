@@ -39,16 +39,16 @@ namespace Example
     };
 }  // namespace Example
 
-int main(int argc, char* argv[])
+int main(const int argc, const char* argv[])
 {
-    UNUSED_PARAMETER(argc);
-    UNUSED_PARAMETER(argv);
 
     std::cout << "Version " + std::string(Version) << std::endl;
 
     Configure configure;
     configure.graphics_configure.width = 1280;
     configure.graphics_configure.height = 720;
+    configure.ImportArgs(argc, argv);
+
     #ifdef VENGINE_PLATFORM_WINDOWS
     configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";
     #else

@@ -4,6 +4,7 @@
 #include <apple/target_define.hpp>
 
 #if defined(VENGINE_PLATFORM_TARGET_DARWIN)
+//system header, not the metal-cpp header
 #import <AppKit/AppKit.h>
 #define PlatformAppDelegate NSObject<NSApplicationDelegate>
 #else
