@@ -20,7 +20,7 @@ int main(const int argc, const char * argv[])
     return NSApplicationMain(argc, argv);
 }
 #else
-int main(const int argc, const char * argv[])
+int main(const int argc, char * argv[])
 {
     @autoreleasepool {
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
@@ -28,6 +28,7 @@ int main(const int argc, const char * argv[])
 }
 #endif
 
+std::shared_ptr<AppleApp::ExampleApp> app;
 
 void AppleAppMain(const int argc, const char * argv[])
 {
@@ -43,6 +44,6 @@ void AppleAppMain(const int argc, const char * argv[])
     auto& re = vEngine::Core::Context::GetInstance().GetRenderEngine();
     // re.PrintInfo();
 
-    auto app = std::make_shared<AppleApp::ExampleApp>();
+    app = std::make_shared<AppleApp::ExampleApp>();
     app->RunAsync();
 }
