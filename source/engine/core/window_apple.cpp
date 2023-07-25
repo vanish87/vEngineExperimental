@@ -19,14 +19,14 @@ namespace vEngine
                 #if defined(VENGINE_PLATFORM_TARGET_DARWIN)
                 CGRect frame = (CGRect){ {100.0, 100.0}, {512.0, 512.0} };
 
-                auto _pWindow = NS::Window::alloc()->init(
+                auto window = NS::Window::alloc()->init(
                     frame,
                     NS::WindowStyleMaskClosable|NS::WindowStyleMaskTitled,
                     NS::BackingStoreBuffered,
                     false );
-                _pWindow->setTitle( NS::String::string( "04 - Instancing", NS::StringEncoding::UTF8StringEncoding ) );
+                window->setTitle( NS::String::string( desc.name.c_str(), NS::StringEncoding::UTF8StringEncoding ) );
 
-                _pWindow->makeKeyAndOrderFront( nullptr );
+                window->makeKeyAndOrderFront( nullptr );
                 this->wnd_ = window;
                 #elif defined(VENGINE_PLATFORM_TARGET_IOS)
                 CGRect frame = UI::Screen::mainScreen()->bounds();

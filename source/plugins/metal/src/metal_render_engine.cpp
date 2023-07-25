@@ -55,11 +55,17 @@ namespace vEngine
     )";
         void MetalRenderEngine::InitPipeline()
         {
+
+            // _pViewController = UI::ViewController::alloc()->init( nil, nil );
+
             auto window = Context::GetInstance().CurrentWindow();
-            this->view_ = static_cast<MTK::View*>(window->WindowHandle());
-            auto device = this->view_->device();
+            auto device = MTL::CreateSystemDefaultDevice();
+            // auto _pMtkView = MTK::View::alloc()->init(frame, _pDevice);
+
+            // this->view_ = static_cast<MTK::View*>(window->WindowHandle());
 
             std::cout << "Metal " << device->name()->cString(NS::UTF8StringEncoding) << std::endl;
+            return;
 
             this->view_->setColorPixelFormat(MTL::PixelFormat::PixelFormatBGRA8Unorm_sRGB);
             this->view_->setClearColor(MTL::ClearColor::Make(1.0, 0.0, 0.0, 1.0));
