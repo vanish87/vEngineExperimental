@@ -14,9 +14,6 @@
 
 @interface AppDelegate : PlatformAppDelegate
 
-#if defined(VENGINE_PLATFORM_TARGET_IOS)
-@property (strong, nonatomic) UIWindow *window;
-#endif
 
 @end
 

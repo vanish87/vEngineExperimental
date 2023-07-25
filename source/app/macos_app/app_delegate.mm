@@ -6,23 +6,16 @@
 #if defined(VENGINE_PLATFORM_TARGET_DARWIN)
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
-    // dispatch_async(dispatch_get_main_queue(), ^{
     AppleAppMain(0, nullptr);
-    //[notification.object activateIgnoringOtherApps:true];
-    // });
-//    NSLog(@"applicationDidFinishLaunching");
-//    [self performSelectorInBackground:@selector(app_main_loop) withObject:nil afterDelay:0.0];
-
 }
 #else
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
-//    NSLog(@"didFinishLaunchingWithOptions");
-    //NSLog(@"%@",NSStringFromCGRect(self.window.bounds));
 //    [self performSelectorInBackground:@selector(app_main_loop) withObject:nil afterDelay:0.0];
-    // dispatch_async(dispatch_get_main_queue(), ^{
+//     dispatch_async(dispatch_get_main_queue(), ^{
+//     });
+        
     AppleAppMain(0, nullptr);
-    // });
     return YES;
 }
 #endif

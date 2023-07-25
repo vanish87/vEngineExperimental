@@ -78,18 +78,14 @@ namespace vEngine
             ns_window->makeKeyAndOrderFront(nullptr);
             #endif
             
-            this->mtk_view_->setColorPixelFormat(MTL::PixelFormat::PixelFormatBGRA8Unorm_sRGB);
-            this->mtk_view_->setClearColor(MTL::ClearColor::Make(1.0, 1.0, 0.0, 1.0));
-
-            this->command_queue_ = this->device_->newCommandQueue();
-
-            this->TriangleDraw();
-            return;
-
             std::cout << "Metal " << this->device_->name()->cString(NS::UTF8StringEncoding) << std::endl;
 
             this->mtk_view_->setColorPixelFormat(MTL::PixelFormat::PixelFormatBGRA8Unorm_sRGB);
             this->mtk_view_->setClearColor(MTL::ClearColor::Make(1.0, 0.0, 0.0, 1.0));
+
+            this->command_queue_ = this->device_->newCommandQueue();
+            this->TriangleDraw();
+            return;
 
             auto res_path = NS::Bundle::mainBundle()->resourcePath();
             std::cout << "Resource Path: " << res_path->cString(NS::UTF8StringEncoding) << std::endl;
