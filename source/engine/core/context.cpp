@@ -168,7 +168,7 @@ namespace vEngine
             #ifdef DEBUG
             auto dll_name = lib_name + VENGINE_SHARED_LIB_DEBUG_POSTFIX + VENGINE_SHARED_LIB_EXT;
             #else
-            auto dll_name = lib_name + VENGINE_SHARED_LIB_DEBUG_POSTFIX + VENGINE_SHARED_LIB_EXT;
+            auto dll_name = lib_name + VENGINE_SHARED_LIB_EXT;
             #endif
 
             auto path = lib_bin / dll_name;
