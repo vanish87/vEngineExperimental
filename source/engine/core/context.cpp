@@ -174,7 +174,7 @@ namespace vEngine
             auto handle = ::LoadLibrary(dll_name.c_str());
             if (!handle)
             {
-                PRINT_AND_BREAK("could not load the dynamic library");
+                PRINT_AND_BREAK("could not load the dynamic library: " << dll_name);
             }
             #elif VENGINE_PLATFORM_UNIX
             dlerror();
