@@ -11,12 +11,12 @@
 #define _VENGINE_CORE_COMPONENT_HPP
 
 #pragma once
-#include <VENGINE_API.hpp>
-#include <engine.hpp>
 #include <memory>
+
+#include <engine.hpp>
+#include <vengine/core/icomponent.hpp>
 #include <vengine/core/game_node.hpp>
 #include <vengine/core/game_object_factory.hpp>
-#include <vengine/core/icomponent.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -28,9 +28,10 @@ namespace vEngine
         /// Unity-like Component model attached
         /// as game node in the scene
         template <typename T>
-        class VENGINE_API Component : public GameNode, public IComponent
+        class Component : public GameNode, public IComponent
         {
                 static_assert(std::is_base_of<GameObject, T>::value, "T must derived from GameObject");
+                static_assert(std::is_same<Component, T>::value == false, "T should not be Component");
 
             public:
                 constexpr static auto properties()
@@ -46,17 +47,14 @@ namespace vEngine
 
             public:
                 /// \brief brief constructor description.
-                Component()
-                    : enabled_{false},
-                      game_object_{GameObjectFactory::Create<T>()} {
-
-                      };
+                Component(const std::shared_ptr<T> go = GameObjectFactory::Default<T>()) : enabled_{false}, game_object_{go} {};
                 virtual ~Component(){};
 
                 virtual void OnInit() override
                 {
                     // PRINT("Created "<< typeid(T).name() << " from component");
-                    this->description_.name = std::string("Component ") + typeid(T).name();
+                    // this->descriptor_.name = std::string("Component ") + typeid(T).name();
+                    // this->game_object_ = T::Default();
                     // this->game_object_ = std::make_shared<T>();
                 }
                 virtual bool Enabled() const override
@@ -73,18 +71,15 @@ namespace vEngine
             public:
                 std::shared_ptr<T> GO()
                 {
+                    CHECK_ASSERT_NOT_NULL(this->game_object_);
+
                     return this->game_object_;
                 }
 
-                void Reset(std::shared_ptr<T> new_go)
-                {
-                    // if (this->game_object_ != nullptr) this->game_object_.reset();
-                    this->game_object_ = new_go;
-                }
 
             private:
-                std::shared_ptr<T> game_object_;
                 bool enabled_;
+                std::shared_ptr<T> game_object_;
 
             public:
                 virtual GameNodeSharedPtr Owner() override

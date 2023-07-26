@@ -13,8 +13,10 @@
 
 #pragma once
 
-#include <engine.hpp>
 #include <unordered_map>
+#include <vector>
+
+#include <engine.hpp>
 #include <vengine/core/game_object.hpp>
 
 /// A brief namespace description.
@@ -29,8 +31,21 @@ namespace vEngine
         class VENGINE_API Animator : public Core::GameObject
         {
             public:
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        GameObject::properties(),
+                        std::make_tuple(
+                            property("animations_", &Animator::animations_)
+                            // property("inverse_bind_pose_matrix", &Bone::inverse_bind_pose_matrix_)
+                        )
+                    );
+                }
+                static AnimatorSharedPtr Default();
+                
                 /// \brief brief constructor description.
                 Animator();
+                virtual ~Animator() {}
 
                 /// class variable description
 

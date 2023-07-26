@@ -11,7 +11,7 @@
 
 #include <vengine/core/scene_manager.hpp>
 
-#include <vengine/core/resource_loader.hpp>
+#include <vengine/core/resource_manager.hpp>
 #include <vengine/core/scene.hpp>
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -26,15 +26,9 @@ namespace vEngine
         SceneManager::~SceneManager() {}
         void SceneManager::Load(const std::string scene_name)
         {
-            ResourceDescriptor desc;
-            desc.on_load_call_back = [&]()
-            {
-                auto path = ResourceLoader::GetInstance().GetFilePath(scene_name);
-                this->scene_ = Scene::Load(path);;
-                return this->scene_;
-            };             
-            ResourceLoader::GetInstance().LoadAsync(desc);
-
+            const auto path = ResourceManager::GetInstance().GetResourceBinFilePath(scene_name);
+            auto go = ResourceManager::GetInstance().LoadAsReference(path);
+            this->scene_ = std::dynamic_pointer_cast<Scene>(go);
         }
         void SceneManager::Init()
         {

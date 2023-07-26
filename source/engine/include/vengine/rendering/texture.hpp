@@ -12,12 +12,9 @@
 
 #pragma once
 
-#include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <vengine/rendering/data_struct.hpp>
-#include <vengine/rendering/data_format.hpp>
 #include <vengine/core/game_object.hpp>
-#include <vengine/core/iresource.hpp>
 #include <vengine/data/meta.hpp>
 
 namespace vEngine
@@ -39,20 +36,15 @@ namespace vEngine
                     return std::tuple_cat(
                         Core::GameObject::properties(),
                         std::make_tuple(
-                            Core::property("descriptor", &Texture::descriptor_),
-                            Core::property("raw_data", &Texture::raw_data_)
+                            Core::property("descriptor", &Texture::descriptor_)
                         )
                     );
                 };
                 /// \brief brief constructor description.
-                Texture(){};
-                Texture(const TextureDescriptor& desc);
+                // Texture(const Core::GameObjectType type = Core::GameObjectType::Texture);
+                Texture(const TextureDescriptor desc);
                 virtual ~Texture();
 
-                void SetRawData(const std::vector<byte> data)
-                {
-                    this->raw_data_ = data;
-                }
 
                 virtual void PrepareData();
 
@@ -60,7 +52,6 @@ namespace vEngine
                 // int public_variable_;
 
 				TextureDescriptor descriptor_;
-                std::vector<byte> raw_data_;
 
             public:
                 /// \brief A brief function description.

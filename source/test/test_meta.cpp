@@ -2,6 +2,7 @@
 
 #include <engine.hpp>
 #include <vengine/core/vector.hpp>
+#include <vengine/core/matrix.hpp>
 #include <vengine/data/meta.hpp>
 #include <vengine/data/json.hpp>
 #include <vengine/core/math.hpp>

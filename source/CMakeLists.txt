@@ -4,10 +4,10 @@ set(EXTERNAL_BUILD_DIR "${CMAKE_BINARY_DIR}/external/build")
 
 message(STATUS "EXTERNAL_BUILD_DIR= ${EXTERNAL_BUILD_DIR}")
 
-find_package(assimp REQUIRED)
+# find_package(assimp REQUIRED)
 # assimp needs zlib
-set(ZLIB_ROOT ${EXTERNAL_BUILD_DIR})
-find_package(zlib REQUIRED)
+# set(ZLIB_ROOT ${EXTERNAL_BUILD_DIR})
+# find_package(zlib REQUIRED)
 
 # find_package(lua REQUIRED)
 # find_package(freetype REQUIRED)

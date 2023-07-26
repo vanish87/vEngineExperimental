@@ -16,7 +16,7 @@ namespace AppleApp
         private:
             /// \brief user function for create
             ///
-            void OnCreate() override
+            void OnInit() override
             {
                 PRINT("User Create");
             }
@@ -26,7 +26,7 @@ namespace AppleApp
             /// vEngine::TIME_PER_UPDATE
             void OnUpdate() override {}
             /// \brief user function for destroy
-            void OnDestory() override
+            void OnDeinit() override
             {
                 PRINT("User Destory");
             }

@@ -13,17 +13,14 @@
 #pragma once
 
 #include <engine.hpp>
-#include <vector>
-#include <vengine/core/game_object.hpp>
 #include <vengine/core/matrix.hpp>
+#include <vengine/core/game_object.hpp>
 
 /// A brief namespace description.
 namespace vEngine
 {
     namespace Animation
     {
-
-		
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
@@ -41,6 +38,7 @@ namespace vEngine
                         )
                     );
                 }
+                static BoneSharedPtr Default();
             public:
                 /// \brief brief constructor description.
                 Bone();

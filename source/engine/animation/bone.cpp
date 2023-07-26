@@ -9,6 +9,7 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/animation/bone.hpp>
+#include <vengine/core/game_object_factory.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -16,9 +17,15 @@ namespace vEngine
 {
     namespace Animation
     {
+        using namespace Core;
+        
+        BoneSharedPtr Bone::Default()
+        {
+            return GameObjectFactory::Create<Core::GameObjectType::Bone, Bone>();
+        }
         /// constructor detailed defintion,
         /// should be 2 lines
-        Bone::Bone() : id_(-1) {}
+        Bone::Bone(): id_(-1) {}
 
         /// A detailed function description, it
         /// should be 2 lines at least.

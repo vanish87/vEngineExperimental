@@ -6,14 +6,14 @@ ENDIF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
 set(CMAKE_DEBUG_POSTFIX d)
 
-add_subdirectory(assimp)
+if(WIN32)
+  add_subdirectory(assimp)
+endif(WIN32)
+
 # add_subdirectory(zlib)
 add_subdirectory(freetype2)
 add_subdirectory(lua)
-
-# if(WIN32)
-  add_subdirectory(glfw)
-# endif(WIN32)
+add_subdirectory(glfw)
 
 #add_subdirectory(tinyxml2)
 

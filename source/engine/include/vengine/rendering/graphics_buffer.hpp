@@ -10,10 +10,10 @@
 #ifndef _VENGINE_RENDERING_GRAPHICS_BUFFER_HPP
 #define _VENGINE_RENDERING_GRAPHICS_BUFFER_HPP
 
-#include <VENGINE_API.hpp>
 #include <engine.hpp>
+#include <vengine/core/game_object.hpp>
 #include <vengine/rendering/data_struct.hpp>
-#include <vengine/rendering/data_format.hpp>
+#include <vengine/data/meta.hpp>
 
 namespace vEngine
 {
@@ -25,8 +25,19 @@ namespace vEngine
 		/// constant buffer.
 		/// It could be used in cpu and/or gpu
 		// template<typename T>
-        class VENGINE_API GraphicsBuffer
+        class VENGINE_API GraphicsBuffer : public Core::GameObject
         {
+            public:
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        Core::GameObject::properties(),
+                        std::make_tuple(
+                            Core::property("buffer_descriptor", &GraphicsBuffer::buffer_descriptor_)
+                            )
+                    );
+                }
+
             public:
                 /// \brief brief constructor description.
                 GraphicsBuffer(const GraphicsBufferDescriptor& desc);
@@ -35,11 +46,11 @@ namespace vEngine
                 /// class variable description
                 // int public_variable_;
 
-				GraphicsBufferDescriptor descriptor_;
 
                 GPUSubResource Map();
                 void Unmap();
 
+				GraphicsBufferDescriptor buffer_descriptor_;
             protected:
                 virtual GPUSubResource DoMap();
                 virtual void DoUnmap();

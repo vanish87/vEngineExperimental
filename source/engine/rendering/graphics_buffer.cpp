@@ -21,8 +21,8 @@ namespace vEngine
         /// should be 2 lines
         GraphicsBuffer::GraphicsBuffer(const GraphicsBufferDescriptor& desc) 
         {
-            PRINT("Graphic Buffer Base");
-            this->descriptor_ = desc;
+            // PRINT("Graphic Buffer Base");
+            this->buffer_descriptor_ = desc;
 
         }
         GraphicsBuffer::~GraphicsBuffer() {}

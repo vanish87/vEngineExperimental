@@ -6,19 +6,33 @@ project(metal_rendering_plugin)
 # framework is lagacy code
 set(METAL_AS_FRAMEWORK OFF)
 
+
 # header only lib
 # add_library(${PROJECT_NAME} INTERFACE)
 # add_library(engine::metal_cpp ALIAS ${PROJECT_NAME})
 # set(single_header_file_dir ${CMAKE_CURRENT_SOURCE_DIR}/SingleHeader/include)
 # target_include_directories(${PROJECT_NAME} INTERFACE ${single_header_file_dir})
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/source metal_source)
 
 # metal.cpp contains implementation
 # compiled as static/dynamic lib
 add_library(${PROJECT_NAME} 
-	src/metal.cpp
-	src/metal_render_engine.cpp
-	)
+  ${PROJECT_SOURCE_DIR}/include
+
+  ${metal_source}
+)
 add_library(engine::metal_rendering_plugin ALIAS ${PROJECT_NAME})
+
+
+set(HEADER_NAME ${PROJECT_NAME})
+string(TOUPPER ${HEADER_NAME} HEADER_NAME)
+
+GENERATE_EXPORT_HEADER( ${PROJECT_NAME}
+             BASE_NAME ${HEADER_NAME}
+             EXPORT_MACRO_NAME ${HEADER_NAME}_API
+             EXPORT_FILE_NAME ${API_EXPORT_DIR}/${HEADER_NAME}_API.hpp
+             STATIC_DEFINE ${HEADER_NAME}_BUILT_AS_STATIC
+)
 
 # find_library(FOUNDATION_LIB Foundation)
 # find_library(METAL_LIB Metal)
@@ -31,6 +45,7 @@ target_link_libraries(${PROJECT_NAME} "-framework Metal")
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include
     PUBLIC ${vengine_SOURCE_DIR}/include
+    PUBLIC ${vengine_SOURCE_DIR}/include/apple
 )
 
 # target_link_libraries( ${PROJECT_NAME}

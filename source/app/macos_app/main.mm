@@ -1,7 +1,7 @@
 
-#import "define.hpp"
+#import <apple/target_define.hpp>
 
-#if defined(APP_PLATFORM_TARGET_DARWIN)
+#if defined(VENGINE_PLATFORM_TARGET_DARWIN)
 #import <Cocoa/Cocoa.h>
 #else
 #import <Availability.h>
@@ -10,18 +10,17 @@
 #endif
 
 #import "apple_app.hpp"
-#import "app_main.hpp"
 #import <vengine/core/context.hpp>
 #import <vengine/core/configure.hpp>
 #import <vengine/rendering/render_engine.hpp>
 
-#if defined(APP_PLATFORM_TARGET_DARWIN)
-int main(int argc, const char * argv[])
+#if defined(VENGINE_PLATFORM_TARGET_DARWIN)
+int main(const int argc, const char * argv[])
 {
     return NSApplicationMain(argc, argv);
 }
 #else
-int main(int argc, char * argv[])
+int main(const int argc, char * argv[])
 {
     @autoreleasepool {
         return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
@@ -29,8 +28,9 @@ int main(int argc, char * argv[])
 }
 #endif
 
+std::shared_ptr<AppleApp::ExampleApp> app;
 
-void AppleAppMain(void* wnd)
+void AppleAppMain(const int argc, const char * argv[])
 {
     std::cout << "Version " + std::string(Version) << std::endl;
 
@@ -38,12 +38,12 @@ void AppleAppMain(void* wnd)
     configure.graphics_configure.width = 1280;
     configure.graphics_configure.height = 720;
     configure.graphics_configure.render_plugin_name = "metal_rendering_plugin";
+    configure.ImportArgs(argc, argv);
 
-    vEngine::Core::Context::GetInstance().ConfigureWith(configure);
-    vEngine::Rendering::RenderEngine& re = vEngine::Core::Context::GetInstance().GetRenderEngine();
-    re.PrintInfo();
+    vEngine::Core::Context::GetInstance().SetConfigure(configure);
+    auto& re = vEngine::Core::Context::GetInstance().GetRenderEngine();
+    // re.PrintInfo();
 
-    AppleApp::ExampleApp app;
-    app.Init(wnd);
-    app.Run();
+    app = std::make_shared<AppleApp::ExampleApp>();
+    app->RunAsync();
 }

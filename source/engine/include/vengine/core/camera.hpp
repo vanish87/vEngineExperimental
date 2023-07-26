@@ -28,16 +28,27 @@ namespace vEngine
         class VENGINE_API Camera : public GameObject
         {
             public:
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        GameObject::properties(),
+                        std::make_tuple(
+                            property("fovy", &Camera::fovy_),
+                            property("aspect", &Camera::aspect_),
+                            property("zn", &Camera::zn_),
+                            property("zf", &Camera::zf_),
+                            property("project_matrix", &Camera::proj_matrix_),
+                            property("view_port", &Camera::view_port_)
+                        )
+                    );
+                }
+                static CameraSharedPtr Default();
+            public:
                 /// \brief brief constructor description.
                 Camera();
 
                 Rendering::FrameBufferSharedPtr target;
 
-                static CameraSharedPtr Default()
-                {
-                    static auto cam = std::make_shared<Camera>();
-                    return cam;
-                }
 
                 const float4x4 ProjectionMatrix() const
                 {

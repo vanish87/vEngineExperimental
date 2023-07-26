@@ -7,7 +7,7 @@
     // include windows.h first
     #include <vengine/core/window.hpp>
     #include <vengine/core/context.hpp>
-    // #include <vengine/core/application.hpp>
+// #include <vengine/core/application.hpp>
 // #include <tchar.h>//wchar
 
 namespace vEngine
@@ -29,7 +29,7 @@ namespace vEngine
             {
                 case WM_DESTROY:
                 {
-                    //Use Event/Observer Pattern to decouple context class
+                    //TODO Use Event/Observer Pattern to decouple context class
                     Context::GetInstance().QuitApplication();
                     PostQuitMessage(0);
                     return 0;
@@ -48,7 +48,7 @@ namespace vEngine
 
             return this->default_wnd_proc_(hWnd, message, wParam, lParam);
         }
-        Window::Window(const WindowDescription& desc)
+        Window::Window(const WindowDescriptor& desc)
         {
             std::string win_name = desc.name;
 
@@ -84,6 +84,7 @@ namespace vEngine
                 // PRINT("Window size " << width << " " << height);
 
                 hwnd = CreateWindow(wcex.lpszClassName, win_name.c_str(), WS_OVERLAPPEDWINDOW, left, top, width, height, nullptr, nullptr, hInstance, nullptr);
+                CHECK_ASSERT_NOT_NULL(hwnd);
                 ::ShowWindow(hwnd, SW_SHOWNORMAL);
 
                 this->default_wnd_proc_ = ::DefWindowProc;
@@ -96,14 +97,13 @@ namespace vEngine
             //::ShowCursor(!render_setting.full_screen);
             // ::UpdateWindow(this->wnd_);
         }
-        Window::~Window() 
+        Window::~Window()
         {
             ::DestroyWindow(static_cast<HWND>(this->wnd_));
         }
         void Window::Update()
         {
-            MSG msg = {0};
-
+            MSG msg;
             if (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
             {
                 ::TranslateMessage(&msg);

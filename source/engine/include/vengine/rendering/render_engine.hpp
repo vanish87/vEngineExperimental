@@ -1,23 +1,36 @@
+/// \file render_engine.hpp
+/// \brief Head file for Render Engine
+///
+/// A detailed file description.
+///
+/// \author author_name
+/// \version version_number
+/// \date xxxx-xx-xxx
+
 #ifndef _VENGINE_RENDERING_RENDER_ENGINE_HPP
 #define _VENGINE_RENDERING_RENDER_ENGINE_HPP
 
 #pragma once
-#include <map>
 
 #include <engine.hpp>
 #include <vengine/rendering/data_struct.hpp>
 #include <vengine/rendering/data_format.hpp>
+#include <vengine/rendering/shared/data_cbuffer.hpp>
 #include <vengine/core/iruntime_module.hpp>
-#include <vengine/core/transform.hpp>
+#include <vengine/core/vector.hpp>
 
 namespace vEngine
 {
     namespace Rendering
     {
-        using namespace Core;
-
-        class VENGINE_API RenderEngine : public vEngine::Core::IRuntimeModule
+        class VENGINE_API RenderEngine : public Core::IRuntimeModule
         {
+            public:
+                // static GPUSubResource GetGPUSubResource(const TextureDescriptor& desc);
+                // static GPUSubResource GetGPUSubResource(const vEngineCameraConstantBuffer& desc);
+                // static GPUSubResource GetGPUSubResource(const GraphicsBufferDescriptor& desc);
+                // static GPUSubResource GetGPUSubResource(const TextureDescriptor& desc);
+
             public:
                 virtual ~RenderEngine()
                 {
@@ -48,6 +61,7 @@ namespace vEngine
                 
                 virtual void Bind(const TextureSharedPtr texture)
                 {
+                    // texture->PrepareData();
                     this->OnBind(texture);
                 }
                 virtual void OnBind(const TextureSharedPtr texture) = 0;
@@ -59,17 +73,11 @@ namespace vEngine
                 }
                 virtual void OnBind(const FrameBufferSharedPtr frameBuffer) = 0;
 
-                virtual PipelineStateSharedPtr Register(const PipelineStateDescriptor& pipeline_desc)
-                {
-                    // this->current_pipline_states = frameBuffer;
-                    return this->OnRegister(pipeline_desc);
-                }
-                virtual PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) = 0;
-
                 virtual void OnBeginFrame()
                 {
+                    // const color color = color(0, 51, 102, 255);
                     // update per frame cbuffer
-                    this->Clear(this->current_frame_buffer_);
+                    this->Clear(this->current_frame_buffer_, Core::color(0, 51, 102, 255));
                 };
                 virtual void OnEndFrame()
                 {
@@ -88,11 +96,13 @@ namespace vEngine
                 // GPU Resource management
                 // virtual void
 
-                virtual TextureSharedPtr Create(const TextureDescriptor& desc) = 0;
-                virtual FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) = 0;
-                virtual GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) = 0;
+                // virtual PipelineStateSharedPtr Create(const PipelineStateDescriptor& pipeline_desc) = 0;
+                // virtual TextureSharedPtr Create(const TextureDescriptor& desc) = 0;
+                // virtual FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) = 0;
+                // virtual GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) = 0;
 
-                virtual void Clear(const FrameBufferSharedPtr frame_buffer, const color color = color(0, 51, 102, 255)) = 0;
+                // virtual void Clear(const FrameBufferSharedPtr frame_buffer, const color color = color(0, 51, 102, 255)) = 0;
+                virtual void Clear(const FrameBufferSharedPtr frame_buffer, const Core::color color) = 0;
 
                 FrameBufferSharedPtr current_frame_buffer_;
                 FrameBufferSharedPtr back_buffer_;
@@ -103,9 +113,16 @@ namespace vEngine
     }  // namespace Rendering
 }  // namespace vEngine
 
+// extern "C"
+// {
+//     VENGINE_API void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
+//     VENGINE_API void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
+// }
+#ifdef VENGINE_STATIC_LINK
 extern "C"
 {
-    VENGINE_API void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
-    VENGINE_API void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
+    void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
+    void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
 }
+#endif
 #endif /* _VENGINE_RENDERING_RENDER_ENGINE_HPP */

@@ -3,22 +3,26 @@
 
 @implementation AppDelegate
 
-#if defined(APP_PLATFORM_TARGET_DARWIN)
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender 
+#if defined(VENGINE_PLATFORM_TARGET_DARWIN)
+- (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
-
-    return YES;
+    AppleAppMain(0, nullptr);
 }
 #else
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions 
 {
 //    [self performSelectorInBackground:@selector(app_main_loop) withObject:nil afterDelay:0.0];
+//     dispatch_async(dispatch_get_main_queue(), ^{
+//     });
+    
+    
+//    NSString *nsBunldePath = [[NSString alloc] initWithUTF8String:"bunny.obj"];
+//    NSURL *modelFileURL = [[NSBundle mainBundle] URLForResource:nsBunldePath withExtension:nil];
+//    NSString *fileContents = [[NSString alloc] initWithContentsOfURL:modelFileURL];
+        
+    AppleAppMain(0, nullptr);
     return YES;
 }
 #endif
-//- (void)app_main_loop: (void*) view
-//{
-//    //Trigger app main loop here
-//    AppleAppMain(view);
-//}
+
 @end

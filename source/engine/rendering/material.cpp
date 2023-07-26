@@ -8,9 +8,10 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/core/context.hpp>
+// #include <vengine/core/resource_manager.hpp>
+#include <vengine/core/game_object_factory.hpp>
 #include <vengine/rendering/material.hpp>
 #include <vengine/rendering/render_engine.hpp>
-#include <vengine/core/resource_loader.hpp>
 #include <vengine/rendering/pipeline_state.hpp>
 
 /// A detailed namespace description, it
@@ -19,22 +20,23 @@ namespace vEngine
 {
     namespace Rendering
     {
+        using namespace Core;
         /// constructor detailed defintion,
         /// should be 2 lines
         Material::Material()
         {
-            PipelineStateDescriptor pdesc;
-            this->pipeline_state_ = Context::GetInstance().GetRenderEngine()->Register(pdesc);
+            PipelineStateDescriptor desc;
+            this->pipeline_state_ = GameObjectFactory::Create<GameObjectType::PipelineState, PipelineState>(desc);
         }
         Material::~Material() {}
 
         MaterialSharedPtr Material::Default()
         {
-            static auto mat = GameObjectFactory::Create<Material>();
-            return mat;
+            return GameObjectFactory::Create<GameObjectType::Material, Material>();
         }
         void Material::BindShader(const ShaderType type, const ShaderSharedPtr shader)
         {
+            CHECK_ASSERT_NOT_NULL(this->pipeline_state_);
             this->pipeline_state_->shaders_[type] = shader;
         }
         void Material::BindTexture(const std::string name, const TextureSharedPtr texture)
@@ -45,11 +47,12 @@ namespace vEngine
 
         void Material::UpdateGPUResource()
         {
+            this->pipeline_state_->PrepareData();
+
             Context::GetInstance().GetRenderEngine()->Bind(this->pipeline_state_);
-            if (this->textures_.size() > 0)
+            for (const auto& tex : this->textures_)
             {
-                auto tex = this->textures_[0];
-                Context::GetInstance().GetRenderEngine()->Bind(tex);
+                Context::GetInstance().GetRenderEngine()->Bind(tex.second);
             }
         }
 

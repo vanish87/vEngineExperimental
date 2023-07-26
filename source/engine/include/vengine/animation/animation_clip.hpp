@@ -43,6 +43,8 @@ namespace vEngine
                             )
                     );
                 }
+
+                static AnimationClipSharedPtr Default();
             public:
                 /// \brief brief constructor description.
                 AnimationClip();

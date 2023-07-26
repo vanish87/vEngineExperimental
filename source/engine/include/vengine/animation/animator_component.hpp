@@ -29,6 +29,16 @@ namespace vEngine
         class VENGINE_API AnimatorComponent : public Core::Component<Animator>
         {
             public:
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        Core::Component<Animator>::properties(), 
+                        std::make_tuple(
+                            Core::property("animation_root_", &AnimatorComponent::animation_root_)
+                        )
+                    );
+                }
+            public:
                 /// \brief brief constructor description.
                 AnimatorComponent();
                 virtual ~AnimatorComponent();
@@ -38,7 +48,6 @@ namespace vEngine
                 void SetAnimationRoot(const Core::GameNodeSharedPtr root);
 
             private:
-
                 // float timer;
                 Core::GameNodeSharedPtr animation_root_;
 

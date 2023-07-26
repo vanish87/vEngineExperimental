@@ -7,10 +7,7 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#include <fstream>
-#include <engine.hpp>
 #include <vengine/rendering/pipeline_state.hpp>
-#include <vengine/rendering/shader.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -18,10 +15,12 @@ namespace vEngine
 {
     namespace Rendering
     {
+        using namespace Core;
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        PipelineState::PipelineState(const PipelineStateDescriptor& desc)
+        // PipelineState::PipelineState(const GameObjectType type): GameObject(type){}
+        PipelineState::PipelineState(const PipelineStateDescriptor desc)
         {
             // PRINT("PipelineState Base");
             this->descriptor_ = desc;

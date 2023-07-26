@@ -14,4 +14,6 @@ TEST(Angle, Construct)
 	radian r(3.14f);
 	degree d(90);
 
+	d = degree(30);
+	r = radian(0.14f);
 }

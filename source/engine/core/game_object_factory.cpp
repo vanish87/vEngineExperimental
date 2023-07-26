@@ -12,8 +12,6 @@
 #include <vengine/core/transform_component.hpp>
 #include <vengine/core/scene.hpp>
 
-#include <vengine/data/class_bar.hpp>
-#include <vengine/data/class_foo.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -22,13 +20,13 @@ namespace vEngine
     namespace Core
     {
 
-        GameObjectSharedPtr GameObjectFactory::CreateByTypeString(const std::string type)
-        {
+        // GameObjectSharedPtr GameObjectFactory::CreateByTypeString(const std::string type)
+        // {
 
-            PRINT_AND_BREAK("type " << type << " not created");
-            NOT_IMPL_ASSERT;
-            return nullptr;
-        }
+        //     PRINT_AND_BREAK("type " << type << " not created");
+        //     NOT_IMPL_ASSERT;
+        //     return nullptr;
+        // }
         /// A detailed function description, it
         /// should be 2 lines at least.
         // TransformNodeSharedPtr GameNodeFactory::Create()

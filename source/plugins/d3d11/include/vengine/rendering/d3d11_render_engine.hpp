@@ -32,23 +32,24 @@ namespace vEngine
                 void OnBind(const PipelineStateSharedPtr pipeline_state) override;
                 void OnBind(const GraphicsBufferSharedPtr graphics_buffer) override;
                 void OnBind(const TextureSharedPtr texture) override;
-                PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) override;
                 void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) override;
                 void OnEndFrame() override;
 
-                TextureSharedPtr Create(const TextureDescriptor& desc) override;
-                FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override;
-                GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override;
+                // PipelineStateSharedPtr Create(const PipelineStateDescriptor& pipeline_desc) override;
+                // TextureSharedPtr Create(const TextureDescriptor& desc) override;
+                // FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override;
+                // GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override;
 
-                void Clear(const FrameBufferSharedPtr frame_buffer, const color color) override;
+                void Clear(const FrameBufferSharedPtr frame_buffer, const Core::color color) override;
 
-                static uint32_t ToD3DBindFlag(GraphicsResourceType type);
+                static uint32_t ToD3DBindFlag(GraphicsResourceType type, GraphicsResourceUsage usage);
                 static uint32_t ToD3DAccessFlag(GraphicsResourceUsage usage);
                 static D3D11_USAGE ToD3DUsage(GraphicsResourceUsage usage);
                 static DXGI_FORMAT ToD3DFormat(DataFormat formart);
                 static DataFormat D3DFormatToDataFormat(DXGI_FORMAT formart);
                 static D3D11_RASTERIZER_DESC ToD3D11RasterizerDesc(RasterizerDescriptor desc);
                 static D3D11_DEPTH_STENCIL_DESC ToD3D11DepthStencilDesc(DepthStencilDescriptor desc);
+                static std::string ShaderTypeToTarget(const ShaderType type);
 
                 /// \brief mainly used to create Resource Views(ie. RenderTargetView)
                 /// 
@@ -83,5 +84,13 @@ namespace vEngine
 
     }  // namespace Rendering
 }  // namespace vEngine
+
+// #ifdef VENGINE_DYNAMIC_LINK
+// extern "C"
+// {
+//     VENGINE_API void CreateRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr, int x);
+//     VENGINE_API void DestoryRenderEngine(std::unique_ptr<vEngine::Rendering::RenderEngine>& ptr);
+// }
+// #endif
 
 #endif /* _VENGINE_RENDERING_D3D11_RENDER_ENGINE_HPP */

@@ -12,9 +12,10 @@
 
 #pragma once
 
+#include <filesystem>
+
 #include <engine.hpp>
 #include <vengine/core/uuid.hpp>
-#include <vengine/data/meta.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -23,37 +24,72 @@ namespace vEngine
     {
         enum class GameObjectType
         {
-            Raw,
+            // Core
+            GameObject,
             GameNode,
             Component,
             Transform,
+            TransformComponent,
             Camera,
+            CameraComponent,
             Light,
-            Renderer,
+            LightComponent,
             Mesh,
-            // Mesh_Cube,
+            MeshComponent,
+            Scene,
+
+            // Data
+            Serializer,
+
+            // Rendering
+            Renderer,
+            RendererComponent,
+            MeshRenderer,
+            MeshRendererComponent,
             Material,
+            Texture,
+            GraphicsBuffer,
+            FrameBuffer,
+            PipelineState,
+            Shader,
+
+            // Animation
             Bone,
+            BoneComponent,
             Joint,
             AnimationClip,
             Animator,
-            Skeleton,
-            Asset,
-            Serializer,
+            AnimatorComponent,
+
+            Custom,
         };
 
-        struct GameObjectDescription
+        class GameObjectDescriptor
         {
+                friend class GameObject;
+                friend class ResourceManager;
+
+            private:
                 UUID uuid;
                 std::string name = "GameObject";
-                std::string type;
+                GameObjectType type = GameObjectType::GameObject;
+                std::string context;
+                std::filesystem::path reference_path;
+
+            protected:
+                const std::filesystem::path AbsolutePath() const;
+                const std::filesystem::path ReferencePath() const;
+                const UUID GetUUID() const;
+
+            public:
                 constexpr static auto properties()
                 {
                     return std::make_tuple(
-                        property("name", &GameObjectDescription::name),
-                        property("type", &GameObjectDescription::type),
-                        property("uuid", &GameObjectDescription::uuid)
-                    );
+                        property("uuid", &GameObjectDescriptor::uuid), 
+                        property("name", &GameObjectDescriptor::name), 
+                        property("type", &GameObjectDescriptor::type),
+                        property("context", &GameObjectDescriptor::context), 
+                        property("ref_path", &GameObjectDescriptor::reference_path));
                 }
         };
         /// \brief A brief class description.
@@ -64,22 +100,69 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                GameObject();
+                // GameObject(const GameObjectType type = GameObjectType::GameObject);
                 // GameObject(const GameObjectType type);
                 // GameObject(const GameObject& other);
                 // GameObject(const GameObject&& other);
                 virtual ~GameObject();
 
+            public:
+                const UUID GetUUID() const
+                {
+                    return this->descriptor_.uuid;
+                }
+                void SetName(const std::string name = "GameObject")
+                {
+                    this->descriptor_.name = name;
+                }
+                const std::string Name() const
+                {
+                    return this->descriptor_.name;
+                }
+                GameObjectType Type() const
+                {
+                    return this->descriptor_.type;
+                }
+                void SetType(const GameObjectType type)
+                {
+                    this->descriptor_.type = type;
+                }
 
-                GameObjectDescription description_;
+                void UpdateReferencePath();
+                const std::filesystem::path AbsolutePath() const;
+                const std::filesystem::path ReferencePath() const;
+
                 constexpr static auto properties()
                 {
-                    return std::make_tuple(
-                        property("description", &GameObject::description_)
-                    );
+                    return std::make_tuple(property("meta", &GameObject::descriptor_));
                 }
+
+                public:
+                    /// \brief conpare all element of vector
+                    bool operator==(const GameObject& other) const noexcept
+                    {
+                        return this->GetUUID() == other.GetUUID();
+                    }
+
+                protected:
+                    const virtual std::filesystem::path GetHierarchyPath() const;
+
+                private:
+                    GameObjectDescriptor descriptor_;
         };
     }  // namespace Core
 }  // namespace vEngine
+namespace std
+{
+    template <>
+    struct hash<vEngine::Core::GameObjectSharedPtr>
+    {
+            vEngine::uint64_t operator()(vEngine::Core::GameObjectSharedPtr const& value) const
+            {
+                hash<vEngine::uint64_t> HashFunc;
+                return HashFunc(value->GetUUID().AsUint());
+            }
+    };
+}  // namespace std
 
 #endif /* _VENGINE_CORE_GAME_OBJECT_HPP */

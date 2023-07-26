@@ -13,11 +13,11 @@
 #pragma once
 
 #include <queue>
-#include <VENGINE_API.hpp>
 
+#include <engine.hpp>
 #include <vengine/core/iruntime_module.hpp>
 // #include <vengine/core/renderer.hpp>
-#include <vengine/core/game_node.hpp>
+// #include <vengine/core/game_node.hpp>
 
 /// A brief namespace description.
 namespace vEngine

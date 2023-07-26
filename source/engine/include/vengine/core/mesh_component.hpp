@@ -10,8 +10,9 @@
 #ifndef _VENGINE_CORE_MESH_COMPONENT_HPP
 #define _VENGINE_CORE_MESH_COMPONENT_HPP
 
-#include <vengine/core/component.hpp>
+#include <engine.hpp>
 #include <vengine/core/mesh.hpp>
+#include <vengine/core/component.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -26,8 +27,8 @@ namespace vEngine
         {
             public:
                 /// \brief brief constructor description.
-                MeshComponent();
-                // MeshComponent(const MeshSharedPtr mesh);
+                // MeshComponent();
+                MeshComponent(const MeshSharedPtr mesh = Mesh::Default());
         };
     }  // namespace Core
 }  // namespace vEngine

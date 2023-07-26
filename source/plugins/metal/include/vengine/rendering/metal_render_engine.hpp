@@ -1,9 +1,14 @@
-#ifndef _VENGINE_RENDERING_METAL_RENDERING_ENGINE_HPP
-#define _VENGINE_RENDERING_METAL_RENDERING_ENGINE_HPP
+#ifndef _VENGINE_RENDERING_METAL_RENDER_ENGINE_HPP
+#define _VENGINE_RENDERING_METAL_RENDER_ENGINE_HPP
 #pragma once
 
-#include <metal/metal.hpp>
+#include <apple/target_define.hpp>
+#include <Metal/Metal.hpp>
+#include <MetalKit/MTKView.hpp>
+#include <UIKit/UIKit.hpp>
 #include <vengine/rendering/render_engine.hpp>
+#include <METAL_RENDERING_PLUGIN_API.hpp>
+
 namespace vEngine
 {
     namespace Rendering
@@ -41,32 +46,32 @@ namespace vEngine
                     UNUSED_PARAMETER(texture);
                 }
 
-                PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) override
-                {
-                    UNUSED_PARAMETER(pipeline_desc);
-                    return nullptr;
-                }
+                // PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) override
+                // {
+                //     UNUSED_PARAMETER(pipeline_desc);
+                //     return nullptr;
+                // }
                 void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) override
                 {
                     UNUSED_PARAMETER(vertice);
                     UNUSED_PARAMETER(indice);
                 }
-                TextureSharedPtr Create(const TextureDescriptor& desc) override
-                {
-                    UNUSED_PARAMETER(desc);
-                    return nullptr;
-                }
-                FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override
-                {
-                    UNUSED_PARAMETER(desc);
-                    return nullptr;
-                }
-                GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override
-                {
-                    UNUSED_PARAMETER(desc);
-                    return nullptr;
-                }
-                void Clear(const FrameBufferSharedPtr frame_buffer, const color color = float4(0.0f, 0.2f, 0.4f, 1.0f)) override
+                // TextureSharedPtr Create(const TextureDescriptor& desc) override
+                // {
+                //     UNUSED_PARAMETER(desc);
+                //     return nullptr;
+                // }
+                // FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override
+                // {
+                //     UNUSED_PARAMETER(desc);
+                //     return nullptr;
+                // }
+                // GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override
+                // {
+                //     UNUSED_PARAMETER(desc);
+                //     return nullptr;
+                // }
+                void Clear(const FrameBufferSharedPtr frame_buffer, const Core::color color = Core::float4(0.0f, 0.2f, 0.4f, 1.0f)) override
                 {
                     UNUSED_PARAMETER(frame_buffer);
                     UNUSED_PARAMETER(color);
@@ -79,8 +84,10 @@ namespace vEngine
                 void TriangleDraw();
 
             private:
-                // MTL::Device device_;
-                MTK::View* view_;
+                UI::ViewController* ui_view_controller_;
+
+                MTL::Device* device_;
+                MTK::View* mtk_view_;
                 MTL::CommandQueue* command_queue_;
                 MTL::RenderPipelineState* current_pipeline_state_;
                 MTL::Buffer* vertex_buffer_;
@@ -89,4 +96,4 @@ namespace vEngine
 
     }  // namespace Rendering
 }  // namespace vEngine
-#endif /* _VENGINE_RENDERING_METAL_RENDERING_ENGINE_HPP */
+#endif /* _VENGINE_RENDERING_METAL_RENDER_ENGINE_HPP */

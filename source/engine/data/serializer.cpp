@@ -15,6 +15,7 @@ namespace vEngine
 {
     namespace Data
     {
+        using namespace Core;
 
         /// constructor detailed defintion,
         /// should be 2 lines
@@ -30,5 +31,5 @@ namespace vEngine
             return 1;
         }
 
-    }  // namespace Core
+    }  // namespace Data
 }  // namespace vEngine

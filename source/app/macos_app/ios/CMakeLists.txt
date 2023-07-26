@@ -7,6 +7,7 @@ message("${CMAKE_OSX_SYSROOT}")
 
 set(RESOURCES
   Main.storyboard
+  ${COMMON_RESOURCE_FILES}
   # LaunchScreen.storyboard
 )
 
@@ -24,6 +25,7 @@ target_link_libraries(${PROJECT_NAME} ${FOUNDATION_LIB})
 # target_link_libraries(${PROJECT_NAME} ${UIKIT_LIB})
 target_link_libraries(${PROJECT_NAME} "-framework UIKit")
 target_link_libraries(${PROJECT_NAME} engine::metal_rendering_plugin)
+target_link_libraries(${PROJECT_NAME} engine::custom_plugin)
 target_link_libraries(${PROJECT_NAME} engine::core)
 
 # target_include_directories(${PROJECT_NAME}

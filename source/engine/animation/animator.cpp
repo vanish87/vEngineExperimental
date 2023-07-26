@@ -10,7 +10,10 @@
 /// \date xxxx-xx-xxx
 
 #include <vengine/animation/animator.hpp>
+
 #include <vengine/animation/animation_clip.hpp>
+
+#include <vengine/core/game_object_factory.hpp>
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -18,10 +21,15 @@ namespace vEngine
 {
     namespace Animation
     {
+        using namespace Core;
 
+        AnimatorSharedPtr Animator::Default()
+        {
+            return GameObjectFactory::Create<Core::GameObjectType::Animator, Animator>();
+        }
         /// constructor detailed defintion,
         /// should be 2 lines
-        Animator::Animator() : current_time_{0} {}
+        Animator::Animator(): current_time_{0} {}
         void Animator::SetAnimations(const std::vector<AnimationClipSharedPtr> animations)
         {
             // this->skeleton_ = skeleton;
@@ -52,7 +60,7 @@ namespace vEngine
             // {
 
             // }
-        };
+        }
 
     }  // namespace Animation
 }  // namespace vEngine

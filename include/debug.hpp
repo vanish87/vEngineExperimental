@@ -46,6 +46,7 @@ void ErrorText(std::string text);
     {                               \
         if (ptr == nullptr)         \
         {                           \
+            PRINT("Null Pointer");  \
             PRINT_FILE_AND_FUCTION; \
             DEBUG_BREAK             \
         }                           \
@@ -74,5 +75,16 @@ void ErrorText(std::string text);
     {                                      \
         return x;                          \
     };
+
+namespace vEngine
+{
+    class NotImplemented: public std::logic_error
+    {
+        public:
+            NotImplemented() : std::logic_error("Not Implemented") {};
+    };
+}
+
+#define NOT_IMPLEMENTED vEngine::NotImplemented not_implemented_exception;
 
 #endif /* _INCLUDE_DEBUG_HPP */

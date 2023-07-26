@@ -12,7 +12,6 @@
 
 #pragma once
 
-#include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <vengine/core/camera.hpp>
 #include <vengine/core/component.hpp>

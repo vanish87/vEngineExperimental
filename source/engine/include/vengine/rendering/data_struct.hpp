@@ -1,3 +1,12 @@
+/// \file data_struct.hpp
+/// \brief Head file for Rendering Data
+///
+/// A detailed file description.
+///
+/// \author author_name
+/// \version version_number
+/// \date xxxx-xx-xxx
+
 #ifndef _VENGINE_RENDERING_DATA_STRUCT_HPP
 #define _VENGINE_RENDERING_DATA_STRUCT_HPP
 
@@ -7,7 +16,6 @@
 #include <unordered_map>
 #include <filesystem>
 #include <vengine/rendering/data_format.hpp>
-
 #include <vengine/data/meta.hpp>
 
 namespace vEngine
@@ -16,19 +24,23 @@ namespace vEngine
     {
         enum class ShaderType
         {
-            VS,
-            GS,
-            PS,
-            CS,
+            VertexShader,
+            HullShader,
+            TessellatorShader,
+            DomainShader,
+            GeometryShader,
+            PixelShader,
+            ComputeShader,
         };
         enum class GraphicsResourceType
         {
             Index,
             Vertex,
             CBuffer,
-            TextureR,   // Read only texture
-            TextureRW,  // as Shader Resource and Render Target
-            TextureW,   // as Render Target only
+            Texture,
+            // TextureR,   // Read only texture
+            // TextureRW,  // as Shader Resource and Render Target
+            // TextureW,   // as Render Target only
             Depth,
         };
 
@@ -103,8 +115,7 @@ namespace vEngine
                         // Core::property("shaders", &PipelineStateDescriptor::shaders)
                         // Core::property("rasterizer", &RasterizerDescriptor::fill_mode),
                         // Core::property("depth_stencil", &RasterizerDescriptor::cull_mode)
-                        Core::property("depth_bias", &RasterizerDescriptor::depth_bias)
-                    );
+                        Core::property("depth_bias", &RasterizerDescriptor::depth_bias));
                 };
                 FillMode fill_mode = FillMode::Solid;
                 CullMode cull_mode = CullMode::Back;
@@ -126,8 +137,7 @@ namespace vEngine
                         // Core::property("shaders", &PipelineStateDescriptor::shaders)
                         // Core::property("rasterizer", &RasterizerDescriptor::fill_mode),
                         // Core::property("depth_stencil", &RasterizerDescriptor::cull_mode)
-                        Core::property("depth_enabled", &DepthStencilDescriptor::depth_enabled)
-                    );
+                        Core::property("depth_enabled", &DepthStencilDescriptor::depth_enabled));
                 };
                 bool depth_enabled = true;
                 DepthWriteMask depth_write_mask = DepthWriteMask::All;
@@ -138,23 +148,26 @@ namespace vEngine
         };
 
         // https://docs.microsoft.com/en-us/windows/win32/direct3d11/how-to--use-dynamic-resources
+        // Runtime struct, should not be serialized
         struct GPUSubResource
         {
-                uint32_t offset;
-                uint32_t stride;
-                uint32_t pitch;  // use for texture, which is the size of one row in texture
-                uint64_t count;
-                uint64_t total_size;
-                void* data;
+                void* data = nullptr;
+                uint32_t pitch = 0;        // use for texture only, which is the size of one row in texture
+                uint32_t slice_pitch = 0;  // use for texture only, which is the size of one row in texture
         };
         struct TextureDescriptor
         {
                 constexpr static auto properties()
                 {
                     return std::make_tuple(
+                        Core::property("dimension", &TextureDescriptor::dimension), 
                         Core::property("width", &TextureDescriptor::width),
-                        Core::property("height", &TextureDescriptor::height)
-                        // Core::property("raw_data", &TextureDescriptor::raw_data)
+                        Core::property("height", &TextureDescriptor::height), 
+                        Core::property("depth", &TextureDescriptor::depth),
+                        Core::property("format", &TextureDescriptor::format), 
+                        Core::property("type", &TextureDescriptor::type), 
+                        Core::property("usage", &TextureDescriptor::usage),
+                        Core::property("raw_data", &TextureDescriptor::raw_data)
                     );
                 };
                 TextureDimension dimension;
@@ -164,11 +177,11 @@ namespace vEngine
                 DataFormat format;
                 GraphicsResourceType type;
                 GraphicsResourceUsage usage;
-
-                GPUSubResource resource;
                 GraphicsBufferSlot slot;
 
-                // std::vector<byte> raw_data;
+                std::vector<color_chanel> raw_data;
+
+                GPUSubResource resource;
 
                 static const TextureDescriptor& Default()
                 {
@@ -190,14 +203,22 @@ namespace vEngine
         };
         struct GraphicsBufferDescriptor
         {
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        std::make_tuple(
+                            Core::property("type", &GraphicsBufferDescriptor::type),
+                            Core::property("usage", &GraphicsBufferDescriptor::usage)));
+                };
                 GraphicsResourceType type;
                 GraphicsResourceUsage usage;
                 ElementLayout layout;
                 // DataFormat format;// undefined format for compute buffer
-                // std::vector<std::pair<
-
-                GPUSubResource resource;
                 GraphicsBufferSlot slot;
+
+                uint32_t stride = 0;  // byte size of the individual element
+                uint64_t count = 0;   // the number of elements
+                GPUSubResource resource;
         };
 
         struct FrameBufferDescriptor
@@ -207,8 +228,6 @@ namespace vEngine
                 DataFormat colorFormat;
                 DataFormat depthStencilFormat;
                 GraphicsResourceUsage usage;
-                // TextureUsage usage;
-                // std::vector<std::pair<
         };
 
         struct PipelineStateDescriptor
@@ -219,15 +238,18 @@ namespace vEngine
                         // GameObject::properties(),
                         std::make_tuple(
                             // Core::property("shaders", &PipelineStateDescriptor::shaders)
-                            Core::property("rasterizer", &PipelineStateDescriptor::rasterizer_descriptor),
-                            Core::property("depth_stencil", &PipelineStateDescriptor::depth_stencil_descriptor)
-                        )
-                    );
+                            Core::property("rasterizer", &PipelineStateDescriptor::rasterizer_descriptor), 
+                            Core::property("depth_stencil", &PipelineStateDescriptor::depth_stencil_descriptor)));
                 };
                 // similar design as https://docs.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_graphics_pipeline_state_desc
                 // std::unordered_map<ShaderType, std::filesystem::path> shaders;
                 RasterizerDescriptor rasterizer_descriptor;
                 DepthStencilDescriptor depth_stencil_descriptor;
+                static const PipelineStateDescriptor& Default()
+                {
+                    static PipelineStateDescriptor desc;
+                    return desc;
+                }
         };
 
     }  // namespace Rendering

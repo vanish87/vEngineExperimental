@@ -20,10 +20,11 @@ namespace vEngine
 {
     namespace Animation
     {
+        using namespace Core;
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        AnimatorComponent::AnimatorComponent()
+        AnimatorComponent:: AnimatorComponent()
         {
             // timer = 0;
         }
@@ -62,9 +63,9 @@ namespace vEngine
 
                     // set bone's Transform to animated TRS
                     auto transform = node->Owner()->FirstOf<Core::TransformComponent>();
-                    CHECK_ASSERT(joints.find(node->description_.name) != joints.end());
+                    CHECK_ASSERT(joints.find(node->Name()) != joints.end());
                     
-                    JointSharedPtr j = joints[node->description_.name];
+                    JointSharedPtr j = joints[node->Name()];
                     // if(transform == nullptr || j == nullptr) return true;
                     // auto j = joints[0];
 

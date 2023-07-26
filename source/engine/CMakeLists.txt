@@ -19,6 +19,8 @@ aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/external external_source)
 # endif()
 
 add_library(${PROJECT_NAME} 
+    ${PROJECT_SOURCE_DIR}/include
+
     ${core_source}
     ${rendering_source}
     ${animation_source}
@@ -31,8 +33,8 @@ add_library(engine::core ALIAS ${PROJECT_NAME})
 set(HEADER_NAME ${PROJECT_NAME})
 string(TOUPPER ${HEADER_NAME} HEADER_NAME)
 
-message(STATUS "CMAKE_BINARY_DIR= ${CMAKE_BINARY_DIR}")
-message(STATUS "ASSIMP_INCLUDE_DIR= ${ASSIMP_INCLUDE_DIR}")
+# message(STATUS "CMAKE_BINARY_DIR= ${CMAKE_BINARY_DIR}")
+# message(STATUS "ASSIMP_INCLUDE_DIR= ${ASSIMP_INCLUDE_DIR}")
 
 GENERATE_EXPORT_HEADER( ${PROJECT_NAME}
              BASE_NAME ${HEADER_NAME}
@@ -43,12 +45,13 @@ GENERATE_EXPORT_HEADER( ${PROJECT_NAME}
 
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include
-    PUBLIC ${ASSIMP_INCLUDE_DIR}
+    PUBLIC ${PROJECT_SOURCE_DIR}/include/apple
+    # PUBLIC ${LUA_INCLUDE_DIR}
 )
 
 target_link_libraries( ${PROJECT_NAME}
-	${ASSIMP_LIBRARIES}
-	${ZLIB_LIBRARIES}
+	# ${ASSIMP_LIBRARIES}
+	# ${ZLIB_LIBRARIES}
 	# ${LUA_LIBRARIES}
 	# ${FREETYPE_LIBRARIES}
 )
@@ -66,11 +69,11 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
 
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/resource
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>/resource
-)
+# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+#     COMMAND ${CMAKE_COMMAND} -E copy_directory
+#     ${CMAKE_SOURCE_DIR}/resource
+#     $<TARGET_FILE_DIR:${PROJECT_NAME}>/resource
+# )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory

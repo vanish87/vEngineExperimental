@@ -10,25 +10,23 @@
 #ifndef _VENGINE_RENDERING_FRAME_BUFFER_HPP
 #define _VENGINE_RENDERING_FRAME_BUFFER_HPP
 
-#include <VENGINE_API.hpp>
+#include <unordered_map>
 
 #include <engine.hpp>
+#include <vengine/core/game_object.hpp>
 #include <vengine/rendering/data_struct.hpp>
-#include <unordered_map>
 
 namespace vEngine
 {
     namespace Rendering
     {
-        using namespace Core;
-
         /// \brief Unity-like Graphics buffer
         ///
         /// Graphics buffer could be index/vertex buffer or
         /// constant buffer.
         /// It could be used in cpu and/or gpu
         // template<typename T>
-        class VENGINE_API FrameBuffer
+        class VENGINE_API FrameBuffer : public Core::GameObject
         {
             public:
                 /// \brief brief constructor description.

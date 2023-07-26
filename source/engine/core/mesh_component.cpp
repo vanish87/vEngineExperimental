@@ -17,11 +17,8 @@ namespace vEngine
     {
         /// constructor detailed defintion,
         /// should be 2 lines
-        MeshComponent::MeshComponent() {}
-        // MeshComponent::MeshComponent(const MeshSharedPtr mesh)
-        // {
-        //     this->Reset(mesh);
-        // }
+        // MeshComponent::MeshComponent(){}
+        MeshComponent::MeshComponent(const MeshSharedPtr mesh) : Component(mesh){}
     }  // namespace Core
 
 }  // namespace vEngine

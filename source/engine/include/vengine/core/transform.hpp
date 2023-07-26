@@ -40,6 +40,9 @@ namespace vEngine
                         )
                     );
                 }
+                static TransformSharedPtr Default();
+
+            public:
                 /// \brief Constructor: use init list {} to initialize data
                 Transform()
                 {
@@ -131,7 +134,7 @@ namespace vEngine
                 /// it will generate a compile error if
                 /// vector is initd with more parameter than it has
                 Transform(const float3& translate, const quaternion& rotation, const float3& scale)
-                    : local_translate_{translate}, local_rotation_{rotation}, local_scale_{scale}
+                    : local_translate_{translate}, local_rotation_{rotation}, local_scale_{scale} 
                 {}
 
                 const float3& Translate() const
@@ -204,11 +207,11 @@ namespace vEngine
             private:
                 float3 local_translate_;
                 // float4x4 local_rotation_;
+                quaternion local_rotation_;
                 float3 local_scale_;
 
                 float4x4 local_to_world_;
 
-                quaternion local_rotation_;
 
             public:
                 /// \brief A brief function description.

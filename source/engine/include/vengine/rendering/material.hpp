@@ -7,14 +7,12 @@
 /// \version version_number
 /// \date xxxx-xx-xxx
 
-#ifndef _VENGINE_CORE_MATERIAL_HPP
-#define _VENGINE_CORE_MATERIAL_HPP
+#ifndef _VENGINE_RENDERING_MATERIAL_HPP
+#define _VENGINE_RENDERING_MATERIAL_HPP
 
-#include <filesystem>
 
 #include <engine.hpp>
 #include <vengine/core/game_object.hpp>
-#include <vengine/core/iresource.hpp>
 #include <vengine/rendering/data_struct.hpp>
 #include <vengine/rendering/shader.hpp>
 
@@ -93,4 +91,4 @@ namespace vEngine
     }  // namespace Rendering
 }  // namespace vEngine
 
-#endif /* _VENGINE_CORE_MATERIAL_HPP */
+#endif /* _VENGINE_RENDERING_MATERIAL_HPP */

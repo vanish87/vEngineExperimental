@@ -9,8 +9,9 @@
 
 #include <vengine/core/context.hpp>
 #include <vengine/core/mesh.hpp>
-#include <vengine/core/resource_loader.hpp>
+#include <vengine/core/game_object_factory.hpp>
 #include <vengine/rendering/render_engine.hpp>
+#include <vengine/rendering/graphics_buffer.hpp>
 #include <vengine/animation/bone_component.hpp>
 
 /// A detailed namespace description, it
@@ -25,7 +26,7 @@ namespace vEngine
         {
             UNUSED_PARAMETER(primitive);
             UNUSED_PARAMETER(sub_div);
-            static auto m = std::make_shared<Mesh>();
+            static auto m = GameObjectFactory::Create<GameObjectType::Mesh, Mesh>();
             // if (m->CurrentState() != ResourceState::Loaded)
             // {
             //     switch (primitive)
@@ -44,7 +45,7 @@ namespace vEngine
 
         /// constructor detailed defintion,
         /// should be 2 lines
-        Mesh::Mesh() : vertex_buffer_{nullptr}, index_buffer_{nullptr}
+        Mesh::Mesh(): vertex_buffer_{nullptr}, index_buffer_{nullptr}
         {
             // PRINT("mesh object created");
         }
@@ -58,19 +59,19 @@ namespace vEngine
 
         MeshSharedPtr Default()
         {
-            static auto m = std::make_shared<Mesh>();
+            static auto m = GameObjectFactory::Create<GameObjectType::Mesh, Mesh>();
             return m;
         }
 
-        void Mesh::SetVertexData(const std::vector<Vertex> vertices, const std::vector<uint32_t> indices)
+        void Mesh::SetVertexData(const std::vector<Vertex> vertices, const std::vector<Index> indices)
         {
             this->vertex_data_ = vertices;
             this->index_data_ = indices;
         }
         void Mesh::SetBoneData(const std::string name, const int id, std::vector<VertexWeight> weights, float4x4 inverse_bind_pose_matrix)
         {
-            auto bone = GameObjectFactory::Create<Animation::BoneComponent>();
-            bone->description_.name = name;
+            auto bone = GameObjectFactory::Create<GameObjectType::BoneComponent, Animation::BoneComponent>();
+            bone->SetName(name);
             auto go = bone->GO();
             go->id_ = id;
             go->inverse_bind_pose_matrix_ = inverse_bind_pose_matrix;
@@ -113,10 +114,10 @@ namespace vEngine
                     }
                 }
             }
-            CHECK_ASSERT(this->bone_data_.find(bone->description_.name) == this->bone_data_.end());
-            this->bone_data_[bone->description_.name] = bone;
+            CHECK_ASSERT(this->bone_data_.find(bone->Name()) == this->bone_data_.end());
+            this->bone_data_[bone->Name()] = bone;
 
-            PRINT("Bone " << bone->description_.name << " id " << id);
+            PRINT("Bone " << bone->Name() << " id " << id);
         }
 
         /// Create GPU related buffer
@@ -129,10 +130,8 @@ namespace vEngine
                 GraphicsBufferDescriptor desc;
                 desc.type = GraphicsResourceType::Vertex;
                 desc.usage = GraphicsResourceUsage::GPU_Read_Only;
-                desc.resource.offset = 0;
-                desc.resource.stride = sizeof(Vertex);
-                desc.resource.count = this->vertex_data_.size();
-                desc.resource.total_size = desc.resource.count * desc.resource.stride;
+                desc.stride = sizeof(Vertex);
+                desc.count = this->vertex_data_.size();
                 desc.resource.data = this->vertex_data_.data();
 
                 // Not used
@@ -144,7 +143,7 @@ namespace vEngine
                 desc.layout.elements_.push_back(ElementLayout::Element("BLENDWEIGHT", DataFormat::RGBAFloat));
                 desc.layout.topology = ElementTopology::TriangleList;
 
-                this->vertex_buffer_ = Context::GetInstance().GetRenderEngine()->Create(desc);
+                this->vertex_buffer_ = GameObjectFactory::Create<GameObjectType::GraphicsBuffer, GraphicsBuffer>(desc);
             }
 
             if (this->index_buffer_ == nullptr)
@@ -153,12 +152,10 @@ namespace vEngine
                 GraphicsBufferDescriptor desc;
                 desc.type = GraphicsResourceType::Index;
                 desc.usage = GraphicsResourceUsage::GPU_Read_Only;
-                desc.resource.offset = 0;
-                desc.resource.stride = sizeof(uint32_t);
-                desc.resource.count = this->index_data_.size();
-                desc.resource.total_size = desc.resource.count * desc.resource.stride;
+                desc.stride = sizeof(uint32_t);
+                desc.count = this->index_data_.size();
                 desc.resource.data = this->index_data_.data();
-                this->index_buffer_ = Context::GetInstance().GetRenderEngine()->Create(desc);
+                this->index_buffer_ = GameObjectFactory::Create<GameObjectType::GraphicsBuffer, GraphicsBuffer>(desc);
             }
         }
 

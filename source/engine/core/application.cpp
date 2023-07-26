@@ -6,7 +6,8 @@
 // #include <vengine/core/configure.hpp>
 #include <vengine/core/constants.hpp>
 #include <vengine/core/context.hpp>
-// #include <vengine/core/scene_manager.hpp>
+#include <vengine/core/resource_manager.hpp>
+#include <vengine/core/scene_manager.hpp>
 #include <vengine/core/timer.hpp>
 // #include <vengine/rendering/render_engine.hpp>
 
@@ -28,12 +29,14 @@ namespace vEngine
             // SceneManager::GetInstance().Init();
 
             Context::GetInstance().Init();
+            ResourceManager::GetInstance().Init();
             Context::GetInstance().RegisterAppInstance(this->shared_from_this());
             this->OnInit();
         }
         void Application::Deinit()
         {
             this->OnDeinit();
+            ResourceManager::GetInstance().Deinit();
             Context::GetInstance().Deinit();
 
             // Destroy RenderEngine etc;
@@ -54,16 +57,19 @@ namespace vEngine
             // call user update
             this->OnUpdate();
 
-
             // update other context module
-            //  Context::Update();
-            // SceneManager::GetInstance().Update();
+            SceneManager::GetInstance().Update();
             // call here or PAINT event in Window Class
             // Context::GetInstance().GetRenderEngine().Update();
         }
-        void Application::Run()
+        void Application::RunAsync()
         {
             this->Init();
+            this->Create();
+        }
+        int Application::Main(void* para)
+        {
+            UNUSED_PARAMETER(para);
 
             Timer update_timer;
             auto previous = update_timer.Time();
@@ -85,6 +91,14 @@ namespace vEngine
                 }
             }
             this->Deinit();
+
+            return 0;
+        }
+
+        void Application::Run()
+        {
+            this->Init();
+            this->Main(nullptr);
         }
 
         void Application::OnInit() {}

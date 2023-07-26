@@ -1,5 +1,5 @@
-#ifndef _EMPTY_INCLUDE_EMPTY_RENDER_ENGINE_HPP
-#define _EMPTY_INCLUDE_EMPTY_RENDER_ENGINE_HPP
+#ifndef _VENGINE_RENDERING_EMPTY_RENDER_ENGINE_HPP
+#define _VENGINE_RENDERING_EMPTY_RENDER_ENGINE_HPP
 
 #pragma once
 
@@ -41,32 +41,12 @@ namespace vEngine
                     UNUSED_PARAMETER(texture);
                 }
 
-                PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) override
-                {
-                    UNUSED_PARAMETER(pipeline_desc);
-                    return nullptr;
-                }
                 void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) override
                 {
                     UNUSED_PARAMETER(vertice);
                     UNUSED_PARAMETER(indice);
                 }
-                TextureSharedPtr Create(const TextureDescriptor& desc) override
-                {
-                    UNUSED_PARAMETER(desc);
-                    return nullptr;
-                }
-                FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc) override
-                {
-                    UNUSED_PARAMETER(desc);
-                    return nullptr;
-                }
-                GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc) override
-                {
-                    UNUSED_PARAMETER(desc);
-                    return nullptr;
-                }
-                void Clear(const FrameBufferSharedPtr frame_buffer, const color color) override
+                void Clear(const FrameBufferSharedPtr frame_buffer, const Core::color color) override
                 {
                     UNUSED_PARAMETER(frame_buffer);
                     UNUSED_PARAMETER(color);
@@ -75,4 +55,4 @@ namespace vEngine
     }  // namespace Rendering
 }  // namespace vEngine
 
-#endif /* _EMPTY_INCLUDE_EMPTY_RENDER_ENGINE_HPP */
+#endif /* _VENGINE_RENDERING_EMPTY_RENDER_ENGINE_HPP */

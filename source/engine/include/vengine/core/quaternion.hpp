@@ -284,7 +284,7 @@ namespace vEngine
                 const T Norm() const noexcept
                 {
                     auto dot = Math::Dot(this->data_, this->data_);
-                    return Math::Sqrt(dot);
+                    return Math::Sqrt(Math::Max(Math::Epsilon, dot));
                 }
                 const Quaternion<T> Normalized() const noexcept
                 {

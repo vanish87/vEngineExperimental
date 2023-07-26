@@ -12,8 +12,9 @@
 
 #pragma once
 
-#include <vengine/core/component.hpp>
+#include <engine.hpp>
 #include <vengine/core/light.hpp>
+#include <vengine/core/component.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -24,7 +25,7 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class LightComponent : public Component<Light>
+        class VENGINE_API LightComponent : public Component<Light>
         {
             public:
                 /// \brief brief constructor description.

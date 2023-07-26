@@ -11,6 +11,7 @@
 #define _VENGINE_CORE_LIGHT_HPP
 
 #include <vengine/core/game_object.hpp>
+#include <vengine/core/vector.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -21,11 +22,25 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class Light : public GameObject
+        class VENGINE_API Light : public GameObject
         {
+            public:
+                constexpr static auto properties()
+                {
+                    return std::tuple_cat(
+                        GameObject::properties(),
+                        std::make_tuple(
+                            property("fall_off", &Light::fall_off_)
+                        )
+                    );
+                }
+                static LightSharedPtr Default();
             public:
                 /// \brief brief constructor description.
                 Light();
+
+                protected:
+                float4 fall_off_;
 
 				//color
 				//intensity

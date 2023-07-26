@@ -1,5 +1,17 @@
+/// \file data_format.hpp
+/// \brief Head file for Rendering Data
+///
+/// A detailed file description.
+///
+/// \author author_name
+/// \version version_number
+/// \date xxxx-xx-xxx
 #ifndef _VENGINE_RENDERING_DATA_FORMAT_HPP
 #define _VENGINE_RENDERING_DATA_FORMAT_HPP
+
+#pragma once
+
+#include <engine.hpp>
 
 namespace vEngine
 {
@@ -22,10 +34,13 @@ namespace vEngine
             switch (f)
             {
             case DataFormat::RGBA32: return 4;
+            case DataFormat::D24U8: return 4;
             case DataFormat::RGFloat: return 8;
             default:
                 break;
             }
+
+            NOT_IMPL_ASSERT;
 
             return 0;
         }

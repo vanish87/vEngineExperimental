@@ -7,9 +7,11 @@ message("${CMAKE_OSX_ARCHITECTURES}")
 
 set(RESOURCES
   Main.storyboard
-  ${CMAKE_SOURCE_DIR}/resources
+  ${COMMON_RESOURCE_FILES}
+  # # ${CMAKSOURCERY_DIRresourcesin
   # LaunchScreen.storyboard
 )
+message("${RESOURCES}")
 
 add_executable(${PROJECT_NAME} 
 	MACOSX_BUNDLE
@@ -21,6 +23,7 @@ add_executable(${PROJECT_NAME}
 # target_link_libraries(${PROJECT_NAME} "-framework Foundation")
 target_link_libraries(${PROJECT_NAME} "-framework AppKit")
 target_link_libraries(${PROJECT_NAME} engine::metal_rendering_plugin)
+target_link_libraries(${PROJECT_NAME} engine::custom_plugin)
 target_link_libraries(${PROJECT_NAME} engine::core)
 
 # target_include_directories(${PROJECT_NAME}

@@ -12,7 +12,6 @@
 
 #pragma once
 
-#include <VENGINE_API.hpp>
 #include <engine.hpp>
 #include <vengine/rendering/data_struct.hpp>
 #include <vengine/data/meta.hpp>
@@ -43,8 +42,8 @@ namespace vEngine
                 };
             public:
                 /// \brief brief constructor description.
-                PipelineState(){};
-                PipelineState(const PipelineStateDescriptor& desc);
+                // PipelineState(const Core::GameObjectType type = Core::GameObjectType::PipelineState);
+                PipelineState(const PipelineStateDescriptor desc);
                 virtual ~PipelineState();
 
                 virtual void PrepareData();

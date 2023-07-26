@@ -13,6 +13,8 @@
 #include <vengine/core/vector.hpp>
 #include <vengine/core/math.hpp>
 #include <vengine/core/quaternion.hpp>
+#include <vengine/core/game_object_factory.hpp>
+
 
 /// A detailed namespace description, it
 /// should be 2 lines at least.
@@ -22,6 +24,11 @@ namespace vEngine
     {
         using namespace Math;
         using namespace Core;
+
+        AnimationClipSharedPtr AnimationClip::Default()
+        {
+            return GameObjectFactory::Create<Core::GameObjectType::AnimationClip, AnimationClip>();
+        }
 
         /// constructor detailed defintion,
         /// should be 2 lines
@@ -57,7 +64,7 @@ namespace vEngine
             {
                 if (this->current_joints_.find(j.first) == this->current_joints_.end())
                 {
-                    this->current_joints_[j.first] = std::make_shared<Joint>();
+                    this->current_joints_[j.first] = GameObjectFactory::Create<GameObjectType::Joint, Joint>();
                     this->current_joints_[j.first]->position_keys_.emplace_back(0.0f, float3::Zero());
                     this->current_joints_[j.first]->rotation_keys_.emplace_back(0.0f, quaternion::Identity());
                     this->current_joints_[j.first]->scale_keys_.emplace_back(0.0f, float3::One());

@@ -47,41 +47,41 @@ namespace vEngine
                     UNUSED_PARAMETER(texture);
                 }
 
-                PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) override
-                {
-                    UNUSED_PARAMETER(pipeline_desc);
-                    return nullptr;
-                }
+                // PipelineStateSharedPtr OnRegister(const PipelineStateDescriptor& pipeline_desc) override
+                // {
+                //     UNUSED_PARAMETER(pipeline_desc);
+                //     return nullptr;
+                // }
                 void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) override
                 {
                     UNUSED_PARAMETER(vertice);
                     UNUSED_PARAMETER(indice);
                 }
-                void Clear(const FrameBufferSharedPtr frame, const color color) override
+                void Clear(const FrameBufferSharedPtr frame, const Core::color color) override
                 {
                     UNUSED_PARAMETER(frame);
                     UNUSED_PARAMETER(color);
                 }
-                TextureSharedPtr Create(const TextureDescriptor& desc) override
-                {
-                    UNUSED_PARAMETER(desc);
-                    return nullptr;
-                }
-                FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc)
-                {
-                    UNUSED_PARAMETER(desc);
-                    return nullptr;
-                }
-                GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc)
-                {
-                    UNUSED_PARAMETER(desc);
-                    return nullptr;
-                }
+                // TextureSharedPtr Create(const TextureDescriptor& desc) override
+                // {
+                //     UNUSED_PARAMETER(desc);
+                //     return nullptr;
+                // }
+                // FrameBufferSharedPtr Create(const FrameBufferDescriptor& desc)
+                // {
+                //     UNUSED_PARAMETER(desc);
+                //     return nullptr;
+                // }
+                // GraphicsBufferSharedPtr Create(const GraphicsBufferDescriptor& desc)
+                // {
+                //     UNUSED_PARAMETER(desc);
+                //     return nullptr;
+                // }
             private:
                 GLFWwindow* window;
 
             private:
-                void InitPipline();
+                void InitPipeline();
                 void DebugTriangleDraw();
                 void DeinitPipline();
                 GLuint vertex_buffer, vertex_shader, fragment_shader, program;

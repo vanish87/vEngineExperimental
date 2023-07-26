@@ -12,10 +12,10 @@
 
 #pragma once
 
-#include <engine.hpp>
 #include <vector>
-#include <vengine/core/game_object.hpp>
+#include <engine.hpp>
 #include <vengine/core/quaternion.hpp>
+#include <vengine/core/game_object.hpp>
 
 /// A brief namespace description.
 namespace vEngine

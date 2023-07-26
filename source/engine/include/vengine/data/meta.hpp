@@ -12,11 +12,13 @@
 
 #pragma once
 
-#include <engine.hpp>
+// #include <engine.hpp>
 
-#include <map>
-#include <vengine/core/vector.hpp>
-#include <vengine/core/matrix.hpp>
+#include <utility>
+#include <tuple>
+// #include <map>
+// #include <vengine/core/vector.hpp>
+// #include <vengine/core/matrix.hpp>
 
 namespace vEngine
 {
@@ -57,10 +59,10 @@ namespace vEngine
                     );
                 }
         };
-        class TexAttribute : public Attribute<std::string>
-        {
+        // class TexAttribute : public Attribute<std::string>
+        // {
 
-        };
+        // };
         template<typename T>
         struct Getter
         {
@@ -128,12 +130,12 @@ namespace vEngine
         constexpr auto property(const char* name, Attribute<T> Class::*member)
         {
             return Property<Class, Attribute<T>, T>{name, member};
-        };
+        }
         template <typename Class, typename T>
         constexpr auto property(const char* name, T Class::*member)
         {
             return Property<Class, T, T>{name, member};
-        };
+        }
 
     }  // namespace Data
 

@@ -1,3 +1,11 @@
+/// \file math.hpp
+/// \brief Head file for Math Lib
+///
+/// A detailed file description.
+///
+/// \author author_name
+/// \version version_number
+/// \date xxxx-xx-xxx
 #ifndef _VENGINE_CORE_MATH_HPP
 #define _VENGINE_CORE_MATH_HPP
 
@@ -61,6 +69,8 @@ namespace vEngine
         /// \brief E constant
         float const E = 2.718281828f;
 
+        /// \brief float Epsilon constant
+        float const Epsilon = 1.192092896e-07f;
         //=================================================
         // float related functions
 
@@ -233,7 +243,7 @@ namespace vEngine
     }  // namespace Math
 }  // namespace vEngine
 
-// include template definitions after declearations above
-// for separate declearation/definition of template functions
+// include template definitions after declarations above
+// for separate declaration/definition of template functions
 #include <vengine/core/math.inc>
 #endif /* _VENGINE_CORE_MATH_HPP */

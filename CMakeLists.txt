@@ -1,16 +1,25 @@
 # cmake minium version required
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.8)
+
+# Linux Build Command
+# cmake -S . -B build_linux -DCMAKE_BUILD_TYPE=Debug
+# cmake --build ./build_linux/
 
 if(APPLE)
     set(VENGINE_BUILD_STATIC ON)
     set(VENGINE_BUILD_IOS OFF)
     set(CMAKE_OSX_ARCHITECTURES arm64)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "13.0")
+endif()
+
+if(WIN32)
+    set(VENGINE_BUILD_RESOURCE ON)
 endif()
 
 set(VENGINE_BUILD_DOC OFF)
 
 # cmake setting
-set(CMAKE_VERBOSE_MAKEFILE OFF)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # Include cmake modules
 include(GenerateExportHeader)
@@ -64,8 +73,8 @@ endif()
 
 # include setting
 # set configure include path
-set(CONFIGURE_INCLUDE "${CMAKE_BINARY_DIR}/configure/include")
-set(API_EXPORT_DIR "${CMAKE_BINARY_DIR}/api")
+set(CONFIGURE_INCLUDE ${CMAKE_BINARY_DIR}/configure/include)
+set(API_EXPORT_DIR ${CMAKE_BINARY_DIR}/api)
 include_directories(include)
 include_directories(${CONFIGURE_INCLUDE})
 include_directories(${API_EXPORT_DIR})
@@ -79,25 +88,31 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_DEBUG_POSTFIX d)
 add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 
+set(PROJECT_NAME_U ${PROJECT_NAME})
+string(TOUPPER ${PROJECT_NAME_U} PROJECT_NAME_U)
+
 set(PROJECT_PLATFORM_MARCO ${PROJECT_NAME}_PLATFORM)
 string(TOUPPER ${PROJECT_PLATFORM_MARCO} PROJECT_PLATFORM_MARCO)
 
 if(WIN32)
     add_compile_definitions(${PROJECT_PLATFORM_MARCO}_WINDOWS)
+elseif(APPLE)
+    add_compile_definitions(${PROJECT_PLATFORM_MARCO}_APPLE)
 elseif(UNIX)
     add_compile_definitions(${PROJECT_PLATFORM_MARCO}_UNIX)
 endif()
 
-if(APPLE)
-    add_compile_definitions(${PROJECT_PLATFORM_MARCO}_APPLE)
-endif()
-
 if(VENGINE_BUILD_STATIC)
-    add_compile_definitions(${PROJECT_PLATFORM_MARCO}_APPLE_STATIC)
+    add_compile_definitions(${PROJECT_NAME_U}_STATIC_LINK)
+else()
+    add_compile_definitions(${PROJECT_NAME_U}_DYNAMIC_LINK)
 endif()
 
 add_subdirectory(source)
-add_subdirectory(resource)
+
+if(VENGINE_BUILD_RESOURCE)
+    add_subdirectory(resource)
+endif()
 
 # message(STATUS "CMAKE_SOURCE_DIR= ${CMAKE_SOURCE_DIR}")
 # add_custom_target(COPY_RESOURCE ALL

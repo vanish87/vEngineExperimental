@@ -12,9 +12,9 @@
 
 #pragma once
 
-#include <VENGINE_API.hpp>
-#include <vengine/core/component.hpp>
+#include <engine.hpp>
 #include <vengine/core/transform.hpp>
+#include <vengine/core/component.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -39,7 +39,7 @@ namespace vEngine
                 // }
             public:
                 /// \brief brief constructor description.
-                TransformComponent(){};
+                TransformComponent();
 
                 virtual void OnUpdate() override;
         };

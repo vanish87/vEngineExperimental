@@ -11,6 +11,7 @@
 #include <vengine/core/camera_component.hpp>
 #include <vengine/core/context.hpp>
 #include <vengine/core/transform_component.hpp>
+#include <vengine/core/game_object_factory.hpp>
 #include <vengine/rendering/graphics_buffer.hpp>
 #include <vengine/rendering/render_engine.hpp>
 #include <vengine/rendering/shared/data_cbuffer.hpp>
@@ -30,36 +31,30 @@ namespace vEngine
             GraphicsBufferDescriptor cbuffer_desc;
             cbuffer_desc.type = GraphicsResourceType::CBuffer;
             cbuffer_desc.usage = GraphicsResourceUsage::CPU_Write_GPU_Read;
-            cbuffer_desc.resource.offset = 0;
-            cbuffer_desc.resource.stride = sizeof(vEngineCameraConstantBuffer);
-            cbuffer_desc.resource.count = 1;
-            cbuffer_desc.resource.total_size = cbuffer_desc.resource.count * cbuffer_desc.resource.stride;
+            cbuffer_desc.stride = sizeof(vEngineCameraConstantBuffer);
+            cbuffer_desc.count = 1;
             cbuffer_desc.slot = static_cast<GraphicsBufferSlot>(vEngineConstantBufferPerCamera);
 
-            vEngineCameraConstantBuffer cb;
-            cbuffer_desc.resource.data = &cb;
-
-            this->camera_constant_buffer_ = Context::GetInstance().GetRenderEngine()->Create(cbuffer_desc);
+            this->camera_constant_buffer_ = GameObjectFactory::Create<GameObjectType::GraphicsBuffer, GraphicsBuffer>(cbuffer_desc);
         }
         void CameraComponent::OnBeginCamera()
         {
             auto cam = this->GO();
             vEngineCameraConstantBuffer cb;
-            cb.camera_pos = float4(0, 0, 100, 1);
 
             auto trans = this->Owner()->FirstOf<TransformComponent>();
-            //TODO use rot to rotate forward/up vector
+            // TODO use rot to rotate forward/up vector
             auto rot = trans->GO()->Rotation();
-            auto eye= trans->GO()->Translate();
-            auto at = Math::TransformPoint(float4(0,0,1,1), Math::ToMatrix(rot));
-            auto up = float3(0,1,0);
+            auto eye = trans->GO()->Translate();
+            auto at = Math::TransformPoint(float4(0, 0, 1, 1), Math::ToMatrix(rot));
+            auto up = float3(0, 1, 0);
             cb.view_matrix = Math::LookAtLH(eye, float3(at.x(), at.y(), at.z()), up);
             // Math::Translate(cb.view_matrix, 0, 0, 100);
             // cb.view_matrix = Math::Transpose(cb.view_matrix);
             cb.proj_matrix = cam->ProjectionMatrix();
             // cb.proj_matrix = Math::Transpose(cb.proj_matrix);
             auto data = this->camera_constant_buffer_->Map();
-            std::memcpy(data.data, &cb, sizeof(vEngineCameraConstantBuffer));
+            memcpy(data.data, &cb, sizeof(vEngineCameraConstantBuffer));
             // std::copy(&cb, &cb + sizeof(vEngineCameraConstantBuffer), data.data);
             this->camera_constant_buffer_->Unmap();
 
