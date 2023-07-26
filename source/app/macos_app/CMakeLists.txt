@@ -21,6 +21,10 @@ set(COMMON_SOURCE_FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/app_delegate.mm
 )
 
+set(COMMON_RESOURCE_FILES
+	${CMAKE_SOURCE_DIR}/resource/bunny.obj
+)
+
 if(VENGINE_BUILD_IOS)
   add_subdirectory(ios)
 else()

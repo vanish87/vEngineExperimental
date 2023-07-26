@@ -7,6 +7,7 @@ message("${CMAKE_OSX_SYSROOT}")
 
 set(RESOURCES
   Main.storyboard
+  ${COMMON_RESOURCE_FILES}
   # LaunchScreen.storyboard
 )
 

@@ -7,7 +7,8 @@ message("${CMAKE_OSX_ARCHITECTURES}")
 
 set(RESOURCES
   Main.storyboard
-  # ${CMAKE_SOURCE_DIR}/resources
+  ${COMMON_RESOURCE_FILES}
+  # # ${CMAKSOURCERY_DIRresourcesin
   # LaunchScreen.storyboard
 )
 message("${RESOURCES}")
