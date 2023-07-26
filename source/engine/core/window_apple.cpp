@@ -17,7 +17,7 @@ namespace vEngine
             else
             {
                 #if defined(VENGINE_PLATFORM_TARGET_DARWIN)
-                CGRect frame = (CGRect){ {100.0, 100.0}, {512.0, 512.0} };
+                CGRect frame = (CGRect){ {0, 0}, {(float)desc.width, (float)desc.height} };
                 auto window = NS::Window::alloc()->init(
                     frame,
                     NS::WindowStyleMaskClosable|NS::WindowStyleMaskTitled,
