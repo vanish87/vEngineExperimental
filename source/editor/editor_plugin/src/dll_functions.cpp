@@ -1,5 +1,6 @@
 #include <vengine/editor/dll_functions.hpp>
 #include <vengine/core/context.hpp>
+#include <vengine/core/scene_manager.hpp>
 
 namespace vEngine
 {
@@ -7,7 +8,7 @@ namespace vEngine
     {
         using namespace vEngine::Core;
 
-        EditorApp editor_app;
+        std::shared_ptr<EditorApp> editor_app;
         void EditorApp::EditorInit()
         {
             this->Init();
@@ -16,10 +17,14 @@ namespace vEngine
         {
             this->Deinit();
         }
-
         void EditorApp::EditorUpdate()
         {
             this->Update();
+        }
+
+        void EditorApp::OnInit()
+        {
+            SceneManager::GetInstance().Load("boblampclean.json");
         }
     }  // namespace Editor
 
@@ -39,15 +44,16 @@ extern "C"
         configure.graphics_configure.wnd = hwnd;
         Context::GetInstance().SetConfigure(configure);
 
-        editor_app.EditorInit();
+        editor_app = std::make_shared<EditorApp>();
+        editor_app->EditorInit();
     }
     void Context_Update()
     {
-        editor_app.EditorUpdate();
+        editor_app->EditorUpdate();
     }
 
     void Context_Deinit()
     {
-        editor_app.EditorDeinit();
+        editor_app->EditorDeinit();
     }
 }
