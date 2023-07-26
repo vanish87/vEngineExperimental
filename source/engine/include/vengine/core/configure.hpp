@@ -38,6 +38,8 @@ namespace vEngine
                 std::string app_name = "vEngineApp";
                 std::string context_name = "default_context";
                 std::string custom_plugin_name = "custom_plugin";
+                std::filesystem::path source_root = "./";
+                std::filesystem::path bin_root = "./bin";
                 std::filesystem::path resource_src = "./resource";
                 std::filesystem::path resource_bin = "./resource";
                 std::filesystem::path library_bin = "./";
