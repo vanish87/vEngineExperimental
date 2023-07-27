@@ -72,6 +72,7 @@ namespace vEngine
                     auto bone_go = bone->GO();
                     auto offset = bone_go->inverse_bind_pose_matrix_;
 
+                    // a.k.a Skinning Matrix Palette
                     cb.bone[bone_go->id_] = offset * bone_matrix;
                 }
             }
