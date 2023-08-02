@@ -73,13 +73,6 @@ namespace vEngine
                 std::vector<Rendering::MaterialSharedPtr> materials_;
                 std::vector<Animation::AnimationClipSharedPtr> animation_clips_;
 
-                // GameNodeSharedPtr HandleNode(const aiNode* node, const aiScene* scene);
-                // void HandleCameras(const aiScene* scene);
-                // void HandleMaterials(const aiScene* scene);
-                // void HandleMeshes(const aiScene* scene);
-                // void HandleAnimations(const aiScene* scene);
-                // void HandleBoneNode(const aiNode* node, const GameNodeSharedPtr game_node);
-
             public:
                 void Update();
 
