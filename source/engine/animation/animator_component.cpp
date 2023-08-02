@@ -56,16 +56,16 @@ namespace vEngine
             auto joints = animator->GetAnimatedJoints();
 
             this->animation_root_->TraverseAllChildren<BoneComponent>(
-                [&](BoneComponentSharedPtr node)
+                [&](BoneComponentSharedPtr bone)
                 {
                     // node->UpdateLocal(parent);
                     // node->OnUpdate();
 
                     // set bone's Transform to animated TRS
-                    auto transform = node->Owner()->FirstOf<Core::TransformComponent>();
-                    CHECK_ASSERT(joints.find(node->Name()) != joints.end());
+                    auto transform = bone->Owner()->FirstOf<Core::TransformComponent>();
+                    CHECK_ASSERT(joints.find(bone->Name()) != joints.end());
                     
-                    JointSharedPtr j = joints[node->Name()];
+                    JointSharedPtr j = joints[bone->Name()];
                     // if(transform == nullptr || j == nullptr) return true;
                     // auto j = joints[0];
 

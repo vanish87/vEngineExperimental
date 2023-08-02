@@ -419,11 +419,14 @@ namespace vEngine
             
             auto theta = ArcCos(Math::Dot(x, y));
             return x * (Sin((1 - s) * theta) / Sin(theta)) + y * (Sin(s * theta) / Sin(theta));
+
+            // return Pow(y * x.Inverse(), s) * x;
         }
         template <typename T>
         T Norm(const T& value)
         {
             UNUSED_PARAMETER(value);
+            NOT_IMPL_ASSERT;
             return nullptr;
         }
 
