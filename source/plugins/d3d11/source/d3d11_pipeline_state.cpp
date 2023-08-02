@@ -57,7 +57,7 @@ namespace vEngine
 
                     auto target = D3D11RenderEngine::ShaderTypeToTarget(s.first);
 
-                    PRINT(s.second->source);
+                    // PRINT(s.second->source);
 
                     // auto source_name = std::string("resource/shader/ps/ps.json");
                     auto source_name = target;

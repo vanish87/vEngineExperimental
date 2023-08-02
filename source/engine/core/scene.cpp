@@ -129,8 +129,6 @@ namespace vEngine
                     re->OnBeginFrame();
                     this->Flush();
                     re->OnEndFrame();
-                    // render all game node
-                    // PRINT("Camera");
                     return true;
                 });
         }
