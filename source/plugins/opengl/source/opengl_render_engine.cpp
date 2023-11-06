@@ -157,7 +157,7 @@ namespace vEngine
             glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*)mvp);
             glDrawArrays(GL_TRIANGLES, 0, 3);
         }
-        void OpenGLRenderEngine::DeinitPipline() {}
+        void OpenGLRenderEngine::DeinitPipeline() {}
     }  // namespace Rendering
 }  // namespace vEngine
 

@@ -83,7 +83,7 @@ namespace vEngine
             private:
                 void InitPipeline();
                 void DebugTriangleDraw();
-                void DeinitPipline();
+                void DeinitPipeline();
                 GLuint vertex_buffer, vertex_shader, fragment_shader, program;
                 GLint mvp_location, vpos_location, vcol_location;
         };

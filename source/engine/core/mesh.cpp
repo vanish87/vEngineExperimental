@@ -117,7 +117,7 @@ namespace vEngine
             CHECK_ASSERT(this->bone_data_.find(bone->Name()) == this->bone_data_.end());
             this->bone_data_[bone->Name()] = bone;
 
-            PRINT("Bone " << bone->Name() << " id " << id);
+            // PRINT("Bone " << bone->Name() << " id " << id);
         }
 
         /// Create GPU related buffer

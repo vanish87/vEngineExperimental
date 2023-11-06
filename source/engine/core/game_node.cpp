@@ -51,17 +51,16 @@ namespace vEngine
 
         void GameNode::AddChild(const GameNodeSharedPtr game_node)
         {
-            // auto ptr = GameNode::shared_from_this();
-            if (game_node->parent_.expired() == false) PRINT_AND_BREAK("game_node is already a child");
+            if (game_node->parent_.expired() == false) 
+            {
+                PRINT_AND_BREAK("game_node " << game_node->Name() << " is already a child");
+            }
 
             auto com = std::dynamic_pointer_cast<IComponent>(shared_from_this());
             if (com != nullptr) PRINT_AND_BREAK("component usually does not have a child");
 
             game_node->parent_ = weak_from_this();
             this->children_.push_back(game_node);
-
-            // auto transform = std::dynamic_pointer_cast<TransformComponent>(game_node);
-            // if(transform != nullptr) this->transform_ = transform;
         }
         void GameNode::RemoveChild(const GameNodeSharedPtr game_node)
         {

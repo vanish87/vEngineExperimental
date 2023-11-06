@@ -194,6 +194,8 @@ namespace vEngine
             CHECK_ASSERT_NOT_NULL(scene);
             CHECK_ASSERT_NOT_NULL(ai_scene);
 
+            PRINT("Mesh Count " <<ai_scene->mNumMeshes);
+
             for (uint32_t mid = 0; mid < ai_scene->mNumMeshes; ++mid)
             {
                 auto ai_mesh = ai_scene->mMeshes[mid];
@@ -229,6 +231,8 @@ namespace vEngine
 
                 mesh->SetVertexData(vertices, indices);
 
+                PRINT("Bone Count " << ai_mesh->mNumBones);
+
                 for (uint32_t bid = 0; bid < ai_mesh->mNumBones; ++bid)
                 {
                     // mesh->mBones[b]->mOffsetMatrix will transform vertex from model space to pose/joint local space;
@@ -240,7 +244,7 @@ namespace vEngine
                     auto offset = this->AiMatrixToFloat4x4(ai_bone->mOffsetMatrix);
                     auto weights = std::vector<VertexWeight>();
 
-                    PRINT(ai_mesh->mName.data << " has bones/joint " << name << " with weight count" << ai_bone->mNumWeights);
+                    // PRINT(ai_mesh->mName.data << " has bones/joint " << name << " with weight count" << ai_bone->mNumWeights);
 
                     for (uint32_t wid = 0; wid < ai_bone->mNumWeights; ++wid)
                     {
