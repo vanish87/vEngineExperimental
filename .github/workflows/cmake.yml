@@ -55,7 +55,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: resource
-        path: ${{github.workspace}}/build_windows/bin/${{env.BUILD_TYPE}}/resource
+        path: ${{github.workspace}}/build_windows/resource/bin
 
       
     - name: Configure - Ubuntu
