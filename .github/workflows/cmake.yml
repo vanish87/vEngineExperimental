@@ -50,6 +50,13 @@ jobs:
       if: matrix.platform == 'windows-latest'
       run: cmake --build ${{github.workspace}}/build_windows --config ${{env.BUILD_TYPE}}
 
+    - name: Upload Resources - Windows
+      if: matrix.platform == 'windows-latest'
+      uses: actions/upload-artifact@v4
+      with:
+        name: resource
+        path: ${{github.workspace}}/build_windows/bin/${{env.BUILD_TYPE}}/resource
+
       
     - name: Configure - Ubuntu
       # Build your program with the given configuration
