@@ -55,7 +55,7 @@ namespace vEngine
                 {
                     next = this->rotation_keys_[(i + 1) % size];
                     auto t = (time - current.time) / (next.time - current.time);
-                    auto rot = Math::NLerp(current.value, next.value, t);
+                    auto rot = Math::SLerp(current.value, next.value, t);
                     // return JointKey<Core::quaternion>(time, current.value);
                     return JointKey<Core::quaternion>(time, rot);
                 }
