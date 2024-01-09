@@ -41,29 +41,45 @@ namespace vEngine
                 Info(args...);
             }
 
+            /// \brief A brief function description.
             void Info()
             {
                 std::cout<<std::endl;
             }
+            /// \brief A brief function description.
+            ///
+            /// \param p1 Description for p1.
+            /// \param p2 Description for p2.
+            /// \return Description for return value.
             template<typename T, typename... Args>
             void Warning(const T& first, const Args&... args) 
             {
                 std::cout<< first;
                 Warning(args...);
             }
+            /// \brief A brief function description.
             void Warning()
             {
                 std::cout<<std::endl;
+                DEBUG_BREAK;
             }
+
+            /// \brief A brief function description.
+            ///
+            /// \param p1 Description for p1.
+            /// \param p2 Description for p2.
+            /// \return Description for return value.
             template<typename T, typename... Args>
             void Error(const T& first, const Args&... args) 
             {
                 std::cout<< first;
                 Error(args...);
             }
+            /// \brief A brief function description.
             void Error()
             {
                 std::cout<<std::endl;
+                DEBUG_BREAK;
             }
     };
 
