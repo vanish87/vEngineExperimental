@@ -4,11 +4,12 @@
 #pragma once
 
 #ifdef VENGINE_PLATFORM_WINDOWS
-    //windows.h should include first in win32 platform
+    //windows.h should be included first in win32 platform
     #define NOMINMAX
     #include <windows.h>
 #endif
 
+#include <VENGINE_API.hpp>
 
 #include <compiler_setting.hpp>
 #include <macros.hpp>
@@ -19,7 +20,6 @@
 #include <interface.hpp>
 #include <predeclare.hpp>
 
-#include <VENGINE_API.hpp>
 
 // #include <vengine/rendering/data_format.hpp>
 // #include <vengine/rendering/data_struct.hpp>

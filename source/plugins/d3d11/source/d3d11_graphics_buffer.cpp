@@ -23,7 +23,7 @@ namespace vEngine
         /// should be 2 lines
         D3D11GraphicsBuffer::D3D11GraphicsBuffer(const GraphicsBufferDescriptor& desc) : GraphicsBuffer(desc)
         {
-            // PRINT("D3DGraphicsBuffer");
+            // VE_INFO("D3DGraphicsBuffer");
             auto& re = Core::Context::GetInstance().GetRenderEngine();
             auto d3d_re = dynamic_cast<D3D11RenderEngine*>(re.get());
             auto device = d3d_re->Device();
@@ -43,7 +43,7 @@ namespace vEngine
             auto hr = device->CreateBuffer(&d3d_desc, desc.resource.data == nullptr ? nullptr : &sub, this->buffer_.GetAddressOf());
             if (FAILED(hr))
             {
-                PRINT_AND_BREAK("Cannot create buffer");
+                VE_ASSERT(false, "Cannot create buffer");
             }
         }
 
@@ -59,7 +59,7 @@ namespace vEngine
             auto hr = context->Map(this->buffer_.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &data);
             if (FAILED(hr))
             {
-                PRINT_AND_BREAK("Cannot Map buffer");
+                VE_ASSERT(false,"Cannot Map buffer");
             }
             sub.data = data.pData;
             return sub;

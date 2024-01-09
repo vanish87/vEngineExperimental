@@ -16,7 +16,7 @@ namespace vEngine
         {
             if(j.is_null())
             {
-                PRINT("json is null, it should be a nullptr");
+                VE_INFO("json is null, it should be a nullptr");
                 return;
             }
             GameObjectDescriptor desc;
@@ -31,7 +31,7 @@ namespace vEngine
         {
             if(j.is_null())
             {
-                PRINT("json is null, it should be a nullptr");
+                VE_INFO("json is null, it should be a nullptr");
                 return;
             }
             GameObjectDescriptor desc;
@@ -41,12 +41,12 @@ namespace vEngine
             auto go = ResourceManager::GetInstance().FindOrCreate(desc);
             ptr = std::dynamic_pointer_cast<T>(go);
             // if(ptr != nullptr) return;
-            // CHECK_ASSERT(ptr == nullptr);
+            // VE_ASSERT(ptr == nullptr);
 
             // ptr = CreateAndLoadByDesc<T>(desc);
-            CHECK_ASSERT_NOT_NULL(ptr);
+            VE_ASSERT_PTR_NOT_NULL(ptr);
 
-            // PRINT("Load " << ptr->descriptor_.uuid.AsUint() << " " << ToString(desc.type));
+            // VE_INFO("Load " << ptr->descriptor_.uuid.AsUint() << " " << ToString(desc.type));
         }
 
         template <typename T>
@@ -133,7 +133,7 @@ namespace vEngine
 
                              // get the type of the property
                              //  using Type = typename decltype(property)::member_type;
-                            //  PRINT(property.name);
+                            //  VE_INFO(property.name);
 
                              // set the value to the member
                              // you can also replace `asAny` by `fromJson` to recursively serialize

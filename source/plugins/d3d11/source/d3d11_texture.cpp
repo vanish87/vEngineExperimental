@@ -64,7 +64,7 @@ namespace vEngine
                         auto hr = device->CreateTexture2D(&d3d_desc, desc.resource.data == nullptr ? nullptr : &init_data, this->tex2D_.GetAddressOf());
                         if (FAILED(hr))
                         {
-                            PRINT_AND_BREAK("Cannot create Texture2D");
+                            VE_ASSERT(false,"Cannot create Texture2D");
                         }
                     }
                     break;
@@ -113,7 +113,7 @@ namespace vEngine
                 desc.Texture2D.MostDetailedMip = 0;
 
                 auto hr = device->CreateShaderResourceView(this->tex2D_.Get(), nullptr, this->sr_view_.GetAddressOf());
-                CHECK_ASSERT(hr == S_OK);
+                VE_ASSERT(hr == S_OK);
             }
             return this->sr_view_;
         }

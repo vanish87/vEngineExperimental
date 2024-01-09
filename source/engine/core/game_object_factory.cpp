@@ -23,7 +23,7 @@ namespace vEngine
         // GameObjectSharedPtr GameObjectFactory::CreateByTypeString(const std::string type)
         // {
 
-        //     PRINT_AND_BREAK("type " << type << " not created");
+        //     VE_ASSERT(false,"type " << type << " not created");
         //     NOT_IMPL_ASSERT;
         //     return nullptr;
         // }

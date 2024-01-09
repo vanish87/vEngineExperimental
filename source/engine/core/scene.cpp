@@ -66,14 +66,14 @@ namespace vEngine
         }
         void Scene::SetMesh(const int id, const MeshSharedPtr mesh)
         {
-            CHECK_ASSERT(this->meshes_.find(id) == this->meshes_.end());
+            VE_ASSERT(this->meshes_.find(id) == this->meshes_.end());
 
             this->meshes_[id] = mesh;
         }
 
         void Scene::SetTexture(const std::string name, const TextureSharedPtr texture)
         {
-            CHECK_ASSERT(!this->HasTexture(name));
+            VE_ASSERT(!this->HasTexture(name));
             this->textures_[name] = texture;
         }
         bool Scene::HasTexture(const std::string name)
@@ -82,7 +82,7 @@ namespace vEngine
         }
         TextureSharedPtr Scene::GetTexture(const std::string name)
         {
-            CHECK_ASSERT(this->HasTexture(name));
+            VE_ASSERT(this->HasTexture(name));
             return this->textures_[name];
         }
 

@@ -30,7 +30,7 @@ namespace vEngine
             if (auto desc = std::any_cast<FrameBufferDescriptor>(&parameter)) return std::make_shared<D3D11FrameBuffer>(*desc);
             if (auto desc = std::any_cast<GraphicsBufferDescriptor>(&parameter)) return std::make_shared<D3D11GraphicsBuffer>(*desc);
 
-            PRINT(parameter.type().name())
+            VE_INFO(parameter.type().name())
             NOT_IMPL_ASSERT;
             return nullptr;
         }

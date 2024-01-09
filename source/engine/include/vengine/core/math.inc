@@ -94,7 +94,7 @@ namespace vEngine
         T Normalize(const T& rhs)
         {
             auto dot = Dot(rhs, rhs);
-            CHECK_ASSERT(IsFloatEqual(dot, 0) == false);
+            VE_ASSERT(IsFloatEqual(dot, 0) == false);
             return rhs * InvSqrt(dot);
         }
 
@@ -102,7 +102,7 @@ namespace vEngine
         Core::Vector<T, N> TransformPoint(const Core::Vector<T, N>& lhs, const Core::Matrix<T, N, N>& rhs)
         {
             // the last element of position will be 1
-            CHECK_ASSERT(IsFloatEqual(lhs[N - 1], 1));
+            VE_ASSERT(IsFloatEqual(lhs[N - 1], 1));
 
             Core::Vector<T, N> ret;
             for (size_t i = 0; i < lhs.size; ++i)
@@ -119,7 +119,7 @@ namespace vEngine
         Core::Vector<T, N> TransformVector(const Core::Vector<T, N>& lhs, const Core::Matrix<T, N, N>& rhs)
         {
             // the last element of vector will be 0
-            CHECK_ASSERT(IsFloatEqual(lhs[N - 1], 0));
+            VE_ASSERT(IsFloatEqual(lhs[N - 1], 0));
 
             Core::Vector<T, N> ret;
             for (size_t i = 0; i < lhs.size; ++i)
@@ -201,7 +201,7 @@ namespace vEngine
         template <typename T, int M, int S, int N>
         Core::Matrix<T, M, N> Multiply(const Core::Matrix<T, S, N>& lhs, const Core::Matrix<T, M, S>& rhs)
         {
-            // CHECK_ASSERT(lhs.row == rhs.col);
+            // VE_ASSERT(lhs.row == rhs.col);
             Core::Matrix<T, M, N> ret;
 
             for (size_t row = 0; row < lhs.row; ++row)

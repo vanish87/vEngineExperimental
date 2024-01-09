@@ -29,7 +29,7 @@ namespace vEngine
             // if (auto desc = std::any_cast<FrameBufferDescriptor>(&parameter)) return std::make_shared<MetalFrameBuffer>(*desc);
             // if (auto desc = std::any_cast<GraphicsBufferDescriptor>(&parameter)) return std::make_shared<MetalGraphicsBuffer>(*desc);
 
-            PRINT(parameter.type().name())
+            VE_INFO(parameter.type().name())
             NOT_IMPL_ASSERT;
             return nullptr;
         }

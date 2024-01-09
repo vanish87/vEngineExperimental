@@ -33,7 +33,7 @@ namespace vEngine
             if (!std::filesystem::exists(folder)) std::filesystem::create_directories(folder);
 
             std::ofstream file(path);
-            CHECK_AND_ASSERT(file.is_open(), path.string() + " File Open Failed");
+            VE_ASSERT(file.is_open(), path.string() + " File Open Failed");
             file << std::setw(2) << j << std::endl;
             file.flush();
             file.close();
@@ -41,7 +41,7 @@ namespace vEngine
         const json LoadJson(const std::filesystem::path path)
         {
             std::ifstream file(path);
-            CHECK_AND_ASSERT(file.is_open(), path.string() + " File Open Failed");
+            VE_ASSERT(file.is_open(), path.string() + " File Open Failed");
             auto j = json::parse(file);
             file.close();
             return j;

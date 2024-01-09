@@ -22,12 +22,12 @@ namespace vEngine
         // PipelineState::PipelineState(const GameObjectType type): GameObject(type){}
         PipelineState::PipelineState(const PipelineStateDescriptor desc)
         {
-            // PRINT("PipelineState Base");
+            // VE_INFO("PipelineState Base");
             this->descriptor_ = desc;
         }
         PipelineState::~PipelineState()
         {
-            // PRINT("Destory Pipeline state");
+            // VE_INFO("Destory Pipeline state");
         }
         void PipelineState::PrepareData()
         {
@@ -41,7 +41,7 @@ namespace vEngine
 
         //     if (!fin)
         //     {
-        //         PRINT_AND_BREAK("Cannot open hlsl File ");
+        //         VE_ASSERT(false,"Cannot open hlsl File ");
         //         return false;
         //     }
 
@@ -53,7 +53,7 @@ namespace vEngine
         //     fin.read(shader_content.data(), size);
         //     fin.close();
 
-        //     CHECK_ASSERT(this->shaders_.find(type) == this->shaders_.end());
+        //     VE_ASSERT(this->shaders_.find(type) == this->shaders_.end());
 
         //     auto shader = std::make_shared<Shader>(path, type);
         //     shader->content = shader_content;

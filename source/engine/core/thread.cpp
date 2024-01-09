@@ -59,7 +59,7 @@ namespace vEngine
             int ret = instance->Main(instance->parameter_);
             if (ret != 0)
             {
-                PRINT("Thread: " << instance->thread_instance_.get_id() << "returned Error\n");
+                VE_INFO("Thread: " , instance->thread_instance_.get_id() , "returned Error");
             }
             // RunningInstance->ThreadInstance.detach();
             // return value is ignored by std::thread

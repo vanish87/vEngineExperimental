@@ -11,7 +11,7 @@ namespace Example
     {
             void OnInit() override
             {
-                PRINT("User Create");
+                VE_INFO("User Create");
 
                 // auto mp = std::make_shared<MeshRendererComponent>();
                 // mp->game_object_ = std::make_shared<MeshRenderer>();

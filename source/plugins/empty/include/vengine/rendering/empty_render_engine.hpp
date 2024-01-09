@@ -14,11 +14,11 @@ namespace vEngine
             public:
                 EmptyRenderEngine()
                 {
-                    PRINT("Create Empty");
+                    VE_INFO("Create Empty");
                 }
                 ~EmptyRenderEngine()
                 {
-                    PRINT("Destructor Empty");
+                    VE_INFO("Destructor Empty");
                 }
                 void Init() override;
                 void Update() override;

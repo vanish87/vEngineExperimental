@@ -49,7 +49,7 @@ namespace vEngine
         bool IsFloatEqual(const float& lhs, const float& rhs, const float epsilon)
         {
             auto e = Math::Abs(epsilon);
-            // CHECK_ASSERT(epsilon != 0);
+            // VE_ASSERT(epsilon != 0);
             return Math::Abs(lhs - rhs) < e;
         }
         float Abs(float num)
@@ -58,7 +58,7 @@ namespace vEngine
         }
         float Sqrt(float x)
         {
-            CHECK_ASSERT(IsFloatEqual(x, 0) == false);
+            VE_ASSERT(IsFloatEqual(x, 0) == false);
             return std::sqrt(x);
         }
 

@@ -18,7 +18,8 @@ namespace Example
             /// 
             void OnInit() override
             {
-                PRINT("User Create");
+                VE_INFO("User Create");
+                VE_INFO("User create");
 
                 auto cgo = GameObjectFactory::Create<GameObjectType::Custom>();
                 SceneManager::GetInstance().Load("boblampclean.json");
@@ -34,7 +35,7 @@ namespace Example
             /// \brief user function for destory
             void OnDeinit() override
             {
-                PRINT("User Destory");
+                VE_INFO("User Destory");
             }
     };
 }  // namespace Example

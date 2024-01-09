@@ -30,7 +30,7 @@ namespace vEngine
         /// should be 2 lines
         MeshRenderer::MeshRenderer()
         {
-            PRINT("Mesh renderer created");
+            VE_INFO("Mesh renderer created");
         }
         MeshRenderer::~MeshRenderer() {}
         void MeshRenderer::Render()
@@ -44,14 +44,14 @@ namespace vEngine
                 // Set gpu variable for material here
                 this->material_->UpdateGPUResource();
 
-                // PRINT("MeshRenderer Call re.Render(vertex, index)");
+                // VE_INFO("MeshRenderer Call re.Render(vertex, index)");
                 re->Render(mesh->vertex_buffer_, mesh->index_buffer_);
 
                 // re.PrintInfo();
             }
             else
             {
-                PRINT("Mesh is null");
+                VE_INFO("Mesh is null");
             }
         }
     }  // namespace Rendering

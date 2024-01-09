@@ -12,7 +12,7 @@ namespace vEngine
         GameObjectSharedPtr CustomObjectFactory::Create(std::any parameter)
         {
             UNUSED_PARAMETER(parameter);
-            PRINT("Custom Create");
+            VE_INFO("Custom Create");
             return std::make_shared<CustomObject>();
         }
 

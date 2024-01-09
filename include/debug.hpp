@@ -12,58 +12,17 @@
 
 // debug and assert
 #include <iostream>
-// TODO Print colored warning with this
-void WarningText(std::string text);
-void ErrorText(std::string text);
-#define PRINT(x) std::cout << x << std::endl;
-#define PRINT_VAR(x)                      \
-    std::cout << #x << ": " << std::endl; \
-    x.Print();
-#define PRINT_WARNING(x) WarningText(x);
-#define PRINT_ERROR(x) ErrorText(x);
-#define PRINT_AND_RETURN(x, returnVal) \
-    {                                  \
-        PRINT(x);                      \
-        return returnVal;              \
-    }
-#define PRINT_FILE_AND_FUCTION PRINT("in File " << __FILE__ << " Line " << __LINE__ << " Function " << __FUNCTION__);
-#define PRINT_AND_BREAK(x)      \
-    {                           \
-        PRINT(x);               \
-        PRINT_FILE_AND_FUCTION; \
-        DEBUG_BREAK             \
-    }
-#define CHECK_AND_ASSERT(condition, x) \
-    {                                  \
-        if (!(condition))              \
-        {                              \
-            PRINT(x);                  \
-            PRINT_FILE_AND_FUCTION;    \
-            DEBUG_BREAK                \
-        }                              \
-    }
-#define CHECK_ASSERT_NOT_NULL(ptr)   \
-    {                               \
-        if (ptr == nullptr)         \
-        {                           \
-            PRINT("Null Pointer");  \
-            PRINT_FILE_AND_FUCTION; \
-            DEBUG_BREAK             \
-        }                           \
-    }
+#include <vengine/core/log.hpp>
+#define VE_INFO(...) ::vEngine::Core::Log::GetInstance().Info(__VA_ARGS__);
+#define VE_INFO_FILE_AND_FUCTION VE_INFO("in File ", __FILE__ , " Line " , __LINE__ , " Function " , __FUNCTION__)
+#define VE_WARNING(...) ::vEngine::Core::Log::GetInstance().Warning(__VA_ARGS__);
+#define VE_ERROR(...) ::vEngine::Core::Log::GetInstance().Error(__VA_ARGS__);
 
-#define CHECK_ASSERT(condition)     \
-    {                               \
-        if (!(condition))           \
-        {                           \
-            PRINT_FILE_AND_FUCTION; \
-            DEBUG_BREAK             \
-        }                           \
-    }
-#define COMPILE_PRINT_AND_ASSERT(exp, x) \
-    {                                    \
-        static_assert(exp, x);           \
-    }
+#define VE_ASSERT(condition, ...) if(!(condition)){VE_INFO( __VA_ARGS__);VE_INFO_FILE_AND_FUCTION;DEBUG_BREAK;}
+#define VE_ASSERT_PTR_NOT_NULL(ptr, ...) if(ptr == nullptr){VE_INFO(__VA_ARGS__);VE_INFO_FILE_AND_FUCTION;DEBUG_BREAK;}
+#define NOT_IMPL_ASSERT VE_INFO_FILE_AND_FUCTION; VE_ASSERT(false, "Assert: Not Implemented"); 
+
+#define VE_STATIC_ASSERT(exp, x) static_assert(exp, x);           
 
 #define DEBUG_CLASS_FILE_NAME              \
     virtual std::string GetName() override \
