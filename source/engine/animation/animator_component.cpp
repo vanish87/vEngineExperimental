@@ -63,7 +63,7 @@ namespace vEngine
 
                     // set bone's Transform to animated TRS
                     auto transform = bone->Owner()->FirstOf<Core::TransformComponent>();
-                    CHECK_ASSERT(joints.find(bone->Name()) != joints.end());
+                    VE_ASSERT(joints.find(bone->Name()) != joints.end());
                     
                     JointSharedPtr j = joints[bone->Name()];
                     // if(transform == nullptr || j == nullptr) return true;
@@ -83,8 +83,8 @@ namespace vEngine
                     // gn->Transform()->Scale() = Core::float3(0.5f, 0.5f, 0.5f);
 
                     // auto pos = node->game_object_->Translate();
-                    // PRINT(pos.x() << " " << pos.y());
-                    // PRINT(node->name_);
+                    // VE_INFO(pos.x() << " " << pos.y());
+                    // VE_INFO(node->name_);
                     return true;
                 });
         }

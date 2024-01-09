@@ -100,7 +100,7 @@ namespace vEngine
                 default:
                     break;
             }
-            CHECK_ASSERT(false);
+            VE_ASSERT(false);
             return DXGI_FORMAT::DXGI_FORMAT_UNKNOWN;
         }
         D3D11_RASTERIZER_DESC D3D11RenderEngine::ToD3D11RasterizerDesc(RasterizerDescriptor desc)
@@ -251,9 +251,9 @@ namespace vEngine
             D3D_FEATURE_LEVEL feature_level;
             auto hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, this->d3d_device_.GetAddressOf(), &feature_level,
                                         this->d3d_imm_context_.GetAddressOf());
-            CHECK_ASSERT(hr == S_OK);
-            CHECK_ASSERT_NOT_NULL(this->d3d_device_);
-            CHECK_ASSERT_NOT_NULL(this->d3d_imm_context_);
+            VE_ASSERT(hr == S_OK);
+            VE_ASSERT_PTR_NOT_NULL(this->d3d_device_);
+            VE_ASSERT_PTR_NOT_NULL(this->d3d_imm_context_);
 
             if (config.graphics_configure.output == Output::Window)
             {
@@ -278,15 +278,15 @@ namespace vEngine
                 // #pragma clang diagnostic ignored "-Wlanguage-extension-token"
                 ComPtr<IDXGIDevice2> pDXGIDevice;
                 hr = this->d3d_device_->QueryInterface(__uuidof(IDXGIDevice2), (void**)pDXGIDevice.GetAddressOf());
-                CHECK_ASSERT(hr == S_OK);
+                VE_ASSERT(hr == S_OK);
 
                 ComPtr<IDXGIAdapter> pDXGIAdapter;
                 hr = pDXGIDevice->GetParent(__uuidof(IDXGIAdapter), (void**)pDXGIAdapter.GetAddressOf());
-                CHECK_ASSERT(hr == S_OK);
+                VE_ASSERT(hr == S_OK);
 
                 ComPtr<IDXGIFactory2> pIDXGIFactory;
                 hr = pDXGIAdapter->GetParent(__uuidof(IDXGIFactory2), (void**)pIDXGIFactory.GetAddressOf());
-                CHECK_ASSERT(hr == S_OK);
+                VE_ASSERT(hr == S_OK);
                 // #pragma clang diagnostic warning "-Wlanguage-extension-token"
 
                 // hr = pIDXGIFactory->CreateSwapChainForHwnd(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &scd, &d3d_swap_chain_, &d3d_device_, nullptr,
@@ -303,15 +303,15 @@ namespace vEngine
                 scd1.SampleDesc.Count = 1;
                 hr = pIDXGIFactory->CreateSwapChainForHwnd(this->d3d_device_.Get(), hwnd, &scd1, nullptr, nullptr, this->d3d_swap_chain_.GetAddressOf());
 
-                CHECK_ASSERT(hr == S_OK);
-                CHECK_ASSERT_NOT_NULL(this->d3d_swap_chain_);
+                VE_ASSERT(hr == S_OK);
+                VE_ASSERT_PTR_NOT_NULL(this->d3d_swap_chain_);
 
                 // #pragma clang diagnostic ignored "-Wlanguage-extension-token"
                 // get the address of the back buffer
                 ID3D11Texture2D* pBackBuffer;
                 hr = this->d3d_swap_chain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
                 // #pragma clang diagnostic warning "-Wlanguage-extension-token"
-                CHECK_ASSERT(hr == S_OK);
+                VE_ASSERT(hr == S_OK);
                 auto backBufferTexture = GameObjectFactory::Create<GameObjectType::Texture, Texture>(pBackBuffer);
 
                 FrameBufferDescriptor desc;

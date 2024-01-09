@@ -27,12 +27,12 @@ namespace vEngine
             if (parent != nullptr && parent->HasComponent<TransformComponent>())
             {
                 auto t = parent->FirstOf<TransformComponent>();
-                // PRINT("Node " << this->Owner()->name_ << "Update with " << parent->name_);
+                // VE_INFO("Node " << this->Owner()->name_ << "Update with " << parent->name_);
                 this->GO()->UpdateLocalToWorld(t->GO());
             }
             else
             {
-                // PRINT_AND_BREAK("parent is null");
+                // VE_ASSERT(false,"parent is null");
                 this->GO()->UpdateLocalToWorld();
             }
         }

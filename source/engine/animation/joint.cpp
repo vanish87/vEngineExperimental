@@ -40,7 +40,7 @@ namespace vEngine
                 }
             }
 
-            PRINT_AND_BREAK("Not found");
+            VE_ASSERT("Not found");
             return current;
         }
         JointKey<Core::quaternion> Joint::RotAtTime(const float time)
@@ -60,7 +60,7 @@ namespace vEngine
                     return JointKey<Core::quaternion>(time, rot);
                 }
             }
-            PRINT_AND_BREAK("Not found");
+            VE_ASSERT("Not found");
             return current;
         }
         JointKey<Core::float3> Joint::ScaleAtTime(const float time)
@@ -80,7 +80,7 @@ namespace vEngine
                     return JointKey<Core::float3>(time, scale);
                 }
             }
-            // PRINT_AND_BREAK("Not found");
+            // VE_ASSERT(false,"Not found");
             return current;
         }
 

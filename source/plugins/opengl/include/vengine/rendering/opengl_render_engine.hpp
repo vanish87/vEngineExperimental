@@ -19,11 +19,11 @@ namespace vEngine
             public:
                 OpenGLRenderEngine()
                 {
-                    PRINT("Create OpenGL");
+                    VE_INFO("Create OpenGL");
                 }
                 ~OpenGLRenderEngine()
                 {
-                    PRINT("Destructor OpenGL");
+                    VE_INFO("Destructor OpenGL");
                 }
                 void Init() override;
                 void Update() override;

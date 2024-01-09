@@ -35,9 +35,9 @@ extern "C"
     using namespace vEngine::Editor;
     void Context_Init(void* hwnd)
     {
-        CHECK_ASSERT_NOT_NULL(hwnd);
+        VE_ASSERT_PTR_NOT_NULL(hwnd);
 
-        PRINT("Context_Init");
+        VE_INFO("Context_Init");
 
         Configure configure;
         configure.graphics_configure.render_plugin_name = "d3d11_rendering_plugin";

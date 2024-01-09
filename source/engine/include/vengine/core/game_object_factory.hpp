@@ -77,7 +77,7 @@ namespace vEngine
                 {
                     TYPE_AND_CREATE(GameObjectType::GameObject, GameObject);
                     TYPE_AND_CREATE(GameObjectType::GameNode, GameNode);
-                    if constexpr (Type == GameObjectType::Component) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
+                    if constexpr (Type == GameObjectType::Component) VE_ASSERT(false, "Cannot create component without game object type");
                     TYPE_AND_CREATE(GameObjectType::Transform, Transform);
                     TYPE_AND_CREATE(GameObjectType::TransformComponent, TransformComponent);
                     TYPE_AND_CREATE(GameObjectType::Camera, Camera);
@@ -90,8 +90,8 @@ namespace vEngine
 
                     TYPE_AND_CREATE(GameObjectType::Serializer, Data::Serializer);
 
-                    if constexpr (Type == GameObjectType::Renderer) CHECK_AND_ASSERT(false, "Cannot create renderer without renderable type");
-                    if constexpr (Type == GameObjectType::RendererComponent) CHECK_AND_ASSERT(false, "Cannot create renderer component without renderable type");
+                    if constexpr (Type == GameObjectType::Renderer) VE_ASSERT(false, "Cannot create renderer without renderable type");
+                    if constexpr (Type == GameObjectType::RendererComponent) VE_ASSERT(false, "Cannot create renderer component without renderable type");
                     TYPE_AND_CREATE(GameObjectType::MeshRenderer, Rendering::MeshRenderer);
                     TYPE_AND_CREATE(GameObjectType::MeshRendererComponent, Rendering::MeshRendererComponent);
                     TYPE_AND_CREATE(GameObjectType::Material, Rendering::Material);

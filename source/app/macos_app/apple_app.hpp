@@ -18,7 +18,7 @@ namespace AppleApp
             ///
             void OnInit() override
             {
-                PRINT("User Create");
+                VE_INFO("User Create");
             }
             /// \brief user function for update
             ///
@@ -28,7 +28,7 @@ namespace AppleApp
             /// \brief user function for destroy
             void OnDeinit() override
             {
-                PRINT("User Destory");
+                VE_INFO("User Destory");
             }
     };
 }  // namespace AppleApp

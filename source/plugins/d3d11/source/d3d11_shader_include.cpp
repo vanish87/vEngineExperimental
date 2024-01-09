@@ -24,7 +24,7 @@ namespace vEngine
                 std::ifstream fin(path);
                 if (!fin)
                 {
-                    PRINT_AND_BREAK("Cannot open hlsl File ");
+                    VE_ASSERT(false,"Cannot open hlsl File ");
                     return E_FAIL;
                 }
                 std::stringstream str_stream;

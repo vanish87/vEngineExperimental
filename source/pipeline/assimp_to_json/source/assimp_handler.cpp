@@ -90,7 +90,7 @@ namespace vEngine
                 // this->cameras_.emplace_back(cam);
             }
 
-            // PRINT("num of cameras: " << this->cameras_.size());
+            // VE_INFO("num of cameras: " << this->cameras_.size());
         }
         void AssimpHandler::HandleMaterials(SceneSharedPtr scene, const aiScene* ai_scene)
         {
@@ -124,18 +124,18 @@ namespace vEngine
                         if (texture_path.extension() == ".png")
                         {
                             auto error = lodepng::decode(out, width, height, texture_path.string());
-                            CHECK_ASSERT(error == 0);
+                            VE_ASSERT(error == 0);
                         }
                         else if (texture_path.extension() == ".tga")
                         {
                             FILE* f;
                             auto error = fopen_s(&f, texture_path.string().c_str(), "rb");
-                            CHECK_ASSERT(error == 0);
+                            VE_ASSERT(error == 0);
 
                             tga::StdioFileInterface file(f);
                             tga::Decoder decoder(&file);
                             tga::Header header;
-                            if (!decoder.readHeader(header)) CHECK_ASSERT(false);
+                            if (!decoder.readHeader(header)) VE_ASSERT(false);
 
                             tga::Image image;
                             image.bytesPerPixel = header.bytesPerPixel();
@@ -144,14 +144,14 @@ namespace vEngine
                             out.resize(image.rowstride * header.height);
                             image.pixels = &out[0];
 
-                            if (!decoder.readImage(header, image, nullptr)) CHECK_ASSERT(false);
+                            if (!decoder.readImage(header, image, nullptr)) VE_ASSERT(false);
 
                             width = header.width;
                             height = header.height;
                         }
                         else
                         {
-                            PRINT_AND_BREAK("texture file " << texture_path << " not supported");
+                            VE_ASSERT(false, "texture file " , texture_path , " not supported");
                         }
 
                         TextureDescriptor tdesc;
@@ -170,7 +170,7 @@ namespace vEngine
                         tex->SetName(texture_name);
                         scene->SetTexture(texture_name, tex);
 
-                        PRINT(texture_path.string() << " Loaded");
+                        VE_INFO(texture_path.string() , " Loaded");
                     }
 
                     mat->BindTexture("diffuse", scene->GetTexture(texture_name));
@@ -178,11 +178,11 @@ namespace vEngine
             }
             // if (this->materials_.size() == 0)
             // {
-            //     PRINT("no materials for scene, add a default material");
+            //     VE_INFO("no materials for scene, add a default material");
             //     auto mat = GameObjectFactory::Default<Material>();
             //     this->materials_.emplace_back(mat);
             // }
-            // PRINT("num of materials: " << this->materials_.size());
+            // VE_INFO("num of materials: " << this->materials_.size());
         }
         float4x4 AssimpHandler::AiMatrixToFloat4x4(aiMatrix4x4 mat)
         {
@@ -191,10 +191,10 @@ namespace vEngine
         }
         void AssimpHandler::HandleMeshes(SceneSharedPtr scene, const aiScene* ai_scene)
         {
-            CHECK_ASSERT_NOT_NULL(scene);
-            CHECK_ASSERT_NOT_NULL(ai_scene);
+            VE_ASSERT_PTR_NOT_NULL(scene);
+            VE_ASSERT_PTR_NOT_NULL(ai_scene);
 
-            PRINT("Mesh Count " <<ai_scene->mNumMeshes);
+            VE_INFO("Mesh Count " , ai_scene->mNumMeshes);
 
             for (uint32_t mid = 0; mid < ai_scene->mNumMeshes; ++mid)
             {
@@ -231,7 +231,7 @@ namespace vEngine
 
                 mesh->SetVertexData(vertices, indices);
 
-                PRINT("Bone Count " << ai_mesh->mNumBones);
+                VE_INFO("Bone Count " , ai_mesh->mNumBones);
 
                 for (uint32_t bid = 0; bid < ai_mesh->mNumBones; ++bid)
                 {
@@ -244,7 +244,7 @@ namespace vEngine
                     auto offset = this->AiMatrixToFloat4x4(ai_bone->mOffsetMatrix);
                     auto weights = std::vector<VertexWeight>();
 
-                    // PRINT(ai_mesh->mName.data << " has bones/joint " << name << " with weight count" << ai_bone->mNumWeights);
+                    // VE_INFO(ai_mesh->mName.data << " has bones/joint " << name << " with weight count" << ai_bone->mNumWeights);
 
                     for (uint32_t wid = 0; wid < ai_bone->mNumWeights; ++wid)
                     {
@@ -273,7 +273,7 @@ namespace vEngine
                 animation->Duration() = static_cast<float>(anim->mDuration);
                 animation->TicksPerSecond() = static_cast<float>(anim->mTicksPerSecond);
                 animation->TotalFrame() = Math::FloorToInt(anim->mDuration * anim->mTicksPerSecond);
-                PRINT("handling " << animation->Name() << " animation with " << animation->TotalFrame() << " frames")
+                VE_INFO("handling " , animation->Name() , " animation with " , animation->TotalFrame() , " frames");
                 for (uint32_t c = 0; c < anim->mNumChannels; ++c)
                 {
                     // Each channel defines node/bone it controls
@@ -281,7 +281,7 @@ namespace vEngine
                     // node->mNodeName = "Torso" contains key frames data for "Torso" Node/Bone in the scene
                     // mNodeName could be aiNode or aiBone
                     auto node = anim->mChannels[c];
-                    PRINT("channel " << node->mNodeName.data << " has " << node->mNumPositionKeys << " Key values");
+                    VE_INFO("channel " , node->mNodeName.data , " has " , node->mNumPositionKeys , " Key values");
 
                     auto joint = GameObjectFactory::Create<GameObjectType::Joint, Joint>();
                     joint->SetName(node->mNodeName.data);
@@ -342,7 +342,7 @@ namespace vEngine
             // parent->AddChild(game_node);
             std::string parentName = "None";
             if (ai_node->mParent != nullptr) parentName = ai_node->mParent->mName.data;
-            PRINT("aiNode " << ai_node->mName.data << " parent :" << parentName);
+            VE_INFO("aiNode " , ai_node->mName.data , " parent :" , parentName);
 
             for (uint32_t i = 0; i < ai_node->mNumMeshes; ++i)
             {
@@ -354,7 +354,7 @@ namespace vEngine
 
                 auto ai_mesh = ai_scene->mMeshes[scene_mesh_id];
                 auto mesh = scene->meshes_[scene_mesh_id];
-                PRINT("aiNode " << ai_node->mName.data << " with ai mesh name " << ai_mesh->mName.data);
+                VE_INFO("aiNode " , ai_node->mName.data , " with ai mesh name " , ai_mesh->mName.data);
 
                 auto mesh_component = GameObjectFactory::Create<GameObjectType::MeshComponent, MeshComponent>(mesh);
                 // mesh_component->Reset(mesh);

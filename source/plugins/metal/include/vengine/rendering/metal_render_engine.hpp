@@ -18,11 +18,11 @@ namespace vEngine
             public:
                 MetalRenderEngine()
                 {
-                    PRINT("Create Metal");
+                    VE_INFO("Create Metal");
                 }
                 ~MetalRenderEngine()
                 {
-                    PRINT("Destructor Metal");
+                    VE_INFO("Destructor Metal");
                 }
                 void Init() override;
                 void Deinit() override;
