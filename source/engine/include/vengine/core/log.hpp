@@ -37,6 +37,7 @@ namespace vEngine
             template<typename T, typename... Args>
             void Info(const T& first, const Args&... args) 
             {
+                // TODO: Use log tool/format/console gui for this
                 std::cout<< first;
                 Info(args...);
             }
