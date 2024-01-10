@@ -14,6 +14,7 @@
 
 #include <engine.hpp>
 #include <vengine/core/thread.hpp>
+#include <vengine/core/event/event.hpp>
 
 /// A brief namespace description.
 namespace vEngine
@@ -24,7 +25,10 @@ namespace vEngine
         //
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class VENGINE_API Application : public std::enable_shared_from_this<Application>, public Thread
+        class VENGINE_API Application : 
+        public Thread, 
+        public std::enable_shared_from_this<Application>, 
+        public IEventListener
         {
             public:
                 Application();
@@ -36,6 +40,8 @@ namespace vEngine
 
                 virtual int Main(void* para) override;
                 virtual void Quit();
+
+                virtual bool OnEvent(const IEvent& event) override;
 
             protected:
                 void Init();

@@ -7,6 +7,7 @@
     //windows.h should be included first in win32 platform
     #define NOMINMAX
     #include <windows.h>
+    #include <windowsx.h>
 #endif
 
 #include <VENGINE_API.hpp>

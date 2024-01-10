@@ -62,7 +62,8 @@ namespace vEngine
         {
             if (glfwWindowShouldClose(window))
             {
-                Context::GetInstance().QuitApplication();
+                const WindowEvent e;
+                Context::GetInstance().Dispath(e);
                 return;
             }
             int width, height;

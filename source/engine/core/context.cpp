@@ -21,6 +21,7 @@ namespace vEngine
         typedef void (*HandleRenderEngine)(Rendering::RenderEngineUniquePtr& ptr);
         typedef void (*HandleGameObjectFactory)(GameObjectFactoryUniquePtr& ptr);
 
+
         Context::Context() {}
         Context::~Context() {}
         Configure Context::CurrentConfigure() const
@@ -36,6 +37,43 @@ namespace vEngine
         WindowSharedPtr Context::CurrentWindow() const
         {
             return this->window_;
+        }
+        void Context::Dispath(const IEvent& event)
+        {
+            VE_INFO("Event", event.ToString());
+            for(const auto listener : this->event_listeners_)
+            {
+                if(auto l = listener.lock())
+                {
+                    l->OnEvent(event);
+                }
+            }
+        }
+        void Context::AddListenner(const IEventListenerSharedPtr listener)
+        {
+            this->event_listeners_.push_back(listener);
+        }
+        void Context::RemoveListener(const IEventListenerSharedPtr listener) 
+        {
+            for (auto it = this->event_listeners_.begin(); it != this->event_listeners_.end(); ) 
+            {
+                auto shared = it->lock();
+        
+                if (!shared) 
+                {
+                    // Remove expired weak_ptrs
+                    it = this->event_listeners_.erase(it);
+                } 
+                else if (shared.get() == listener.get()) 
+                {
+                    // Found the matching element, remove it
+                    it = this->event_listeners_.erase(it);
+                } 
+                else 
+                {
+                    ++it;
+                }
+            }
         }
 
         void Context::Init()
@@ -145,19 +183,19 @@ namespace vEngine
             }
         }
 
-        void Context::RegisterAppInstance(ApplicationSharedPtr app)
-        {
-            this->app_ = app;
-        }
+        // void Context::RegisterAppInstance(ApplicationSharedPtr app)
+        // {
+        //     this->app_ = app;
+        // }
         // TODO Use Event/Observer Pattern to decouple application class
         // context could not having a app ptr
-        void Context::QuitApplication()
-        {
-            // this->app_instance_ = app;
-            auto app = this->app_.lock();
-            VE_ASSERT_PTR_NOT_NULL(app);
-            app->Quit();
-        }
+        // void Context::QuitApplication()
+        // {
+        //     // this->app_instance_ = app;
+        //     auto app = this->app_.lock();
+        //     VE_ASSERT_PTR_NOT_NULL(app);
+        //     app->Quit();
+        // }
         // Application& Context::AppInstance() const
         // {
         //     return *(this->app_instance_);

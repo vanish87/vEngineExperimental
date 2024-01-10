@@ -14,6 +14,7 @@
 // #endif
 
 #include <engine.hpp>
+#include <vengine/core/event/event.hpp>
 
 namespace vEngine
 {
@@ -42,6 +43,8 @@ namespace vEngine
 
             private:
                 void* wnd_;
+
+                //EventCallback Here
 
                 #ifdef VENGINE_PLATFORM_WINDOWS
                 static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);

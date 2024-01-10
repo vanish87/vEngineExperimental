@@ -6,6 +6,7 @@
 // #include <vengine/core/configure.hpp>
 #include <vengine/core/constants.hpp>
 #include <vengine/core/context.hpp>
+#include <vengine/core/window.hpp>
 #include <vengine/core/resource_manager.hpp>
 #include <vengine/core/scene_manager.hpp>
 #include <vengine/core/timer.hpp>
@@ -30,12 +31,15 @@ namespace vEngine
 
             Context::GetInstance().Init();
             ResourceManager::GetInstance().Init();
-            Context::GetInstance().RegisterAppInstance(this->shared_from_this());
+            // Context::GetInstance().RegisterAppInstance(this->shared_from_this());
+
+            Context::GetInstance().AddListenner(this->shared_from_this());
             this->OnInit();
         }
         void Application::Deinit()
         {
             this->OnDeinit();
+            Context::GetInstance().RemoveListener(this->shared_from_this());
             ResourceManager::GetInstance().Deinit();
             Context::GetInstance().Deinit();
 
@@ -99,6 +103,18 @@ namespace vEngine
         {
             this->Init();
             this->Main(nullptr);
+        }
+
+        bool Application::OnEvent(const IEvent& event) 
+        {
+            const auto gn = dynamic_cast<const WindowEvent*>(&event);
+            if (gn != nullptr)
+            {
+                VE_INFO("On Quit");
+                UNUSED_PARAMETER(event);
+                this->Quit();
+            }
+            return false;
         }
 
         void Application::OnInit() {}

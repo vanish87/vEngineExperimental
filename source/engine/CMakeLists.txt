@@ -8,6 +8,7 @@ project (vengine)
 # add_library(engine::core ALIAS ${PROJECT_NAME})
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core core_source)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core/event core_event_source)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/rendering rendering_source)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/animation animation_source)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/data data_source)
@@ -22,6 +23,7 @@ add_library(${PROJECT_NAME}
     ${PROJECT_SOURCE_DIR}/include
 
     ${core_source}
+    ${core_event_source}
     ${rendering_source}
     ${animation_source}
     ${data_source}
