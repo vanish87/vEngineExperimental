@@ -1,7 +1,6 @@
 BasedOnStyle: Google
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: AllIfsAndElse
-BreakBeforeBraces: Custom
 ColumnLimit: 200
 IndentAccessModifiers: true
 IndentExternBlock: Indent

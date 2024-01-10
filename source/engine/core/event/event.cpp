@@ -16,4 +16,4 @@ namespace vEngine
     namespace Core
     {
     }
-}  // namespace MyNamespace
+}  // namespace vEngine

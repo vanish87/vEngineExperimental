@@ -1,8 +1,8 @@
 
 #ifdef VENGINE_PLATFORM_WINDOWS
 
-    //#include <windowsx.h>
-    // #include <vengine/core/debug.hpp>
+    // #include <windowsx.h>
+    //  #include <vengine/core/debug.hpp>
 
     // include windows.h first
     #include <vengine/core/window.hpp>
@@ -28,59 +28,59 @@ namespace vEngine
             switch (message)
             {
                 case WM_DESTROY:
-                    {
-                        //TODO Use Event/Observer Pattern to decouple context class
-                        const WindowEvent e;
-                        Context::GetInstance().Dispath(e);
-                        PostQuitMessage(0);
-                    }
-                    break;
+                {
+                    // TODO Use Event/Observer Pattern to decouple context class
+                    const WindowEvent e;
+                    Context::GetInstance().Dispath(e);
+                    PostQuitMessage(0);
+                }
+                break;
                 case WM_PAINT:
-                    {
-                        // maybe Render call here
-                    }
-                    break;
+                {
+                    // maybe Render call here
+                }
+                break;
                 case WM_KEYDOWN:
+                {
+                    // Do input event here
+                    switch (wParam)
                     {
-                        // Do input event here
-                        switch (wParam) 
-                        {
-                            case VK_ESCAPE:
-                                PostQuitMessage(0);
-                                break;
-                            case VK_LEFT:
-                                // Handle left arrow key...
-                                break;
-                            case VK_RIGHT:
-                                // Handle right arrow key...
-                                break;
+                        case VK_ESCAPE:
+                            PostQuitMessage(0);
+                            break;
+                        case VK_LEFT:
+                            // Handle left arrow key...
+                            break;
+                        case VK_RIGHT:
+                            // Handle right arrow key...
+                            break;
                             // Add more keys as needed...
-                        }
                     }
-                    break;
+                }
+                break;
                 case WM_KEYUP:
-                    {
-                        // Handle key release events
-                    }
-                    break;
+                {
+                    // Handle key release events
+                }
+                break;
                 case WM_MOUSEMOVE:
-                    {
-                        auto xPos = GET_X_LPARAM(lParam) * 1.0f;
-                        auto yPos = GET_Y_LPARAM(lParam) * 1.0f;
-                        // Handle mouse move event...
-                        const MouseMoveEvent e(xPos, yPos);
-                        Context::GetInstance().Dispath(e);
-                    }
-                    break;
+                {
+                    auto xPos = GET_X_LPARAM(lParam) * 1.0f;
+                    auto yPos = GET_Y_LPARAM(lParam) * 1.0f;
+                    // Handle mouse move event...
+                    const MouseMoveEvent e(xPos, yPos);
+                    Context::GetInstance().Dispath(e);
+                }
+                break;
                 case WM_LBUTTONDOWN:
-                    {
-                        auto xPos = GET_X_LPARAM(lParam) * 1.0f;
-                        auto yPos = GET_Y_LPARAM(lParam) * 1.0f;
-                        // Handle left mouse button click...
-                        const MouseMoveEvent e(xPos, yPos);
-                        Context::GetInstance().Dispath(e);
-                    }
-                    break;
+                {
+                    auto xPos = GET_X_LPARAM(lParam) * 1.0f;
+                    auto yPos = GET_Y_LPARAM(lParam) * 1.0f;
+                    // Handle left mouse button click...
+                    const MouseMoveEvent e(xPos, yPos);
+                    Context::GetInstance().Dispath(e);
+                }
+                break;
             }
 
             return this->default_wnd_proc_(hWnd, message, wParam, lParam);

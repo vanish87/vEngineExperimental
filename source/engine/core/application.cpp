@@ -105,7 +105,7 @@ namespace vEngine
             this->Main(nullptr);
         }
 
-        bool Application::OnEvent(const IEvent& event) 
+        bool Application::OnEvent(const IEvent& event)
         {
             const auto gn = dynamic_cast<const WindowEvent*>(&event);
             if (gn != nullptr)
