@@ -99,7 +99,7 @@ TEST(Meta, Construct)
 
     // auto bd2 = BadDog();
     // FromJson(j, bd2);
-    // PRINT(j.dump());
+    // VE_INFO(j.dump());
     // auto json = JsonFunction::toJson(d1);
     // auto d2 = JsonFunction::fromJson<Dog>(json);
 }

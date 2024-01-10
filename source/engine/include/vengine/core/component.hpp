@@ -52,7 +52,7 @@ namespace vEngine
 
                 virtual void OnInit() override
                 {
-                    // PRINT("Created "<< typeid(T).name() << " from component");
+                    // VE_INFO("Created "<< typeid(T).name() << " from component");
                     // this->descriptor_.name = std::string("Component ") + typeid(T).name();
                     // this->game_object_ = T::Default();
                     // this->game_object_ = std::make_shared<T>();
@@ -71,7 +71,7 @@ namespace vEngine
             public:
                 std::shared_ptr<T> GO()
                 {
-                    CHECK_ASSERT_NOT_NULL(this->game_object_);
+                    VE_ASSERT_PTR_NOT_NULL(this->game_object_);
 
                     return this->game_object_;
                 }

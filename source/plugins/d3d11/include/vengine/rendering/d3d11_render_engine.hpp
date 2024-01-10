@@ -4,20 +4,22 @@
 
 #include <vengine/rendering/d3d11_predeclear.hpp>
 #include <vengine/rendering/render_engine.hpp>
+#include <D3D11_RENDERING_PLUGIN_API.hpp>
+
 namespace vEngine
 {
     namespace Rendering
     {
-        class D3D11RenderEngine : public RenderEngine
+        class D3D11_RENDERING_PLUGIN_API  D3D11RenderEngine : public RenderEngine
         {
             public:
                 D3D11RenderEngine() : RenderEngine()
                 {
-                    PRINT("Create D3D11");
+                    VE_INFO("Create D3D11");
                 }
                 ~D3D11RenderEngine()
                 {
-                    PRINT("Destructor D3D11");
+                    VE_INFO("Destructor D3D11");
                     // this->d3d_swap_chain_.Reset();
                     // this->d3d_imm_context_.Reset();
                     // this->d3d_device_.Reset();

@@ -36,12 +36,12 @@ namespace vEngine
         }
         void Material::BindShader(const ShaderType type, const ShaderSharedPtr shader)
         {
-            CHECK_ASSERT_NOT_NULL(this->pipeline_state_);
+            VE_ASSERT_PTR_NOT_NULL(this->pipeline_state_);
             this->pipeline_state_->shaders_[type] = shader;
         }
         void Material::BindTexture(const std::string name, const TextureSharedPtr texture)
         {
-            CHECK_ASSERT(this->textures_.find(name) == this->textures_.end());
+            VE_ASSERT(this->textures_.find(name) == this->textures_.end());
             this->textures_[name] = texture;
         }
 

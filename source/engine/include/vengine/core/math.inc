@@ -94,7 +94,7 @@ namespace vEngine
         T Normalize(const T& rhs)
         {
             auto dot = Dot(rhs, rhs);
-            CHECK_ASSERT(IsFloatEqual(dot, 0) == false);
+            VE_ASSERT(IsFloatEqual(dot, 0) == false);
             return rhs * InvSqrt(dot);
         }
 
@@ -102,7 +102,7 @@ namespace vEngine
         Core::Vector<T, N> TransformPoint(const Core::Vector<T, N>& lhs, const Core::Matrix<T, N, N>& rhs)
         {
             // the last element of position will be 1
-            CHECK_ASSERT(IsFloatEqual(lhs[N - 1], 1));
+            VE_ASSERT(IsFloatEqual(lhs[N - 1], 1));
 
             Core::Vector<T, N> ret;
             for (size_t i = 0; i < lhs.size; ++i)
@@ -119,7 +119,7 @@ namespace vEngine
         Core::Vector<T, N> TransformVector(const Core::Vector<T, N>& lhs, const Core::Matrix<T, N, N>& rhs)
         {
             // the last element of vector will be 0
-            CHECK_ASSERT(IsFloatEqual(lhs[N - 1], 0));
+            VE_ASSERT(IsFloatEqual(lhs[N - 1], 0));
 
             Core::Vector<T, N> ret;
             for (size_t i = 0; i < lhs.size; ++i)
@@ -201,7 +201,7 @@ namespace vEngine
         template <typename T, int M, int S, int N>
         Core::Matrix<T, M, N> Multiply(const Core::Matrix<T, S, N>& lhs, const Core::Matrix<T, M, S>& rhs)
         {
-            // CHECK_ASSERT(lhs.row == rhs.col);
+            // VE_ASSERT(lhs.row == rhs.col);
             Core::Matrix<T, M, N> ret;
 
             for (size_t row = 0; row < lhs.row; ++row)
@@ -415,15 +415,37 @@ namespace vEngine
         template<typename T, typename S>
         Core::Quaternion<T> SLerp(const Core::Quaternion<T>& x, const Core::Quaternion<T>& y, const S& s)
         {
-            PRINT_AND_BREAK("Not verified");
-            
-            auto theta = ArcCos(Math::Dot(x, y));
-            return x * (Sin((1 - s) * theta) / Sin(theta)) + y * (Sin(s * theta) / Sin(theta));
+            auto from = x.Normalized();
+            auto to = y.Normalized();
+
+            auto dot = Math::Dot(from, to);
+            if(dot < 0)
+            {
+                to = Core::Quaternion<T>(-to.x(), -to.y(), -to.z(), -to.w());
+                dot = -dot;
+            }
+            //Very important to check too close here
+            if(dot > 0.9995)
+            {
+                return NLerp(from, to, s);
+            }
+
+            const auto theta = ArcCos(dot);
+            return from * (Sin((1 - s) * theta) / Sin(theta)) + to * (Sin(s * theta) / Sin(theta));
+
+            // const auto theta_0 = ArcCos(dot);
+            // const auto theta = theta_0 * s; 
+            // const auto sin_theta = Sin(theta);
+            // const auto sin_theta_0 = Sin(theta_0);
+            // const auto s0 = Cos(theta) - dot * sin_theta/sin_theta_0;
+            // const auto s1 = sin_theta/sin_theta_0;
+            // return from * s0 + to * s1;
         }
         template <typename T>
         T Norm(const T& value)
         {
             UNUSED_PARAMETER(value);
+            NOT_IMPL_ASSERT;
             return nullptr;
         }
 

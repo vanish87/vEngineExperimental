@@ -19,11 +19,11 @@ namespace vEngine
             public:
                 OpenGLRenderEngine()
                 {
-                    PRINT("Create OpenGL");
+                    VE_INFO("Create OpenGL");
                 }
                 ~OpenGLRenderEngine()
                 {
-                    PRINT("Destructor OpenGL");
+                    VE_INFO("Destructor OpenGL");
                 }
                 void Init() override;
                 void Update() override;
@@ -83,7 +83,7 @@ namespace vEngine
             private:
                 void InitPipeline();
                 void DebugTriangleDraw();
-                void DeinitPipline();
+                void DeinitPipeline();
                 GLuint vertex_buffer, vertex_shader, fragment_shader, program;
                 GLint mvp_location, vpos_location, vcol_location;
         };

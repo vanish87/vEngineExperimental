@@ -17,6 +17,8 @@ namespace vEngine
                 void EditorUpdate();
                 void EditorInit();
                 void EditorDeinit();
+
+                void OnInit() override;
         };
     }  // namespace Editor
 }  // namespace vEngine

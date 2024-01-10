@@ -18,7 +18,7 @@ namespace vEngine
             counter_start_ = 0;
 
             LARGE_INTEGER freq;
-            if (!QueryPerformanceFrequency(&freq)) PRINT_AND_BREAK("QueryPerformanceFrequency failed!");
+            if (!QueryPerformanceFrequency(&freq)) VE_ASSERT(false,"QueryPerformanceFrequency failed!");
 
             PC_freq_ = double(freq.QuadPart) / 1000.0;
             // in second

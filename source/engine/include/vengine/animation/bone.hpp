@@ -45,8 +45,10 @@ namespace vEngine
 
                 /// class variable description
                 int id_;
-				// std::vector<VertexWeight> weights;
-				Core::float4x4 inverse_bind_pose_matrix_;
+                // std::vector<VertexWeight> weights;
+
+                /// Matrix that transform position to bone's local space
+                Core::float4x4 inverse_bind_pose_matrix_;
             public:
                 /// \brief A brief function description.
                 ///

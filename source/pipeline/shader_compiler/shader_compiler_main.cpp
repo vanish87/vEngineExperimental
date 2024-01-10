@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
 
         if (!fin)
         {
-            PRINT_AND_BREAK("Cannot open hlsl File ");
+            VE_ASSERT(false,"Cannot open hlsl File ");
             return -1;
         }
 

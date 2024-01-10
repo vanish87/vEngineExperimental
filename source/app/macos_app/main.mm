@@ -41,7 +41,7 @@ void AppleAppMain(const int argc, const char * argv[])
     configure.ImportArgs(argc, argv);
 
     vEngine::Core::Context::GetInstance().SetConfigure(configure);
-    auto& re = vEngine::Core::Context::GetInstance().GetRenderEngine();
+    // auto& re = vEngine::Core::Context::GetInstance().GetRenderEngine();
     // re.PrintInfo();
 
     app = std::make_shared<AppleApp::ExampleApp>();

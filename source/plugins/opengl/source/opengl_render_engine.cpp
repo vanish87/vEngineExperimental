@@ -15,7 +15,7 @@ namespace vEngine
         static void error_callback(int error, const char* description)
         {
             UNUSED_PARAMETER(error);
-            CHECK_AND_ASSERT(false, description);
+            VE_ASSERT(false,description);
         }
 
         static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -157,7 +157,7 @@ namespace vEngine
             glUniformMatrix4fv(mvp_location, 1, GL_FALSE, (const GLfloat*)mvp);
             glDrawArrays(GL_TRIANGLES, 0, 3);
         }
-        void OpenGLRenderEngine::DeinitPipline() {}
+        void OpenGLRenderEngine::DeinitPipeline() {}
     }  // namespace Rendering
 }  // namespace vEngine
 

@@ -78,7 +78,7 @@ namespace vEngine
         }
         void AnimationClip::AddJoint(const std::string& joint_name, const JointSharedPtr joint)
         {
-            CHECK_ASSERT(this->joints_.find(joint_name) == this->joints_.end());
+            VE_ASSERT(this->joints_.find(joint_name) == this->joints_.end());
             this->joints_[joint_name] = joint;
         }
 

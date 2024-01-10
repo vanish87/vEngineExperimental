@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
     auto scene = handler.LoadFromAssimp(input);
     ResourceManager::GetInstance().SaveAsReference(scene, output);
     ResourceManager::GetInstance().FlushPending();
-    // PRINT("Save to " << output.string());
+    // VE_INFO("Save to " << output.string());
     scene.reset();
     ResourceManager::GetInstance().Deinit();
 

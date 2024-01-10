@@ -63,7 +63,7 @@ namespace vEngine
                     //     // new_bone->id_ = static_cast<int>(mesh->bone_data_.size());
                     //     // new_bone->inverse_bind_pose_matrix_ = float4x4::Identity();
                     //     // mesh->bone_data_[b->name_] = new_bone;
-                    //     // PRINT_AND_BREAK("Missing bone " << b->name_);
+                    //     // VE_ASSERT(false,Missing bone " << b->name_);
                     // }
 
                     auto bone = b.second;
@@ -72,6 +72,7 @@ namespace vEngine
                     auto bone_go = bone->GO();
                     auto offset = bone_go->inverse_bind_pose_matrix_;
 
+                    // a.k.a Skinning Matrix Palette
                     cb.bone[bone_go->id_] = offset * bone_matrix;
                 }
             }
@@ -85,9 +86,9 @@ namespace vEngine
             // cb.local_to_world_matrix[2][2] = 0.1f;
             // cb.local_to_world_matrix[3][2] = 1;
             // cb.local_to_world_matrix = Math::Transpose(cb.local_to_world_matrix);
-            // PRINT(cb.local_to_world_matrix[0][0]);
-            // PRINT(cb.local_to_world_matrix[1][1]);
-            // PRINT(cb.local_to_world_matrix[2][2]);
+            // VE_INFO(cb.local_to_world_matrix[0][0]);
+            // VE_INFO(cb.local_to_world_matrix[1][1]);
+            // VE_INFO(cb.local_to_world_matrix[2][2]);
 
             auto data = this->mesh_constant_buffer_->Map();
             memcpy(data.data, &cb, sizeof(vEngineObjectConstantBuffer));
@@ -99,7 +100,7 @@ namespace vEngine
         void MeshRendererComponent::OnUpdate()
         {
             // Update local to world matrix for current game node
-            //  PRINT("MeshRendererComponent Update");
+            //  VE_INFO("MeshRendererComponent Update");
             if (this->GO()->renderable_ == nullptr)
             {
                 auto meshComponent = this->Owner()->FirstOf<MeshComponent>();

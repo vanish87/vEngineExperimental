@@ -81,10 +81,10 @@ namespace vEngine
                 int width = rc.right - rc.left;
                 int height = rc.bottom - rc.top;
 
-                // PRINT("Window size " << width << " " << height);
+                // VE_INFO("Window size " << width << " " << height);
 
                 hwnd = CreateWindow(wcex.lpszClassName, win_name.c_str(), WS_OVERLAPPEDWINDOW, left, top, width, height, nullptr, nullptr, hInstance, nullptr);
-                CHECK_ASSERT_NOT_NULL(hwnd);
+                VE_ASSERT_PTR_NOT_NULL(hwnd);
                 ::ShowWindow(hwnd, SW_SHOWNORMAL);
 
                 this->default_wnd_proc_ = ::DefWindowProc;

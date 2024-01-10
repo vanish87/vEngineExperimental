@@ -47,7 +47,7 @@ namespace vEngine
         /// should be 2 lines
         Mesh::Mesh(): vertex_buffer_{nullptr}, index_buffer_{nullptr}
         {
-            // PRINT("mesh object created");
+            // VE_INFO("mesh object created");
         }
 
         Mesh::~Mesh()
@@ -83,7 +83,7 @@ namespace vEngine
 
                 auto& v = this->vertex_data_[vid];
                 // statics[vid]++;
-                // CHECK_ASSERT(statics[vid] < 8);
+                // VE_ASSERT(statics[vid] < 8);
 
                 for (uint32_t vcount = 0; vcount < 8; ++vcount)
                 {
@@ -91,7 +91,7 @@ namespace vEngine
                     {
                         if (v.bone_id_0[vcount] != -1)
                         {
-                            // CHECK_ASSERT(vcount < 3);
+                            // VE_ASSERT(vcount < 3);
                             continue;
                         }
 
@@ -104,7 +104,7 @@ namespace vEngine
                         auto index = vcount % 4;
                         if (v.bone_id_1[index] != -1)
                         {
-                            // CHECK_ASSERT(vcount < 3);
+                            // VE_ASSERT(vcount < 3);
                             continue;
                         }
 
@@ -114,10 +114,10 @@ namespace vEngine
                     }
                 }
             }
-            CHECK_ASSERT(this->bone_data_.find(bone->Name()) == this->bone_data_.end());
+            VE_ASSERT(this->bone_data_.find(bone->Name()) == this->bone_data_.end());
             this->bone_data_[bone->Name()] = bone;
 
-            PRINT("Bone " << bone->Name() << " id " << id);
+            // VE_INFO("Bone " << bone->Name() << " id " << id);
         }
 
         /// Create GPU related buffer
@@ -126,7 +126,7 @@ namespace vEngine
         {
             if (this->vertex_buffer_ == nullptr)
             {
-                // PRINT("Create mesh vertex Buffer");
+                // VE_INFO("Create mesh vertex Buffer");
                 GraphicsBufferDescriptor desc;
                 desc.type = GraphicsResourceType::Vertex;
                 desc.usage = GraphicsResourceUsage::GPU_Read_Only;
@@ -148,7 +148,7 @@ namespace vEngine
 
             if (this->index_buffer_ == nullptr)
             {
-                // PRINT("Create mesh index Buffer");
+                // VE_INFO("Create mesh index Buffer");
                 GraphicsBufferDescriptor desc;
                 desc.type = GraphicsResourceType::Index;
                 desc.usage = GraphicsResourceUsage::GPU_Read_Only;

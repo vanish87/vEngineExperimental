@@ -138,7 +138,7 @@ namespace vEngine
                 }
 
                 public:
-                    /// \brief conpare all element of vector
+                    /// \brief compare all element of vector
                     bool operator==(const GameObject& other) const noexcept
                     {
                         return this->GetUUID() == other.GetUUID();

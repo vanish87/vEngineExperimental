@@ -78,7 +78,7 @@ namespace vEngine
                 }
             }
 
-            CHECK_AND_ASSERT(false, "Cannot find file/folder " << file_name);
+            VE_ASSERT(false, "Cannot find file/folder " , file_name);
             return std::filesystem::path(file_name);
         }
         std::filesystem::path ResourceManager::GetResourceBinFilePath(const std::string file_name)
@@ -93,7 +93,7 @@ namespace vEngine
                 }
             }
 
-            CHECK_AND_ASSERT(false, "Cannot find file/folder " << file_name);
+            VE_ASSERT("Cannot find file/folder " , file_name);
             return std::filesystem::path(file_name);
         }
 
@@ -128,7 +128,7 @@ namespace vEngine
                 count++;
             }
             this->pending_uuids_.clear();
-            PRINT("The num of pending objects saved " << count);
+            VE_INFO("The num of pending objects saved " , count);
         }
         void ResourceManager::PrintDebug()
         {
@@ -136,7 +136,7 @@ namespace vEngine
             {
                 std::string t;
                 ToString(go->Type(), t);
-                PRINT(go->GetUUID().AsUint() << " " << go->Name() << " Ref Count " << go.use_count() << " " << t << " " << go->ReferencePath().string());
+                VE_INFO(go->GetUUID().AsUint() , " " , go->Name() , " Ref Count " , go.use_count() , " " , t , " " , go->ReferencePath().string());
             }
         }
         void ResourceManager::SaveAsValue(const GameObjectSharedPtr go)
@@ -152,11 +152,11 @@ namespace vEngine
             auto type = go->Type();
             auto path = go->AbsolutePath();
 
-            // PRINT("Save to " << path);
+            // VE_INFO("Save to " << path);
 
-            if (type == GameObjectType::Component) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
-            if (type == GameObjectType::Renderer) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
-            if (type == GameObjectType::RendererComponent) CHECK_AND_ASSERT(false, "Cannot create component without game object type");
+            if (type == GameObjectType::Component) VE_ASSERT(false, "Cannot create component without game object type");
+            if (type == GameObjectType::Renderer) VE_ASSERT(false, "Cannot create component without game object type");
+            if (type == GameObjectType::RendererComponent) VE_ASSERT(false, "Cannot create component without game object type");
             switch (type)
             {
                 CASE_AND_SAVE(GameObjectType::GameObject, GameObject);
@@ -189,7 +189,7 @@ namespace vEngine
                 CASE_AND_SAVE(GameObjectType::Animator, Animation::Animator);
                 CASE_AND_SAVE(GameObjectType::AnimatorComponent, Animation::AnimatorComponent);
                 default:
-                    // PRINT(ToString(type));
+                    // VE_INFO(ToString(type));
                     NOT_IMPL_ASSERT;
                     break;
             }
@@ -264,12 +264,12 @@ namespace vEngine
         void ResourceManager::Register(const GameObjectSharedPtr go, bool isDynamic)
         {
             UNUSED_PARAMETER(isDynamic);
-            // CHECK_ASSERT(this->runtime_objects_.find(go) == std::unordered_map::end());
+            // VE_ASSERT(this->runtime_objects_.find(go) == std::unordered_map::end());
             for (const auto& obj : this->runtime_objects_)
             {
                 if (obj->GetUUID() == go->GetUUID())
                 {
-                    CHECK_ASSERT(false);
+                    VE_ASSERT(false);
                 }
             }
             this->runtime_objects_.push_back(go);

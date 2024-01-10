@@ -155,7 +155,7 @@ namespace vEngine
         {
             // this->app_instance_ = app;
             auto app = this->app_.lock();
-            CHECK_ASSERT_NOT_NULL(app);
+            VE_ASSERT_PTR_NOT_NULL(app);
             app->Quit();
         }
         // Application& Context::AppInstance() const
@@ -176,17 +176,12 @@ namespace vEngine
 
             #ifdef VENGINE_PLATFORM_WINDOWS
             auto handle = ::LoadLibrary(path.string().c_str());
-            if (!handle)
-            {
-                PRINT_AND_BREAK("could not load the dynamic library: " << dll_name);
-            }
+            VE_ASSERT_PTR_NOT_NULL(handle, "could not load the dynamic library: " + dll_name);
+
             #elif VENGINE_PLATFORM_UNIX
             dlerror();
             auto handle = dlopen(path.string().c_str(), RTLD_LAZY);
-            if (!handle)
-            {
-                PRINT_AND_BREAK("Cannot open library: " + std::string(dlerror()));
-            }
+            VE_ASSERT_PTR_NOT_NULL(handle, "Cannot open library: " , std::string(dlerror()));
             #else
             auto handle = nullptr;
             #endif
@@ -215,16 +210,14 @@ namespace vEngine
             auto dlsym_error = dlerror();
             if (dlsym_error)
             {
-                PRINT_AND_BREAK("Cannot load symbol " + func_name + dlsym_error);
+                VE_ASSERT(false, "Cannot load symbol " , func_name , dlsym_error);
             }
             #endif
+            VE_ASSERT_PTR_NOT_NULL(function, "could not locate the function " + func_name);
+
             if (function != nullptr)
             {
                 function(ptr);
-            }
-            else
-            {
-                PRINT_AND_BREAK("could not locate the function " << func_name);
             }
         }
     }  // namespace Core

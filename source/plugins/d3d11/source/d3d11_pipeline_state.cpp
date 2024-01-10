@@ -28,11 +28,11 @@ namespace vEngine
         /// should be 2 lines
         D3D11PipelineState::D3D11PipelineState(const PipelineStateDescriptor& desc) : PipelineState(desc) 
         {
-            // PRINT("D3D11PipelineState");
+            // VE_INFO("D3D11PipelineState");
         }
         D3D11PipelineState::~D3D11PipelineState()
         {
-            // PRINT("D3D11PipelineState Destructor");
+            // VE_INFO("D3D11PipelineState Destructor");
         }
 
         void D3D11PipelineState::PrepareData()
@@ -57,7 +57,7 @@ namespace vEngine
 
                     auto target = D3D11RenderEngine::ShaderTypeToTarget(s.first);
 
-                    PRINT(s.second->source);
+                    // VE_INFO(s.second->source);
 
                     // auto source_name = std::string("resource/shader/ps/ps.json");
                     auto source_name = target;
@@ -68,16 +68,16 @@ namespace vEngine
                     if (error != nullptr)
                     {
                         std::string err(static_cast<char*>(error->GetBufferPointer()), error->GetBufferSize());
-                        PRINT(err);
+                        VE_INFO(err);
                     }
-                    CHECK_ASSERT(hr == S_OK);
+                    VE_ASSERT(hr == S_OK);
 
                     switch (s.first)
                     {
                         case ShaderType::VertexShader:
                         {
                             hr = device->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, this->vs_.GetAddressOf());
-                            CHECK_ASSERT(hr == S_OK);
+                            VE_ASSERT(hr == S_OK);
 
                             D3D11_INPUT_ELEMENT_DESC input_desc[] = {
                                 {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
@@ -90,13 +90,13 @@ namespace vEngine
                                 {"BLENDWEIGHT", 1, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
                             };
                             hr = device->CreateInputLayout(input_desc, (UINT)array_length(input_desc), blob->GetBufferPointer(), blob->GetBufferSize(), this->layout_.GetAddressOf());
-                            CHECK_ASSERT(hr == S_OK);
+                            VE_ASSERT(hr == S_OK);
                         }
                         break;
                         case ShaderType::PixelShader:
                         {
                             hr = device->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, this->ps_.GetAddressOf());
-                            CHECK_ASSERT(hr == S_OK);
+                            VE_ASSERT(hr == S_OK);
                         }
                         default:
                             break;
@@ -107,11 +107,11 @@ namespace vEngine
 
                 D3D11_RASTERIZER_DESC rdesc = D3D11RenderEngine::ToD3D11RasterizerDesc(this->descriptor_.rasterizer_descriptor);
                 auto hr = device->CreateRasterizerState(&rdesc, this->rasterizer_state_.GetAddressOf());
-                CHECK_ASSERT(hr == S_OK);
+                VE_ASSERT(hr == S_OK);
 
                 D3D11_DEPTH_STENCIL_DESC ddesc = D3D11RenderEngine::ToD3D11DepthStencilDesc(this->descriptor_.depth_stencil_descriptor);
                 hr = device->CreateDepthStencilState(&ddesc, this->depth_stencil_state_.GetAddressOf());
-                CHECK_ASSERT(hr == S_OK);
+                VE_ASSERT(hr == S_OK);
             }
         }
     }  // namespace Rendering
