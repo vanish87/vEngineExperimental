@@ -21,7 +21,6 @@ namespace vEngine
         typedef void (*HandleRenderEngine)(Rendering::RenderEngineUniquePtr& ptr);
         typedef void (*HandleGameObjectFactory)(GameObjectFactoryUniquePtr& ptr);
 
-
         Context::Context() {}
         Context::~Context() {}
         Configure Context::CurrentConfigure() const
@@ -41,9 +40,9 @@ namespace vEngine
         void Context::Dispath(const IEvent& event)
         {
             VE_INFO("Event", event.ToString());
-            for(const auto listener : this->event_listeners_)
+            for (const auto listener : this->event_listeners_)
             {
-                if(auto l = listener.lock())
+                if (auto l = listener.lock())
                 {
                     l->OnEvent(event);
                 }
@@ -53,23 +52,23 @@ namespace vEngine
         {
             this->event_listeners_.push_back(listener);
         }
-        void Context::RemoveListener(const IEventListenerSharedPtr listener) 
+        void Context::RemoveListener(const IEventListenerSharedPtr listener)
         {
-            for (auto it = this->event_listeners_.begin(); it != this->event_listeners_.end(); ) 
+            for (auto it = this->event_listeners_.begin(); it != this->event_listeners_.end();)
             {
                 auto shared = it->lock();
-        
-                if (!shared) 
+
+                if (!shared)
                 {
                     // Remove expired weak_ptrs
                     it = this->event_listeners_.erase(it);
-                } 
-                else if (shared.get() == listener.get()) 
+                }
+                else if (shared.get() == listener.get())
                 {
                     // Found the matching element, remove it
                     it = this->event_listeners_.erase(it);
-                } 
-                else 
+                }
+                else
                 {
                     ++it;
                 }
@@ -219,7 +218,7 @@ namespace vEngine
             #elif VENGINE_PLATFORM_UNIX
             dlerror();
             auto handle = dlopen(path.string().c_str(), RTLD_LAZY);
-            VE_ASSERT_PTR_NOT_NULL(handle, "Cannot open library: " , std::string(dlerror()));
+            VE_ASSERT_PTR_NOT_NULL(handle, "Cannot open library: ", std::string(dlerror()));
             #else
             auto handle = nullptr;
             #endif
@@ -248,7 +247,7 @@ namespace vEngine
             auto dlsym_error = dlerror();
             if (dlsym_error)
             {
-                VE_ASSERT(false, "Cannot load symbol " , func_name , dlsym_error);
+                VE_ASSERT(false, "Cannot load symbol ", func_name, dlsym_error);
             }
             #endif
             VE_ASSERT_PTR_NOT_NULL(function, "could not locate the function " + func_name);
