@@ -40,7 +40,7 @@ namespace vEngine
         void Context::Dispath(const IEvent& event)
         {
             VE_INFO("Event", event.ToString());
-            for (const auto listener : this->event_listeners_)
+            for (const auto& listener : this->event_listeners_)
             {
                 if (auto l = listener.lock())
                 {
