@@ -10,11 +10,8 @@ namespace vEngine
     {
         Window::Window(const WindowDescriptor& desc)
         {
-            if(desc.wnd != nullptr)
-            {
-                this->wnd_ = desc.wnd;
-            }
-            else
+            this->descriptor_ = desc;
+            if(desc.wnd == nullptr)
             {
                 #if defined(VENGINE_PLATFORM_TARGET_DARWIN)
                 CGRect frame = (CGRect){ {0, 0}, {(float)desc.width, (float)desc.height} };
@@ -24,10 +21,10 @@ namespace vEngine
                     NS::BackingStoreBuffered,
                     false );
                 window->setTitle( NS::String::string( desc.name.c_str(), NS::StringEncoding::UTF8StringEncoding ) );
-                this->wnd_ = window;
+                this->descriptor_.wnd = window;
                 #elif defined(VENGINE_PLATFORM_TARGET_IOS)
                 CGRect frame = UI::Screen::mainScreen()->bounds();
-                this->wnd_ = UI::Window::alloc()->init(frame);
+                this->descriptor_.wnd = UI::Window::alloc()->init(frame);
                 #endif
             }
         }
