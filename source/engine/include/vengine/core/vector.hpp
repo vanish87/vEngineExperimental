@@ -81,6 +81,11 @@ namespace vEngine
                 {
                     vector_t<T, N>::do_copy(this->data(), other.data());
                 }
+                template <typename U>
+                constexpr Vector(const Vector<U, N>& other) noexcept
+                {
+                    vector_t<T, N>::do_copy(this->data(), other.data());
+                }
 
                 /// \brief big five - 2: assignment operator
                 ///
@@ -104,7 +109,7 @@ namespace vEngine
                 ///
                 /// to assure destructor of
                 /// subclass called
-                /// do not need for vector class
+                /// do not need for final vector class
                 // virtual ~Vector() noexcept {}
 
                 /// \brief big five - 4: move constructor
@@ -147,12 +152,12 @@ namespace vEngine
                 ///
                 /// Will cast data type from U to T
                 /// the size M should equal to N
-                template <typename U, int M>
-                constexpr Vector(Vector<U, M> const& rhs) noexcept
-                {
-                    static_assert(M == N);
-                    vector_t<T, N>::do_copy(this->data(), rhs.data());
-                }
+                // template <typename U, int M>
+                // constexpr Vector(Vector<U, M> const& rhs) noexcept
+                // {
+                //     static_assert(M == N);
+                //     vector_t<T, N>::do_copy(this->data(), rhs.data());
+                // }
 
                 /// \brief init constructor
                 ///
@@ -261,36 +266,25 @@ namespace vEngine
 
             public:
                 /// \brief add each element of vector
-                template <typename U>
-                const Vector& operator+=(const Vector<U, N>& other) noexcept
+                const Vector& operator+=(const Vector& other) noexcept
                 {
                     vector_t<T, N>::do_add(this->data(), this->data(), other.data());
                     return *this;
                 }
                 /// \brief substract each element of vector
-                template <typename U>
-                const Vector& operator-=(const Vector<U, N>& other) noexcept
+                const Vector& operator-=(const Vector& other) noexcept
                 {
                     vector_t<T, N>::do_sub(this->data(), this->data(), other.data());
                     return *this;
                 }
                 /// \brief multiply each element of vector
-                template <typename U>
-                const Vector& operator*=(const Vector<U, N>& other) noexcept
+                const Vector& operator*=(const Vector& other) noexcept
                 {
                     vector_t<T, N>::do_mul(this->data(), this->data(), other.data());
                     return *this;
                 }
-                /// \brief scale each element of vector
-                template <typename U>
-                const Vector& operator*=(const U& other) noexcept
-                {
-                    vector_t<T, N>::do_mul(this->data(), this->data(), other);
-                    return *this;
-                }
                 /// \brief divide each element of vector
-                template <typename U>
-                const Vector& operator/=(const Vector<U, N>& other) noexcept
+                const Vector& operator/=(const Vector& other) noexcept
                 {
                     vector_t<T, N>::do_div(this->data(), this->data(), other.data());
                     return *this;
@@ -322,29 +316,24 @@ namespace vEngine
             public:
                 // Boost defined operator
                 template <typename U>
-                constexpr Vector operator+(const Vector<U, N>& other) const noexcept
+                constexpr Vector operator+(const U& other) const noexcept
                 {
-                    return Vector(*this) += other;
+                    return Vector(*this) += Vector<T, N>(other);
                 }
                 template <typename U>
-                constexpr Vector operator-(const Vector<U, N>& other) const noexcept
+                constexpr Vector operator-(const U& other) const noexcept
                 {
-                    return Vector(*this) -= other;
-                }
-                template <typename U>
-                constexpr Vector operator*(const Vector<U, N>& other) const noexcept
-                {
-                    return Vector(*this) *= other;
+                    return Vector(*this) -= Vector<T, N>(other);
                 }
                 template <typename U>
                 constexpr Vector operator*(const U& other) const noexcept
                 {
-                    return Vector(*this) *= other;
+                    return Vector(*this) *= Vector<T, N>(other);
                 }
                 template <typename U>
-                constexpr Vector operator/(const Vector<U, N>& other) const noexcept
+                constexpr Vector operator/(const U& other) const noexcept
                 {
-                    return Vector(*this) /= other;
+                    return Vector(*this) /= Vector<T, N>(other);
                 }
         };
         /// \brief swap two vectors

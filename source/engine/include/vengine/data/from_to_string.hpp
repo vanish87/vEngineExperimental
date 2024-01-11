@@ -3,6 +3,7 @@
 
 #include <string>
 #include <engine.hpp>
+#include <vengine/core/input.hpp>
 #include <vengine/rendering/data_struct.hpp>
 
 namespace vEngine
@@ -28,6 +29,7 @@ namespace vEngine
         void ToString(const GameObjectType& obj, std::string& to);
         void FromString(const std::string& obj, GameObjectType& to);
 
+        void ToString(const Keyboard& obj, std::string& to);
 
     }  // namespace Core
     namespace Rendering

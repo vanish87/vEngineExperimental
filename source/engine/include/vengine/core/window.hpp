@@ -38,11 +38,11 @@ namespace vEngine
             public:
                 void* WindowHandle()
                 {
-                    return this->wnd_;
+                    return this->descriptor_.wnd;
                 };
 
             private:
-                void* wnd_;
+                WindowDescriptor descriptor_;
 
                 //EventCallback Here
 

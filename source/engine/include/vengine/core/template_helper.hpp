@@ -40,7 +40,6 @@ namespace vEngine
                     v[0] = rhs;
                     vector_t<T, N - 1>::do_assign(v + 1, rhs);
                 }
-
                 static void do_add(T v[N], const T lhs[N], const T rhs[N]) noexcept
                 {
                     v[0] = lhs[0] + rhs[0];
@@ -56,22 +55,11 @@ namespace vEngine
                     v[0] = lhs[0] * rhs[0];
                     vector_t<T, N - 1>::do_mul(v + 1, lhs + 1, rhs + 1);
                 }
-                static void do_mul(T v[N], const T lhs[N], const T& rhs) noexcept
-                {
-                    v[0] = lhs[0] * rhs;
-                    vector_t<T, N - 1>::do_mul(v + 1, lhs + 1, rhs);
-                }
                 static void do_div(T v[N], const T lhs[N], const T rhs[N]) noexcept
                 {
                     VE_ASSERT(rhs[0] != 0);
                     v[0] = lhs[0] / rhs[0];
                     vector_t<T, N - 1>::do_div(v + 1, lhs + 1, rhs + 1);
-                }
-                static void do_div(T v[N], const T lhs[N], const T& rhs) noexcept
-                {
-                    VE_ASSERT(rhs != 0);
-                    v[0] = lhs[0] / rhs;
-                    vector_t<T, N - 1>::do_div(v + 1, lhs + 1, rhs);
                 }
                 static void do_negative(T v[N], const T rhs[N]) noexcept
                 {
@@ -123,17 +111,9 @@ namespace vEngine
                 {
                     v[0] = lhs[0] * rhs[0];
                 }
-                static void do_mul(T v[1], const T lhs[1], const T& rhs) noexcept
-                {
-                    v[0] = lhs[0] * rhs;
-                }
                 static void do_div(T v[1], const T lhs[1], const T rhs[1]) noexcept
                 {
                     v[0] = lhs[0] / rhs[0];
-                }
-                static void do_div(T v[1], const T lhs[1], const T& rhs) noexcept
-                {
-                    v[0] = lhs[0] / rhs;
                 }
                 static void do_negative(T v[1], const T rhs[1]) noexcept
                 {

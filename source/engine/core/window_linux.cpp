@@ -9,7 +9,8 @@ namespace vEngine
     {
         Window::Window(const WindowDescriptor& desc)
 		{
-            this->wnd_ = desc.wnd;
+            UNUSED_PARAMETER(desc);
+            // this->wnd_ = desc.wnd;
             // this->window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
 		}
         Window::~Window()

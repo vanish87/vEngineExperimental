@@ -99,7 +99,7 @@ TEST(Vector, IntMul)
 
     v4 = int4(2);
 
-    v4 *= 20;
+    v4 = v4 * 20;
     ASSERT_TRUE(v4 == int4(40));
 }
 TEST(Vector, IntDiv)

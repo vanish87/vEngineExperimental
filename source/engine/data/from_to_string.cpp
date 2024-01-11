@@ -108,6 +108,37 @@ namespace vEngine
 
             NOT_IMPL_ASSERT;
         }
+        void ToString(const Keyboard& type, std::string& str)
+        {
+            ENUM_TO_STRING(Keyboard::A, type, str);
+            ENUM_TO_STRING(Keyboard::B, type, str);
+            ENUM_TO_STRING(Keyboard::C, type, str);
+            ENUM_TO_STRING(Keyboard::D, type, str);
+            ENUM_TO_STRING(Keyboard::E, type, str);
+            ENUM_TO_STRING(Keyboard::F, type, str);
+            ENUM_TO_STRING(Keyboard::G, type, str);
+            ENUM_TO_STRING(Keyboard::H, type, str);
+            ENUM_TO_STRING(Keyboard::I, type, str);
+            ENUM_TO_STRING(Keyboard::J, type, str);
+            ENUM_TO_STRING(Keyboard::K, type, str);
+            ENUM_TO_STRING(Keyboard::L, type, str);
+            ENUM_TO_STRING(Keyboard::M, type, str);
+            ENUM_TO_STRING(Keyboard::N, type, str);
+            ENUM_TO_STRING(Keyboard::O, type, str);
+            ENUM_TO_STRING(Keyboard::P, type, str);
+            ENUM_TO_STRING(Keyboard::Q, type, str);
+            ENUM_TO_STRING(Keyboard::R, type, str);
+            ENUM_TO_STRING(Keyboard::S, type, str);
+            ENUM_TO_STRING(Keyboard::T, type, str);
+            ENUM_TO_STRING(Keyboard::U, type, str);
+            ENUM_TO_STRING(Keyboard::V, type, str);
+            ENUM_TO_STRING(Keyboard::W, type, str);
+            ENUM_TO_STRING(Keyboard::X, type, str);
+            ENUM_TO_STRING(Keyboard::Y, type, str);
+            ENUM_TO_STRING(Keyboard::Z, type, str);
+
+            NOT_IMPL_ASSERT;
+        }
     }  // namespace Core
     namespace Rendering
     {

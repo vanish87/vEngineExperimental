@@ -131,7 +131,7 @@ namespace vEngine
         }
         float4 ToFloat(const color color)
         {
-            return float4(color) / float4(255, 255, 255, 255);
+            return float4(color) / 255.0f;
         }
 
     }  // namespace Math

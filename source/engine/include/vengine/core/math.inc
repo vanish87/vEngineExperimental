@@ -112,7 +112,7 @@ namespace vEngine
                     ret[i] += lhs[i] * rhs[i][j];
                 }
             }
-            ret *= 1.0f / ret[N - 1];
+            ret = ret / ret[N - 1];
             return ret;
         }
         template <typename T, int N>

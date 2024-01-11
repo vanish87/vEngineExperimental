@@ -242,15 +242,15 @@ namespace vEngine
                     return *this;
                 }
                 template <typename U>
-                const Quaternion& operator*=(const U& other) noexcept
+                const Quaternion& operator*=(const Quaternion<U>& other) noexcept
                 {
-                    vector_t<T, 4>::do_mul(this->data(), this->data(), other);
+                    vector_t<T, 4>::do_mul(this->data(), this->data(), other.data());
                     return *this;
                 }
                 template<typename U>
-                const Quaternion& operator/=(const U& other) noexcept
+                const Quaternion& operator/=(const Quaternion<U>& other) noexcept
                 {
-                    vector_t<T, 4>::do_div(this->data(), this->data(), other);
+                    vector_t<T, 4>::do_div(this->data(), this->data(), other.data());
                     return *this;
                 }
                 
@@ -267,12 +267,12 @@ namespace vEngine
                 template<typename U>
                 constexpr Quaternion operator*(const U& other) const noexcept
                 {
-                    return Quaternion(*this) *= other;
+                    return Quaternion(*this) *= Quaternion<U>(other, other, other, other);
                 }
                 template<typename U>
                 constexpr Quaternion<T> operator/(const U& other) const noexcept
                 {
-                    return Quaternion(*this) /= other;
+                    return Quaternion(*this) /= Quaternion<U>(other, other, other, other);
                 }
 
                 template<typename U>

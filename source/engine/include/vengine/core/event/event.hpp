@@ -14,6 +14,8 @@
 
 #include <vengine/core/game_object.hpp>
 #include <vengine/core/vector.hpp>
+#include <vengine/core/input.hpp>
+#include <vengine/data/from_to_string.hpp>
 #include <string>
 
 /// A brief namespace description.
@@ -21,7 +23,7 @@ namespace vEngine
 {
     namespace Core
     {
-
+        //temperal tpye from Hazel
         enum class EventType
         {
             None = 0,
@@ -50,8 +52,6 @@ namespace vEngine
         public:
             /// \brief A brief function description.
             ///
-            /// \param p1 Description for p1.
-            /// \param p2 Description for p2.
             /// \return Description for return value.
             virtual std::string ToString() const = 0;
         };
@@ -68,33 +68,10 @@ namespace vEngine
             public:
                 /// \brief A brief function description.
                 ///
-                /// \param p1 Description for p1.
-                /// \param p2 Description for p2.
                 /// \return Description for return value.
                 virtual std::string ToString() const override
                 {
-                    return "Event";
-                };
-        };
-        /// \brief A brief class description.
-        ///
-        /// A detailed class description, it
-        /// should be 2 lines at least.
-        class VENGINE_API MouseButtonEvent : public GameObject, public IEvent
-        {
-            public:
-                /// \brief brief constructor description.
-                MouseButtonEvent() : GameObject() {}
-
-            public:
-                /// \brief A brief function description.
-                ///
-                /// \param p1 Description for p1.
-                /// \param p2 Description for p2.
-                /// \return Description for return value.
-                virtual std::string ToString() const override
-                {
-                    return "Event";
+                    return "WindowEvent";
                 };
         };
         /// \brief A brief class description.
@@ -124,11 +101,11 @@ namespace vEngine
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class VENGINE_API KeyEvent : public GameObject, public IEvent
+        class VENGINE_API MouseButtonEvent : public GameObject, public IEvent
         {
             public:
                 /// \brief brief constructor description.
-                KeyEvent() : GameObject() {}
+                MouseButtonEvent() : GameObject() {}
 
             public:
                 /// \brief A brief function description.
@@ -140,19 +117,16 @@ namespace vEngine
                 {
                     return "Event";
                 };
-
-            private:
-                int key_code_;
         };
         /// \brief A brief class description.
         ///
         /// A detailed class description, it
         /// should be 2 lines at least.
-        class VENGINE_API KeyPressedEvent : public KeyEvent
+        class VENGINE_API KeyEvent : public GameObject, public IEvent
         {
             public:
                 /// \brief brief constructor description.
-                KeyPressedEvent() : KeyEvent() {}
+                KeyEvent(const Keyboard key_code) : GameObject(), key_code_(key_code) {}
 
             public:
                 /// \brief A brief function description.
@@ -162,7 +136,33 @@ namespace vEngine
                 /// \return Description for return value.
                 virtual std::string ToString() const override
                 {
-                    return "Event";
+                    std::string code;
+                    ::vEngine::Core::ToString(this->key_code_, code);
+                    return "Key Event" + code;
+                };
+
+            private:
+                Keyboard key_code_;
+        };
+        /// \brief A brief class description.
+        ///
+        /// A detailed class description, it
+        /// should be 2 lines at least.
+        class VENGINE_API KeyPressedEvent : public KeyEvent
+        {
+            public:
+                /// \brief brief constructor description.
+                KeyPressedEvent(const Keyboard key_code) : KeyEvent(key_code) {}
+
+            public:
+                /// \brief A brief function description.
+                ///
+                /// \param p1 Description for p1.
+                /// \param p2 Description for p2.
+                /// \return Description for return value.
+                virtual std::string ToString() const override
+                {
+                    return KeyEvent::ToString() + " Pressed";
                 };
         };
 

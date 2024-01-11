@@ -7,6 +7,8 @@
     // include windows.h first
     #include <vengine/core/window.hpp>
     #include <vengine/core/context.hpp>
+    #include <vengine/core/input.hpp>
+    #include <vengine/core/event/event.hpp>
 // #include <vengine/core/application.hpp>
 // #include <tchar.h>//wchar
 
@@ -23,6 +25,78 @@ namespace vEngine
             }
             return ::DefWindowProc(hWnd, message, wParam, lParam);
         }
+
+        static Keyboard ToKeyboard(WPARAM raw)
+        {
+            switch (raw)
+            {
+                case VK_ESCAPE:
+                    return Keyboard::Escape;
+                case 'A':
+                    return Keyboard::A;
+                case 'B':
+                    return Keyboard::B;
+                case 'C':
+                    return Keyboard::C;
+                case 'D':
+                    return Keyboard::D;
+                case 'E':
+                    return Keyboard::E;
+                case 'F':
+                    return Keyboard::F;
+                case 'G':
+                    return Keyboard::G;
+                case 'H':
+                    return Keyboard::H;
+                case 'I':
+                    return Keyboard::I;
+                case 'J':
+                    return Keyboard::J;
+                case 'K':
+                    return Keyboard::K;
+                case 'L':
+                    return Keyboard::L;
+                case 'M':
+                    return Keyboard::M;
+                case 'N':
+                    return Keyboard::N;
+                case 'O':
+                    return Keyboard::O;
+                case 'P':
+                    return Keyboard::P;
+                case 'Q':
+                    return Keyboard::Q;
+                case 'R':
+                    return Keyboard::R;
+                case 'S':
+                    return Keyboard::S;
+                case 'T':
+                    return Keyboard::T;
+                case 'U':
+                    return Keyboard::U;
+                case 'V':
+                    return Keyboard::V;
+                case 'W':
+                    return Keyboard::W;
+                case 'X':
+                    return Keyboard::X;
+                case 'Y':
+                    return Keyboard::Y;
+                case 'Z':
+                    return Keyboard::Z;
+                default:
+                    break;
+            }
+            return Keyboard::None;
+        }
+        static float2 ToNormalizeScreenCordinate(LPARAM raw, int2 screen_size)
+        {
+            auto pos = int2(GET_X_LPARAM(raw), GET_Y_LPARAM(raw));
+            auto npos = float2(pos) / screen_size;
+            npos.y() = 1 - npos.y();
+            return npos;
+        }
+
         LRESULT Window::MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             switch (message)
@@ -35,6 +109,11 @@ namespace vEngine
                     PostQuitMessage(0);
                 }
                 break;
+                case WM_INPUT:
+                {
+                    // raw input
+                }
+                break;
                 case WM_PAINT:
                 {
                     // maybe Render call here
@@ -42,20 +121,8 @@ namespace vEngine
                 break;
                 case WM_KEYDOWN:
                 {
-                    // Do input event here
-                    switch (wParam)
-                    {
-                        case VK_ESCAPE:
-                            PostQuitMessage(0);
-                            break;
-                        case VK_LEFT:
-                            // Handle left arrow key...
-                            break;
-                        case VK_RIGHT:
-                            // Handle right arrow key...
-                            break;
-                            // Add more keys as needed...
-                    }
+                    const KeyPressedEvent e(ToKeyboard(wParam));
+                    Context::GetInstance().Dispath(e);
                 }
                 break;
                 case WM_KEYUP:
@@ -65,19 +132,18 @@ namespace vEngine
                 break;
                 case WM_MOUSEMOVE:
                 {
-                    auto xPos = GET_X_LPARAM(lParam) * 1.0f;
-                    auto yPos = GET_Y_LPARAM(lParam) * 1.0f;
                     // Handle mouse move event...
-                    const MouseMoveEvent e(xPos, yPos);
+                    const int2 screen_size = int2(this->descriptor_.width, this->descriptor_.height);
+                    const auto npos = ToNormalizeScreenCordinate(lParam, screen_size);
+                    const MouseMoveEvent e(npos.x(), npos.y());
                     Context::GetInstance().Dispath(e);
                 }
                 break;
                 case WM_LBUTTONDOWN:
                 {
-                    auto xPos = GET_X_LPARAM(lParam) * 1.0f;
-                    auto yPos = GET_Y_LPARAM(lParam) * 1.0f;
-                    // Handle left mouse button click...
-                    const MouseMoveEvent e(xPos, yPos);
+                    // const int2 screen_size = int2(this->descriptor_.width, this->descriptor_.height);
+                    // const auto npos = ToNormalizeScreenCordinate(lParam, screen_size);
+                    const MouseButtonEvent e;
                     Context::GetInstance().Dispath(e);
                 }
                 break;
@@ -87,9 +153,10 @@ namespace vEngine
         }
         Window::Window(const WindowDescriptor& desc)
         {
-            std::string win_name = desc.name;
+            this->descriptor_ = desc;
+            std::string win_name = this->descriptor_.name;
 
-            auto hwnd = static_cast<HWND>(desc.wnd);
+            auto hwnd = static_cast<HWND>(this->descriptor_.wnd);
             if (hwnd != nullptr)
             {
                 this->default_wnd_proc_ = reinterpret_cast<WNDPROC>(::GetWindowLongPtrW(hwnd, GWLP_WNDPROC));
@@ -107,7 +174,7 @@ namespace vEngine
                 wcex.lpszClassName = win_name.c_str();
                 ::RegisterClass(&wcex);
 
-                RECT rc = {0, 0, desc.width, desc.height};
+                RECT rc = {0, 0, this->descriptor_.width, this->descriptor_.height};
                 // get real window size; should slightly bigger than rendering
                 // resolution we should render a frame with render_setting, so
                 // window is enlarged.
@@ -128,7 +195,7 @@ namespace vEngine
             }
 
             ::SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
-            this->wnd_ = hwnd;
+            this->descriptor_.wnd = hwnd;
             // ::SetForegroundWindow(this->wnd_);
             // ::SetFocus(this->wnd_);
             //::ShowCursor(!render_setting.full_screen);
@@ -136,7 +203,7 @@ namespace vEngine
         }
         Window::~Window()
         {
-            ::DestroyWindow(static_cast<HWND>(this->wnd_));
+            ::DestroyWindow(static_cast<HWND>(this->descriptor_.wnd));
         }
         void Window::Update()
         {
