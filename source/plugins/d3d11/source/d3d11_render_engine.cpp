@@ -428,6 +428,9 @@ namespace vEngine
 
         void D3D11RenderEngine::OnEndFrame()
         {
+        }
+        void D3D11RenderEngine::SwapBuffer()
+        {
             this->d3d_swap_chain_->Present(0, 0);
         }
 

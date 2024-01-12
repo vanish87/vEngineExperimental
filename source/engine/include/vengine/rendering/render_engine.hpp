@@ -91,6 +91,8 @@ namespace vEngine
                 virtual void EndRender(){};
 
                 virtual void Dispatch(){};
+                virtual void SwapBuffer(){};
+
 
                 // virutal void SetupFrameTextureToRender
                 // GPU Resource management

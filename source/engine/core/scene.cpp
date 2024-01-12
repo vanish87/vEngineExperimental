@@ -116,6 +116,8 @@ namespace vEngine
                     return true;
                 });
 
+            auto& re = Context::GetInstance().GetRenderEngine();
+
             this->TraverseAllChildren<CameraComponent>(
                 [&](CameraComponentSharedPtr c)
                 {
@@ -124,13 +126,17 @@ namespace vEngine
                     auto cam = c->GO();
                     if (cam->target == nullptr) cam->target = Context::GetInstance().GetRenderEngine()->back_buffer_;
                     auto frameBuffer = cam->target;
-                    auto& re = Context::GetInstance().GetRenderEngine();
                     re->Bind(frameBuffer);
                     re->OnBeginFrame();
                     this->Flush();
                     re->OnEndFrame();
                     return true;
                 });
+
+            //TODO it is resonable to seperate FrameBuffer to different
+            //for example 3D 2D Overlay etc.
+
+            re->SwapBuffer();
         }
         void Scene::Flush()
         {
