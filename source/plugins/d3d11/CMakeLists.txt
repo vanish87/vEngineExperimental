@@ -6,9 +6,14 @@ project (d3d11_rendering_plugin)
 # add_library(${PROJECT_NAME} src/vector.cpp)
 # add_library(engine::core ALIAS ${PROJECT_NAME})
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/source d3d_source)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/source/imgui imgui_source)
 
 
-add_library(${PROJECT_NAME} ${d3d_source})
+add_library(${PROJECT_NAME} 
+    ${d3d_source} 
+    ${imgui_source}
+)
+
 add_library(engine::d3d11_rendering_plugin ALIAS ${PROJECT_NAME})
 
 set(HEADER_NAME ${PROJECT_NAME})

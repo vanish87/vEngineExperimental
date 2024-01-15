@@ -32,6 +32,9 @@
 #include <vengine/animation/joint.hpp>
 #include <vengine/animation/bone_component.hpp>
 
+#include <vengine/ui/ui.hpp>
+#include <vengine/ui/ui_component.hpp>
+
 /// A detailed namespace description, it
 /// should be 2 lines at least.
 namespace vEngine
@@ -188,6 +191,9 @@ namespace vEngine
                 CASE_AND_SAVE(GameObjectType::AnimationClip, Animation::AnimationClip);
                 CASE_AND_SAVE(GameObjectType::Animator, Animation::Animator);
                 CASE_AND_SAVE(GameObjectType::AnimatorComponent, Animation::AnimatorComponent);
+
+                CASE_AND_SAVE(GameObjectType::UI, UI::UI);
+                CASE_AND_SAVE(GameObjectType::UIComponent, UI::UIComponent);
                 default:
                     // VE_INFO(ToString(type));
                     NOT_IMPL_ASSERT;
@@ -251,6 +257,9 @@ namespace vEngine
                 CASE_AND_CREATE(shared, GameObjectType::AnimationClip, Animation::AnimationClip);
                 CASE_AND_CREATE(shared, GameObjectType::Animator, Animation::Animator);
                 CASE_AND_CREATE(shared, GameObjectType::AnimatorComponent, Animation::AnimatorComponent);
+
+                CASE_AND_CREATE(shared, GameObjectType::UI, UI::UI);
+                CASE_AND_CREATE(shared, GameObjectType::UIComponent, UI::UIComponent);
                 default:
                     NOT_IMPL_ASSERT;
                     break;

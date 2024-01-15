@@ -22,6 +22,8 @@
 #include <vengine/animation/animation_clip.hpp>
 #include <vengine/animation/animator_component.hpp>
 
+#include <vengine/ui/ui_component.hpp>
+
 
 namespace vEngine
 {
@@ -72,13 +74,17 @@ namespace vEngine
             auto gn = GameObjectFactory::Create<GameObjectType::GameNode, GameNode>();
 
             auto camera = GameObjectFactory::Create<GameObjectType::CameraComponent, CameraComponent>();
-            camera->GO()->target = Context::GetInstance().GetRenderEngine()->back_buffer_;
+            // camera->GO()->target = Context::GetInstance().GetRenderEngine()->back_buffer_;
 
             auto transform = GameObjectFactory::Create<GameObjectType::TransformComponent, TransformComponent>();
             transform->GO()->Translate() = float3(0, 0, -250);
 
+            auto ui = GameObjectFactory::Create<GameObjectType::UIComponent, UI::UIComponent>();
+            // transform->GO()->Translate() = float3(0, 0, -250);
+
             gn->AttachComponent(camera);
             gn->AttachComponent(transform);
+            gn->AttachComponent(ui);
 
             scene->AddChild(gn);
 

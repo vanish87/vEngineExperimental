@@ -108,6 +108,9 @@ namespace vEngine
                     TYPE_AND_CREATE(GameObjectType::Animator, Animation::Animator);
                     TYPE_AND_CREATE(GameObjectType::AnimatorComponent, Animation::AnimatorComponent);
 
+                    TYPE_AND_CREATE(GameObjectType::UI, UI::UI);
+                    TYPE_AND_CREATE(GameObjectType::UIComponent, UI::UIComponent);
+
                     DYNAMIC_CUSTOM_TYPE_AND_CREATE(GameObjectType::Custom, T);
 
                     // if constexpr (Type == GameObjectType::Camera) return Context::GetInstance().CreateTest<Camera>(std::forward<Args>(args)...);

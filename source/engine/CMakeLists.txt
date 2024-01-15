@@ -11,9 +11,10 @@ aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core core_source)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core/event core_event_source)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/rendering rendering_source)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/animation animation_source)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/ui ui_source)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/data data_source)
 
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/external external_source)
+# aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/external external_source)
 
 # if(APPLE)
 #     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/core/apple apple_sources)
@@ -26,6 +27,7 @@ add_library(${PROJECT_NAME}
     ${core_event_source}
     ${rendering_source}
     ${animation_source}
+    ${ui_source}
     ${data_source}
     ${external_source}
     # ${apple_sources}

@@ -13,6 +13,9 @@
 #include <vengine/rendering/d3d11_pipeline_state.hpp>
 #include <vengine/rendering/d3d11_texture.hpp>
 
+#include <vengine/rendering/imgui/imgui_impl_win32.h>
+#include <vengine/rendering/imgui/imgui_impl_dx11.h>
+
 namespace vEngine
 {
     namespace Rendering
@@ -349,7 +352,22 @@ namespace vEngine
                 viewport.MinDepth = 0;
                 viewport.MaxDepth = 1;
                 d3d_imm_context_->RSSetViewports(1, &viewport);
+
+
+                // Setup Dear ImGui context
+                IMGUI_CHECKVERSION();
+                ImGui::CreateContext();
+                ImGuiIO& io = ImGui::GetIO();
+                io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
+                io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;   // Enable Gamepad Controls
+                // io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;      // IF using Docking Branch
+
+                // Setup Platform/Renderer backends
+                ImGui_ImplWin32_Init(hwnd);
+                ImGui_ImplDX11_Init(this->Device().Get(), this->DeviceContext().Get());
             }
+
+
 
             // this->InitPipeline();
         }
@@ -426,8 +444,23 @@ namespace vEngine
             this->d3d_imm_context_->ClearDepthStencilView(depth_buffer->AsDSV().Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1, 0);
         }
 
+        void D3D11RenderEngine::OnBeginFrame()
+        {
+            RenderEngine::OnBeginFrame();
+            // (Your code process and dispatch Win32 messages)
+            // Start the Dear ImGui frame
+            ImGui_ImplDX11_NewFrame();
+            ImGui_ImplWin32_NewFrame();
+            ImGui::NewFrame();
+            ImGui::ShowDemoWindow();  // Show demo window! :)
+        }
         void D3D11RenderEngine::OnEndFrame()
         {
+            RenderEngine::OnEndFrame();
+
+            // (Your code clears your framebuffer, renders your other stuff etc.)
+            ImGui::Render();
+            ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
         }
         void D3D11RenderEngine::SwapBuffer()
         {

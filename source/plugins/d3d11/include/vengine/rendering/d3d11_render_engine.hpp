@@ -36,6 +36,7 @@ namespace vEngine
                 void OnBind(const TextureSharedPtr texture) override;
                 void Render(const GraphicsBufferSharedPtr vertice, const GraphicsBufferSharedPtr indice) override;
                 void OnEndFrame() override;
+                void OnBeginFrame() override;
                 void SwapBuffer() override;
 
                 // PipelineStateSharedPtr Create(const PipelineStateDescriptor& pipeline_desc) override;

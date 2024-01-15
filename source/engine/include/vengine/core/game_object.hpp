@@ -61,6 +61,10 @@ namespace vEngine
             Animator,
             AnimatorComponent,
 
+            // UI
+            UI,
+            UIComponent,
+
             Custom,
         };
 

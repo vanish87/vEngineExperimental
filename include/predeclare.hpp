@@ -141,6 +141,11 @@ namespace vEngine
         // CLASS_AND_SHARED_POINTER(SkeletonComponent)
         // CLASS_AND_SHARED_POINTER(JointComponent)
     }
+    namespace UI
+    {
+        CLASS_AND_SHARED_POINTER(UI)
+        CLASS_AND_SHARED_POINTER(UIComponent)
+    }
     namespace Data
     {
         CLASS_AND_SHARED_POINTER(Serializer)

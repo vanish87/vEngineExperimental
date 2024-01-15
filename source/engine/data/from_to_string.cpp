@@ -71,6 +71,10 @@ namespace vEngine
             ENUM_TO_STRING(GameObjectType::AnimationClip, type, str);
             ENUM_TO_STRING(GameObjectType::Animator, type, str);
             ENUM_TO_STRING(GameObjectType::AnimatorComponent, type, str);
+
+            ENUM_TO_STRING(GameObjectType::UI, type, str);
+            ENUM_TO_STRING(GameObjectType::UIComponent, type, str);
+
             NOT_IMPL_ASSERT;
         }
         void FromString(const std::string& str, GameObjectType& type)
@@ -105,6 +109,9 @@ namespace vEngine
             STRING_TO_ENUM(GameObjectType::AnimationClip, str, type);
             STRING_TO_ENUM(GameObjectType::Animator, str, type);
             STRING_TO_ENUM(GameObjectType::AnimatorComponent, str, type);
+
+            STRING_TO_ENUM(GameObjectType::UI, str, type);
+            STRING_TO_ENUM(GameObjectType::UIComponent, str, type);
 
             NOT_IMPL_ASSERT;
         }
