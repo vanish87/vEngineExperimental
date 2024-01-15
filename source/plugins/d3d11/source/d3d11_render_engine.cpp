@@ -376,6 +376,14 @@ namespace vEngine
         }
         void D3D11RenderEngine::Deinit()
         {
+            const auto config = Context::GetInstance().CurrentConfigure();
+            if (config.graphics_configure.output == Output::Window)
+            {
+                ImGui_ImplDX11_Shutdown();
+                ImGui_ImplWin32_Shutdown();
+                ImGui::DestroyContext();
+            }
+
             this->d3d_device_.Reset();
             this->d3d_imm_context_.Reset();
 
