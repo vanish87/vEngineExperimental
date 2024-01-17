@@ -47,6 +47,21 @@ GENERATE_EXPORT_HEADER( ${PROJECT_NAME}
              STATIC_DEFINE ${HEADER_NAME}_BUILT_AS_STATIC
 )
 
+set(IMGUI_NAME "IMGUI")
+GENERATE_EXPORT_HEADER( ${PROJECT_NAME}
+             BASE_NAME ${IMGUI_NAME}
+             EXPORT_MACRO_NAME ${IMGUI_NAME}_API
+             EXPORT_FILE_NAME ${API_EXPORT_DIR}/${IMGUI_NAME}_API.hpp
+             STATIC_DEFINE ${IMGUI_NAME}_BUILT_AS_STATIC
+)
+# do not need IMPL API because it is complied and static linked in xxx_plugin
+# GENERATE_EXPORT_HEADER( ${PROJECT_NAME}
+#              BASE_NAME ${IMGUI_NAME}
+#              EXPORT_MACRO_NAME ${IMGUI_NAME}_IMPL_API
+#              EXPORT_FILE_NAME ${API_EXPORT_DIR}/${IMGUI_NAME}_IMPL_API.hpp
+#              STATIC_DEFINE ${IMGUI_NAME}_BUILT_AS_STATIC
+# )
+
 target_include_directories( ${PROJECT_NAME}
     PUBLIC ${PROJECT_SOURCE_DIR}/include
     PUBLIC ${PROJECT_SOURCE_DIR}/include/apple

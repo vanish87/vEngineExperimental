@@ -78,6 +78,8 @@ namespace vEngine
                     // const color color = color(0, 51, 102, 255);
                     // update per frame cbuffer
                     this->Clear(this->current_frame_buffer_, Core::color(0, 51, 102, 255));
+
+
                 };
                 virtual void OnEndFrame()
                 {

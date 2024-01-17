@@ -13,6 +13,11 @@
 //-----------------------------------------------------------------------------
 
 #pragma once
+//export imgui api
+#include <IMGUI_API.hpp>
+//#include <IMGUI_IMPL_API.hpp>
+//but keep impl api with static link
+#define IMGUI_IMPL_API 
 
 //---- Define assertion handler. Defaults to calling assert().
 // If your macro uses multiple statements, make sure is enclosed in a 'do { .. } while (0)' block so it can be used as a single statement.
