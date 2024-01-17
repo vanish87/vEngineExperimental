@@ -53,6 +53,9 @@ namespace vEngine
                 void LoadDLL();
                 void FreeDLL();
 
+                void InitGUI();
+                void DeininGUI();
+
                 static void* LoadLibrary(const std::string lib_name,const std::filesystem:: path lib_bin);
                 static void FreeLibrary(void* handle);
                 template <typename T, typename F>

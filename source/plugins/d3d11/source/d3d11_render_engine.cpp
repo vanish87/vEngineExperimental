@@ -353,15 +353,6 @@ namespace vEngine
                 viewport.MaxDepth = 1;
                 d3d_imm_context_->RSSetViewports(1, &viewport);
 
-
-                // Setup Dear ImGui context
-                IMGUI_CHECKVERSION();
-                ImGui::CreateContext();
-                ImGuiIO& io = ImGui::GetIO();
-                io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
-                io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;   // Enable Gamepad Controls
-                // io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;      // IF using Docking Branch
-
                 // Setup Platform/Renderer backends
                 ImGui_ImplWin32_Init(hwnd);
                 ImGui_ImplDX11_Init(this->Device().Get(), this->DeviceContext().Get());
@@ -381,7 +372,6 @@ namespace vEngine
             {
                 ImGui_ImplDX11_Shutdown();
                 ImGui_ImplWin32_Shutdown();
-                ImGui::DestroyContext();
             }
 
             this->d3d_device_.Reset();

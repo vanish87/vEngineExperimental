@@ -14,6 +14,8 @@
 #include <vengine/core/game_object_factory.hpp>
 #include <vengine/rendering/render_engine.hpp>
 
+#include <external/imgui/imgui.h>
+
 namespace vEngine
 {
     namespace Core
@@ -95,6 +97,7 @@ namespace vEngine
                 this->window_ = std::make_shared<Window>(desc);
             }
 
+            this->InitGUI();
             this->GetRenderEngine()->Init();
         }
         void Context::Deinit()
@@ -106,12 +109,28 @@ namespace vEngine
             SaveJson(ToJson(UUIDGenerator::GetInstance()), path);
 
             this->GetRenderEngine()->Deinit();
+            this->DeininGUI();
+
             this->render_engine_ptr_.reset();
             this->render_object_factory_ptr_.reset();
             this->custom_object_factory_ptr_.reset();
             // prt.reset() does same thing as this->ProcessRenderEngine("DestoryRenderEngine");
 
             this->FreeDLL();
+        }
+        void Context::InitGUI()
+        {
+            // Setup Dear ImGui context
+            IMGUI_CHECKVERSION();
+            ImGui::CreateContext();
+            ImGuiIO& io = ImGui::GetIO();
+            io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
+            io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;   // Enable Gamepad Controls
+                                                                   // io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;      // IF using Docking Branch
+        }
+        void Context::DeininGUI()
+        {
+            ImGui::DestroyContext();
         }
         void Context::Update()
         {
